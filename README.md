@@ -2,6 +2,10 @@
 
 "Sentiment analysis, also called opinion mining, is the field of study that analyzes people’s opinions, sentiments, evaluations, appraisals, attitudes, and emotions towards entities such as products, services, organizations, individuals, issues, events, topics, and their attributes." ([Liu, 2012](https://www.cs.uic.edu/~liub/FBS/SentimentAnalysis-and-OpinionMining.pdf))
 
+# Genetic Programming
+
+"Genetic programming (GP) is an evolutionary computation (EC) technique that automatically solves problems without requiring the user to know or specify the form or structure of the solution in advance. At the most abstract level GP is a systematic, domain-independent method for getting computers to solve problems automatically starting from a high-level statement of what needs to be done." ([Poli, Langdon, McPhee](http://www.gp-field-guide.org.uk/))
+
 # Dependencies
 * [DEAP](https://github.com/DEAP/deap) (Distributed Evolutionary Algorithms in Python)
 * [stemming 1.0](https://pypi.python.org/pypi/stemming/1.0) (Python implementations of various stemming algorithms)
