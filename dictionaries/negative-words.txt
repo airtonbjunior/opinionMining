@@ -3437,6 +3437,7 @@ quibble
 quibbles
 quitter
 rabid
+raccoon
 racism
 racist
 racists
@@ -4667,6 +4668,7 @@ virulent
 virulently
 virus
 t-virus
+tvirus
 vociferous
 vociferously
 volatile

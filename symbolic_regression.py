@@ -82,20 +82,26 @@ toolbox.register("compile", gp.compile, pset=pset)
 
 iterate_count = 1
 generation_count = 1
+best_of_generation = 0
 
 # evaluation function 
 def evalSymbRegTweetsFromSemeval(individual):
     start = time.time()
     global iterate_count
     global generation_count
+    global best_of_generation
+    new_generation = False
 
     if iterate_count <= variables.POPULATION:
         print("[individual " + str(iterate_count) + " of the generation " + str(generation_count) + "]")
         iterate_count += 1
     else:
         generation_count += 1
-        iterate_count = 0
+        iterate_count = 1
+        variables.best_fitness_per_generation_history.append(best_of_generation)
         print("\n[new generation][start generation " + str(generation_count) + "]\n")
+        new_generation = True
+        best_of_generation = 0
 
     global evaluation_acumulated_time
     correct_evaluations = 0
@@ -293,9 +299,12 @@ def evalSymbRegTweetsFromSemeval(individual):
         variables.generations_unchanged += 1
 
 
+    if not new_generation and best_of_generation < fitnessReturn:
+        best_of_generation = fitnessReturn
+
+
     variables.all_fitness_history.append(fitnessReturn)
 
-    #restartCacheVariables()
 
     #logs   
     if variables.log_parcial_results and not breaked: 
@@ -401,34 +410,17 @@ def main():
 if __name__ == "__main__":
     getDictionary()
     loadTrainTweets()
-    main()
-    
+    #main()
+
     print(len(variables.all_fitness_history))
     print(variables.all_fitness_history)
-    # remove the 0's values to plot
-    plt.plot(list(filter(lambda a: a != 0, variables.all_fitness_history)))    
-    plt.ylabel('f1')
-    plt.show()
-
-    #x = "Not sure if I want to go to Eng v Holland game on wed, only got tickets coz of Arsenal players, might not feature now :-("
-    #print(str(removeLinks(replaceNegatingWords(removeStopWords(removeEllipsis(x))))))
     
-    #print(x)
-
-    #y = str(removeLinks(replaceNegatingWords(removeStopWords(removeEllipsis(x)))))
-    #print("y is " + str(y))
-
-    #print(str(negativeEmoticons(removeLinks(replaceNegatingWords(removeStopWords((removeEllipsis(x))))))))
-    
-    #print(str(negativeEmoticons(x)))
-    #print(str(negativeEmoticons(y)))
-
-    #print(len(variables.all_fitness_history))
-    #print(variables.all_fitness_history)
     # remove the 0's values to plot
     #plt.plot(list(filter(lambda a: a != 0, variables.all_fitness_history)))    
-    #plt.ylabel('f1')
-    #plt.show()
+
+    plt.plot(variables.best_fitness_per_generation_history)
+    plt.ylabel('f1')
+    plt.show()
 
 
 end = time.time()

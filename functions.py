@@ -18,6 +18,8 @@ def getDictionary():
     start = time.time()
     print("[loading dictionary]")
 
+# BING LIU POSITIVE/NEGATIVE WORDS
+
     with open(variables.DICTIONARY_POSITIVE_WORDS, 'r') as inF:
         for line in inF:
             variables.dic_positive_words.append(line.lower().strip())
@@ -47,33 +49,67 @@ def getDictionary():
         for line7 in inF7:
             variables.dic_negation_words.append(line7.strip()) 
 
+# SENTIWORDNET            
+
+#    with open(variables.DICTIONARY_SENTIWORDNET, 'r') as inF9:
+#        for line9 in inF9:
+#            if float(line9.split("\t")[2]) > float(line9.split("\t")[3]): #positive greater than negative
+#                words = line9.split("\t")[4].lower().strip().split()
+#                for word in words:
+#                    if not "_" in word and not word in variables.dic_positive_words:
+#                        variables.dic_positive_words.append(word[:word.find("#")])
+#                        #print("POSITIVE: " + word[:word.find("#")])
+#            
+#            elif float(line9.split("\t")[2]) < float(line9.split("\t")[3]):
+#                words = line9.split("\t")[4].lower().strip().split()
+#                for word in words:
+#                    if not "_" in word and not word in variables.dic_negative_words:
+#                        variables.dic_negative_words.append(word[:word.find("#")])
+#                        #print("NEGATIVE: " + word[:word.find("#")])
+
+# EFFECT LEXICON
+
 #    with open('dictionaries/goldStandard.tff', 'r') as inF8:
 #        for line8 in inF8:
 #            if (line8.split()[1] == "+Effect"):
 #                for word in line8.split()[2].split(","):
-#                    if word not in dic_negative_words and word not in dic_positive_words:
-#                        dic_positive_words.append(word)
+#                    if word not in variables.dic_negative_words and word not in variables.dic_positive_words:
+#                        variables.dic_positive_words.append(word)
 #                        #print("[positive word]: " + word)
-            
+#
 #            elif (line8.split()[1] == "-Effect"):
 #                for word in line8.split()[2].split(","):
-#                    if word not in dic_positive_words and word not in dic_positive_words:
-#                        dic_negative_words.append(word) 
-                        #print("[negative word]: " + word)
+#                    if word not in variables.dic_negative_words and word not in variables.dic_positive_words:
+#                        variables.dic_negative_words.append(word) 
+#                        #print("[negative word]: " + word)
+
+# ENGLISH TWITTER LEXICON SEMEVAL 2015
 
 #    with open('dictionaries/SemEval2015-English-Twitter-Lexicon.txt', 'r') as inF7:
 #        for line7 in inF7:
 #            #removing composite words for while 
 #            if float(line7.split("\t")[0]) > 0 and not ' ' in line7.split("\t")[1].strip():
 #                if "#" in line7.split("\t")[1].strip():
-#                    dic_positive_hashtags.append(line7.split("\t")[1].strip()[1:])
+#                    variables.dic_positive_hashtags.append(line7.split("\t")[1].strip()[1:])
 #                else:
-#                    dic_positive_words.append(line7.split("\t")[1].strip())
+#                    variables.dic_positive_words.append(line7.split("\t")[1].strip())
 #            elif float(line7.split("\t")[0]) < 0 and not ' ' in line7.split("\t")[1].strip():
 #                if "#" in line7.split("\t")[1].strip():
-#                    dic_negative_hashtags.append(line7.split("\t")[1].strip()[1:])
+#                    variables.dic_negative_hashtags.append(line7.split("\t")[1].strip()[1:])
 #                else:
-#                    dic_negative_words.append(line7.split("\t")[1].strip())
+#                    variables.dic_negative_words.append(line7.split("\t")[1].strip())
+
+# AFFIN 
+    with open(variables.DICTIONARY_AFFIN, 'r') as inF:
+        for line in inF:
+            if float(line.split("\t")[1].strip()) > 0:
+                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                    variables.dic_positive_words.append(line.split("\t")[0].strip())
+                    #print("POSITIVE " + line.split("\t")[0])
+            else:
+                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                    variables.dic_negative_words.append(line.split("\t")[0].strip())
+                    #print("NEGATIVE " + line.split("\t")[0])
 
     end = time.time()
     print("[dictionary loaded - words, hashtags and emoticons][" + str(format(end - start, '.3g')) + " seconds]\n")
@@ -472,11 +508,13 @@ def lemmingText(phrase):
     return lemmed_phrase.strip()
 
 
+## NOTE: I'm copying the prase[str] variable for didact reasons in this functions
+##       I'm doing the same creating a variable named phrase_return
+
 def removeLinks(phrase):
     phrase_copy = phrase
     #if not variables.remove_links_function_used:
     phrase_return = re.sub(r'http\S+', '', phrase_copy, flags=re.MULTILINE)
-    variables.remove_links_function_used = True
     return phrase_return
 
     #return phrase
@@ -486,7 +524,6 @@ def removeEllipsis(phrase):
     phrase_copy = phrase
     #if not variables.remove_ellipsis_function_used:
     phrase_return = re.sub('\.{3}', ' ', phrase_copy)
-    variables.remove_ellipsis_function_used = True
     return phrase_return
     
     #return phrase
@@ -495,7 +532,6 @@ def removeEllipsis(phrase):
 def removeDots(phrase):
     phrase_copy = phrase
     #if not variables.remove_dots_function_used:
-    variables.remove_dots_function_used = True
     return re.sub('\.', ' ', phrase_copy)
     
     #return phrase
@@ -504,8 +540,7 @@ def removeDots(phrase):
 def removeAllPonctuation(phrase):
     phrase_copy = phrase
     #if not variables.remove_all_ponctuaction_function_used:
-    variables.remove_all_ponctuaction_function_used = True
-    return phrase_copy.translate(str.maketrans('','',string.punctuation))
+    return phrase_copy.translate(str.maketrans('','',string.punctuation.replace("-", ""))) # keep hyphens
 
     #return phrase
 

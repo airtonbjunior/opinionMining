@@ -386,7 +386,7 @@ positive	LiveJournal2014	But thank you for the neato idea = D
 positive	Twitter2013	We also provided Prepix and the managers with a common Korean energy drink. Hopefully it\u2019ll awaken them a little tomorrow!
 positive	Twitter2014	@dorothykt I made a time-lapse video of the San Diego County Fair you may enjoy! http://t.co/xTa96pm5
 neutral	SMS2013	hey\u002c you free now?
-negative	SMS2013	Ã dun need to pick ur gf?
+negative	SMS2013	X dun need to pick ur gf?
 positive	SMS2013	Wat makes u thk i\u2019ll fall down. But actually i thk i\u2019m quite prone 2 falls. Lucky my dad at home i ask him come n fetch me already.
 neutral	Twitter2013	#justathought If England don\u2019t call up Zaha before January\u002c there is a chance of him being called up by Ivory Coast for the cup surely?!
 neutral	SMS2013	Hey xin... I\u2019ll go shop w u tmr... I wan go far east buy bottom...
