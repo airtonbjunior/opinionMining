@@ -410,7 +410,7 @@ def main():
 if __name__ == "__main__":
     getDictionary()
     loadTrainTweets()
-    #main()
+    main()
 
     print(len(variables.all_fitness_history))
     print(variables.all_fitness_history)
