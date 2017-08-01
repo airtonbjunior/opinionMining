@@ -7,3 +7,6 @@
 * [stemming 1.0](https://pypi.python.org/pypi/stemming/1.0) (Python implementations of various stemming algorithms)
 * [nltk](https://github.com/nltk/nltk) (Natural Language Toolkit)
 * [matplotlib](https://github.com/matplotlib/matplotlib) (Python 2D plotting library)
+
+# Old repository
+* [Closed issues](https://github.com/airtonbjunior/mestrado/issues?q=is%3Aissue+is%3Aclosed)
