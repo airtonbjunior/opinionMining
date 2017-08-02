@@ -49,6 +49,10 @@ def getDictionary():
         for line7 in inF7:
             variables.dic_negation_words.append(line7.strip()) 
 
+    with open(variables.DICTIONARY_BOOSTER_WORDS) as inF8:
+        for line8 in inF8:
+            variables.dic_booster_words.append(line8.strip())
+
 # SENTIWORDNET            
 
 #    with open(variables.DICTIONARY_SENTIWORDNET, 'r') as inF9:
@@ -110,6 +114,40 @@ def getDictionary():
                 if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
                     variables.dic_negative_words.append(line.split("\t")[0].strip())
                     #print("NEGATIVE " + line.split("\t")[0])
+
+
+# SLANG
+#    with open(variables.DICTIONARY_SLANG, 'r') as inF:
+#        for line in inF:    
+#            if float(line.split("\t")[1].strip()) > 0:
+#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+#                    variables.dic_positive_words.append(line.split("\t")[0].strip())
+#
+#            elif float(line.split("\t")[1].strip()) < 0:
+#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+#                    variables.dic_negative_words.append(line.split("\t")[0].strip())
+
+
+# Vader Lexicon
+
+#    with open(variables.DICTIONARY_VADER, 'r') as inF:
+#        for line in inF:
+#            if float(line.split("\t")[1].strip()) > 0:
+#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+#                    variables.dic_positive_words.append(line.split("\t")[0].strip())
+#                    #print("POSITIVE " + line.split("\t")[0])
+#            else:
+#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+#                    variables.dic_negative_words.append(line.split("\t")[0].strip())
+#                    #print("NEGATIVE " + line.split("\t")[0])
+    
+    # Performance improvement test
+    variables.dic_positive_words = set(variables.dic_positive_words)
+    variables.dic_negative_words = set(variables.dic_negative_words)
+    variables.dic_positive_hashtags = set(variables.dic_positive_hashtags)
+    variables.dic_negative_hashtags = set(variables.dic_negative_hashtags)
+    variables.dic_positive_emoticons = set(variables.dic_positive_emoticons)
+    variables.dic_negative_emoticons = set(variables.dic_negative_emoticons)
 
     end = time.time()
     print("[dictionary loaded - words, hashtags and emoticons][" + str(format(end - start, '.3g')) + " seconds]\n")
@@ -343,19 +381,37 @@ def polaritySum(phrase):
     words = phrase.split()
     
     for word in words:
-        if word.lower().strip() in variables.dic_positive_words:
+        word = word.lower().strip()
+
+        if word in variables.dic_positive_words:
             if index > 0 and words[index-1] == "insidenoteinverterword":
-                total_sum -=1
+                total_sum -= 1
             else:
-                #print("[positive Word]: " + word)
                 total_sum += 1 
 
-        if word.lower().strip() in variables.dic_negative_words:
+            if index > 0 and words[index-1] == "insidenoteboosterword":
+                total_sum += 1 # one more to the sum because of boost word
+
+            if index < len(words)-1 and words[index+1] == "insidenoteboosterword":
+                total_sum += 1 # one more to the sum because of boost word
+
+            if index > 0 and words[index-1] == "insidenoteboosteruppercase":
+                total_sum += 1 # one more to the sum because of boost uppercase
+
+        if word in variables.dic_negative_words:
             if index > 0 and words[index-1] == "insidenoteinverterword":
-                total_sum +=1
+                total_sum += 1
             else:
-                #print("[negative Word]: " + word)
                 total_sum -= 1
+
+            if index > 0 and words[index-1] == "insidenoteboosterword":
+                total_sum -= 1 # one minus to the sum because of boost word
+
+            if index < len(words)-1 and words[index+1] == "insidenoteboosterword":
+                total_sum -= 1 # one minus to the sum because of boost word
+
+            if index > 0 and words[index-1] == "insidenoteboosteruppercase":
+                total_sum -= 1 # one minus to the sum because of boost uppercase
 
         index += 1    
 
@@ -376,6 +432,38 @@ def replaceNegatingWords(phrase):
             phrase = phrase.replace(negation_word, " insidenoteinverterword ")
 
     return phrase 
+
+
+def replaceBoosterWords(phrase):
+    phrase = phrase.lower()
+    
+    if len(phrase.split()) > 0 and phrase.split()[0] in variables.dic_booster_words:
+        phrase_list = phrase.split()
+        phrase_list[0] = "insidenoteboosterword"
+        phrase = ' '.join(phrase_list)
+
+    for booster_word in variables.dic_booster_words:
+        booster_word = " " + booster_word + " "
+        if phrase.lower().find(booster_word.lower()) > -1:
+            phrase = phrase.replace(booster_word, " insidenoteboosterword ")
+
+        elif phrase.lower().find(booster_word.lower()[-1]) > -1:
+            phrase = phrase.replace(booster_word, " insidenoteboosterword ")
+
+    return phrase 
+
+
+def boostUpperCase(phrase):
+    words = phrase.split()
+    phrase_return = ""
+
+    for word in words:
+        if word.isupper():
+            phrase_return += "insidenoteboosteruppercase " + word + " "
+        else:
+            phrase_return += word + " "
+
+    return phrase_return 
 
 
 # sum of the hashtag polarities only
@@ -655,8 +743,10 @@ def evaluateMessages(base, model):
                     false_positive += 1
 
                 if false_negative_log <= 15:
+                    if false_negative_log == 1:  
+                        print("\n##### [FALSE NEGATIVES][" + base + "] #####\n")
                     print("[Negative phrase]: " + message)
-                    print("[Polarity calculated]: " + str(result)) 
+                    print("[Polarity calculated]: " + str(result))
 
         elif messages_score[index] == 0:
             if result == 0:

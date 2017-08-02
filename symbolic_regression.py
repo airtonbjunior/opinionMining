@@ -61,6 +61,8 @@ pset.addPrimitive(removeLinks, [str], str)
 pset.addPrimitive(removeEllipsis, [str], str)
 pset.addPrimitive(removeAllPonctuation, [str], str)
 pset.addPrimitive(replaceNegatingWords, [str], str)
+pset.addPrimitive(replaceBoosterWords, [str], str)
+pset.addPrimitive(boostUpperCase, [str], str)
 
 pset.addTerminal(True, bool)
 pset.addTerminal(False, bool)
@@ -412,8 +414,16 @@ if __name__ == "__main__":
     loadTrainTweets()
     main()
 
-    print(len(variables.all_fitness_history))
-    print(variables.all_fitness_history)
+    #x = "Yeah we have Thin Lizzy here I HATE hate the informercials !"
+    #print(x)
+    #print(boostUpperCase(x))
+    #print(str(polaritySum(x)))
+    #print(str(polaritySum(boostUpperCase(x))))
+
+    #print(str(if_then_else(hasEmoticons(x), emoticonsPolaritySum(removeLinks(x)), polaritySum(removeEllipsis(removeLinks(lemmingText(removeAllPonctuation(replaceNegatingWords(x)))))))))
+
+    #print(len(variables.all_fitness_history))
+    #print(variables.all_fitness_history)
     
     # remove the 0's values to plot
     #plt.plot(list(filter(lambda a: a != 0, variables.all_fitness_history)))    

@@ -14,14 +14,17 @@ DICTIONARY_NEGATIVE_HASHTAGS  = 'dictionaries/negative-hashtags.txt'
 DICTIONARY_POSITIVE_EMOTICONS = 'dictionaries/positive-emoticons.txt'
 DICTIONARY_NEGATIVE_EMOTICONS = 'dictionaries/negative-emoticons.txt'
 DICTIONARY_NEGATING_WORDS = 'dictionaries/negating-word-list.txt'
+DICTIONARY_BOOSTER_WORDS = 'dictionaries/boosterWords.txt'
 DICTIONARY_SENTIWORDNET = 'dictionaries/SentiWordNet_3.0.0_20130122.txt'
 DICTIONARY_AFFIN = 'dictionaries/affin.txt'
+DICTIONARY_SLANG = 'dictionaries/slangSD.txt'
+DICTIONARY_VADER = 'dictionaries/vaderLexicon.txt'
 
 MAX_POSITIVES_TWEETS = 1400
 MAX_NEGATIVES_TWEETS = 1400
 MAX_NEUTRAL_TWEETS   = 1400
 
-GENERATIONS = 90
+GENERATIONS = 35
 POPULATION  = 10
 generations_unchanged = 0
 max_unchanged_generations = 10000
@@ -37,6 +40,7 @@ dic_negative_hashtags  = []
 dic_positive_emoticons = []
 dic_negative_emoticons = []
 dic_negation_words     = []
+dic_booster_words      = []
 
 positive_tweets = 0
 negative_tweets = 0

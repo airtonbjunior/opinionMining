@@ -1,3 +1,4 @@
+do not even
 does not have
 doesn't have
 do not
@@ -9,6 +10,9 @@ is not
 would not
 will not
 not even
+dont even
+not really
+not so
 have not
 aren't
 arent

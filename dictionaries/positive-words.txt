@@ -914,6 +914,8 @@ heros
 high-quality
 high-spirited
 hilarious
+hire
+hiring
 holy
 homage
 honest
@@ -1368,8 +1370,8 @@ progressive
 prolific
 prominence
 prominent
-promised
-promises
+[removed]promised
+[removed]promises
 promising
 promoter
 prompt
