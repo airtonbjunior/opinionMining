@@ -31,7 +31,17 @@ if __name__ == "__main__":
 
     #function_to_evaluate = "sub(add(polaritySum(replaceNegatingWords(removeStopWords(removeAllPonctuation(stemmingText(stemmingText(removeAllPonctuation(x))))))), add(add(emoticonsPolaritySum(x), emoticonsPolaritySum(x)), invertSignal(negativeWordsQuantity(removeLinks(removeLinks(removeEllipsis(removeLinks(removeStopWords(removeEllipsis(x)))))))))), invertSignal(add(polaritySum(replaceNegatingWords(removeStopWords(replaceNegatingWords(removeStopWords(replaceNegatingWords(replaceNegatingWords(replaceNegatingWords(removeStopWords(replaceNegatingWords(removeLinks(removeAllPonctuation(x)))))))))))), add(add(add(polaritySum(x), add(polaritySum(removeLinks(removeEllipsis(replaceNegatingWords(removeEllipsis(replaceNegatingWords(removeStopWords(removeEllipsis(x)))))))), add(polaritySum(replaceNegatingWords(replaceNegatingWords(removeStopWords(removeAllPonctuation(stemmingText(removeStopWords(x))))))), emoticonsPolaritySum(x)))), polaritySum(replaceNegatingWords(removeAllPonctuation(removeStopWords(replaceNegatingWords(replaceNegatingWords(replaceNegatingWords(x)))))))), polaritySum(replaceNegatingWords(removeAllPonctuation(removeStopWords(replaceNegatingWords(replaceNegatingWords(replaceNegatingWords(x)))))))))))"
 
-    #function_to_evaluate = "polaritySum(x)"
+
+
+    # F1 0.6369658710978381 [2520 correct evaluations] [896 positives, 1004 negatives and 620 neutrals] on test
+    #function_to_evaluate = "add(if_then_else(hasHashtag(removeAllPonctuation(removeLinks(removeStopWords(replaceNegatingWords(removeStopWords(removeStopWords(removeEllipsis(stemmingText(stemmingText(removeEllipsis(x))))))))))), 0.5759342653620698, protectedDiv(invertSignal(negativeWordsQuantity(removeAllPonctuation(removeLinks(removeEllipsis(x))))), 0.5759342653620698)), polaritySum(removeEllipsis(replaceNegatingWords(replaceNegatingWords(removeLinks(removeEllipsis(removeAllPonctuation(removeStopWords(removeLinks(x))))))))))"
+
+    # F1 0.6232731810549077 [2444 correct evaluations] [1016 positives, 831 negatives and 597 neutrals] on test
+    function_to_evaluate = "add(polaritySum(removeAllPonctuation(removeAllPonctuation(removeAllPonctuation(removeStopWords(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(removeStopWords(replaceNegatingWords(x)))))))))), sin(if_then_else(hasEmoticons(stemmingText(stemmingText(x))), if_then_else(hasEmoticons(removeAllPonctuation(x)), positiveHashtags(stemmingText(removeEllipsis(removeLinks(x)))), polaritySum(removeEllipsis(removeEllipsis(removeLinks(removeAllPonctuation(stemmingText(removeAllPonctuation(x)))))))), polaritySum(removeEllipsis(removeEllipsis(stemmingText(x)))))))"
+
+    # F1 0.6298756475178069 [2470 correct evaluations] [1018 positives, 763 negatives and 689 neutrals] on test
+    #function_to_evaluate = "add(emoticonsPolaritySum(removeLinks(removeEllipsis(stemmingText(stemmingText(removeLinks(stemmingText(removeStopWords(x)))))))), polaritySum(removeLinks(replaceNegatingWords(removeAllPonctuation(removeStopWords(replaceNegatingWords(x)))))))"
+
 
     evaluateMessages("tweets2013", function_to_evaluate)
     evaluateMessages("tweets2014", function_to_evaluate)
