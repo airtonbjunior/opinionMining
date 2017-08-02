@@ -15,5 +15,13 @@ Automated creation of an Opinion Mining/Sentiment Analysis Classifier Model usin
 * [nltk](https://github.com/nltk/nltk) (Natural Language Toolkit)
 * [matplotlib](https://github.com/matplotlib/matplotlib) (Python 2D plotting library)
 
+# References
+* Lexicons
+  * [Bing Liu Lexicon](https://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html#lexicon)
+  * [Vader Lexicon](https://github.com/cjhutto/vaderSentiment) (Valence Aware Dictionary and sEntiment Reasoner)
+  * [SlangSD](http://slangsd.com/) (Sentiment Dictionary for Slang Words)
+  * [MPQA Effect Lexicon](http://mpqa.cs.pitt.edu/lexicons/effect_lexicon/)
+  * [SentiWordNet](http://sentiwordnet.isti.cnr.it/)
+
 # Old repository
 * [Closed issues](https://github.com/airtonbjunior/mestrado/issues?q=is%3Aissue+is%3Aclosed)
