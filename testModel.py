@@ -13,6 +13,10 @@ if __name__ == "__main__":
     # Dictionaries used on test - LIU Pos/Neg and AFFIN, hashtags Pos/Neg, Emoticons Pos/Neg, invertWords
 
     # Baseline
+    # [TEST]:  [53.81 all] [28.41 sarcasm] [62.00 liveJournal] [48.84 sms] [50.84 tweets2014] [54.42 tweets2013]
+    #function_to_evaluate = "polaritySum(x)"
+
+    # Modified Baseline
     # [TEST]:  [58.67 all] [41.68 sarcasm] [63.72 liveJournal] [53.45 sms] [56.92 tweets2014] [59.71 tweets2013]
     # function_to_evaluate = "if_then_else(hasEmoticons(x), emoticonsPolaritySum(removeLinks(x)), polaritySum(removeEllipsis(removeLinks(lemmingText(removeAllPonctuation(replaceNegatingWords(x)))))))"
 
@@ -21,13 +25,12 @@ if __name__ == "__main__":
     # [TEST]:  [53.19 all] [43.52 sarcasm] [57.05 liveJournal] [42.05 sms] [54.99 tweets2014] [55.75 tweets2013]
     #function_to_evaluate = "protectedDiv(cos(emoticonsPolaritySum(removeAllPonctuation(removeLinks(removeStopWords(stemmingText(stemmingText(removeAllPonctuation(removeLinks(x))))))))), invertSignal(if_then_else(hasEmoticons(removeStopWords(removeLinks(x))), negativeEmoticons(stemmingText(removeLinks(stemmingText(x)))), negativeWordsQuantity(removeAllPonctuation(removeAllPonctuation(removeAllPonctuation(removeAllPonctuation(removeAllPonctuation(removeAllPonctuation(removeEllipsis(x)))))))))))"
 
-
     # [TRAIN]: F1 0.6369658710978381 [2520 correct evaluations] [896 positives, 1004 negatives and 620 neutrals]
     # [TEST]:  [56.98 all] [45.05 sarcasm] [62.61 liveJournal] [52.49 sms] [54.07 tweets2014] [58.04 tweets2013]
     #function_to_evaluate = "add(if_then_else(hasHashtag(removeAllPonctuation(removeLinks(removeStopWords(replaceNegatingWords(removeStopWords(removeStopWords(removeEllipsis(stemmingText(stemmingText(removeEllipsis(x))))))))))), 0.5759342653620698, protectedDiv(invertSignal(negativeWordsQuantity(removeAllPonctuation(removeLinks(removeEllipsis(x))))), 0.5759342653620698)), polaritySum(removeEllipsis(replaceNegatingWords(replaceNegatingWords(removeLinks(removeEllipsis(removeAllPonctuation(removeStopWords(removeLinks(x))))))))))"
 
     # [TRAIN]: F1 0.6232731810549077 [2444 correct evaluations] [1016 positives, 831 negatives and 597 neutrals]
-    # [TEST]:  [58.65 all] [40.19 sarcasm] [65.68 liveJournal] [55.71 sms] [56.33 tweets2014] [58.25 tweets2013]
+    # [TEST]:  [58.74 all] [40.19 sarcasm] [66.21 liveJournal] [55.63 sms] [56.45 tweets2014] [58.26 tweets2013]
     #function_to_evaluate = "add(polaritySum(removeAllPonctuation(removeAllPonctuation(removeAllPonctuation(removeStopWords(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(removeStopWords(replaceNegatingWords(x)))))))))), sin(if_then_else(hasEmoticons(stemmingText(stemmingText(x))), if_then_else(hasEmoticons(removeAllPonctuation(x)), positiveHashtags(stemmingText(removeEllipsis(removeLinks(x)))), polaritySum(removeEllipsis(removeEllipsis(removeLinks(removeAllPonctuation(stemmingText(removeAllPonctuation(x)))))))), polaritySum(removeEllipsis(removeEllipsis(stemmingText(x)))))))"
 
     # [TRAIN]: F1 0.6298756475178069 [2470 correct evaluations] [1018 positives, 763 negatives and 689 neutrals]
@@ -36,11 +39,19 @@ if __name__ == "__main__":
 
     # [TRAIN]: F1 0.6161622143264465 [2425 correct evaluations] [977 positives, 752 negatives and 696 neutrals]
     # [TEST]: [58.67 all] [35.44 sarcasm] [64.39 liveJournal] [55.61 sms] [56.62 tweets2014] [58.91 tweets2013]
-    function_to_evaluate = "polaritySum(removeLinks(replaceNegatingWords(removeStopWords(removeLinks(replaceNegatingWords(removeStopWords(removeEllipsis(replaceNegatingWords(removeEllipsis(replaceNegatingWords(removeAllPonctuation(removeAllPonctuation(replaceBoosterWords(x))))))))))))))"
+    #function_to_evaluate = "polaritySum(removeLinks(replaceNegatingWords(removeStopWords(removeLinks(replaceNegatingWords(removeStopWords(removeEllipsis(replaceNegatingWords(removeEllipsis(replaceNegatingWords(removeAllPonctuation(removeAllPonctuation(replaceBoosterWords(x))))))))))))))"
 
     # [TRAIN]: F1 0.6124793970758737 [2418 correct evaluations] [984 positives, 738 negatives and 696 neutrals]
     # [TEST]: [58.78 all] [35.44 sarcasm] [64.39 liveJournal] [55.55 sms] [56.82 tweets2014] [59.06 tweets2013]
     #function_to_evaluate = "polaritySum(removeLinks(replaceNegatingWords(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(replaceNegatingWords(replaceBoosterWords(x))))))))"
+    
+    # [TRAIN]: F1 0.6124793970758737 [2418 correct evaluations] [984 positives, 738 negatives and 696 neutrals]
+    # [TEST]: [58.74 all] [37.18 sarcasm] [64.39 liveJournal] [55.67 sms] [56.62 tweets2014] [58.97 tweets2013]
+    #function_to_evaluate = "polaritySum(removeAllPonctuation(removeEllipsis(removeStopWords(removeEllipsis(removeAllPonctuation(replaceNegatingWords(replaceNegatingWords(replaceNegatingWords(replaceBoosterWords(x))))))))))"
+
+    # [TRAIN]: F1 0.6165577280275001 [2426 correct evaluations] [978 positives, 753 negatives and 695 neutrals]
+    # [TEST]: [58.68 all] [35.44 sarcasm] [64.39 liveJournal] [55.57 sms] [56.66 tweets2014] [58.92 tweets2013]
+    function_to_evaluate = "polaritySum(replaceNegatingWords(removeAllPonctuation(removeStopWords(removeStopWords(boostUpperCase(removeStopWords(boostUpperCase(removeStopWords(boostUpperCase(replaceNegatingWords(replaceBoosterWords(x))))))))))))"
 
     evaluateMessages("tweets2013", function_to_evaluate)
     evaluateMessages("tweets2014", function_to_evaluate)

@@ -742,7 +742,7 @@ def evaluateMessages(base, model):
                 else:
                     false_positive += 1
 
-                if false_negative_log <= 15:
+                if false_negative_log <= 20:
                     if false_negative_log == 1:  
                         print("\n##### [FALSE NEGATIVES][" + base + "] #####\n")
                     print("[Negative phrase]: " + message)
