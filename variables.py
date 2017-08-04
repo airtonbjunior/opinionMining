@@ -20,12 +20,14 @@ DICTIONARY_AFFIN = 'dictionaries/affin.txt'
 DICTIONARY_SLANG = 'dictionaries/slangSD.txt'
 DICTIONARY_VADER = 'dictionaries/vaderLexicon.txt'
 
+FILE_RESULTS = 'test-results.txt'
+
 MAX_POSITIVES_TWEETS = 1400
 MAX_NEGATIVES_TWEETS = 1400
 MAX_NEUTRAL_TWEETS   = 1400
 
-GENERATIONS = 80
-POPULATION  = 15
+GENERATIONS = 100
+POPULATION  = 20
 generations_unchanged = 0
 max_unchanged_generations = 10000
 
@@ -125,5 +127,7 @@ false_negative_log = 0
 false_positive_log = 0
 
 log_parcial_results = True
+
+save_file_results = True
 
 stop_words = set(stopwords.words('english'))

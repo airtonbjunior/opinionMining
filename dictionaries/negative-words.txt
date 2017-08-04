@@ -4140,6 +4140,7 @@ subversively
 subvert
 succumb
 suck
+sucks
 sucked
 sucker
 sucks
@@ -4182,6 +4183,7 @@ suspicion
 suspicions
 suspicious
 suspiciously
+sux
 swagger
 swamped
 sweaty

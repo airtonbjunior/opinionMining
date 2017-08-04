@@ -12,6 +12,9 @@ import codecs
 from stemming.porter2 import stem
 from nltk.stem import WordNetLemmatizer
 
+import matplotlib.pyplot as plt
+import numpy as np
+
 import variables
 
 def getDictionary():
@@ -389,8 +392,14 @@ def polaritySum(phrase):
             else:
                 total_sum += 1 
 
+            # Check inverter and boosters
+
+            # clean this code, made in didacts (but ugly) ways
             if index > 0 and words[index-1] == "insidenoteboosterword":
-                total_sum += 1 # one more to the sum because of boost word
+                if index > 1 and words[index-2] == "insidenoteinverterword":  # inverter + booster + word
+                    total_sum -= 3 # already sum 1 above
+                else:
+                    total_sum += 1
 
             if index < len(words)-1 and words[index+1] == "insidenoteboosterword":
                 total_sum += 1 # one more to the sum because of boost word
@@ -398,14 +407,21 @@ def polaritySum(phrase):
             if index > 0 and words[index-1] == "insidenoteboosteruppercase":
                 total_sum += 1 # one more to the sum because of boost uppercase
 
+
         if word in variables.dic_negative_words:
             if index > 0 and words[index-1] == "insidenoteinverterword":
                 total_sum += 1
             else:
                 total_sum -= 1
 
+
+            # Check inverter and boosters
+
             if index > 0 and words[index-1] == "insidenoteboosterword":
-                total_sum -= 1 # one minus to the sum because of boost word
+                if index > 1 and words[index-2] == "insidenoteinverterword":  # inverter + booster + word
+                    total_sum += 3 # already minus 1 above
+                else:
+                    total_sum -= 1
 
             if index < len(words)-1 and words[index+1] == "insidenoteboosterword":
                 total_sum -= 1 # one minus to the sum because of boost word
@@ -832,3 +848,109 @@ def evaluateMessages(base, model):
     print("[true_neutral]: " + str(true_neutral))
     print("[false_neutral]: " + str(false_neutral))
     print("\n")
+
+    if variables.save_file_results:
+        with open(variables.FILE_RESULTS, 'a') as f:
+            if base == "tweets2013":
+                f.write("\n[Model]\t" + model + "\n")
+            f.write(base + "\t" + str(round(f1_positive_negative_avg, 4)) + "\n")
+        
+
+def resultsAnalysis():
+    models = 0
+
+    t2k13_list   = []
+    t2k14_list   = []
+    sms_list     = []
+    liveJ_list   = []
+    sarcasm_list = []
+    allB_list    = []
+
+    with open(variables.FILE_RESULTS, 'r') as f:
+        for line in f:
+            if line.startswith("["):
+                models += 1
+            elif len(line) > 1:
+                base = line.split("\t")[0]
+                value = float(line.split("\t")[1])
+                if base == "tweets2013":
+                    t2k13_list.append(value)
+                elif base == "tweets2014":
+                    t2k14_list.append(value)
+                elif base == "sms":
+                    sms_list.append(value)                
+                elif base == "livejournal":
+                    liveJ_list.append(value)                     
+                elif base == "sarcasm":
+                    sarcasm_list.append(value)                     
+                elif base == "all":
+                    allB_list.append(value)
+                    
+
+    with open(variables.FILE_RESULTS, 'a') as f:
+        f.write("\n\n##Statistics##\n\n")
+        f.write(str(models) + " models evaluated\n\n")
+        f.write("AVGs")
+        f.write("\nAVG Tweets2013 F1 SemEval\t" + str(round((sum(t2k13_list) / models), 4)))
+        f.write("\nAVG Tweets2014 F1 SemEval\t" + str(round((sum(t2k14_list) / models), 4)))
+        f.write("\nAVG SMS F1 SemEval\t" + str(round((sum(sms_list) / models), 4)))
+        f.write("\nAVG LiveJournal F1 SemEval\t" + str(round((sum(liveJ_list) / models), 4)))
+        f.write("\nAVG Sarcasm F1 SemEval\t" + str(round((sum(sarcasm_list) / models), 4)))
+        f.write("\nAVG All F1 SemEval\t" + str(round((sum(allB_list) / models), 4)))
+        f.write("\n\nBest Values")
+        f.write("\nBest Tweets2013 F1 value\t" + str(round(max(t2k13_list), 4)))
+        f.write("\nBest Tweets2014 F1 value\t" + str(round(max(t2k14_list), 4)))
+        f.write("\nBest SMS F1 value\t" + str(round(max(sms_list), 4)))
+        f.write("\nBest LiveJournal F1 value\t" + str(round(max(liveJ_list), 4)))
+        f.write("\nBest Sarcasm F1 value\t" + str(round(max(sarcasm_list), 4)))
+        f.write("\nBest All F1 value\t" + str(round(max(allB_list), 4)))
+        f.write("\n\nValues by database")
+        f.write("\nTweets2013 " + str(t2k13_list))
+        f.write("\nTweets2014 " + str(t2k14_list))
+        f.write("\nSMS " + str(sms_list))
+        f.write("\nLiveJournal " + str(liveJ_list))
+        f.write("\nSarcasm " + str(sarcasm_list))
+        f.write("\nAll " + str(allB_list))
+
+    databases = ["tweets2013","tweets2014","sms","livejournal","sarcasm"]
+
+    N = models
+    ind = np.arange(N)  # the x locations for the groups
+    width = 0.10      # the width of the bars
+
+    fig, ax = plt.subplots()
+    
+    rects1 = ax.bar(ind, t2k13_list, width, color='r')
+    rects2 = ax.bar(ind + width, t2k14_list, width, color='y')
+    rects3 = ax.bar(ind + width * 2, sms_list, width, color='b')
+    rects4 = ax.bar(ind + width * 3, liveJ_list, width, color='g')
+    rects5 = ax.bar(ind + width * 4, sarcasm_list, width, color='k')
+
+    # add some text for labels, title and axes ticks
+    ax.set_ylabel('F1')
+    ax.set_xlabel('Models')
+    ax.set_title('F1 by database')
+    #ax.set_xticks(ind + width / 2)
+    ax.set_xticklabels(np.arange(models))
+    #ax.set_xticklabels(('Tweets2013', 'Tweets2014', 'SMS', 'SARCASM', 'LiveJournal'))
+
+    ax.legend((rects1[0], rects2[0], rects3[0], rects4[0], rects5[0]), ('Twitter2013', 'Twitter2014', 'SMS', 'LiveJournal', 'Sarcasm'))
+
+    def autolabel(rects):
+        """
+        Attach a text label above each bar displaying its height
+        """
+        for rect in rects:
+            height = rect.get_height()
+            ax.text(rect.get_x() + rect.get_width()/2., 1.05*height,
+                    '%.2f' % float(height),
+                    ha='center', va='bottom')
+
+    autolabel(rects1)
+    autolabel(rects2)
+    autolabel(rects3)
+    autolabel(rects4)
+    autolabel(rects5)
+
+    plt.show()
+

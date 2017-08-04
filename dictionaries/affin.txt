@@ -1445,7 +1445,6 @@ litigation	-1
 litigious	-2
 lively	2
 livid	-2
-lmao	4
 lmfao	4
 loathe	-3
 loathed	-3

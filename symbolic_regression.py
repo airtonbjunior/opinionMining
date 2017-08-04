@@ -372,7 +372,7 @@ def main():
         # Statistics objetc (updated inplace)
         # HallOfFame object that contain the best individuals
         # Whether or not to log the statistics
-    pop, log = algorithms.eaSimple(pop, toolbox, 0.8, 0.3, variables.GENERATIONS, stats=False,
+    pop, log = algorithms.eaSimple(pop, toolbox, 0.6, 0.1, variables.GENERATIONS, stats=False,
                                    halloffame=hof, verbose=False)
 
 
@@ -414,12 +414,11 @@ if __name__ == "__main__":
     loadTrainTweets()
     main()
 
-    #x = "Yeah we have Thin Lizzy here I HATE hate the informercials !"
+    #x = "They said they are not really hiring till next month or something ."
+    
     #print(x)
-    #print(boostUpperCase(x))
-    #print(str(polaritySum(x)))
-    #print(str(polaritySum(boostUpperCase(x))))
-
+    #print(replaceNegatingWords(removeAllPonctuation(removeStopWords(removeStopWords(boostUpperCase(removeStopWords(boostUpperCase(removeStopWords(boostUpperCase(replaceNegatingWords(replaceBoosterWords(x))))))))))))
+    #print(str(polaritySum(replaceNegatingWords(removeAllPonctuation(removeStopWords(removeStopWords(boostUpperCase(removeStopWords(boostUpperCase(removeStopWords(boostUpperCase(replaceNegatingWords(replaceBoosterWords(x))))))))))))))
     #print(str(if_then_else(hasEmoticons(x), emoticonsPolaritySum(removeLinks(x)), polaritySum(removeEllipsis(removeLinks(lemmingText(removeAllPonctuation(replaceNegatingWords(x)))))))))
 
     #print(len(variables.all_fitness_history))
