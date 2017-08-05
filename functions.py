@@ -144,6 +144,20 @@ def getDictionary():
 #                    variables.dic_negative_words.append(line.split("\t")[0].strip())
 #                    #print("NEGATIVE " + line.split("\t")[0])
     
+# Sentiment140 Lexicon
+    with open(variables.DICTIONARY_SENTIMENT140, 'r') as inF:
+        for line in inF:
+            if float(line.split("\t")[1].strip()) > 0:
+                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                    variables.dic_positive_words.append(line.split("\t")[0].strip())
+                    #print("POSITIVE " + line.split("\t")[0])
+            else:
+                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                    variables.dic_negative_words.append(line.split("\t")[0].strip())
+                    #print("NEGATIVE " + line.split("\t")[0])
+
+
+
     # Performance improvement test
     variables.dic_positive_words = set(variables.dic_positive_words)
     variables.dic_negative_words = set(variables.dic_negative_words)

@@ -19,6 +19,7 @@ DICTIONARY_SENTIWORDNET = 'dictionaries/SentiWordNet_3.0.0_20130122.txt'
 DICTIONARY_AFFIN = 'dictionaries/affin.txt'
 DICTIONARY_SLANG = 'dictionaries/slangSD.txt'
 DICTIONARY_VADER = 'dictionaries/vaderLexicon.txt'
+DICTIONARY_SENTIMENT140 = 'dictionaries/sentiment140_unigram.txt'
 
 FILE_RESULTS = 'test-results.txt'
 
