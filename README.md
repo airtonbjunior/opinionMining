@@ -24,5 +24,6 @@ Automated creation of an Opinion Mining/Sentiment Analysis Classifier Model usin
   * [SentiWordNet](http://sentiwordnet.isti.cnr.it/)
 
 # Old repository
+* [Related Works](https://airtonbjunior.github.io/mestrado/sentiment-analysis/presentation/related-works.pdf)
 * [Presentation](https://airtonbjunior.github.io/mestrado/sentiment-analysis/presentation/project-presentation.pdf)
 * [Closed issues](https://github.com/airtonbjunior/mestrado/issues?q=is%3Aissue+is%3Aclosed)
