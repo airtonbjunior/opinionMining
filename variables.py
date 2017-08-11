@@ -36,8 +36,14 @@ tweets_semeval       = []
 tweets_semeval_score = []
 tweet_semeval_index  = 0
 
-dic_positive_words     = []
-dic_negative_words     = []
+dic_positive_words       = []
+dic_negative_words       = []
+
+dic_positive_words_affin = []
+dic_negative_words_affin = []
+dic_positive_value_affin = []
+dic_negative_value_affin = []
+
 dic_positive_hashtags  = []
 dic_negative_hashtags  = []
 dic_positive_emoticons = []
