@@ -28,7 +28,7 @@ MAX_NEGATIVES_TWEETS = 1400
 MAX_NEUTRAL_TWEETS   = 1400
 
 GENERATIONS = 40
-POPULATION  = 80
+POPULATION  = 90
 generations_unchanged = 0
 max_unchanged_generations = 10000
 
