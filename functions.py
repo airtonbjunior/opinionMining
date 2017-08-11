@@ -110,13 +110,15 @@ def getDictionary():
     with open(variables.DICTIONARY_AFFIN, 'r') as inF:
         for line in inF:
             if float(line.split("\t")[1].strip()) > 0:
-                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                    variables.dic_positive_words.append(line.split("\t")[0].strip())
-                    #print("POSITIVE " + line.split("\t")[0])
+                #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                variables.dic_positive_words_affin.append(line.split("\t")[0].strip())
+                variables.dic_positive_value_affin.append(float(line.split("\t")[1].strip()))
+                #print("POSITIVE AFFIN " + line.split("\t")[0] + " " + line.split("\t")[1].strip())
             else:
-                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                    variables.dic_negative_words.append(line.split("\t")[0].strip())
-                    #print("NEGATIVE " + line.split("\t")[0])
+                #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                variables.dic_negative_words_affin.append(line.split("\t")[0].strip())
+                variables.dic_negative_value_affin.append(float(line.split("\t")[1].strip()))
+                #print("NEGATIVE AFFIN " + line.split("\t")[0] + " " + line.split("\t")[1].strip())
 
 
 # SLANG
@@ -145,16 +147,16 @@ def getDictionary():
 #                    #print("NEGATIVE " + line.split("\t")[0])
     
 # Sentiment140 Lexicon
-    with open(variables.DICTIONARY_SENTIMENT140, 'r') as inF:
-        for line in inF:
-            if float(line.split("\t")[1].strip()) > 0:
-                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                    variables.dic_positive_words.append(line.split("\t")[0].strip())
-                    #print("POSITIVE " + line.split("\t")[0])
-            else:
-                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                    variables.dic_negative_words.append(line.split("\t")[0].strip())
-                    #print("NEGATIVE " + line.split("\t")[0])
+#    with open(variables.DICTIONARY_SENTIMENT140, 'r') as inF:
+#        for line in inF:
+#            if float(line.split("\t")[1].strip()) > 0:
+#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+#                    variables.dic_positive_words.append(line.split("\t")[0].strip())
+#                    #print("POSITIVE " + line.split("\t")[0])
+#            else:
+#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+#                    variables.dic_negative_words.append(line.split("\t")[0].strip())
+#                    #print("NEGATIVE " + line.split("\t")[0])
 
 
 
@@ -390,58 +392,107 @@ def positiveWordsQuantity(phrase):
     return positive_words    
 
 
-# Return the sum of the word polarities (positive[+1], negative[-1])
+# Return the sum of the word polarities
 def polaritySum(phrase):
     total_sum = 0
-    index = 0
+    index     = 0
+    avg_value = 0
 
     words = phrase.split()
     
     for word in words:
         word = word.lower().strip()
-
+    
         if word in variables.dic_positive_words:
-            if index > 0 and words[index-1] == "insidenoteinverterword":
-                total_sum -= 1
-            else:
-                total_sum += 1 
+            if word in variables.dic_positive_words_affin:
+                avg_value = (1 + variables.dic_positive_value_affin[variables.dic_positive_words_affin.index(word)]) / 2 # 1-> liu + value of affin
 
-            # Check inverter and boosters
+                #print("Find the word " + word + " on 2 dictionaries. On AFFIN the word have the value " + str(variables.dic_positive_value_affin[variables.dic_positive_words_affin.index(word)]))
+                #print("AVG value of words is " + str(avg_value))
 
-            # clean this code, made in didacts (but ugly) ways
-            if index > 0 and words[index-1] == "insidenoteboosterword":
-                if index > 1 and words[index-2] == "insidenoteinverterword":  # inverter + booster + word
-                    total_sum -= 3 # already sum 1 above
+                if index > 0 and words[index-1] == "insidenoteinverterword":
+                    total_sum -= avg_value
                 else:
-                    total_sum += 1
+                    total_sum += avg_value
 
-            if index < len(words)-1 and words[index+1] == "insidenoteboosterword":
-                total_sum += 1 # one more to the sum because of boost word
 
-            if index > 0 and words[index-1] == "insidenoteboosteruppercase":
-                total_sum += 1 # one more to the sum because of boost uppercase
+                if index > 0 and words[index-1] == "insidenoteboosterword":
+                    if index > 1 and words[index-2] == "insidenoteinverterword":  # inverter + booster + word
+                        total_sum -= (3 * avg_value) # already sum 1 above (1 to equal zero and 2 to duplicate the value)
+                    else:
+                        total_sum += avg_value
+
+                if index < len(words)-1 and words[index+1] == "insidenoteboosterword" and words[index-1] != "insidenoteboosterword":
+                    total_sum += avg_value # one more to the sum because of boost word
+
+                if index > 0 and words[index-1] == "insidenoteboosteruppercase":
+                    total_sum += avg_value # one more to the sum because of boost uppercase                        
+
+            # only on LIU
+            else:
+                if index > 0 and words[index-1] == "insidenoteinverterword":
+                    total_sum -= 1
+                else:
+                    total_sum += 1 
+
+                # clean this code, made in didacts (but ugly) ways
+                if index > 0 and words[index-1] == "insidenoteboosterword":
+                    if index > 1 and words[index-2] == "insidenoteinverterword":  # inverter + booster + word
+                        total_sum -= 3 # already sum 1 above
+                    else:
+                        total_sum += 1
+
+                if index < len(words)-1 and words[index+1] == "insidenoteboosterword":
+                    total_sum += 1 # one more to the sum because of boost word
+
+                if index > 0 and words[index-1] == "insidenoteboosteruppercase":
+                    total_sum += 1 # one more to the sum because of boost uppercase
 
 
         if word in variables.dic_negative_words:
-            if index > 0 and words[index-1] == "insidenoteinverterword":
-                total_sum += 1
-            else:
-                total_sum -= 1
+            if word in variables.dic_negative_words_affin:
+                avg_value = (-1 + variables.dic_negative_value_affin[variables.dic_negative_words_affin.index(word)]) / 2 # 1-> liu + value of affin
+                
+                #print("Find the word " + word + " on 2 dictionaries. On AFFIN the word have the value " + str(variables.dic_negative_value_affin[variables.dic_negative_words_affin.index(word)]))
+                #print("AVG value of words is " + str(avg_value))
 
-
-            # Check inverter and boosters
-
-            if index > 0 and words[index-1] == "insidenoteboosterword":
-                if index > 1 and words[index-2] == "insidenoteinverterword":  # inverter + booster + word
-                    total_sum += 3 # already minus 1 above
+                if index > 0 and words[index-1] == "insidenoteinverterword":
+                    total_sum -= avg_value
                 else:
+                    total_sum += avg_value
+
+
+                if index > 0 and words[index-1] == "insidenoteboosterword":
+                    if index > 1 and words[index-2] == "insidenoteinverterword":  # inverter + booster + word
+                        total_sum -= (3 * avg_value) # already sum 1 above (1 to equal zero and 2 to duplicate the value)
+                    else:
+                        total_sum += avg_value
+
+                if index < len(words)-1 and words[index+1] == "insidenoteboosterword" and words[index-1] != "insidenoteboosterword":
+                    total_sum += avg_value # one more to the sum because of boost word
+
+                if index > 0 and words[index-1] == "insidenoteboosteruppercase":
+                    total_sum += avg_value # one more to the sum because of boost uppercase   
+            else:
+                if index > 0 and words[index-1] == "insidenoteinverterword":
                     total_sum -= 1
+                else:
+                    total_sum += 1
 
-            if index < len(words)-1 and words[index+1] == "insidenoteboosterword":
-                total_sum -= 1 # one minus to the sum because of boost word
 
-            if index > 0 and words[index-1] == "insidenoteboosteruppercase":
-                total_sum -= 1 # one minus to the sum because of boost uppercase
+                # Check inverter and boosters
+
+                if index > 0 and words[index-1] == "insidenoteboosterword":
+                    if index > 1 and words[index-2] == "insidenoteinverterword":  # inverter + booster + word
+                        total_sum += 3 # already minus 1 above
+                    else:
+                        total_sum -= 1
+
+                if index < len(words)-1 and words[index+1] == "insidenoteboosterword":
+                    total_sum -= 1 # one minus to the sum because of boost word
+
+                if index > 0 and words[index-1] == "insidenoteboosteruppercase":
+                    total_sum -= 1 # one minus to the sum because of boost uppercase
 
         index += 1    
 

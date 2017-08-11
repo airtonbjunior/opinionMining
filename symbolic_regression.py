@@ -412,14 +412,12 @@ def main():
 if __name__ == "__main__":
     getDictionary()
     loadTrainTweets()
-    main()
 
-    #x = "They said they are not really hiring till next month or something ."
-    
-    #print(x)
-    #print(replaceNegatingWords(removeAllPonctuation(removeStopWords(removeStopWords(boostUpperCase(removeStopWords(boostUpperCase(removeStopWords(boostUpperCase(replaceNegatingWords(replaceBoosterWords(x))))))))))))
-    #print(str(polaritySum(replaceNegatingWords(removeAllPonctuation(removeStopWords(removeStopWords(boostUpperCase(removeStopWords(boostUpperCase(removeStopWords(boostUpperCase(replaceNegatingWords(replaceBoosterWords(x))))))))))))))
-    #print(str(if_then_else(hasEmoticons(x), emoticonsPolaritySum(removeLinks(x)), polaritySum(removeEllipsis(removeLinks(lemmingText(removeAllPonctuation(replaceNegatingWords(x)))))))))
+    #print(str(polaritySum(replaceBoosterWords(replaceNegatingWords("very hate very fantastic")))))
+    #print(str(polaritySum(replaceBoosterWords(replaceNegatingWords("very fantastic very hate very hate")))))
+    #print(str(polaritySum(replaceBoosterWords(replaceNegatingWords("love")))))
+
+    main()
 
     #print(len(variables.all_fitness_history))
     #print(variables.all_fitness_history)
