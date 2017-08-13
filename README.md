@@ -25,5 +25,6 @@ Automated creation of an Opinion Mining/Sentiment Analysis Classifier Model usin
 
 # Old repository
 * [Related Works](https://airtonbjunior.github.io/mestrado/sentiment-analysis/presentation/related-works.pdf)
+* [Paper](https://airtonbjunior.github.io/mestrado/computational-intelligence/final-project/article/main.pdf)
 * [Presentation](https://airtonbjunior.github.io/mestrado/sentiment-analysis/presentation/project-presentation.pdf)
 * [Closed issues](https://github.com/airtonbjunior/mestrado/issues?q=is%3Aissue+is%3Aclosed)
