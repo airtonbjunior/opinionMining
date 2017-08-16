@@ -40,8 +40,10 @@ if __name__ == "__main__":
         "polaritySum(removeLinks(replaceBoosterWords(removeEllipsis(replaceBoosterWords(removeLinks(removeStopWords(replaceNegatingWords(replaceBoosterWords(replaceBoosterWords(removeStopWords(replaceNegatingWords(replaceBoosterWords(replaceBoosterWords(removeAllPonctuation(replaceNegatingWords(x))))))))))))))))",
         "polaritySum(removeStopWords(replaceBoosterWords(removeStopWords(replaceBoosterWords(removeLinks(boostUpperCase(replaceBoosterWords(removeAllPonctuation(replaceNegatingWords(x))))))))))",
         "polaritySum(boostUpperCase(removeStopWords(removeAllPonctuation(replaceBoosterWords(removeAllPonctuation(removeAllPonctuation(removeLinks(removeAllPonctuation(removeLinks(removeAllPonctuation(removeAllPonctuation(removeEllipsis(replaceNegatingWords(removeLinks(x)))))))))))))))",
-    ]   "polaritySum(removeLinks(boostUpperCase(replaceBoosterWords(removeLinks(boostUpperCase(replaceBoosterWords(removeStopWords(removeEllipsis(replaceBoosterWords(removeStopWords(removeEllipsis(replaceBoosterWords(removeAllPonctuation(replaceNegatingWords(x)))))))))))))))"
-
+        "polaritySum(removeLinks(boostUpperCase(replaceBoosterWords(removeLinks(boostUpperCase(replaceBoosterWords(removeStopWords(removeEllipsis(replaceBoosterWords(removeStopWords(removeEllipsis(replaceBoosterWords(removeAllPonctuation(replaceNegatingWords(x)))))))))))))))",
+        "polaritySum(replaceBoosterWords(boostUpperCase(removeAllPonctuation(replaceBoosterWords(replaceNegatingWords(removeLinks(removeLinks(removeStopWords(replaceNegatingWords(replaceBoosterWords(replaceNegatingWords(removeAllPonctuation(x)))))))))))))"
+    ]
+    
     for function_to_evaluate in functions_to_evaluate:
         evaluateMessages("tweets2013", function_to_evaluate)
         evaluateMessages("tweets2014", function_to_evaluate)
