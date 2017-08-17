@@ -413,11 +413,13 @@ if __name__ == "__main__":
     getDictionary()
     loadTrainTweets()
 
-    #print(str(polaritySum(replaceBoosterWords(replaceNegatingWords("very hate very fantastic")))))
-    #print(str(polaritySum(replaceBoosterWords(replaceNegatingWords("very fantastic very hate very hate")))))
-    #print(str(polaritySum(replaceBoosterWords(replaceNegatingWords("love")))))
+    #print(replaceNegatingWords(replaceBoosterWords("so good")))
+    print(replaceNegatingWords(replaceBoosterWords("hate so much yes")))
 
-    main()
+    #print(str(polaritySum2(replaceNegatingWords(replaceBoosterWords("so good")))))
+    print(str(polaritySum2(replaceNegatingWords(replaceBoosterWords("hate so much yes")))))
+    
+    #main()
 
     #print(len(variables.all_fitness_history))
     #print(variables.all_fitness_history)
@@ -425,9 +427,9 @@ if __name__ == "__main__":
     # remove the 0's values to plot
     #plt.plot(list(filter(lambda a: a != 0, variables.all_fitness_history)))    
 
-    plt.plot(variables.best_fitness_per_generation_history)
-    plt.ylabel('f1')
-    plt.show()
+    #plt.plot(variables.best_fitness_per_generation_history)
+    #plt.ylabel('f1')
+    #plt.show()
 
 
 end = time.time()

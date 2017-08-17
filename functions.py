@@ -400,23 +400,61 @@ def positiveWordsQuantity(phrase):
 def polaritySum2(phrase):
     total_sum = 0
     dic_quantity = 0
+    index = 0
+    invert = False
+    booster = False
+    boosterAndInverter = False
 
+    phrase = phrase.strip()
     words = phrase.split()
 
     for word in words:
 
+        # Check booster and inverter words
+        if index > 0 and words[index-1] == "insidenoteboosterword" and words[index-2] == "insidenoteinverterword":
+            boosterAndInverter = True
+        elif (index > 0 and words[index-1] == "insidenoteboosterword") or (index < len(words) - 1 and words[index+1] == "insidenoteboosterword" and (words[index-1] != "insidenoteboosterword" or index == 0)):
+            booster = True      
+        elif index > 0 and words[index-1] == "insidenoteinverterword":
+            invert = True
+
+
         # LIU pos/neg words
         if variables.use_dic_liu:
             if word in variables.dic_positive_words:
+                if invert:
+                    total_sum -= 1
+                elif booster:
+                    total_sum += 2
+                elif boosterAndInverter:
+                    total_sum -= 2
+                else: 
+                    total_sum += 1
+
                 dic_quantity += 1
-                total_sum += 1
 
             elif word in variables.dic_negative_words:
+                if invert:
+                    total_sum += 1
+                elif booster:
+                    total_sum -= 2
+                elif boosterAndInverter:
+                    total_sum += 2
+                else: 
+                    total_sum -= 1
+
                 dic_quantity += 1
-                total_sum -= 1
+
+        # AFFIN
+        #if variables.use_dic_affin:
 
 
+        index += 1 # word of phrase
+        invert = False
+        booster = False
+        boosterAndInverter = False
     return total_sum
+
 
 # Return the sum of the word polarities
 def polaritySum(phrase):
@@ -542,6 +580,7 @@ def replaceNegatingWords(phrase):
 
 
 def replaceBoosterWords(phrase):
+    phrase = phrase + " "
     phrase = phrase.lower()
     
     if len(phrase.split()) > 0 and phrase.split()[0] in variables.dic_booster_words:
