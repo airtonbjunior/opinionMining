@@ -23,6 +23,15 @@ DICTIONARY_SENTIMENT140 = 'dictionaries/sentiment140_unigram.txt'
 
 FILE_RESULTS = 'test-results.txt'
 
+use_dic_liu          = False
+use_dic_sentiwordnet = False
+use_dic_affin        = False
+use_dic_vader        = False
+use_dic_sentiment140 = False
+use_dic_slang        = False
+use_dic_effect       = False
+
+
 MAX_POSITIVES_TWEETS = 1400
 MAX_NEGATIVES_TWEETS = 1400
 MAX_NEUTRAL_TWEETS   = 1400

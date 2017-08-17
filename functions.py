@@ -22,8 +22,8 @@ def getDictionary():
     print("[loading dictionary]")
 
 # BING LIU POSITIVE/NEGATIVE WORDS
-
     with open(variables.DICTIONARY_POSITIVE_WORDS, 'r') as inF:
+        variables.use_dic_liu = True
         for line in inF:
             variables.dic_positive_words.append(line.lower().strip())
 
@@ -59,6 +59,7 @@ def getDictionary():
 # SENTIWORDNET            
 
 #    with open(variables.DICTIONARY_SENTIWORDNET, 'r') as inF9:
+#        variables.use_dic_sentiwordnet = True
 #        for line9 in inF9:
 #            if float(line9.split("\t")[2]) > float(line9.split("\t")[3]): #positive greater than negative
 #                words = line9.split("\t")[4].lower().strip().split()
@@ -108,6 +109,7 @@ def getDictionary():
 
 # AFFIN 
     with open(variables.DICTIONARY_AFFIN, 'r') as inF:
+        variables.use_dic_affin = True
         for line in inF:
             if float(line.split("\t")[1].strip()) > 0:
                 #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
@@ -123,6 +125,7 @@ def getDictionary():
 
 # SLANG
 #    with open(variables.DICTIONARY_SLANG, 'r') as inF:
+#        variables.use_dic_slang = True
 #        for line in inF:    
 #            if float(line.split("\t")[1].strip()) > 0:
 #                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
@@ -136,6 +139,7 @@ def getDictionary():
 # Vader Lexicon
 
 #    with open(variables.DICTIONARY_VADER, 'r') as inF:
+#    variables.use_dic_vader = True
 #        for line in inF:
 #            if float(line.split("\t")[1].strip()) > 0:
 #                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
@@ -148,6 +152,7 @@ def getDictionary():
     
 # Sentiment140 Lexicon
 #    with open(variables.DICTIONARY_SENTIMENT140, 'r') as inF:
+#    variables.use_dic_sentiment140 = True
 #        for line in inF:
 #            if float(line.split("\t")[1].strip()) > 0:
 #                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
@@ -391,6 +396,27 @@ def positiveWordsQuantity(phrase):
     
     return positive_words    
 
+
+def polaritySum2(phrase):
+    total_sum = 0
+    dic_quantity = 0
+
+    words = phrase.split()
+
+    for word in words:
+
+        # LIU pos/neg words
+        if variables.use_dic_liu:
+            if word in variables.dic_positive_words:
+                dic_quantity += 1
+                total_sum += 1
+
+            elif word in variables.dic_negative_words:
+                dic_quantity += 1
+                total_sum -= 1
+
+
+    return total_sum
 
 # Return the sum of the word polarities
 def polaritySum(phrase):
