@@ -36,8 +36,8 @@ MAX_POSITIVES_TWEETS = 1400
 MAX_NEGATIVES_TWEETS = 1400
 MAX_NEUTRAL_TWEETS   = 1400
 
-GENERATIONS = 40
-POPULATION  = 90
+GENERATIONS = 20
+POPULATION  = 20
 generations_unchanged = 0
 max_unchanged_generations = 10000
 
@@ -52,6 +52,16 @@ dic_positive_words_affin = []
 dic_negative_words_affin = []
 dic_positive_value_affin = []
 dic_negative_value_affin = []
+
+dic_positive_words_vader = []
+dic_negative_words_vader = []
+dic_positive_value_vader = []
+dic_negative_value_vader = []
+
+dic_positive_words_s140 = []
+dic_negative_words_s140 = []
+dic_positive_value_s140 = []
+dic_negative_value_s140 = []
 
 dic_positive_hashtags  = []
 dic_negative_hashtags  = []

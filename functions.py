@@ -138,30 +138,38 @@ def getDictionary():
 
 # Vader Lexicon
 
-#    with open(variables.DICTIONARY_VADER, 'r') as inF:
-#    variables.use_dic_vader = True
-#        for line in inF:
-#            if float(line.split("\t")[1].strip()) > 0:
-#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-#                    variables.dic_positive_words.append(line.split("\t")[0].strip())
-#                    #print("POSITIVE " + line.split("\t")[0])
-#            else:
-#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-#                    variables.dic_negative_words.append(line.split("\t")[0].strip())
-#                    #print("NEGATIVE " + line.split("\t")[0])
+    with open(variables.DICTIONARY_VADER, 'r') as inF:
+        variables.use_dic_vader = True
+        for line in inF:
+            if float(line.split("\t")[1].strip()) > 0:
+                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                    variables.dic_positive_words_vader.append(line.split("\t")[0].strip())
+                    variables.dic_positive_value_vader.append(float(line.split("\t")[1].strip()))
+                    #variables.dic_positive_words.append(line.split("\t")[0].strip())
+                    #print("POSITIVE " + line.split("\t")[0])
+            else:
+                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                    variables.dic_negative_words_vader.append(line.split("\t")[0].strip())
+                    variables.dic_negative_value_vader.append(float(line.split("\t")[1].strip()))
+                    #variables.dic_negative_words.append(line.split("\t")[0].strip())
+                    #print("NEGATIVE " + line.split("\t")[0])
     
 # Sentiment140 Lexicon
-#    with open(variables.DICTIONARY_SENTIMENT140, 'r') as inF:
-#    variables.use_dic_sentiment140 = True
-#        for line in inF:
-#            if float(line.split("\t")[1].strip()) > 0:
-#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-#                    variables.dic_positive_words.append(line.split("\t")[0].strip())
-#                    #print("POSITIVE " + line.split("\t")[0])
-#            else:
-#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-#                    variables.dic_negative_words.append(line.split("\t")[0].strip())
-#                    #print("NEGATIVE " + line.split("\t")[0])
+    with open(variables.DICTIONARY_SENTIMENT140, 'r') as inF:
+        variables.use_dic_sentiment140 = True
+        for line in inF:
+            if float(line.split("\t")[1].strip()) > 0:
+                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                    variables.dic_positive_words_s140.append(line.split("\t")[0].strip())
+                    variables.dic_positive_value_s140.append(float(line.split("\t")[1].strip()))
+                    #variables.dic_positive_words.append(line.split("\t")[0].strip())
+                    #print("POSITIVE " + line.split("\t")[0])
+            else:
+                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                    variables.dic_negative_words_s140.append(line.split("\t")[0].strip())
+                    variables.dic_negative_value_s140.append(float(line.split("\t")[1].strip()))
+                    #variables.dic_negative_words.append(line.split("\t")[0].strip())
+                    #print("NEGATIVE " + line.split("\t")[0])
 
 
 
@@ -409,15 +417,13 @@ def polaritySum2(phrase):
     words = phrase.split()
 
     for word in words:
-
         # Check booster and inverter words
         if index > 0 and words[index-1] == "insidenoteboosterword" and words[index-2] == "insidenoteinverterword":
             boosterAndInverter = True
         elif (index > 0 and words[index-1] == "insidenoteboosterword") or (index < len(words) - 1 and words[index+1] == "insidenoteboosterword" and (words[index-1] != "insidenoteboosterword" or index == 0)):
-            booster = True      
+            booster = True
         elif index > 0 and words[index-1] == "insidenoteinverterword":
             invert = True
-
 
         # LIU pos/neg words
         if variables.use_dic_liu:
@@ -446,14 +452,78 @@ def polaritySum2(phrase):
                 dic_quantity += 1
 
         # AFFIN
-        #if variables.use_dic_affin:
+        if variables.use_dic_affin and 1 != 1:
+            if word in variables.dic_positive_words_affin:
+                if invert:
+                    total_sum -= variables.dic_positive_value_affin[variables.dic_positive_words_affin.index(word)]
+                elif booster:
+                    total_sum += 2 * variables.dic_positive_value_affin[variables.dic_positive_words_affin.index(word)]
+                else:
+                    total_sum += variables.dic_positive_value_affin[variables.dic_positive_words_affin.index(word)]
+                
+                dic_quantity += 1
+            elif word in variables.dic_negative_words_affin:
+                if invert:
+                    total_sum -= variables.dic_negative_value_affin[variables.dic_negative_words_affin.index(word)]
+                elif booster:
+                    total_sum += 2 * variables.dic_negative_value_affin[variables.dic_negative_words_affin.index(word)]
+                else:
+                    total_sum += variables.dic_negative_value_affin[variables.dic_negative_words_affin.index(word)]
+                
+                dic_quantity += 1
 
+        # VADER
+        if variables.use_dic_vader:
+            if word in variables.dic_positive_words_vader:
+                if invert:
+                    total_sum -= variables.dic_positive_value_vader[variables.dic_positive_words_vader.index(word)]
+                elif booster:
+                    total_sum += 2 * variables.dic_positive_value_vader[variables.dic_positive_words_vader.index(word)]
+                else:
+                    total_sum += variables.dic_positive_value_vader[variables.dic_positive_words_vader.index(word)]
+                
+                dic_quantity += 1
+            elif word in variables.dic_negative_words_vader:
+                if invert:
+                    total_sum -= variables.dic_negative_value_vader[variables.dic_negative_words_vader.index(word)]
+                elif booster:
+                    total_sum += 2 * variables.dic_negative_value_vader[variables.dic_negative_words_vader.index(word)]
+                else:
+                    total_sum += variables.dic_negative_value_vader[variables.dic_negative_words_vader.index(word)]
+                
+                dic_quantity += 1
+
+        # SENTIMENT140
+        if variables.use_dic_sentiment140:
+            if word in variables.dic_positive_words_s140:
+                if invert:
+                    total_sum -= variables.dic_positive_value_s140[variables.dic_positive_words_s140.index(word)]
+                elif booster:
+                    total_sum += 2 * variables.dic_positive_value_s140[variables.dic_positive_words_s140.index(word)]
+                else:
+                    total_sum += variables.dic_positive_value_s140[variables.dic_positive_words_s140.index(word)]
+                
+                dic_quantity += 1
+            elif word in variables.dic_negative_words_s140:
+                if invert:
+                    total_sum -= variables.dic_negative_value_s140[variables.dic_negative_words_s140.index(word)]
+                elif booster:
+                    total_sum += 2 * variables.dic_negative_value_s140[variables.dic_negative_words_s140.index(word)]
+                else:
+                    total_sum += variables.dic_negative_value_s140[variables.dic_negative_words_s140.index(word)]
+                
+                dic_quantity += 1
+        
 
         index += 1 # word of phrase
         invert = False
         booster = False
         boosterAndInverter = False
-    return total_sum
+    
+        if dic_quantity > 0:
+            return total_sum/dic_quantity
+        else:
+            return total_sum
 
 
 # Return the sum of the word polarities

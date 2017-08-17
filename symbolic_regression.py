@@ -44,7 +44,7 @@ pset.addPrimitive(positiveHashtags, [str], float)
 pset.addPrimitive(negativeHashtags, [str], float)
 pset.addPrimitive(positiveEmoticons, [str], float)
 pset.addPrimitive(negativeEmoticons, [str], float)
-pset.addPrimitive(polaritySum, [str], float)
+pset.addPrimitive(polaritySum2, [str], float)
 pset.addPrimitive(hashtagPolaritySum, [str], float)
 pset.addPrimitive(emoticonsPolaritySum, [str], float)
 pset.addPrimitive(positiveWordsQuantity, [str], float)
@@ -372,7 +372,7 @@ def main():
         # Statistics objetc (updated inplace)
         # HallOfFame object that contain the best individuals
         # Whether or not to log the statistics
-    pop, log = algorithms.eaSimple(pop, toolbox, 0.6, 0.1, variables.GENERATIONS, stats=False,
+    pop, log = algorithms.eaSimple(pop, toolbox, 0.6, 0.01, variables.GENERATIONS, stats=False,
                                    halloffame=hof, verbose=False)
 
 
@@ -414,12 +414,12 @@ if __name__ == "__main__":
     loadTrainTweets()
 
     #print(replaceNegatingWords(replaceBoosterWords("so good")))
-    print(replaceNegatingWords(replaceBoosterWords("hate so much yes")))
+    #print(replaceNegatingWords(replaceBoosterWords("hate so much yes")))
 
     #print(str(polaritySum2(replaceNegatingWords(replaceBoosterWords("so good")))))
-    print(str(polaritySum2(replaceNegatingWords(replaceBoosterWords("hate so much yes")))))
+    #print(str(polaritySum2(replaceNegatingWords(replaceBoosterWords("hate so much yes")))))
     
-    #main()
+    main()
 
     #print(len(variables.all_fitness_history))
     #print(variables.all_fitness_history)
@@ -427,9 +427,9 @@ if __name__ == "__main__":
     # remove the 0's values to plot
     #plt.plot(list(filter(lambda a: a != 0, variables.all_fitness_history)))    
 
-    #plt.plot(variables.best_fitness_per_generation_history)
-    #plt.ylabel('f1')
-    #plt.show()
+    plt.plot(variables.best_fitness_per_generation_history)
+    plt.ylabel('f1')
+    plt.show()
 
 
 end = time.time()
