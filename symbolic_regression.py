@@ -426,7 +426,7 @@ if __name__ == "__main__":
     #print(str(polaritySum2(replaceNegatingWords(replaceBoosterWords("so good")))))
     #print(str(polaritySum2(replaceNegatingWords(replaceBoosterWords("hate so much yes")))))
     
-    for i in range(20):
+    for i in range(30):
         main()
         
         iterate_count = 1
