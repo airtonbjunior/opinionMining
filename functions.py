@@ -57,7 +57,6 @@ def getDictionary():
             variables.dic_booster_words.append(line8.strip())
 
 # SENTIWORDNET            
-
 #    with open(variables.DICTIONARY_SENTIWORDNET, 'r') as inF9:
 #        variables.use_dic_sentiwordnet = True
 #        for line9 in inF9:
@@ -76,20 +75,19 @@ def getDictionary():
 #                        #print("NEGATIVE: " + word[:word.find("#")])
 
 # EFFECT LEXICON
+    with open('dictionaries/goldStandard.tff', 'r') as inF8:
+        for line8 in inF8:
+            if (line8.split()[1] == "+Effect"):
+                for word in line8.split()[2].split(","):
+                    if word not in variables.dic_negative_words and word not in variables.dic_positive_words:
+                        variables.dic_positive_words.append(word)
+                        #print("[positive word]: " + word)
 
-#    with open('dictionaries/goldStandard.tff', 'r') as inF8:
-#        for line8 in inF8:
-#            if (line8.split()[1] == "+Effect"):
-#                for word in line8.split()[2].split(","):
-#                    if word not in variables.dic_negative_words and word not in variables.dic_positive_words:
-#                        variables.dic_positive_words.append(word)
-#                        #print("[positive word]: " + word)
-#
-#            elif (line8.split()[1] == "-Effect"):
-#                for word in line8.split()[2].split(","):
-#                    if word not in variables.dic_negative_words and word not in variables.dic_positive_words:
-#                        variables.dic_negative_words.append(word) 
-#                        #print("[negative word]: " + word)
+            elif (line8.split()[1] == "-Effect"):
+                for word in line8.split()[2].split(","):
+                    if word not in variables.dic_negative_words and word not in variables.dic_positive_words:
+                        variables.dic_negative_words.append(word) 
+                        #print("[negative word]: " + word)
 
 # ENGLISH TWITTER LEXICON SEMEVAL 2015
 
@@ -124,20 +122,20 @@ def getDictionary():
 
 
 # SLANG
-#    with open(variables.DICTIONARY_SLANG, 'r') as inF:
-#        variables.use_dic_slang = True
-#        for line in inF:    
-#            if float(line.split("\t")[1].strip()) > 0:
-#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-#                    variables.dic_positive_words.append(line.split("\t")[0].strip())
-#
-#            elif float(line.split("\t")[1].strip()) < 0:
-#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-#                    variables.dic_negative_words.append(line.split("\t")[0].strip())
+    with codecs.open(variables.DICTIONARY_SLANG, "r", "latin-1") as inF:
+    #with open(variables.DICTIONARY_SLANG, 'r') as inF:
+        variables.use_dic_slang = True
+        for line in inF:    
+            if float(line.split("\t")[1].strip()) > 0:
+                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                    variables.dic_positive_words.append(line.split("\t")[0].strip())
+
+            elif float(line.split("\t")[1].strip()) < 0:
+                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                    variables.dic_negative_words.append(line.split("\t")[0].strip())
 
 
 # Vader Lexicon
-
     with open(variables.DICTIONARY_VADER, 'r') as inF:
         variables.use_dic_vader = True
         for line in inF:
@@ -452,7 +450,7 @@ def polaritySum2(phrase):
                 dic_quantity += 1
 
         # AFFIN
-        if variables.use_dic_affin and 1 != 1:
+        if variables.use_dic_affin:
             if word in variables.dic_positive_words_affin:
                 if invert:
                     total_sum -= variables.dic_positive_value_affin[variables.dic_positive_words_affin.index(word)]
@@ -521,7 +519,7 @@ def polaritySum2(phrase):
         boosterAndInverter = False
     
         if dic_quantity > 0:
-            return total_sum/dic_quantity
+            return round(total_sum/dic_quantity, 4)
         else:
             return total_sum
 

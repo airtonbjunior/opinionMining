@@ -372,7 +372,7 @@ def main():
         # Statistics objetc (updated inplace)
         # HallOfFame object that contain the best individuals
         # Whether or not to log the statistics
-    pop, log = algorithms.eaSimple(pop, toolbox, 0.6, 0.01, variables.GENERATIONS, stats=False,
+    pop, log = algorithms.eaSimple(pop, toolbox, variables.CROSSOVER, variables.MUTATION, variables.GENERATIONS, stats=False,
                                    halloffame=hof, verbose=False)
 
 
@@ -406,12 +406,19 @@ def main():
     print("[evaluation function consumed " + str(format(evaluation_acumulated_time, '.3g')) + " seconds]")
     print("[main function ended][" + str(format(end - start, '.3g')) + " seconds]\n")
     
+    variables.model_results.append(hof[0])
+
     return pop, log, hof
 
 
 if __name__ == "__main__":
+    iterate_count
+    generation_count
+    best_of_generation
+
     getDictionary()
     loadTrainTweets()
+
 
     #print(replaceNegatingWords(replaceBoosterWords("so good")))
     #print(replaceNegatingWords(replaceBoosterWords("hate so much yes")))
@@ -419,7 +426,52 @@ if __name__ == "__main__":
     #print(str(polaritySum2(replaceNegatingWords(replaceBoosterWords("so good")))))
     #print(str(polaritySum2(replaceNegatingWords(replaceBoosterWords("hate so much yes")))))
     
-    main()
+    for i in range(20):
+        main()
+        
+        iterate_count = 1
+        generation_count = 1
+        best_of_generation = 0
+
+        variables.fitness_positive = 0
+        variables.fitness_negative = 0
+        variables.fitness_neutral  = 0
+
+        variables.generations_unchanged = 0
+
+        variables.best_fitness = 0
+        variables.best_fitness_history  = []
+        variables.best_fitness_per_generation_history = []
+        variables.all_fitness_history   = []
+
+        variables.best_accuracy = 0
+
+        variables.best_precision_positive = 0
+        variables.best_precision_negative = 0
+        variables.best_precision_neutral  = 0
+        variables.best_precision_avg      = 0
+
+        variables.best_recall_positive = 0
+        variables.best_recall_negative = 0
+        variables.best_recall_neutral  = 0
+        variables.best_recall_avg      = 0
+
+        variables.best_f1_positive = 0
+        variables.best_f1_negative = 0
+        variables.best_f1_neutral  = 0
+        variables.best_f1_avg      = 0
+        variables.best_f1_positive_negative_avg = 0
+
+        variables.best_precision_avg_function = ""
+        variables.best_recall_avg_function    = ""
+        variables.best_f1_avg_function        = ""
+
+
+
+    with open(variables.FILE_RESULTS_30, 'a') as f:
+        f.write("[PARAMS]: " + str(variables.CROSSOVER) + " crossover, " + str(variables.MUTATION) + " mutation\n\n")
+        for i in variables.model_results:
+            f.write(str(i) + "\n")
 
     #print(len(variables.all_fitness_history))
     #print(variables.all_fitness_history)

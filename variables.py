@@ -22,6 +22,9 @@ DICTIONARY_VADER = 'dictionaries/vaderLexicon.txt'
 DICTIONARY_SENTIMENT140 = 'dictionaries/sentiment140_unigram.txt'
 
 FILE_RESULTS = 'test-results.txt'
+FILE_RESULTS_30 = 'test-results-30.txt'
+
+model_results = []
 
 use_dic_liu          = False
 use_dic_sentiwordnet = False
@@ -36,8 +39,10 @@ MAX_POSITIVES_TWEETS = 1400
 MAX_NEGATIVES_TWEETS = 1400
 MAX_NEUTRAL_TWEETS   = 1400
 
-GENERATIONS = 20
-POPULATION  = 20
+CROSSOVER = 0.6
+MUTATION = 0.1
+GENERATIONS = 25
+POPULATION  = 25
 generations_unchanged = 0
 max_unchanged_generations = 10000
 
