@@ -347,7 +347,7 @@ def sin(par):
 def protectedDiv(left, right):
     try:
         return left / right
-    except ZeroDivisionError:
+    except:
         return 1
 
 
@@ -787,11 +787,16 @@ def removeStopWords(phrase):
 def stemmingText(phrase):
     words = phrase.split()
 
+    if len(words) > 0 and words[len(words)-1] == "insidenotestemmedphrase":
+        return phrase
+
     stemmed_phrase = ""
 
     #if not variables.stem_function_used:
     for word in words:
         stemmed_phrase += stem(word) + " "               
+
+    stemmed_phrase += "insidenotestemmedphrase"
 
     #variables.stem_function_used = True
     return stemmed_phrase.strip()
@@ -801,11 +806,16 @@ def lemmingText(phrase):
     lemmatizer = WordNetLemmatizer()
     words = phrase.split()
 
+    if len(words) > 0 and words[len(words)-1] == "insidenotelemmatizedphrase":
+        return phrase
+
     lemmed_phrase = ""
 
     for word in words:
         # I'm always considering that the word is a verb
         lemmed_phrase += lemmatizer.lemmatize(word, 'v') + " "               
+
+    lemmed_phrase += "insidenotelemmatizedphrase"
 
     return lemmed_phrase.strip()
 
@@ -935,7 +945,15 @@ def evaluateMessages(base, model):
         message = "'" + message + "'"
 
         model_analysis = model.replace("(x)", "(" + message + ")")
-        result = eval(model_analysis)
+        
+        if not len(message) > 0:
+            continue
+
+        try:
+            result = float(eval(model_analysis))
+        except:
+            print("\n\n[WARNING] eval(model_analysis) exception for the message: " + message + "\n\n")
+            continue
 
         if messages_score[index] > 0:
             if result > 0:

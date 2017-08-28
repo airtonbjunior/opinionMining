@@ -22,7 +22,7 @@ DICTIONARY_VADER = 'dictionaries/vaderLexicon.txt'
 DICTIONARY_SENTIMENT140 = 'dictionaries/sentiment140_unigram.txt'
 
 FILE_RESULTS = 'test-results.txt'
-FILE_RESULTS_30 = 'test-results-30.txt'
+FILE_RESULTS_30 = 'test-results-30-nostemnolemma.txt'
 
 model_results = []
 
@@ -39,8 +39,8 @@ MAX_POSITIVES_TWEETS = 1400
 MAX_NEGATIVES_TWEETS = 1400
 MAX_NEUTRAL_TWEETS   = 1400
 
-CROSSOVER = 0.6
-MUTATION = 0.3
+CROSSOVER = 0.7
+MUTATION = 0.8
 GENERATIONS = 25
 POPULATION  = 25
 generations_unchanged = 0

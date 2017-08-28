@@ -55,7 +55,7 @@ pset.addPrimitive(hasEmoticons, [str], bool)
 
 pset.addPrimitive(if_then_else, [bool, float, float], float)
 
-pset.addPrimitive(stemmingText, [str], str)
+#pset.addPrimitive(stemmingText, [str], str)
 pset.addPrimitive(removeStopWords, [str], str)
 pset.addPrimitive(removeLinks, [str], str)
 pset.addPrimitive(removeEllipsis, [str], str)
@@ -419,16 +419,15 @@ if __name__ == "__main__":
     getDictionary()
     loadTrainTweets()
 
-
-    #print(replaceNegatingWords(replaceBoosterWords("so good")))
-    #print(replaceNegatingWords(replaceBoosterWords("hate so much yes")))
-
-    #print(str(polaritySum2(replaceNegatingWords(replaceBoosterWords("so good")))))
-    #print(str(polaritySum2(replaceNegatingWords(replaceBoosterWords("hate so much yes")))))
+    with open(variables.FILE_RESULTS_30, 'a') as f:
+        f.write("[PARAMS]: " + str(variables.CROSSOVER) + " crossover, " + str(variables.MUTATION) + " mutation\n\n")
     
     for i in range(30):
         main()
         
+        with open(variables.FILE_RESULTS_30, 'a') as f:
+            f.write(str(variables.model_results[len(variables.model_results) - 1]) + "\n")
+
         iterate_count = 1
         generation_count = 1
         best_of_generation = 0
@@ -467,21 +466,15 @@ if __name__ == "__main__":
         variables.best_f1_avg_function        = ""
 
 
-
-    with open(variables.FILE_RESULTS_30, 'a') as f:
-        f.write("[PARAMS]: " + str(variables.CROSSOVER) + " crossover, " + str(variables.MUTATION) + " mutation\n\n")
-        for i in variables.model_results:
-            f.write(str(i) + "\n")
-
     #print(len(variables.all_fitness_history))
     #print(variables.all_fitness_history)
     
     # remove the 0's values to plot
     #plt.plot(list(filter(lambda a: a != 0, variables.all_fitness_history)))    
 
-    plt.plot(variables.best_fitness_per_generation_history)
-    plt.ylabel('f1')
-    plt.show()
+    #plt.plot(variables.best_fitness_per_generation_history)
+    #plt.ylabel('f1')
+    #plt.show()
 
 
 end = time.time()
