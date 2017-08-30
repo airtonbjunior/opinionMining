@@ -153,21 +153,21 @@ def getDictionary():
                     #print("NEGATIVE " + line.split("\t")[0])
     
 # Sentiment140 Lexicon
-    with open(variables.DICTIONARY_SENTIMENT140, 'r') as inF:
-        variables.use_dic_sentiment140 = True
-        for line in inF:
-            if float(line.split("\t")[1].strip()) > 0:
-                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                    variables.dic_positive_words_s140.append(line.split("\t")[0].strip())
-                    variables.dic_positive_value_s140.append(float(line.split("\t")[1].strip()))
-                    #variables.dic_positive_words.append(line.split("\t")[0].strip())
-                    #print("POSITIVE " + line.split("\t")[0])
-            else:
-                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                    variables.dic_negative_words_s140.append(line.split("\t")[0].strip())
-                    variables.dic_negative_value_s140.append(float(line.split("\t")[1].strip()))
-                    #variables.dic_negative_words.append(line.split("\t")[0].strip())
-                    #print("NEGATIVE " + line.split("\t")[0])
+#    with open(variables.DICTIONARY_SENTIMENT140, 'r') as inF:
+#        variables.use_dic_sentiment140 = True
+#        for line in inF:
+#            if float(line.split("\t")[1].strip()) > 0:
+#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+#                    variables.dic_positive_words_s140.append(line.split("\t")[0].strip())
+#                    variables.dic_positive_value_s140.append(float(line.split("\t")[1].strip()))
+#                    #variables.dic_positive_words.append(line.split("\t")[0].strip())
+#                    #print("POSITIVE " + line.split("\t")[0])
+#            else:
+#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+#                    variables.dic_negative_words_s140.append(line.split("\t")[0].strip())
+#                    variables.dic_negative_value_s140.append(float(line.split("\t")[1].strip()))
+#                    #variables.dic_negative_words.append(line.split("\t")[0].strip())
+#                    #print("NEGATIVE " + line.split("\t")[0])
 
 
 
