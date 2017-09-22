@@ -41,7 +41,7 @@ MAX_NEUTRAL_TWEETS   = 1400
 
 CROSSOVER = 0.9
 MUTATION = 0.8
-GENERATIONS = 100
+GENERATIONS = 150
 POPULATION  = 50
 generations_unchanged = 0
 max_unchanged_generations = 10000
