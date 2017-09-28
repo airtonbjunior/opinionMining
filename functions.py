@@ -75,19 +75,19 @@ def getDictionary():
 #                        #print("NEGATIVE: " + word[:word.find("#")])
 
 # EFFECT LEXICON
-    with open('dictionaries/goldStandard.tff', 'r') as inF8:
-        for line8 in inF8:
-            if (line8.split()[1] == "+Effect"):
-                for word in line8.split()[2].split(","):
-                    if word not in variables.dic_negative_words and word not in variables.dic_positive_words:
-                        variables.dic_positive_words.append(word)
-                        #print("[positive word]: " + word)
-
-            elif (line8.split()[1] == "-Effect"):
-                for word in line8.split()[2].split(","):
-                    if word not in variables.dic_negative_words and word not in variables.dic_positive_words:
-                        variables.dic_negative_words.append(word) 
-                        #print("[negative word]: " + word)
+#    with open('dictionaries/goldStandard.tff', 'r') as inF8:
+#        for line8 in inF8:
+#            if (line8.split()[1] == "+Effect"):
+#                for word in line8.split()[2].split(","):
+#                    if word not in variables.dic_negative_words and word not in variables.dic_positive_words:
+#                        variables.dic_positive_words.append(word)
+#                        #print("[positive word]: " + word)
+#
+#            elif (line8.split()[1] == "-Effect"):
+#                for word in line8.split()[2].split(","):
+#                    if word not in variables.dic_negative_words and word not in variables.dic_positive_words:
+#                        variables.dic_negative_words.append(word) 
+#                        #print("[negative word]: " + word)
 
 # ENGLISH TWITTER LEXICON SEMEVAL 2015
 
@@ -106,51 +106,51 @@ def getDictionary():
 #                    variables.dic_negative_words.append(line7.split("\t")[1].strip())
 
 # AFFIN 
-    with open(variables.DICTIONARY_AFFIN, 'r') as inF:
-        variables.use_dic_affin = True
-        for line in inF:
-            if float(line.split("\t")[1].strip()) > 0:
-                #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                variables.dic_positive_words_affin.append(line.split("\t")[0].strip())
-                variables.dic_positive_value_affin.append(float(line.split("\t")[1].strip()))
-                #print("POSITIVE AFFIN " + line.split("\t")[0] + " " + line.split("\t")[1].strip())
-            else:
-                #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                variables.dic_negative_words_affin.append(line.split("\t")[0].strip())
-                variables.dic_negative_value_affin.append(float(line.split("\t")[1].strip()))
-                #print("NEGATIVE AFFIN " + line.split("\t")[0] + " " + line.split("\t")[1].strip())
+#    with open(variables.DICTIONARY_AFFIN, 'r') as inF:
+#        variables.use_dic_affin = True
+#        for line in inF:
+#            if float(line.split("\t")[1].strip()) > 0:
+#                #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+#                variables.dic_positive_words_affin.append(line.split("\t")[0].strip())
+#                variables.dic_positive_value_affin.append(float(line.split("\t")[1].strip()))
+#                #print("POSITIVE AFFIN " + line.split("\t")[0] + " " + line.split("\t")[1].strip())
+#            else:
+#                #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+#                variables.dic_negative_words_affin.append(line.split("\t")[0].strip())
+#                variables.dic_negative_value_affin.append(float(line.split("\t")[1].strip()))
+#                #print("NEGATIVE AFFIN " + line.split("\t")[0] + " " + line.split("\t")[1].strip())
 
 
 # SLANG
-    with codecs.open(variables.DICTIONARY_SLANG, "r", "latin-1") as inF:
-    #with open(variables.DICTIONARY_SLANG, 'r') as inF:
-        variables.use_dic_slang = True
-        for line in inF:    
-            if float(line.split("\t")[1].strip()) > 0:
-                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                    variables.dic_positive_words.append(line.split("\t")[0].strip())
-
-            elif float(line.split("\t")[1].strip()) < 0:
-                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                    variables.dic_negative_words.append(line.split("\t")[0].strip())
+#    with codecs.open(variables.DICTIONARY_SLANG, "r", "latin-1") as inF:
+#    #with open(variables.DICTIONARY_SLANG, 'r') as inF:
+#        variables.use_dic_slang = True
+#        for line in inF:    
+#            if float(line.split("\t")[1].strip()) > 0:
+#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+#                    variables.dic_positive_words.append(line.split("\t")[0].strip())
+#
+#            elif float(line.split("\t")[1].strip()) < 0:
+#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+#                    variables.dic_negative_words.append(line.split("\t")[0].strip())
 
 
 # Vader Lexicon
-    with open(variables.DICTIONARY_VADER, 'r') as inF:
-        variables.use_dic_vader = True
-        for line in inF:
-            if float(line.split("\t")[1].strip()) > 0:
-                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                    variables.dic_positive_words_vader.append(line.split("\t")[0].strip())
-                    variables.dic_positive_value_vader.append(float(line.split("\t")[1].strip()))
-                    #variables.dic_positive_words.append(line.split("\t")[0].strip())
-                    #print("POSITIVE " + line.split("\t")[0])
-            else:
-                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                    variables.dic_negative_words_vader.append(line.split("\t")[0].strip())
-                    variables.dic_negative_value_vader.append(float(line.split("\t")[1].strip()))
-                    #variables.dic_negative_words.append(line.split("\t")[0].strip())
-                    #print("NEGATIVE " + line.split("\t")[0])
+#    with open(variables.DICTIONARY_VADER, 'r') as inF:
+#        variables.use_dic_vader = True
+#        for line in inF:
+#            if float(line.split("\t")[1].strip()) > 0:
+#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+#                    variables.dic_positive_words_vader.append(line.split("\t")[0].strip())
+#                    variables.dic_positive_value_vader.append(float(line.split("\t")[1].strip()))
+#                    #variables.dic_positive_words.append(line.split("\t")[0].strip())
+#                    #print("POSITIVE " + line.split("\t")[0])
+#            else:
+#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+#                    variables.dic_negative_words_vader.append(line.split("\t")[0].strip())
+#                    variables.dic_negative_value_vader.append(float(line.split("\t")[1].strip()))
+#                    #variables.dic_negative_words.append(line.split("\t")[0].strip())
+#                    #print("NEGATIVE " + line.split("\t")[0])
     
 # Sentiment140 Lexicon
 #    with open(variables.DICTIONARY_SENTIMENT140, 'r') as inF:
