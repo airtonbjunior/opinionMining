@@ -46,6 +46,8 @@ POPULATION  = 50
 generations_unchanged = 0
 max_unchanged_generations = 10000
 
+TOTAL_MODELS = 30
+
 tweets_semeval       = []
 tweets_semeval_score = []
 tweet_semeval_index  = 0

@@ -21,6 +21,7 @@ import matplotlib.pyplot as plt
 
 import variables
 from functions import *
+from sendMail import *
 
 evaluation_acumulated_time = 0
 
@@ -422,11 +423,18 @@ if __name__ == "__main__":
     with open(variables.FILE_RESULTS_30, 'a') as f:
         f.write("[PARAMS]: " + str(variables.CROSSOVER) + " crossover, " + str(variables.MUTATION) + " mutation\n\n")
     
-    for i in range(30):
+    for i in range(variables.TOTAL_MODELS):
         main()
         
         with open(variables.FILE_RESULTS_30, 'a') as f:
             f.write(str(variables.model_results[len(variables.model_results) - 1]) + "\n")
+
+        parameters = str(variables.CROSSOVER) + " crossover, " + str(variables.MUTATION) + " mutation"
+        mail_content = "New Model Created: \nParameters: " + parameters + "\n\n" + str(variables.model_results[len(variables.model_results) - 1]) + "\n"
+        mail_content += "\n\nTotal tweets: " + str(variables.positive_tweets + variables.negative_tweets + variables.neutral_tweets) + " [" + str(variables.positive_tweets) + " positives, " + str(variables.negative_tweets) + " negatives and " + str(variables.neutral_tweets) + " neutrals]\n"
+        mail_content += "Fitness (F1 pos and neg): " + str(variables.best_fitness) + " [" + str(variables.fitness_positive + variables.fitness_negative + variables.fitness_neutral) + " correct evaluations] ["+ str(variables.fitness_positive) + " positives, " + str(variables.fitness_negative) + " negatives and " + str(variables.fitness_neutral) + " neutrals]\n"
+
+        send_mail(i+1, variables.TOTAL_MODELS, mail_content)
 
         iterate_count = 1
         generation_count = 1
