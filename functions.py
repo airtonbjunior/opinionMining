@@ -661,7 +661,6 @@ def replaceBoosterWords(phrase):
     phrase = phrase.lower()
 
     if(phrase.split()[-1] == "alreadyboosteredbefore"):
-        print("alreadyboosteredbefore")
         return phrase
     
     if len(phrase.split()) > 0 and phrase.split()[0] in variables.dic_booster_words:
