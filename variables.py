@@ -21,9 +21,6 @@ DICTIONARY_SLANG = 'dictionaries/slangSD.txt'
 DICTIONARY_VADER = 'dictionaries/vaderLexicon.txt'
 DICTIONARY_SENTIMENT140 = 'dictionaries/sentiment140_unigram.txt'
 
-FILE_RESULTS = 'test-results.txt'
-FILE_RESULTS_30 = 'test-results-30_50pop100generations.txt'
-
 model_results = []
 
 use_dic_liu          = False
@@ -47,6 +44,9 @@ generations_unchanged = 0
 max_unchanged_generations = 10000
 
 TOTAL_MODELS = 30
+
+FILE_RESULTS = 'test-results.txt'
+FILE_RESULTS_30 = 'test-results-' + str(TOTAL_MODELS) + '_' + str(POPULATION) + 'pop'+ str(GENERATIONS) +'gen.txt'
 
 tweets_semeval       = []
 tweets_semeval_score = []
