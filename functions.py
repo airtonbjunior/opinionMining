@@ -518,10 +518,13 @@ def polaritySum2(phrase):
         booster = False
         boosterAndInverter = False
     
-        if dic_quantity > 0:
-            return round(total_sum/dic_quantity, 4)
-        else:
-            return total_sum
+
+    return total_sum # change this when i have more dictionaries
+
+        #if dic_quantity > 1:
+            #return round(total_sum/dic_quantity, 4)
+        #else:
+            #return total_sum
 
 
 # Return the sum of the word polarities
@@ -633,23 +636,33 @@ def polaritySum(phrase):
 
 def replaceNegatingWords(phrase):
     phrase = phrase.lower()
-    
-    if len(phrase.split()) > 0 and phrase.split()[0] in variables.dic_negation_words:
-        phrase_list = phrase.split()
+
+    splitted_phrase = phrase.split()
+
+    if(splitted_phrase[-1] == "alreadynegatedbefore"):
+        return phrase  
+
+    if len(splitted_phrase) > 0 and splitted_phrase[0] in variables.dic_negation_words:
+        phrase_list = splitted_phrase
         phrase_list[0] = "insidenoteinverterword"
         phrase = ' '.join(phrase_list)
 
     for negation_word in variables.dic_negation_words:
         negation_word = " " + negation_word + " "
-        if phrase.lower().find(negation_word.lower()) > -1:
+        if negation_word in phrase:
+        #if phrase.find(negation_word) > -1:
             phrase = phrase.replace(negation_word, " insidenoteinverterword ")
 
-    return phrase 
+    return phrase + " alreadynegatedbefore"
 
 
 def replaceBoosterWords(phrase):
     phrase = phrase + " "
     phrase = phrase.lower()
+
+    if(phrase.split()[-1] == "alreadyboosteredbefore"):
+        print("alreadyboosteredbefore")
+        return phrase
     
     if len(phrase.split()) > 0 and phrase.split()[0] in variables.dic_booster_words:
         phrase_list = phrase.split()
@@ -658,13 +671,16 @@ def replaceBoosterWords(phrase):
 
     for booster_word in variables.dic_booster_words:
         booster_word = " " + booster_word + " "
-        if phrase.lower().find(booster_word.lower()) > -1:
+        if booster_word in phrase: 
+        #if phrase.find(booster_word) > -1:
+            #print("has booster " + booster_word)
             phrase = phrase.replace(booster_word, " insidenoteboosterword ")
 
-        elif phrase.lower().find(booster_word.lower()[-1]) > -1:
+        elif booster_word[-1] in phrase:
+        #elif phrase.find(booster_word[-1]) > -1:
             phrase = phrase.replace(booster_word, " insidenoteboosterword ")
 
-    return phrase 
+    return phrase + " alreadyboosteredbefore" 
 
 
 def boostUpperCase(phrase):

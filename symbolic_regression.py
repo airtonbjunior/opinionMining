@@ -474,7 +474,6 @@ if __name__ == "__main__":
         variables.best_recall_avg_function    = ""
         variables.best_f1_avg_function        = ""
 
-
     #print(len(variables.all_fitness_history))
     #print(variables.all_fitness_history)
     
