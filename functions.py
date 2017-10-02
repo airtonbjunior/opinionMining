@@ -871,9 +871,8 @@ def removeAllPonctuation(phrase):
 
     #return phrase
 
-### End functions (improve this - import the functions of the other file)
 
-
+# Evaluate the test messages using the model
 def evaluateMessages(base, model):
     # parameters to calc the metrics
     true_positive  = 0
@@ -1116,7 +1115,6 @@ def resultsAnalysis():
                     sarcasm_list.append(value)                     
                 elif base == "all":
                     allB_list.append(value)
-                    
 
     with open(variables.FILE_RESULTS, 'a') as f:
         f.write("\n\n##Statistics##\n\n")
@@ -1142,6 +1140,13 @@ def resultsAnalysis():
         f.write("\nLiveJournal " + str(liveJ_list))
         f.write("\nSarcasm " + str(sarcasm_list))
         f.write("\nAll " + str(allB_list))
+        f.write("\n\nStandard deviation")
+        f.write("\nStandard Deviation Tweets2013\t" + str(calcStdDeviation(calcVariance(t2k13_list, models))))
+        f.write("\nStandard Deviation Tweets2014\t" + str(calcStdDeviation(calcVariance(t2k14_list, models))))
+        f.write("\nStandard Deviation SMS\t" + str(calcStdDeviation(calcVariance(sms_list, models))))
+        f.write("\nStandard Deviation Live Journal\t" + str(calcStdDeviation(calcVariance(liveJ_list, models))))
+        f.write("\nStandard Deviation Sarcasm\t" + str(calcStdDeviation(calcVariance(sarcasm_list, models))))
+        f.write("\nStandard Deviation All\t" + str(calcStdDeviation(calcVariance(allB_list, models))))
 
     databases = ["tweets2013","tweets2014","sms","livejournal","sarcasm"]
 
@@ -1185,3 +1190,17 @@ def resultsAnalysis():
 
     plt.show()
 
+
+def calcVariance(base, total_models):
+    diffs = []
+    
+    avg = sum(base) / total_models
+    
+    for base_value in base:
+        diffs.append(math.pow(base_value - avg, 2))
+
+    variance = sum(diffs) / total_models
+    return variance
+
+def calcStdDeviation(variance):
+    return math.sqrt(variance)
