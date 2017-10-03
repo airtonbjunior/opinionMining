@@ -1,0 +1,3 @@
+[PARAMS]: 0.9 crossover, 0.1 mutation, 50 population, 400 generation
+
+polaritySum2(removeLinks(removeStopWords(removeLinks(removeStopWords(replaceBoosterWords(replaceBoosterWords(removeAllPonctuation(removeStopWords(replaceNegatingWords(boostUpperCase(replaceBoosterWords(replaceNegatingWords(boostUpperCase(replaceNegatingWords(x)))))))))))))))

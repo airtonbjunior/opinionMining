@@ -1,0 +1,12 @@
+[PARAMS]: 0.9 crossover, 0.1 mutation, 50 population, 300 generation
+
+polaritySum2(removeStopWords(replaceBoosterWords(removeLinks(removeStopWords(replaceBoosterWords(removeAllPonctuation(boostUpperCase(replaceNegatingWords(replaceNegatingWords(x))))))))))
+polaritySum2(replaceBoosterWords(removeAllPonctuation(removeAllPonctuation(removeStopWords(boostUpperCase(removeLinks(removeStopWords(removeLinks(removeStopWords(replaceBoosterWords(removeEllipsis(removeAllPonctuation(boostUpperCase(replaceNegatingWords(x)))))))))))))))
+polaritySum2(removeAllPonctuation(removeAllPonctuation(removeAllPonctuation(removeStopWords(removeAllPonctuation(replaceBoosterWords(removeAllPonctuation(boostUpperCase(boostUpperCase(removeLinks(boostUpperCase(boostUpperCase(removeLinks(boostUpperCase(replaceNegatingWords(x))))))))))))))))
+polaritySum2(removeStopWords(replaceBoosterWords(replaceBoosterWords(removeAllPonctuation(replaceNegatingWords(replaceBoosterWords(removeLinks(boostUpperCase(removeLinks(boostUpperCase(removeLinks(replaceNegatingWords(x)))))))))))))
+polaritySum2(removeStopWords(removeStopWords(removeLinks(removeEllipsis(replaceBoosterWords(removeEllipsis(removeEllipsis(replaceNegatingWords(removeAllPonctuation(boostUpperCase(boostUpperCase(replaceNegatingWords(removeLinks(x))))))))))))))
+polaritySum2(removeLinks(replaceBoosterWords(replaceBoosterWords(removeStopWords(replaceBoosterWords(removeAllPonctuation(removeAllPonctuation(boostUpperCase(replaceNegatingWords(removeLinks(x)))))))))))
+polaritySum2(replaceBoosterWords(removeAllPonctuation(replaceNegatingWords(replaceNegatingWords(removeStopWords(replaceBoosterWords(boostUpperCase(replaceNegatingWords(removeLinks(x))))))))))
+polaritySum2(removeAllPonctuation(removeStopWords(removeStopWords(replaceBoosterWords(removeAllPonctuation(replaceNegatingWords(boostUpperCase(replaceNegatingWords(replaceNegatingWords(replaceNegatingWords(removeLinks(x))))))))))))
+add(emoticonsPolaritySum(boostUpperCase(boostUpperCase(removeEllipsis(x)))), polaritySum2(removeAllPonctuation(replaceBoosterWords(removeStopWords(replaceBoosterWords(boostUpperCase(replaceNegatingWords(removeStopWords(replaceBoosterWords(boostUpperCase(replaceNegatingWords(x))))))))))))
+sub(polaritySum2(removeAllPonctuation(removeStopWords(removeAllPonctuation(removeStopWords(replaceBoosterWords(removeStopWords(removeLinks(removeStopWords(replaceBoosterWords(boostUpperCase(replaceBoosterWords(boostUpperCase(replaceNegatingWords(x)))))))))))))), negativeWordsQuantity(removeEllipsis(removeLinks(removeAllPonctuation(removeEllipsis(x))))))
