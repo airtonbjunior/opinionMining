@@ -1,4 +1,3 @@
-
 [Model]	polaritySum2(removeStopWords(replaceBoosterWords(removeLinks(removeStopWords(replaceBoosterWords(removeAllPonctuation(boostUpperCase(replaceNegatingWords(replaceNegatingWords(x))))))))))
 tweets2013	0.5609
 tweets2014	0.5463

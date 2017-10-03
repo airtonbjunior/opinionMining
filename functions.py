@@ -1082,9 +1082,10 @@ def evaluateMessages(base, model):
     if variables.save_file_results:
         with open(variables.FILE_RESULTS, 'a') as f:
             if base == "tweets2013":
-                f.write("\n[Model]\t" + model + "\n")
+                f.write("[Model]\t" + model + "\n")
             f.write(base + "\t" + str(round(f1_positive_negative_avg, 4)) + "\n")
-        
+            if base == "all":
+                f.write("\n")
 
 def resultsAnalysis():
     models = 0
@@ -1188,7 +1189,7 @@ def resultsAnalysis():
     autolabel(rects4)
     autolabel(rects5)
 
-    plt.show()
+    #plt.show()
 
 
 def calcVariance(base, total_models):

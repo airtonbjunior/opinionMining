@@ -4,6 +4,7 @@
 # Computer Science Master's Degree
 
 from nltk.corpus import stopwords
+from datetime import datetime
 
 SEMEVAL_TRAIN_FILE = 'datasets/twitter-train-cleansed-B.txt'
 SEMEVAL_TEST_FILE  = 'datasets/test/SemEval2014-task9-test-B-all-tweets.txt'
@@ -45,8 +46,8 @@ max_unchanged_generations = 10000
 
 TOTAL_MODELS = 30
 
-FILE_RESULTS = 'test-results.txt'
-FILE_RESULTS_30 = 'test-results-' + str(TOTAL_MODELS) + '_' + str(POPULATION) + 'pop'+ str(GENERATIONS) +'gen.txt'
+FILE_RESULTS = 'test_results-'+ str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+TRAIN_RESULTS = 'train-' + str(TOTAL_MODELS) + 'models_' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 
 tweets_semeval       = []
 tweets_semeval_score = []

@@ -329,7 +329,7 @@ def evalSymbRegTweetsFromSemeval(individual):
         print("[f1 avg SemEval (positive and negative)]: " + str(round(f1_positive_negative_avg, 3)))
         print("[fitness (F1 +/-)]: " + str(round(fitnessReturn, 3)))
         print("[best fitness]: " + str(round(variables.best_fitness, 3)))
-        print("[generations unmodified]: " + str(variables.generations_unchanged))
+        print("[cicles unmodified]: " + str(variables.generations_unchanged))
         print("[true_positive]: " + str(true_positive))
         print("[false_positive]: " + str(false_positive))
         print("[true_negative]: " + str(true_negative))
@@ -422,13 +422,13 @@ if __name__ == "__main__":
 
     parameters = str(variables.CROSSOVER) + " crossover, " + str(variables.MUTATION) + " mutation, " + str(variables.POPULATION) + " population, " + str(variables.GENERATIONS) + " generation\n\n"
 
-    with open(variables.FILE_RESULTS_30, 'a') as f:
+    with open(variables.TRAIN_RESULTS, 'a') as f:
         f.write("[PARAMS]: " + parameters)
     
     for i in range(variables.TOTAL_MODELS):
         main()
         
-        with open(variables.FILE_RESULTS_30, 'a') as f:
+        with open(variables.TRAIN_RESULTS, 'a') as f:
             f.write(str(variables.model_results[len(variables.model_results) - 1]) + "\n")
 
         mail_content = "Parameters: " + parameters + "\n\n" + str(variables.model_results[len(variables.model_results) - 1]) + "\n"
