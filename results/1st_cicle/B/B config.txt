@@ -1,0 +1,15 @@
+Dictionaries
+
+LIU
+AFFIN
+Effect Lexicon
+Vader
+SlangSD
+Sentiment140
+
+Train data
+1400 each (pos, neg, neutral) SemEval 2014
+
+Mutation 80%
+
+**No Lemma and Stemming**
