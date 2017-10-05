@@ -1,3 +1,10 @@
+# Airton Bordin Junior
+# airtonbjunior@gmail.com
+# Federal University of Goias (UFG)
+# Computer Science Master's Degree
+# 
+# Reference: https://stackoverflow.com/a/34139884
+
 import yagmail
 import platform
 

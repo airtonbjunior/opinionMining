@@ -1,3 +1,8 @@
+# Airton Bordin Junior
+# airtonbjunior@gmail.com
+# Federal University of Goias (UFG)
+# Computer Science Master's Degree
+
 import time
 
 from variables import *
@@ -5,7 +10,6 @@ from functions import *
 
 # log time
 start = time.time()
-
 
 if __name__ == "__main__":
     getDictionary()
@@ -34,7 +38,6 @@ if __name__ == "__main__":
         evaluateMessages("all", function_to_evaluate)
 
     resultsAnalysis()
-
 
 # log time
 end = time.time()

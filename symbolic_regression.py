@@ -3,9 +3,9 @@
 # Federal University of Goias (UFG)
 # Computer Science Master's Degree
 #
-# Genetic Programming - First example using deap
-# Reference: https://github.com/DEAP/deap/blob/08986fc3848144903048c722564b7b1d92db33a1/examples/gp/symbreg.py
-#            https://github.com/DEAP/deap/blob/08986fc3848144903048c722564b7b1d92db33a1/examples/gp/spambase.py
+# Genetic Programming lib: DEAP
+# References: https://github.com/DEAP/deap/blob/08986fc3848144903048c722564b7b1d92db33a1/examples/gp/symbreg.py
+#             https://github.com/DEAP/deap/blob/08986fc3848144903048c722564b7b1d92db33a1/examples/gp/spambase.py
 
 import time
 import operator
@@ -81,7 +81,6 @@ toolbox.register("expr", gp.genHalfAndHalf, pset=pset, min_=1, max_=10)
 toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.expr)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("compile", gp.compile, pset=pset)
-
 
 iterate_count = 1
 generation_count = 1

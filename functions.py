@@ -790,12 +790,10 @@ def removeStopWords(phrase):
     words = phrase.split()
     return_phrase = ""
 
-    #if not variables.stop_words_function_used:
     for word in words:
         if word not in variables.stop_words:
             return_phrase += word + " "               
 
-    #variables.stop_words_function_used = True
     return return_phrase
 
 
@@ -807,13 +805,11 @@ def stemmingText(phrase):
 
     stemmed_phrase = ""
 
-    #if not variables.stem_function_used:
     for word in words:
         stemmed_phrase += stem(word) + " "               
 
     stemmed_phrase += "insidenotestemmedphrase"
 
-    #variables.stem_function_used = True
     return stemmed_phrase.strip()
 
 
@@ -835,41 +831,29 @@ def lemmingText(phrase):
     return lemmed_phrase.strip()
 
 
-## NOTE: I'm copying the prase[str] variable for didact reasons in this functions
-##       I'm doing the same creating a variable named phrase_return
+## NOTE: I'm copying the phrase[str] variable for didact reasons in this functions
+##       Same for variable named phrase_return
 
 def removeLinks(phrase):
     phrase_copy = phrase
-    #if not variables.remove_links_function_used:
     phrase_return = re.sub(r'http\S+', '', phrase_copy, flags=re.MULTILINE)
     return phrase_return
-
-    #return phrase
 
 
 def removeEllipsis(phrase):
     phrase_copy = phrase
-    #if not variables.remove_ellipsis_function_used:
     phrase_return = re.sub('\.{3}', ' ', phrase_copy)
     return phrase_return
-    
-    #return phrase
 
 
 def removeDots(phrase):
     phrase_copy = phrase
-    #if not variables.remove_dots_function_used:
     return re.sub('\.', ' ', phrase_copy)
-    
-    #return phrase
 
 
 def removeAllPonctuation(phrase):
     phrase_copy = phrase
-    #if not variables.remove_all_ponctuaction_function_used:
     return phrase_copy.translate(str.maketrans('','',string.punctuation.replace("-", ""))) # keep hyphens
-
-    #return phrase
 
 
 # Evaluate the test messages using the model
@@ -1087,6 +1071,7 @@ def evaluateMessages(base, model):
             if base == "all":
                 f.write("\n")
 
+
 def resultsAnalysis():
     models = 0
 
@@ -1202,6 +1187,7 @@ def calcVariance(base, total_models):
 
     variance = sum(diffs) / total_models
     return variance
+
 
 def calcStdDeviation(variance):
     return math.sqrt(variance)
