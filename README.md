@@ -14,6 +14,7 @@ Automated creation of an Opinion Mining/Sentiment Analysis Classifier Model usin
 * [stemming 1.0](https://pypi.python.org/pypi/stemming/1.0) (Python implementations of various stemming algorithms)
 * [nltk](https://github.com/nltk/nltk) (Natural Language Toolkit)
 * [matplotlib](https://github.com/matplotlib/matplotlib) (Python 2D plotting library)
+* [yagmail](https://github.com/kootenpv/yagmail) (Gmail/SMTP client)
 
 # References
 * Lexicons
