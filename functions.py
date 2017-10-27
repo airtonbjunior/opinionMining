@@ -106,19 +106,19 @@ def getDictionary():
 #                    variables.dic_negative_words.append(line7.split("\t")[1].strip())
 
 # AFFIN 
-#    with open(variables.DICTIONARY_AFFIN, 'r') as inF:
-#        variables.use_dic_affin = True
-#        for line in inF:
-#            if float(line.split("\t")[1].strip()) > 0:
-#                #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-#                variables.dic_positive_words_affin.append(line.split("\t")[0].strip())
-#                variables.dic_positive_value_affin.append(float(line.split("\t")[1].strip()))
-#                #print("POSITIVE AFFIN " + line.split("\t")[0] + " " + line.split("\t")[1].strip())
-#            else:
-#                #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-#                variables.dic_negative_words_affin.append(line.split("\t")[0].strip())
-#                variables.dic_negative_value_affin.append(float(line.split("\t")[1].strip()))
-#                #print("NEGATIVE AFFIN " + line.split("\t")[0] + " " + line.split("\t")[1].strip())
+    with open(variables.DICTIONARY_AFFIN, 'r') as inF:
+        variables.use_dic_affin = True
+        for line in inF:
+            if float(line.split("\t")[1].strip()) > 0:
+                #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                variables.dic_positive_words_affin.append(line.split("\t")[0].strip())
+                variables.dic_positive_value_affin.append(float(line.split("\t")[1].strip()))
+                #print("POSITIVE AFFIN " + line.split("\t")[0] + " " + line.split("\t")[1].strip())
+            else:
+                #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                variables.dic_negative_words_affin.append(line.split("\t")[0].strip())
+                variables.dic_negative_value_affin.append(float(line.split("\t")[1].strip()))
+                #print("NEGATIVE AFFIN " + line.split("\t")[0] + " " + line.split("\t")[1].strip())
 
 
 # SLANG
@@ -528,6 +528,7 @@ def polaritySum2(phrase):
 
 
 # Return the sum of the word polarities
+# DEPRECATED
 def polaritySum(phrase):
     total_sum = 0
     index     = 0
