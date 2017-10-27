@@ -46,6 +46,7 @@ pset.addPrimitive(negativeHashtags, [str], float)
 pset.addPrimitive(positiveEmoticons, [str], float)
 pset.addPrimitive(negativeEmoticons, [str], float)
 pset.addPrimitive(polaritySum2, [str], float)
+pset.addPrimitive(polaritySumAVG, [str], float)
 pset.addPrimitive(hashtagPolaritySum, [str], float)
 pset.addPrimitive(emoticonsPolaritySum, [str], float)
 pset.addPrimitive(positiveWordsQuantity, [str], float)
@@ -412,10 +413,6 @@ def main():
 
 
 if __name__ == "__main__":
-    iterate_count
-    generation_count
-    best_of_generation
-
     getDictionary()
     loadTrainTweets()
 

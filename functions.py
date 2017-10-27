@@ -527,112 +527,135 @@ def polaritySum2(phrase):
             #return total_sum
 
 
-# Return the sum of the word polarities
-# DEPRECATED
-def polaritySum(phrase):
+def polaritySumAVG(phrase):
     total_sum = 0
-    index     = 0
-    avg_value = 0
+    total_sum_return = 0
+    dic_quantity = 0
+    index = 0
+    invert = False
+    booster = False
+    boosterAndInverter = False
 
+    phrase = phrase.strip()
     words = phrase.split()
-    
+
     for word in words:
-        word = word.lower().strip()
-    
-        if word in variables.dic_positive_words:
-            if word in variables.dic_positive_words_affin:
-                avg_value = (1 + variables.dic_positive_value_affin[variables.dic_positive_words_affin.index(word)]) / 2 # 1-> liu + value of affin
+        # Check booster and inverter words
+        if index > 0 and words[index-1] == "insidenoteboosterword" and words[index-2] == "insidenoteinverterword":
+            boosterAndInverter = True
+        elif (index > 0 and words[index-1] == "insidenoteboosterword") or (index < len(words) - 1 and words[index+1] == "insidenoteboosterword" and (words[index-1] != "insidenoteboosterword" or index == 0)):
+            booster = True
+        elif index > 0 and words[index-1] == "insidenoteinverterword":
+            invert = True
 
-                #print("Find the word " + word + " on 2 dictionaries. On AFFIN the word have the value " + str(variables.dic_positive_value_affin[variables.dic_positive_words_affin.index(word)]))
-                #print("AVG value of words is " + str(avg_value))
-
-                if index > 0 and words[index-1] == "insidenoteinverterword":
-                    total_sum -= avg_value
-                else:
-                    total_sum += avg_value
-
-
-                if index > 0 and words[index-1] == "insidenoteboosterword":
-                    if index > 1 and words[index-2] == "insidenoteinverterword":  # inverter + booster + word
-                        total_sum -= (3 * avg_value) # already sum 1 above (1 to equal zero and 2 to duplicate the value)
-                    else:
-                        total_sum += avg_value
-
-                if index < len(words)-1 and words[index+1] == "insidenoteboosterword" and words[index-1] != "insidenoteboosterword":
-                    total_sum += avg_value # one more to the sum because of boost word
-
-                if index > 0 and words[index-1] == "insidenoteboosteruppercase":
-                    total_sum += avg_value # one more to the sum because of boost uppercase                        
-
-            # only on LIU
-            else:
-                if index > 0 and words[index-1] == "insidenoteinverterword":
+        # LIU pos/neg words
+        if variables.use_dic_liu:
+            if word in variables.dic_positive_words:
+                if invert:
                     total_sum -= 1
-                else:
-                    total_sum += 1 
-
-                # clean this code, made in didacts (but ugly) ways
-                if index > 0 and words[index-1] == "insidenoteboosterword":
-                    if index > 1 and words[index-2] == "insidenoteinverterword":  # inverter + booster + word
-                        total_sum -= 3 # already sum 1 above
-                    else:
-                        total_sum += 1
-
-                if index < len(words)-1 and words[index+1] == "insidenoteboosterword":
-                    total_sum += 1 # one more to the sum because of boost word
-
-                if index > 0 and words[index-1] == "insidenoteboosteruppercase":
-                    total_sum += 1 # one more to the sum because of boost uppercase
-
-
-        if word in variables.dic_negative_words:
-            if word in variables.dic_negative_words_affin:
-                avg_value = (-1 + variables.dic_negative_value_affin[variables.dic_negative_words_affin.index(word)]) / 2 # 1-> liu + value of affin
-                
-                #print("Find the word " + word + " on 2 dictionaries. On AFFIN the word have the value " + str(variables.dic_negative_value_affin[variables.dic_negative_words_affin.index(word)]))
-                #print("AVG value of words is " + str(avg_value))
-
-                if index > 0 and words[index-1] == "insidenoteinverterword":
-                    total_sum -= avg_value
-                else:
-                    total_sum += avg_value
-
-
-                if index > 0 and words[index-1] == "insidenoteboosterword":
-                    if index > 1 and words[index-2] == "insidenoteinverterword":  # inverter + booster + word
-                        total_sum -= (3 * avg_value) # already sum 1 above (1 to equal zero and 2 to duplicate the value)
-                    else:
-                        total_sum += avg_value
-
-                if index < len(words)-1 and words[index+1] == "insidenoteboosterword" and words[index-1] != "insidenoteboosterword":
-                    total_sum += avg_value # one more to the sum because of boost word
-
-                if index > 0 and words[index-1] == "insidenoteboosteruppercase":
-                    total_sum += avg_value # one more to the sum because of boost uppercase   
-            else:
-                if index > 0 and words[index-1] == "insidenoteinverterword":
-                    total_sum -= 1
-                else:
+                elif booster:
+                    total_sum += 2
+                elif boosterAndInverter:
+                    total_sum -= 2
+                else: 
                     total_sum += 1
 
+                dic_quantity += 1
 
-                # Check inverter and boosters
+            elif word in variables.dic_negative_words:
+                if invert:
+                    total_sum += 1
+                elif booster:
+                    total_sum -= 2
+                elif boosterAndInverter:
+                    total_sum += 2
+                else: 
+                    total_sum -= 1
 
-                if index > 0 and words[index-1] == "insidenoteboosterword":
-                    if index > 1 and words[index-2] == "insidenoteinverterword":  # inverter + booster + word
-                        total_sum += 3 # already minus 1 above
-                    else:
-                        total_sum -= 1
+                dic_quantity += 1
 
-                if index < len(words)-1 and words[index+1] == "insidenoteboosterword":
-                    total_sum -= 1 # one minus to the sum because of boost word
+        # AFFIN
+        if variables.use_dic_affin:
+            if word in variables.dic_positive_words_affin:
+                if invert:
+                    total_sum -= variables.dic_positive_value_affin[variables.dic_positive_words_affin.index(word)]
+                elif booster:
+                    total_sum += 2 * variables.dic_positive_value_affin[variables.dic_positive_words_affin.index(word)]
+                else:
+                    total_sum += variables.dic_positive_value_affin[variables.dic_positive_words_affin.index(word)]
+                
+                dic_quantity += 1
+            elif word in variables.dic_negative_words_affin:
+                if invert:
+                    total_sum -= variables.dic_negative_value_affin[variables.dic_negative_words_affin.index(word)]
+                elif booster:
+                    total_sum += 2 * variables.dic_negative_value_affin[variables.dic_negative_words_affin.index(word)]
+                else:
+                    total_sum += variables.dic_negative_value_affin[variables.dic_negative_words_affin.index(word)]
+                
+                dic_quantity += 1
 
-                if index > 0 and words[index-1] == "insidenoteboosteruppercase":
-                    total_sum -= 1 # one minus to the sum because of boost uppercase
+        # VADER
+        if variables.use_dic_vader:
+            if word in variables.dic_positive_words_vader:
+                if invert:
+                    total_sum -= variables.dic_positive_value_vader[variables.dic_positive_words_vader.index(word)]
+                elif booster:
+                    total_sum += 2 * variables.dic_positive_value_vader[variables.dic_positive_words_vader.index(word)]
+                else:
+                    total_sum += variables.dic_positive_value_vader[variables.dic_positive_words_vader.index(word)]
+                
+                dic_quantity += 1
+            elif word in variables.dic_negative_words_vader:
+                if invert:
+                    total_sum -= variables.dic_negative_value_vader[variables.dic_negative_words_vader.index(word)]
+                elif booster:
+                    total_sum += 2 * variables.dic_negative_value_vader[variables.dic_negative_words_vader.index(word)]
+                else:
+                    total_sum += variables.dic_negative_value_vader[variables.dic_negative_words_vader.index(word)]
+                
+                dic_quantity += 1
 
-        index += 1    
+        # SENTIMENT140
+        if variables.use_dic_sentiment140:
+            if word in variables.dic_positive_words_s140:
+                if invert:
+                    total_sum -= variables.dic_positive_value_s140[variables.dic_positive_words_s140.index(word)]
+                elif booster:
+                    total_sum += 2 * variables.dic_positive_value_s140[variables.dic_positive_words_s140.index(word)]
+                else:
+                    total_sum += variables.dic_positive_value_s140[variables.dic_positive_words_s140.index(word)]
+                
+                dic_quantity += 1
+            elif word in variables.dic_negative_words_s140:
+                if invert:
+                    total_sum -= variables.dic_negative_value_s140[variables.dic_negative_words_s140.index(word)]
+                elif booster:
+                    total_sum += 2 * variables.dic_negative_value_s140[variables.dic_negative_words_s140.index(word)]
+                else:
+                    total_sum += variables.dic_negative_value_s140[variables.dic_negative_words_s140.index(word)]
+                
+                dic_quantity += 1
+        
 
-    return total_sum  
+        if(dic_quantity > 1):
+            #print("More than one dictionary " + str(dic_quantity) + " - word: " + word)
+            total_sum_return += round(total_sum/dic_quantity, 4)
+        elif(dic_quantity == 1):
+            total_sum_return += total_sum
+
+        print("total_sum is " + str(total_sum_return))
+
+        dic_quantity = 0
+        total_sum = 0
+
+        index += 1 # word of phrase
+        invert = False
+        booster = False
+        boosterAndInverter = False
+    
+
+    return total_sum_return
 
 
 def replaceNegatingWords(phrase):
