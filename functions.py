@@ -644,8 +644,6 @@ def polaritySumAVG(phrase):
         elif(dic_quantity == 1):
             total_sum_return += total_sum
 
-        print("total_sum is " + str(total_sum_return))
-
         dic_quantity = 0
         total_sum = 0
 
