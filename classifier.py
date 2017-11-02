@@ -95,6 +95,12 @@ def evalSymbRegTweetsFromSemeval(individual):
     global best_of_generation
     new_generation = False
 
+    if variables.generations_unchanged >= variables.max_unchanged_generations:
+        if(variables.generations_unchanged_reached_msg == False):
+            print("[Max unchanged generations (" + str(variables.max_unchanged_generations) + ") reached on generation " + str(generation_count) + "]")
+        variables.generations_unchanged_reached_msg = True
+        return 0,
+
     if iterate_count <= variables.POPULATION:
         print("[individual " + str(iterate_count) + " of the generation " + str(generation_count) + "]")
         iterate_count += 1
@@ -148,7 +154,7 @@ def evalSymbRegTweetsFromSemeval(individual):
 
     for index, item in enumerate(variables.tweets_semeval):        
 
-        if variables.generations_unchanged >= variables.max_unchanged_generations:
+        if variables.cicles_unchanged >= variables.max_unchanged_cicles:
             breaked = True
             break
 
@@ -297,9 +303,12 @@ def evalSymbRegTweetsFromSemeval(individual):
         is_positive = 0
         is_negative = 0
         is_neutral  = 0
+        variables.cicles_unchanged = 0
         variables.generations_unchanged = 0
     else:
-        variables.generations_unchanged += 1
+        variables.cicles_unchanged += 1
+        if new_generation:
+            variables.generations_unchanged += 1
 
 
     if not new_generation and best_of_generation < fitnessReturn:
@@ -311,31 +320,18 @@ def evalSymbRegTweetsFromSemeval(individual):
 
     #logs   
     if variables.log_parcial_results and not breaked: 
-        print("[function]: " + str(individual))
         print("[correct evaluations]: " + str(correct_evaluations))
         print("[accuracy]: " + str(round(accuracy, 3)))
-        print("[precision positive]: " + str(round(precision_positive, 3)))
-        print("[precision negative]: " + str(round(precision_negative, 3)))
-        print("[precision neutral]: " + str(round(precision_neutral, 3)))
-        print("[precision avg]: " + str(round(precision_avg, 3)))
-        print("[recall positive]: " + str(round(recall_positive, 3)))
-        print("[recall negative]: " + str(round(recall_negative, 3)))
-        print("[recall neutral]: " + str(round(recall_neutral, 3)))
-        print("[recall avg]: " + str(round(recall_avg, 3)))
-        print("[f1 positive]: " + str(round(f1_positive, 3)))
-        print("[f1 negative]: " + str(round(f1_negative, 3)))
-        print("[f1 neutral]: " + str(round(f1_neutral, 3)))        
-        print("[f1 avg]: " + str(round(f1_avg, 3)))
-        print("[f1 avg SemEval (positive and negative)]: " + str(round(f1_positive_negative_avg, 3)))
-        print("[fitness (F1 +/-)]: " + str(round(fitnessReturn, 3)))
+        print("[precision] - [positive]: " + '{message: <{width}}'.format(message=str(round(precision_positive, 3)), width=6) + " " + "[negative]: " + '{message: <{width}}'.format(message=str(round(precision_negative, 3)), width=6) + " " + "[neutral]: " + '{message: <{width}}'.format(message=str(round(precision_neutral, 3)), width=6) + " " + "[avg]: " + '{message: <{width}}'.format(message=str(round(precision_avg, 3)), width=6))
+        print("[recall]    - [positive]: " + '{message: <{width}}'.format(message=str(round(recall_positive, 3)), width=6) + " " + "[negative]: " + '{message: <{width}}'.format(message=str(round(recall_negative, 3)), width=6) + " " + "[neutral]: " + '{message: <{width}}'.format(message=str(round(recall_neutral, 3)), width=6) + " " + "[avg]: " + '{message: <{width}}'.format(message=str(round(recall_avg, 3)), width=6))
+        print("[f1]        - [positive]: " + '{message: <{width}}'.format(message=str(round(f1_positive, 3)), width=6) + " " + "[negative]: " + '{message: <{width}}'.format(message=str(round(f1_negative, 3)), width=6) + " " + "[neutral]: " + '{message: <{width}}'.format(message=str(round(f1_neutral, 3)), width=6) + " " + "[avg]: " + '{message: <{width}}'.format(message=str(round(f1_avg, 3)), width=6))
+        print("[f1 SemEval]: " + str(round(f1_positive_negative_avg, 3)))
+        print("[fitness]: " + str(round(fitnessReturn, 3)))
         print("[best fitness]: " + str(round(variables.best_fitness, 3)))
-        print("[cicles unmodified]: " + str(variables.generations_unchanged))
-        print("[true_positive]: " + str(true_positive))
-        print("[false_positive]: " + str(false_positive))
-        print("[true_negative]: " + str(true_negative))
-        print("[false_negative]: " + str(false_negative))
-        print("[true_neutral]: " + str(true_neutral))
-        print("[false_neutral]: " + str(false_neutral))   
+        print("[generations unmodified]: " + str(variables.generations_unchanged))
+        print("[cicles unmodified]: " + str(variables.cicles_unchanged))
+        print("[true_positive]: " + str(true_positive) + " " + "[false_positive]: " + str(false_positive) + " " + "[true_negative]: " + str(true_negative) + " " + "[false_negative]: " + str(false_negative) + " " + "[true_neutral]: " + str(true_neutral) + " " + "[false_neutral]: " + str(false_neutral))
+        print("[function]: " + str(individual))
         print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
         print("\n")   
     #logs
@@ -445,8 +441,10 @@ if __name__ == "__main__":
         variables.fitness_negative = 0
         variables.fitness_neutral  = 0
 
+        variables.cicles_unchanged = 0
         variables.generations_unchanged = 0
-
+        variables.generations_unchanged_reached_msg = False
+        
         variables.best_fitness = 0
         variables.best_fitness_history  = []
         variables.best_fitness_per_generation_history = []

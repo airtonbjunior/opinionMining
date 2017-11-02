@@ -39,12 +39,16 @@ MAX_NEUTRAL_TWEETS   = 1400
 
 CROSSOVER = 0.9
 MUTATION = 0.1
-GENERATIONS = 300
-POPULATION  = 50
+GENERATIONS = 51
+POPULATION  = 300
+cicles_unchanged = 0
 generations_unchanged = 0
-max_unchanged_generations = 7500
+max_unchanged_generations = 51
+max_unchanged_cicles = 9999999999
 
-TOTAL_MODELS = 30
+generations_unchanged_reached_msg = False
+
+TOTAL_MODELS = 1
 
 FILE_RESULTS = 'test_results-'+ str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 TRAIN_RESULTS = 'train-' + str(TOTAL_MODELS) + 'models_' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'

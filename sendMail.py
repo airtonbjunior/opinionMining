@@ -13,10 +13,8 @@ def send_mail(ith, total, pop, gen, content):
 	TO = 'sclassifier@gmail.com'
 	if(ith < total):
 		SUBJECT = 'Model ' + str(ith) + ' of ' + str(total) + ' created! [' + str(pop) + 'pop' + str(gen) + 'gen]' + '[' + platform.system() + ']'
-		print("SUBJECT: " + SUBJECT) 
 	else:
 		SUBJECT = 'Last model created! [' + str(pop) + 'pop' + str(gen) + 'gen]' + '[' + platform.system() + ']'
-		print("SUBJECT: " + SUBJECT)
 	#TEXT = 'Hey! A new model are created! Check this out!'
 
 	yag = yagmail.SMTP(FROM, 'sclassifier123')
