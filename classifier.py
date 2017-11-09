@@ -10,6 +10,7 @@
 import time
 import operator
 import random
+import sys
 
 from deap import algorithms
 from deap import base
@@ -410,6 +411,11 @@ def main():
 
 
 if __name__ == "__main__":
+    #if(len(sys.argv) <= 1):
+    #    print("No parameter passed - Using the SemEval 2014 benchmark")
+    #else:
+    #    print(len(sys.argv))
+
     getDictionary()
     loadTrainTweets()
 
@@ -434,6 +440,8 @@ if __name__ == "__main__":
             print("[Warning] No internet connection, the email can't be send!")
             print(e)
 
+
+        # Restart the variables
         iterate_count = 1
         generation_count = 1
         best_of_generation = 0
