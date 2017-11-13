@@ -165,6 +165,8 @@ false_negative_log = 0
 false_positive_log = 0
 
 log_parcial_results = True
+log_all_metrics_each_cicle = False
+log_times = True
 
 save_file_results = True
 
