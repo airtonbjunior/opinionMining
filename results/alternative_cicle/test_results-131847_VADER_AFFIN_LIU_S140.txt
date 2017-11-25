@@ -1,0 +1,46 @@
+[Model]	polaritySum2(removeLinks(removeStopWords(replaceBoosterWords(removeAllPonctuation(boostUpperCase(replaceNegatingWords(x)))))))
+
+tweets2013	0.5639
+tweets2014	0.5964
+sms	0.4841
+livejournal	0.6061
+sarcasm	0.5435
+all	0.5647
+
+
+
+##Statistics##
+
+1 models evaluated
+
+AVGs
+AVG Tweets2013 F1 SemEval	0.5639
+AVG Tweets2014 F1 SemEval	0.5964
+AVG SMS F1 SemEval	0.4841
+AVG LiveJournal F1 SemEval	0.6061
+AVG Sarcasm F1 SemEval	0.5435
+AVG All F1 SemEval	0.5647
+
+Best Values
+Best Tweets2013 F1 value	0.5639
+Best Tweets2014 F1 value	0.5964
+Best SMS F1 value	0.4841
+Best LiveJournal F1 value	0.6061
+Best Sarcasm F1 value	0.5435
+Best All F1 value	0.5647
+
+Values by database
+Tweets2013 [0.5639]
+Tweets2014 [0.5964]
+SMS [0.4841]
+LiveJournal [0.6061]
+Sarcasm [0.5435]
+All [0.5647]
+
+Standard deviation
+Standard Deviation Tweets2013	0.0
+Standard Deviation Tweets2014	0.0
+Standard Deviation SMS	0.0
+Standard Deviation Live Journal	0.0
+Standard Deviation Sarcasm	0.0
+Standard Deviation All	0.0
