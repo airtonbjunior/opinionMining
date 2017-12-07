@@ -29,6 +29,7 @@ evaluation_acumulated_time = 0
 # log time
 start = time.time()
 
+#pset = gp.PrimitiveSetTyped("MAIN", [str, str], float)
 pset = gp.PrimitiveSetTyped("MAIN", [str], float)
 pset.addPrimitive(operator.add, [float,float], float)
 pset.addPrimitive(operator.sub, [float,float], float)
@@ -73,6 +74,7 @@ pset.addTerminal(False, bool)
 pset.addEphemeralConstant("rand", lambda: random.uniform(-2, 2), float)
 
 pset.renameArguments(ARG0='x')
+#pset.renameArguments(ARG0='y')
 
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 creator.create("Individual", gp.PrimitiveTree, fitness=creator.FitnessMax)
