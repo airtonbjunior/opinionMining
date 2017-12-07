@@ -55,6 +55,9 @@ TRAIN_RESULTS = 'train-' + str(TOTAL_MODELS) + 'models_' + str(POPULATION) + 'p'
 
 tweets_semeval       = []
 tweets_semeval_score = []
+svm_values_tweets    = []
+svm_is_neutral       = []
+svm_normalized_values = []
 tweet_semeval_index  = 0
 
 dic_positive_words       = []
