@@ -10,11 +10,15 @@ Automated creation of an Opinion Mining/Sentiment Analysis Classifier Model usin
 "Genetic programming (GP) is an evolutionary computation (EC) technique that automatically solves problems without requiring the user to know or specify the form or structure of the solution in advance. At the most abstract level GP is a systematic, domain-independent method for getting computers to solve problems automatically starting from a high-level statement of what needs to be done." ([Poli, Langdon, McPhee](http://www.gp-field-guide.org.uk/))
 
 # Dependencies
+* [tkinter](https://docs.python.org/3/library/tkinter.html) (Standard Python interface to the Tk GUI toolkit)
 * [DEAP](https://github.com/DEAP/deap) (Distributed Evolutionary Algorithms in Python)
-* [stemming 1.0](https://pypi.python.org/pypi/stemming/1.0) (Python implementations of various stemming algorithms)
-* [nltk](https://github.com/nltk/nltk) (Natural Language Toolkit)
+* [numpy](http://www.numpy.org/) (Fundamental package for scientific computing with Python)
 * [matplotlib](https://github.com/matplotlib/matplotlib) (Python 2D plotting library)
+* [stemming 1.0](https://pypi.python.org/pypi/stemming/1.0) (Python implementations of various stemming algorithms)
 * [yagmail](https://github.com/kootenpv/yagmail) (Gmail/SMTP client)
+* [nltk](https://github.com/nltk/nltk) (Natural Language Toolkit)
+  * ``` >>> import nltk ```
+  * ``` >>> nltk.download('stopwords') ```
 
 # References
 * Lexicons
