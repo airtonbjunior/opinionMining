@@ -12,6 +12,7 @@ from functions import *
 start = time.time()
 
 if __name__ == "__main__":
+    print("[starting test module]")
     getDictionary()
 
     functions_to_evaluate = []
@@ -41,4 +42,4 @@ if __name__ == "__main__":
 
 # log time
 end = time.time()
-print("\n\n[Script ends after " + str(format(end - start, '.3g')) + " seconds]")
+print("\n\n[script ends after " + str(format(end - start, '.3g')) + " seconds]")
