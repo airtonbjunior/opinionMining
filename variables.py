@@ -7,7 +7,7 @@ from nltk.corpus import stopwords
 from datetime import datetime
 
 SEMEVAL_TRAIN_FILE = 'datasets/twitter-train-cleansed-B.txt'
-SEMEVAL_TEST_FILE  = 'datasets/test/SemEval2014-task9-test-B-all-tweets.txt'
+SEMEVAL_TEST_FILE  = 'datasets/test/SemEval2014-task9-test-B-all-tweets_withSVMValues.txt'
 DICTIONARY_POSITIVE_WORDS = 'dictionaries/positive-words.txt'
 DICTIONARY_NEGATIVE_WORDS = 'dictionaries/negative-words.txt'
 DICTIONARY_POSITIVE_HASHTAGS  = 'dictionaries/positive-hashtags.txt'
@@ -159,6 +159,9 @@ sms_2013_score = []
 sms_2013_positive = 0
 sms_2013_negative = 0
 sms_2013_neutral  = 0
+
+all_messages_in_file_order = []
+all_polarities_in_file_order = []
 
 log_all_messages = False
 MAX_ANALYSIS_TWEETS = 10000
