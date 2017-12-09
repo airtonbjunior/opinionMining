@@ -57,22 +57,22 @@ def getDictionary():
             variables.dic_booster_words.append(line8.strip())
 
 # SENTIWORDNET            
-#    with open(variables.DICTIONARY_SENTIWORDNET, 'r') as inF9:
-#        variables.use_dic_sentiwordnet = True
-#        for line9 in inF9:
-#            if float(line9.split("\t")[2]) > float(line9.split("\t")[3]): #positive greater than negative
-#                words = line9.split("\t")[4].lower().strip().split()
-#                for word in words:
-#                    if not "_" in word and not word in variables.dic_positive_words:
-#                        variables.dic_positive_words.append(word[:word.find("#")])
-#                        #print("POSITIVE: " + word[:word.find("#")])
-#            
-#            elif float(line9.split("\t")[2]) < float(line9.split("\t")[3]):
-#                words = line9.split("\t")[4].lower().strip().split()
-#                for word in words:
-#                    if not "_" in word and not word in variables.dic_negative_words:
-#                        variables.dic_negative_words.append(word[:word.find("#")])
-#                        #print("NEGATIVE: " + word[:word.find("#")])
+    with open(variables.DICTIONARY_SENTIWORDNET, 'r') as inF9:
+        variables.use_dic_sentiwordnet = True
+        for line9 in inF9:
+            if float(line9.split("\t")[2]) > float(line9.split("\t")[3]): #positive greater than negative
+                words = line9.split("\t")[4].lower().strip().split()
+                for word in words:
+                    if not "_" in word and not word in variables.dic_positive_words:
+                        variables.dic_positive_words.append(word[:word.find("#")])
+                        #print("POSITIVE: " + word[:word.find("#")])
+            
+            elif float(line9.split("\t")[2]) < float(line9.split("\t")[3]):
+                words = line9.split("\t")[4].lower().strip().split()
+                for word in words:
+                    if not "_" in word and not word in variables.dic_negative_words:
+                        variables.dic_negative_words.append(word[:word.find("#")])
+                        #print("NEGATIVE: " + word[:word.find("#")])
 
 # EFFECT LEXICON
 #    with open('dictionaries/goldStandard.tff', 'r') as inF8:
@@ -90,85 +90,81 @@ def getDictionary():
 #                        #print("[negative word]: " + word)
 
 # ENGLISH TWITTER LEXICON SEMEVAL 2015
-
-#    with open('dictionaries/SemEval2015-English-Twitter-Lexicon.txt', 'r') as inF7:
-#        for line7 in inF7:
-#            #removing composite words for while 
-#            if float(line7.split("\t")[0]) > 0 and not ' ' in line7.split("\t")[1].strip():
-#                if "#" in line7.split("\t")[1].strip():
-#                    variables.dic_positive_hashtags.append(line7.split("\t")[1].strip()[1:])
-#                else:
-#                    variables.dic_positive_words.append(line7.split("\t")[1].strip())
-#            elif float(line7.split("\t")[0]) < 0 and not ' ' in line7.split("\t")[1].strip():
-#                if "#" in line7.split("\t")[1].strip():
-#                    variables.dic_negative_hashtags.append(line7.split("\t")[1].strip()[1:])
-#                else:
-#                    variables.dic_negative_words.append(line7.split("\t")[1].strip())
+    with open('dictionaries/SemEval2015-English-Twitter-Lexicon.txt', 'r') as inF7:
+        for line7 in inF7:
+            #removing composite words for while 
+            if float(line7.split("\t")[0]) > 0 and not ' ' in line7.split("\t")[1].strip():
+                if "#" in line7.split("\t")[1].strip():
+                    variables.dic_positive_hashtags.append(line7.split("\t")[1].strip()[1:])
+                else:
+                    variables.dic_positive_words.append(line7.split("\t")[1].strip())
+            elif float(line7.split("\t")[0]) < 0 and not ' ' in line7.split("\t")[1].strip():
+                if "#" in line7.split("\t")[1].strip():
+                    variables.dic_negative_hashtags.append(line7.split("\t")[1].strip()[1:])
+                else:
+                    variables.dic_negative_words.append(line7.split("\t")[1].strip())
 
 # AFFIN 
-#    with open(variables.DICTIONARY_AFFIN, 'r') as inF:
-#        variables.use_dic_affin = True
-#       for line in inF:
-#            if float(line.split("\t")[1].strip()) > 0:
-#                #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-#                variables.dic_positive_words_affin.append(line.split("\t")[0].strip())
-#                variables.dic_positive_value_affin.append(float(line.split("\t")[1].strip()))
-#                #print("POSITIVE AFFIN " + line.split("\t")[0] + " " + line.split("\t")[1].strip())
-#            else:
-#                #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-#                variables.dic_negative_words_affin.append(line.split("\t")[0].strip())
-#                variables.dic_negative_value_affin.append(float(line.split("\t")[1].strip()))
-#                #print("NEGATIVE AFFIN " + line.split("\t")[0] + " " + line.split("\t")[1].strip())
-
+    with open(variables.DICTIONARY_AFFIN, 'r') as inF:
+        variables.use_dic_affin = True
+        for line in inF:
+            if float(line.split("\t")[1].strip()) > 0:
+                #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                variables.dic_positive_words_affin.append(line.split("\t")[0].strip())
+                variables.dic_positive_value_affin.append(float(line.split("\t")[1].strip()))
+                #print("POSITIVE AFFIN " + line.split("\t")[0] + " " + line.split("\t")[1].strip())
+            else:
+                #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                variables.dic_negative_words_affin.append(line.split("\t")[0].strip())
+                variables.dic_negative_value_affin.append(float(line.split("\t")[1].strip()))
+                #print("NEGATIVE AFFIN " + line.split("\t")[0] + " " + line.split("\t")[1].strip())
 
 # SLANG
-#    with codecs.open(variables.DICTIONARY_SLANG, "r", "latin-1") as inF:
-#    #with open(variables.DICTIONARY_SLANG, 'r') as inF:
-#        variables.use_dic_slang = True
-#        for line in inF:    
-#            if float(line.split("\t")[1].strip()) > 0:
-#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-#                    variables.dic_positive_words.append(line.split("\t")[0].strip())
-#
-#           elif float(line.split("\t")[1].strip()) < 0:
-#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-#                   variables.dic_negative_words.append(line.split("\t")[0].strip())
+    with codecs.open(variables.DICTIONARY_SLANG, "r", "latin-1") as inF:
+    #with open(variables.DICTIONARY_SLANG, 'r') as inF:
+        variables.use_dic_slang = True
+        for line in inF:    
+            if float(line.split("\t")[1].strip()) > 0:
+                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                    variables.dic_positive_words.append(line.split("\t")[0].strip())
 
+            elif float(line.split("\t")[1].strip()) < 0:
+                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                   variables.dic_negative_words.append(line.split("\t")[0].strip())
 
 # Vader Lexicon
-#    with open(variables.DICTIONARY_VADER, 'r') as inF:
-#        variables.use_dic_vader = True
-#        for line in inF:
-#            if float(line.split("\t")[1].strip()) > 0:
-#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-#                    variables.dic_positive_words_vader.append(line.split("\t")[0].strip())
-#                    variables.dic_positive_value_vader.append(float(line.split("\t")[1].strip()))
-#                    #variables.dic_positive_words.append(line.split("\t")[0].strip())
-#                    #print("POSITIVE " + line.split("\t")[0])
-#            else:
-#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-#                    variables.dic_negative_words_vader.append(line.split("\t")[0].strip())
-#                    variables.dic_negative_value_vader.append(float(line.split("\t")[1].strip()))
-#                    #variables.dic_negative_words.append(line.split("\t")[0].strip())
-#                    #print("NEGATIVE " + line.split("\t")[0])
+    with open(variables.DICTIONARY_VADER, 'r') as inF:
+        variables.use_dic_vader = True
+        for line in inF:
+            if float(line.split("\t")[1].strip()) > 0:
+                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                    variables.dic_positive_words_vader.append(line.split("\t")[0].strip())
+                    variables.dic_positive_value_vader.append(float(line.split("\t")[1].strip()))
+                    #variables.dic_positive_words.append(line.split("\t")[0].strip())
+                    #print("POSITIVE " + line.split("\t")[0])
+            else:
+                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                    variables.dic_negative_words_vader.append(line.split("\t")[0].strip())
+                    variables.dic_negative_value_vader.append(float(line.split("\t")[1].strip()))
+                    #variables.dic_negative_words.append(line.split("\t")[0].strip())
+                    #print("NEGATIVE " + line.split("\t")[0])
     
 # Sentiment140 Lexicon
-#    with open(variables.DICTIONARY_SENTIMENT140, 'r') as inF:
-#        variables.use_dic_sentiment140 = True
-#        for line in inF:
-#            if float(line.split("\t")[1].strip()) > 0:
-#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-#                    variables.dic_positive_words_s140.append(line.split("\t")[0].strip())
-#                    variables.dic_positive_value_s140.append(float(line.split("\t")[1].strip()))
-#                    #variables.dic_positive_words.append(line.split("\t")[0].strip())
-#                    #print("POSITIVE " + line.split("\t")[0])
-#            else:
-#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-#                    variables.dic_negative_words_s140.append(line.split("\t")[0].strip())
-#                    variables.dic_negative_value_s140.append(float(line.split("\t")[1].strip()))
-#                    #variables.dic_negative_words.append(line.split("\t")[0].strip())
-#                    #print("NEGATIVE " + line.split("\t")[0])
-
+    with open(variables.DICTIONARY_SENTIMENT140, 'r') as inF:
+        variables.use_dic_sentiment140 = True
+        for line in inF:
+            if float(line.split("\t")[1].strip()) > 0:
+                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                    variables.dic_positive_words_s140.append(line.split("\t")[0].strip())
+                    variables.dic_positive_value_s140.append(float(line.split("\t")[1].strip()))
+                    #variables.dic_positive_words.append(line.split("\t")[0].strip())
+                    #print("POSITIVE " + line.split("\t")[0])
+            else:
+                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                    variables.dic_negative_words_s140.append(line.split("\t")[0].strip())
+                    variables.dic_negative_value_s140.append(float(line.split("\t")[1].strip()))
+                    #variables.dic_negative_words.append(line.split("\t")[0].strip())
+                    #print("NEGATIVE " + line.split("\t")[0])
 
 
     # Performance improvement test
@@ -908,6 +904,7 @@ def removeAllPonctuation(phrase):
 
 
 # Evaluate the test messages using the model
+# http://text-analytics101.rxnlp.com/2014/10/computing-precision-and-recall-for.html
 def evaluateMessages(base, model):
     # parameters to calc the metrics
     true_positive  = 0
@@ -1006,23 +1003,20 @@ def evaluateMessages(base, model):
 
         try:
             # Check if there are emoticons. If yes, make the emoticon-based process
-            #if(hasEmoticons(message)):
-            #    #print(message + " [has emoticon][" + str(emoticonsPolaritySum(message)) + "]")
-            #    result = emoticonsPolaritySum(message)
-            #    #result = float(eval(model_analysis))
+            if(hasEmoticons(message)):
+                result = emoticonsPolaritySum(message)
 
             # Check if SVM are saying that the message are neutral
             #elif(variables.svm_normalized_values[index] == 0):
-            #    #print("Message " + str(index) + " - " + message + " is neutral")
-            #    result = 0
-
-            #else:
-            #    #result = float(eval(model_analysis))
             #    result = variables.svm_normalized_values[index]
 
+            else:
+                #result = float(eval(model_analysis))
+                result = variables.svm_normalized_values[index]
+            
             #result = variables.svm_normalized_values[index]
+            #result = float(eval(model_analysis))
 
-            result = float(eval(model_analysis))
         except:
             print("\n\n[WARNING] eval(model_analysis) exception for the message: " + message + "\n\n")
             continue
