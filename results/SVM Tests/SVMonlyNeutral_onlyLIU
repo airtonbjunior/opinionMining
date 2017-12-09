@@ -1,0 +1,170 @@
+[tweets2013 messages]
+[messages evaluated]: 3813
+[correct evaluations]: 1947 (479 positives, 144 negatives and 1324 neutrals)
+[model]: polaritySum2(removeLinks(removeStopWords(replaceBoosterWords(removeAllPonctuation(boostUpperCase(replaceNegatingWords(x)))))))
+
+[accuracy]: 0.5106
+[precision_positive]: 0.6709
+[precision_negative]: 0.4211
+[precision_neutral]: 0.4802
+[precision_avg]: 0.5241
+[recall_positive]: 0.3047
+[recall_negative]: 0.2396
+[recall_neutral]: 0.8073
+[recall avg]: 0.4505
+[f1_positive]: 0.4191
+[f1_negative]: 0.3054
+[f1_neutral]: 0.6022
+[f1 avg]: 0.4422
+[f1 avg SemEval (positive and negative)]: 0.3622
+[true_positive]: 479
+[false_positive]: 235
+[true_negative]: 144
+[false_negative]: 198
+[true_neutral]: 1324
+[false_neutral]: 1433
+
+
+
+
+[tweets2014 messages]
+[messages evaluated]: 1853
+[correct evaluations]: 850 (273 positives, 56 negatives and 521 neutrals)
+[model]: polaritySum2(removeLinks(removeStopWords(replaceBoosterWords(removeAllPonctuation(boostUpperCase(replaceNegatingWords(x)))))))
+
+[accuracy]: 0.4587
+[precision_positive]: 0.7339
+[precision_negative]: 0.3758
+[precision_neutral]: 0.3911
+[precision_avg]: 0.5003
+[recall_positive]: 0.278
+[recall_negative]: 0.2772
+[recall_neutral]: 0.7788
+[recall avg]: 0.4447
+[f1_positive]: 0.4032
+[f1_negative]: 0.3191
+[f1_neutral]: 0.5207
+[f1 avg]: 0.4144
+[f1 avg SemEval (positive and negative)]: 0.3612
+[true_positive]: 273
+[false_positive]: 99
+[true_negative]: 56
+[false_negative]: 93
+[true_neutral]: 521
+[false_neutral]: 811
+
+
+
+
+[sms messages]
+[messages evaluated]: 2093
+[correct evaluations]: 1312 (140 positives, 85 negatives and 1087 neutrals)
+[model]: polaritySum2(removeLinks(removeStopWords(replaceBoosterWords(removeAllPonctuation(boostUpperCase(replaceNegatingWords(x)))))))
+
+[accuracy]: 0.6269
+[precision_positive]: 0.5833
+[precision_negative]: 0.6343
+[precision_neutral]: 0.6323
+[precision_avg]: 0.6167
+[recall_positive]: 0.2846
+[recall_negative]: 0.2157
+[recall_neutral]: 0.9006
+[recall avg]: 0.467
+[f1_positive]: 0.3825
+[f1_negative]: 0.322
+[f1_neutral]: 0.743
+[f1 avg]: 0.4825
+[f1 avg SemEval (positive and negative)]: 0.3522
+[true_positive]: 140
+[false_positive]: 100
+[true_negative]: 85
+[false_negative]: 49
+[true_neutral]: 1087
+[false_neutral]: 632
+
+
+
+
+[livejournal messages]
+[messages evaluated]: 1142
+[correct evaluations]: 581 (135 positives, 74 negatives and 372 neutrals)
+[model]: polaritySum2(removeLinks(removeStopWords(replaceBoosterWords(removeAllPonctuation(boostUpperCase(replaceNegatingWords(x)))))))
+
+[accuracy]: 0.5088
+[precision_positive]: 0.7941
+[precision_negative]: 0.6789
+[precision_neutral]: 0.4311
+[precision_avg]: 0.6347
+[recall_positive]: 0.3162
+[recall_negative]: 0.2434
+[recall_neutral]: 0.9051
+[recall avg]: 0.4882
+[f1_positive]: 0.4523
+[f1_negative]: 0.3584
+[f1_neutral]: 0.584
+[f1 avg]: 0.4649
+[f1 avg SemEval (positive and negative)]: 0.4053
+[true_positive]: 135
+[false_positive]: 35
+[true_negative]: 74
+[false_negative]: 35
+[true_neutral]: 372
+[false_neutral]: 491
+
+
+
+
+[sarcasm messages]
+[messages evaluated]: 86
+[correct evaluations]: 21 (7 positives, 3 negatives and 11 neutrals)
+[model]: polaritySum2(removeLinks(removeStopWords(replaceBoosterWords(removeAllPonctuation(boostUpperCase(replaceNegatingWords(x)))))))
+
+[accuracy]: 0.2442
+[precision_positive]: 0.5385
+[precision_negative]: 0.75
+[precision_neutral]: 0.1594
+[precision_avg]: 0.4826
+[recall_positive]: 0.2121
+[recall_negative]: 0.075
+[recall_neutral]: 0.8462
+[recall avg]: 0.3778
+[f1_positive]: 0.3043
+[f1_negative]: 0.1364
+[f1_neutral]: 0.2683
+[f1 avg]: 0.2363
+[f1 avg SemEval (positive and negative)]: 0.2204
+[true_positive]: 7
+[false_positive]: 6
+[true_negative]: 3
+[false_negative]: 1
+[true_neutral]: 11
+[false_neutral]: 58
+
+
+
+
+[all messages]
+[messages evaluated]: 8987 (3506 positives, 1541 negatives, 3940 neutrals)
+[correct evaluations]: 5809 (1706 positives, 700 negatives and 3403 neutrals)
+[model]: polaritySum2(removeLinks(removeStopWords(replaceBoosterWords(removeAllPonctuation(boostUpperCase(replaceNegatingWords(x)))))))
+
+[accuracy]: 0.6464
+[precision_positive]: 0.7968
+[precision_negative]: 0.604
+[precision_neutral]: 0.5984
+[precision_avg]: 0.6664
+[recall_positive]: 0.4866
+[recall_negative]: 0.4543
+[recall_neutral]: 0.8637
+[recall avg]: 0.6015
+[f1_positive]: 0.6042
+[f1_negative]: 0.5185
+[f1_neutral]: 0.707
+[f1 avg]: 0.6099
+[f1 avg SemEval (positive and negative)]: 0.5614
+[true_positive]: 1706
+[false_positive]: 435
+[true_negative]: 700
+[false_negative]: 459
+[true_neutral]: 3403
+[false_neutral]: 2284
