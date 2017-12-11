@@ -168,3 +168,10 @@
 [false_negative]: 754
 [true_neutral]: 2680
 [false_neutral]: 1724
+
+
+          |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+--------------------------------------------------
+Pred_Pos  |  2070      |  189       |  793       |
+Pred_Neg  |  287       |  777       |  467       |
+Pred_Neu  |  1149      |  575       |  2680      |
