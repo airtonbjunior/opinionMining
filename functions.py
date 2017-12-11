@@ -914,6 +914,15 @@ def evaluateMessages(base, model):
     true_neutral   = 0
     false_neutral  = 0
 
+    # confusion matrix 
+    goldPos_classNeg = 0
+    goldPos_classNeu = 0
+    goldNeg_classPos = 0
+    goldNeg_classNeu = 0
+    goldNeu_classPos = 0
+    goldNeu_classNeg = 0
+    # confusion matrix 
+
     accuracy = 0
 
     precision_positive = 0
@@ -1007,12 +1016,13 @@ def evaluateMessages(base, model):
                 result = emoticonsPolaritySum(message)
 
             # Check if SVM are saying that the message are neutral
-            #elif(variables.svm_normalized_values[index] == 0):
-            #    result = variables.svm_normalized_values[index]
+            elif(variables.svm_normalized_values[index] == 0):
+            #if(variables.svm_normalized_values[index] == 0):
+                result = variables.svm_normalized_values[index]
 
             else:
-                #result = float(eval(model_analysis))
-                result = variables.svm_normalized_values[index]
+                result = float(eval(model_analysis))
+            #    result = variables.svm_normalized_values[index]
             
             #result = variables.svm_normalized_values[index]
             #result = float(eval(model_analysis))
@@ -1027,8 +1037,10 @@ def evaluateMessages(base, model):
             else:
                 if result == 0:
                     false_neutral += 1
+                    goldPos_classNeu += 1
                 else:
                     false_negative += 1
+                    goldPos_classNeg += 1
                 
         elif messages_score[index] < 0:
             if result < 0:
@@ -1037,8 +1049,10 @@ def evaluateMessages(base, model):
                 false_negative_log += 1
                 if result == 0:
                     false_neutral += 1
+                    goldNeg_classNeu += 1
                 else:
                     false_positive += 1
+                    goldNeg_classPos += 1
 
                 #if false_negative_log <= 20:
                     #if false_negative_log == 1:  
@@ -1052,8 +1066,10 @@ def evaluateMessages(base, model):
             else:
                 if result < 0:
                     false_negative += 1
+                    goldNeu_classNeg += 1
                 else:
                     false_positive += 1
+                    goldNeu_classPos += 1
 
 
     if true_positive + false_positive + true_negative + false_negative > 0:
@@ -1132,6 +1148,19 @@ def evaluateMessages(base, model):
     print("[false_negative]: " + str(false_negative))
     print("[true_neutral]: " + str(true_neutral))
     print("[false_neutral]: " + str(false_neutral))
+    
+
+    #print('{message: <{width}}'.format(message="[fitness] ", width=8)
+
+    print("\n\n")
+    print("Confusion Matrix\n")
+    print("          |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |")
+    print("--------------------------------------------------")
+    print("Pred_Pos  |  " + '{message: <{width}}'.format(message=str(true_positive), width=8) + "  |  " + '{message: <{width}}'.format(message=str(goldNeg_classPos), width=8) + "  |  " + '{message: <{width}}'.format(message=str(goldNeu_classPos), width=8) + "  |")
+    print("Pred_Neg  |  " + '{message: <{width}}'.format(message=str(goldPos_classNeg), width=8) + "  |  " + '{message: <{width}}'.format(message=str(true_negative), width=8) + "  |  " + '{message: <{width}}'.format(message=str(goldNeu_classNeg), width=8) + "  |")
+    print("Pred_Neu  |  " + '{message: <{width}}'.format(message=str(goldPos_classNeu), width=8) + "  |  " + '{message: <{width}}'.format(message=str(goldNeg_classNeu), width=8) + "  |  " + '{message: <{width}}'.format(message=str(true_neutral), width=8)  + "  |")
+
+
     print("\n")
 
     if variables.save_file_results:
