@@ -19,9 +19,12 @@ import variables
 
 def getDictionary():
     start = time.time()
-    print("[loading dictionary]")
+    startDic = 0
+    print("[loading dictionaries]")
 
 # BING LIU POSITIVE/NEGATIVE WORDS
+    startDic = time.time()
+    print("  [loading liu]")
     with open(variables.DICTIONARY_POSITIVE_WORDS, 'r') as inF:
         variables.use_dic_liu = True
         for line in inF:
@@ -55,8 +58,12 @@ def getDictionary():
     with open(variables.DICTIONARY_BOOSTER_WORDS) as inF8:
         for line8 in inF8:
             variables.dic_booster_words.append(line8.strip())
+    
+    print("    [liu dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
 
-# SENTIWORDNET            
+# SENTIWORDNET
+    startDic = time.time()
+    print("  [loading sentiwordnet]")
     with open(variables.DICTIONARY_SENTIWORDNET, 'r') as inF9:
         variables.use_dic_sentiwordnet = True
         for line9 in inF9:
@@ -73,8 +80,12 @@ def getDictionary():
                     if not "_" in word and not word in variables.dic_negative_words:
                         variables.dic_negative_words.append(word[:word.find("#")])
                         #print("NEGATIVE: " + word[:word.find("#")])
+    
+    print("    [sentiwordnet dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
 
 # EFFECT LEXICON
+#    startDic = time.time()
+#    print("  [loading effect]")
 #    with open('dictionaries/goldStandard.tff', 'r') as inF8:
 #        for line8 in inF8:
 #            if (line8.split()[1] == "+Effect"):
@@ -88,8 +99,12 @@ def getDictionary():
 #                    if word not in variables.dic_negative_words and word not in variables.dic_positive_words:
 #                        variables.dic_negative_words.append(word) 
 #                        #print("[negative word]: " + word)
+#
+#    print("    [effect dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
 
 # ENGLISH TWITTER LEXICON SEMEVAL 2015
+    startDic = time.time()
+    print("  [semeval2015]")
     with open('dictionaries/SemEval2015-English-Twitter-Lexicon.txt', 'r') as inF7:
         for line7 in inF7:
             #removing composite words for while 
@@ -103,8 +118,12 @@ def getDictionary():
                     variables.dic_negative_hashtags.append(line7.split("\t")[1].strip()[1:])
                 else:
                     variables.dic_negative_words.append(line7.split("\t")[1].strip())
+    
+    print("    [semeval2015 dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
 
 # AFFIN 
+    startDic = time.time()
+    print("  [loading affin]")
     with open(variables.DICTIONARY_AFFIN, 'r') as inF:
         variables.use_dic_affin = True
         for line in inF:
@@ -119,7 +138,11 @@ def getDictionary():
                 variables.dic_negative_value_affin.append(float(line.split("\t")[1].strip()))
                 #print("NEGATIVE AFFIN " + line.split("\t")[0] + " " + line.split("\t")[1].strip())
 
+    print("    [affin dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
+
 # SLANG
+    startDic = time.time()
+    print("  [loading slang]")
     with codecs.open(variables.DICTIONARY_SLANG, "r", "latin-1") as inF:
     #with open(variables.DICTIONARY_SLANG, 'r') as inF:
         variables.use_dic_slang = True
@@ -132,7 +155,11 @@ def getDictionary():
                 if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
                    variables.dic_negative_words.append(line.split("\t")[0].strip())
 
+    print("    [slang dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
+
 # Vader Lexicon
+    startDic = time.time()
+    print("  [loading vader]")
     with open(variables.DICTIONARY_VADER, 'r') as inF:
         variables.use_dic_vader = True
         for line in inF:
@@ -149,23 +176,28 @@ def getDictionary():
                     #variables.dic_negative_words.append(line.split("\t")[0].strip())
                     #print("NEGATIVE " + line.split("\t")[0])
     
-# Sentiment140 Lexicon
-    with open(variables.DICTIONARY_SENTIMENT140, 'r') as inF:
-        variables.use_dic_sentiment140 = True
-        for line in inF:
-            if float(line.split("\t")[1].strip()) > 0:
-                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                    variables.dic_positive_words_s140.append(line.split("\t")[0].strip())
-                    variables.dic_positive_value_s140.append(float(line.split("\t")[1].strip()))
-                    #variables.dic_positive_words.append(line.split("\t")[0].strip())
-                    #print("POSITIVE " + line.split("\t")[0])
-            else:
-                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                    variables.dic_negative_words_s140.append(line.split("\t")[0].strip())
-                    variables.dic_negative_value_s140.append(float(line.split("\t")[1].strip()))
-                    #variables.dic_negative_words.append(line.split("\t")[0].strip())
-                    #print("NEGATIVE " + line.split("\t")[0])
+    print("    [vader dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
 
+# Sentiment140 Lexicon
+#    startDic = time.time()
+#    print("  [loading sentiment140]")
+#    with open(variables.DICTIONARY_SENTIMENT140, 'r') as inF:
+#        variables.use_dic_sentiment140 = True
+#        for line in inF:
+#            if float(line.split("\t")[1].strip()) > 0:
+#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+#                    variables.dic_positive_words_s140.append(line.split("\t")[0].strip())
+#                    variables.dic_positive_value_s140.append(float(line.split("\t")[1].strip()))
+#                    #variables.dic_positive_words.append(line.split("\t")[0].strip())
+#                    #print("POSITIVE " + line.split("\t")[0])
+#            else:
+#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+#                    variables.dic_negative_words_s140.append(line.split("\t")[0].strip())
+#                    variables.dic_negative_value_s140.append(float(line.split("\t")[1].strip()))
+#                    #variables.dic_negative_words.append(line.split("\t")[0].strip())
+#                    #print("NEGATIVE " + line.split("\t")[0])
+
+    print("    [sentiment140 dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
 
     # Performance improvement test
     variables.dic_positive_words = set(variables.dic_positive_words)
@@ -176,7 +208,7 @@ def getDictionary():
     variables.dic_negative_emoticons = set(variables.dic_negative_emoticons)
 
     end = time.time()
-    print("[dictionary loaded - words, hashtags and emoticons][" + str(format(end - start, '.3g')) + " seconds]\n")
+    print("[all dictionaries loaded][" + str(format(end - start, '.3g')) + " seconds]\n")
 
 
 # get tweets from id (SEMEVAL 2014 database)
@@ -880,6 +912,10 @@ def lemmingText(phrase):
 
 ## NOTE: I'm copying the phrase[str] variable for didact reasons in this functions
 ##       Same for variable named phrase_return
+def getURLs(phrase):
+    #improve this Regular Expression to get www.something.com and others
+    return re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', phrase)
+
 
 def removeLinks(phrase):
     phrase_copy = phrase
@@ -902,10 +938,24 @@ def removeAllPonctuation(phrase):
     phrase_copy = phrase
     return phrase_copy.translate(str.maketrans('','',string.punctuation.replace("-", ""))) # keep hyphens
 
+# Testing
+neutral_url_qtty = 0
+neutral_url_correct_pred = 0
+# Testing
 
 # Evaluate the test messages using the model
 # http://text-analytics101.rxnlp.com/2014/10/computing-precision-and-recall-for.html
 def evaluateMessages(base, model):
+    # Testing
+    global neutral_url_qtty
+    global neutral_url_correct_pred
+
+    neutral_url_qtty = 0
+    neutral_url_correct_pred = 0
+
+    neutral_because_url = False
+    # Testing
+
     # parameters to calc the metrics
     true_positive  = 0
     true_negative  = 0
@@ -1009,16 +1059,24 @@ def evaluateMessages(base, model):
         
         if not len(message) > 0:
             continue
-
+        
+        neutral_because_url = False
+        
         try:
             # Check if there are emoticons. If yes, make the emoticon-based process
             if(hasEmoticons(message)):
                 result = emoticonsPolaritySum(message)
 
+            # If the tweet has url, set neutral (intuition to test)
+            elif(len(getURLs(message)) > 0):
+                result = 0
+                neutral_url_qtty += 1
+                neutral_because_url = True
+
             # Check if SVM are saying that the message are neutral
-            elif(variables.svm_normalized_values[index] == 0):
+            #elif(variables.svm_normalized_values[index] == 0):
             #if(variables.svm_normalized_values[index] == 0):
-                result = variables.svm_normalized_values[index]
+            #    result = variables.svm_normalized_values[index]
 
             else:
                 result = float(eval(model_analysis))
@@ -1027,8 +1085,9 @@ def evaluateMessages(base, model):
             #result = variables.svm_normalized_values[index]
             #result = float(eval(model_analysis))
 
-        except:
-            print("\n\n[WARNING] eval(model_analysis) exception for the message: " + message + "\n\n")
+        except Exception as e:
+            print("exception: " + str(e))
+            #print("\n\n[WARNING] eval(model_analysis) exception for the message: " + message + "\n\n")
             continue
 
         if messages_score[index] > 0:
@@ -1063,6 +1122,8 @@ def evaluateMessages(base, model):
         elif messages_score[index] == 0:
             if result == 0:
                 true_neutral += 1
+                if(neutral_because_url == True):
+                    neutral_url_correct_pred += 1
             else:
                 if result < 0:
                     false_negative += 1
@@ -1150,7 +1211,9 @@ def evaluateMessages(base, model):
     print("[false_neutral]: " + str(false_neutral))
     
 
-    #print('{message: <{width}}'.format(message="[fitness] ", width=8)
+    print("\nNeutral choosed because of URL -> " + str(neutral_url_qtty) + "\n")
+    print("\nCorrect Neutral prediction because of URL -> " + str(neutral_url_correct_pred) + "\n")
+    
 
     print("\n\n")
     print("Confusion Matrix\n")
@@ -1159,7 +1222,6 @@ def evaluateMessages(base, model):
     print("Pred_Pos  |  " + '{message: <{width}}'.format(message=str(true_positive), width=8) + "  |  " + '{message: <{width}}'.format(message=str(goldNeg_classPos), width=8) + "  |  " + '{message: <{width}}'.format(message=str(goldNeu_classPos), width=8) + "  |")
     print("Pred_Neg  |  " + '{message: <{width}}'.format(message=str(goldPos_classNeg), width=8) + "  |  " + '{message: <{width}}'.format(message=str(true_negative), width=8) + "  |  " + '{message: <{width}}'.format(message=str(goldNeu_classNeg), width=8) + "  |")
     print("Pred_Neu  |  " + '{message: <{width}}'.format(message=str(goldPos_classNeu), width=8) + "  |  " + '{message: <{width}}'.format(message=str(goldNeg_classNeu), width=8) + "  |  " + '{message: <{width}}'.format(message=str(true_neutral), width=8)  + "  |")
-
 
     print("\n")
 
