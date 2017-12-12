@@ -24,14 +24,25 @@ DICTIONARY_SENTIMENT140 = 'dictionaries/sentiment140_unigram.txt'
 
 model_results = []
 
-use_dic_liu          = False
+use_dic_liu          = True
 use_dic_sentiwordnet = False
-use_dic_affin        = False
-use_dic_vader        = False
+use_dic_affin        = True
+use_dic_vader        = True
 use_dic_sentiment140 = False
 use_dic_slang        = False
 use_dic_effect       = False
+use_dic_semeval2015  = False
 
+dic_liu_loaded 			= False
+dic_sentiwordnet_loaded = False
+dic_affin_loaded		= False
+dic_vader_loaded		= False
+dic_sentiment140_loaded = False
+dic_slang_loaded		= False
+dic_effect_loaded		= False
+dic_semeval2015_loaded	= False
+
+dic_loaded_total = 0
 
 MAX_POSITIVES_TWEETS = 1400
 MAX_NEGATIVES_TWEETS = 1400

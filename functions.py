@@ -11,207 +11,225 @@ import codecs
 
 from stemming.porter2 import stem
 from nltk.stem import WordNetLemmatizer
-
 import matplotlib.pyplot as plt
 import numpy as np
 
 import variables
 
+# Load the dictionaries
 def getDictionary():
     start = time.time()
     startDic = 0
-    print("[loading dictionaries]")
+    print("\n[loading dictionaries]")
 
-# BING LIU POSITIVE/NEGATIVE WORDS
-    startDic = time.time()
-    print("  [loading liu]")
-    with open(variables.DICTIONARY_POSITIVE_WORDS, 'r') as inF:
-        variables.use_dic_liu = True
-        for line in inF:
-            variables.dic_positive_words.append(line.lower().strip())
+    #BING LIU POSITIVE/NEGATIVE WORDS
+    if(variables.use_dic_liu):
+        startDic = time.time()
+        print("  [loading liu]")
+        with open(variables.DICTIONARY_POSITIVE_WORDS, 'r') as inF:
+            variables.dic_liu_loaded = True
+            variables.dic_loaded_total += 1
+            for line in inF:
+                variables.dic_positive_words.append(line.lower().strip())
 
-    with codecs.open(variables.DICTIONARY_NEGATIVE_WORDS, "r", "latin-1") as inF2:
-    #with open(variables.DICTIONARY_NEGATIVE_WORDS, 'r') as inF2:
-        for line2 in inF2:
-            variables.dic_negative_words.append(line2.lower().strip())
+        with codecs.open(variables.DICTIONARY_NEGATIVE_WORDS, "r", "latin-1") as inF2:
+            for line2 in inF2:
+                variables.dic_negative_words.append(line2.lower().strip())
 
-    with open(variables.DICTIONARY_POSITIVE_HASHTAGS, 'r') as inF3:
-        for line3 in inF3:
-            variables.dic_positive_hashtags.append(line3.lower().strip())
+        with open(variables.DICTIONARY_POSITIVE_HASHTAGS, 'r') as inF3:
+            for line3 in inF3:
+                variables.dic_positive_hashtags.append(line3.lower().strip())
 
-    with open(variables.DICTIONARY_NEGATIVE_HASHTAGS, 'r') as inF4:
-        for line4 in inF4:
-            variables.dic_negative_hashtags.append(line4.lower().strip())            
+        with open(variables.DICTIONARY_NEGATIVE_HASHTAGS, 'r') as inF4:
+            for line4 in inF4:
+                variables.dic_negative_hashtags.append(line4.lower().strip())            
 
-    with open(variables.DICTIONARY_POSITIVE_EMOTICONS, 'r') as inF5:
-        for line5 in inF5:
-            variables.dic_positive_emoticons.append(line5.strip()) 
+        with open(variables.DICTIONARY_POSITIVE_EMOTICONS, 'r') as inF5:
+            for line5 in inF5:
+                variables.dic_positive_emoticons.append(line5.strip()) 
 
-    with open(variables.DICTIONARY_NEGATIVE_EMOTICONS, 'r') as inF6:
-        for line6 in inF6:
-            variables.dic_negative_emoticons.append(line6.strip())             
+        with open(variables.DICTIONARY_NEGATIVE_EMOTICONS, 'r') as inF6:
+            for line6 in inF6:
+                variables.dic_negative_emoticons.append(line6.strip())             
 
-    with open(variables.DICTIONARY_NEGATING_WORDS, 'r') as inF7:
-        for line7 in inF7:
-            variables.dic_negation_words.append(line7.strip()) 
+        with open(variables.DICTIONARY_NEGATING_WORDS, 'r') as inF7:
+            for line7 in inF7:
+                variables.dic_negation_words.append(line7.strip()) 
 
-    with open(variables.DICTIONARY_BOOSTER_WORDS) as inF8:
-        for line8 in inF8:
-            variables.dic_booster_words.append(line8.strip())
-    
-    print("    [liu dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
+        with open(variables.DICTIONARY_BOOSTER_WORDS) as inF8:
+            for line8 in inF8:
+                variables.dic_booster_words.append(line8.strip())
+        
+        print("    [liu dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
 
-# SENTIWORDNET
-    startDic = time.time()
-    print("  [loading sentiwordnet]")
-    with open(variables.DICTIONARY_SENTIWORDNET, 'r') as inF9:
-        variables.use_dic_sentiwordnet = True
-        for line9 in inF9:
-            if float(line9.split("\t")[2]) > float(line9.split("\t")[3]): #positive greater than negative
-                words = line9.split("\t")[4].lower().strip().split()
-                for word in words:
-                    if not "_" in word and not word in variables.dic_positive_words:
-                        variables.dic_positive_words.append(word[:word.find("#")])
-                        #print("POSITIVE: " + word[:word.find("#")])
-            
-            elif float(line9.split("\t")[2]) < float(line9.split("\t")[3]):
-                words = line9.split("\t")[4].lower().strip().split()
-                for word in words:
-                    if not "_" in word and not word in variables.dic_negative_words:
-                        variables.dic_negative_words.append(word[:word.find("#")])
-                        #print("NEGATIVE: " + word[:word.find("#")])
-    
-    print("    [sentiwordnet dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
+    #SENTIWORDNET
+    if(variables.use_dic_sentiwordnet):
+        startDic = time.time()
+        print("  [loading sentiwordnet]")
+        with open(variables.DICTIONARY_SENTIWORDNET, 'r') as inF9:
+            variables.use_dic_sentiwordnet = True
+            variables.dic_loaded_total += 1
+            for line9 in inF9:
+                if float(line9.split("\t")[2]) > float(line9.split("\t")[3]): #positive greater than negative
+                    words = line9.split("\t")[4].lower().strip().split()
+                    for word in words:
+                        if not "_" in word and not word in variables.dic_positive_words:
+                            variables.dic_positive_words.append(word[:word.find("#")])
+                            #print("POSITIVE: " + word[:word.find("#")])
+                
+                elif float(line9.split("\t")[2]) < float(line9.split("\t")[3]):
+                    words = line9.split("\t")[4].lower().strip().split()
+                    for word in words:
+                        if not "_" in word and not word in variables.dic_negative_words:
+                            variables.dic_negative_words.append(word[:word.find("#")])
+                            #print("NEGATIVE: " + word[:word.find("#")])
+        
+        print("    [sentiwordnet dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
 
-# EFFECT LEXICON
-#    startDic = time.time()
-#    print("  [loading effect]")
-#    with open('dictionaries/goldStandard.tff', 'r') as inF8:
-#        for line8 in inF8:
-#            if (line8.split()[1] == "+Effect"):
-#                for word in line8.split()[2].split(","):
-#                    if word not in variables.dic_negative_words and word not in variables.dic_positive_words:
-#                        variables.dic_positive_words.append(word)
-#                        #print("[positive word]: " + word)
-#
-#            elif (line8.split()[1] == "-Effect"):
-#                for word in line8.split()[2].split(","):
-#                    if word not in variables.dic_negative_words and word not in variables.dic_positive_words:
-#                        variables.dic_negative_words.append(word) 
-#                        #print("[negative word]: " + word)
-#
-#    print("    [effect dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
+    #EFFECT
+    if(variables.use_dic_effect):
+        startDic = time.time()
+        print("  [loading effect]")
+        with open('dictionaries/goldStandard.tff', 'r') as inF8:
+            variables.dic_effect_loaded = True
+            variables.dic_loaded_total += 1
+            for line8 in inF8:
+                if (line8.split()[1] == "+Effect"):
+                    for word in line8.split()[2].split(","):
+                        if word not in variables.dic_negative_words and word not in variables.dic_positive_words:
+                            variables.dic_positive_words.append(word)
+                            #print("[positive word]: " + word)
 
-# ENGLISH TWITTER LEXICON SEMEVAL 2015
-    startDic = time.time()
-    print("  [semeval2015]")
-    with open('dictionaries/SemEval2015-English-Twitter-Lexicon.txt', 'r') as inF7:
-        for line7 in inF7:
-            #removing composite words for while 
-            if float(line7.split("\t")[0]) > 0 and not ' ' in line7.split("\t")[1].strip():
-                if "#" in line7.split("\t")[1].strip():
-                    variables.dic_positive_hashtags.append(line7.split("\t")[1].strip()[1:])
+                elif (line8.split()[1] == "-Effect"):
+                    for word in line8.split()[2].split(","):
+                        if word not in variables.dic_negative_words and word not in variables.dic_positive_words:
+                            variables.dic_negative_words.append(word) 
+                            #print("[negative word]: " + word)
+
+        print("    [effect dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
+
+    #SEMEVAL2015 
+    if(variables.use_dic_semeval2015):
+        startDic = time.time()
+        print("  [loading semeval2015]")
+        with open('dictionaries/SemEval2015-English-Twitter-Lexicon.txt', 'r') as inF7:
+            variables.dic_semeval2015_loaded = True
+            variables.dic_loaded_total += 1
+            for line7 in inF7:
+                #removing composite words for while 
+                if float(line7.split("\t")[0]) > 0 and not ' ' in line7.split("\t")[1].strip():
+                    if "#" in line7.split("\t")[1].strip():
+                        variables.dic_positive_hashtags.append(line7.split("\t")[1].strip()[1:])
+                    else:
+                        variables.dic_positive_words.append(line7.split("\t")[1].strip())
+                elif float(line7.split("\t")[0]) < 0 and not ' ' in line7.split("\t")[1].strip():
+                    if "#" in line7.split("\t")[1].strip():
+                        variables.dic_negative_hashtags.append(line7.split("\t")[1].strip()[1:])
+                    else:
+                        variables.dic_negative_words.append(line7.split("\t")[1].strip())
+        
+        print("    [semeval2015 dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
+
+    #AFFIN
+    if(variables.use_dic_affin):
+        startDic = time.time()
+        print("  [loading affin]")
+        with open(variables.DICTIONARY_AFFIN, 'r') as inF:
+            variables.dic_affin_loaded = True
+            variables.dic_loaded_total += 1
+            for line in inF:
+                if float(line.split("\t")[1].strip()) > 0:
+                    #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                    variables.dic_positive_words_affin.append(line.split("\t")[0].strip())
+                    variables.dic_positive_value_affin.append(float(line.split("\t")[1].strip()))
+                    #print("POSITIVE AFFIN " + line.split("\t")[0] + " " + line.split("\t")[1].strip())
                 else:
-                    variables.dic_positive_words.append(line7.split("\t")[1].strip())
-            elif float(line7.split("\t")[0]) < 0 and not ' ' in line7.split("\t")[1].strip():
-                if "#" in line7.split("\t")[1].strip():
-                    variables.dic_negative_hashtags.append(line7.split("\t")[1].strip()[1:])
+                    #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                    variables.dic_negative_words_affin.append(line.split("\t")[0].strip())
+                    variables.dic_negative_value_affin.append(float(line.split("\t")[1].strip()))
+                    #print("NEGATIVE AFFIN " + line.split("\t")[0] + " " + line.split("\t")[1].strip())
+
+        print("    [affin dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
+
+    #SLANG
+    if(variables.use_dic_slang):
+        startDic = time.time()
+        print("  [loading slang]")
+        with codecs.open(variables.DICTIONARY_SLANG, "r", "latin-1") as inF:
+        #with open(variables.DICTIONARY_SLANG, 'r') as inF:
+            variables.dic_slang_loaded = True
+            variables.dic_loaded_total += 1
+            for line in inF:    
+                if float(line.split("\t")[1].strip()) > 0:
+                    if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                        variables.dic_positive_words.append(line.split("\t")[0].strip())
+
+                elif float(line.split("\t")[1].strip()) < 0:
+                    if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                       variables.dic_negative_words.append(line.split("\t")[0].strip())
+
+        print("    [slang dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
+
+    #VADER
+    if(variables.use_dic_vader):
+        startDic = time.time()
+        print("  [loading vader]")
+        with open(variables.DICTIONARY_VADER, 'r') as inF:
+            variables.dic_vader_loaded = True
+            variables.dic_loaded_total += 1
+            for line in inF:
+                if float(line.split("\t")[1].strip()) > 0:
+                    if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                        variables.dic_positive_words_vader.append(line.split("\t")[0].strip())
+                        variables.dic_positive_value_vader.append(float(line.split("\t")[1].strip()))
+                        #variables.dic_positive_words.append(line.split("\t")[0].strip())
+                        #print("POSITIVE " + line.split("\t")[0])
                 else:
-                    variables.dic_negative_words.append(line7.split("\t")[1].strip())
+                    if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                        variables.dic_negative_words_vader.append(line.split("\t")[0].strip())
+                        variables.dic_negative_value_vader.append(float(line.split("\t")[1].strip()))
+                        #variables.dic_negative_words.append(line.split("\t")[0].strip())
+                        #print("NEGATIVE " + line.split("\t")[0])
+        
+        print("    [vader dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
+
+    # SENTIMENT140
+    if(variables.use_dic_sentiment140):  
+        startDic = time.time()
+        print("  [loading sentiment140]")
+        with open(variables.DICTIONARY_SENTIMENT140, 'r') as inF:
+            variables.dic_sentiment140_loaded = True
+            variables.dic_loaded_total += 1
+            for line in inF:
+                if float(line.split("\t")[1].strip()) > 0:
+                    if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                        variables.dic_positive_words_s140.append(line.split("\t")[0].strip())
+                        variables.dic_positive_value_s140.append(float(line.split("\t")[1].strip()))
+                        #variables.dic_positive_words.append(line.split("\t")[0].strip())
+                        #print("POSITIVE " + line.split("\t")[0])
+                else:
+                    if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                        variables.dic_negative_words_s140.append(line.split("\t")[0].strip())
+                        variables.dic_negative_value_s140.append(float(line.split("\t")[1].strip()))
+                        #variables.dic_negative_words.append(line.split("\t")[0].strip())
+                        #print("NEGATIVE " + line.split("\t")[0])
+
+        print("    [sentiment140 dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
+
     
-    print("    [semeval2015 dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
-
-# AFFIN 
-    startDic = time.time()
-    print("  [loading affin]")
-    with open(variables.DICTIONARY_AFFIN, 'r') as inF:
-        variables.use_dic_affin = True
-        for line in inF:
-            if float(line.split("\t")[1].strip()) > 0:
-                #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                variables.dic_positive_words_affin.append(line.split("\t")[0].strip())
-                variables.dic_positive_value_affin.append(float(line.split("\t")[1].strip()))
-                #print("POSITIVE AFFIN " + line.split("\t")[0] + " " + line.split("\t")[1].strip())
-            else:
-                #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                variables.dic_negative_words_affin.append(line.split("\t")[0].strip())
-                variables.dic_negative_value_affin.append(float(line.split("\t")[1].strip()))
-                #print("NEGATIVE AFFIN " + line.split("\t")[0] + " " + line.split("\t")[1].strip())
-
-    print("    [affin dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
-
-# SLANG
-    startDic = time.time()
-    print("  [loading slang]")
-    with codecs.open(variables.DICTIONARY_SLANG, "r", "latin-1") as inF:
-    #with open(variables.DICTIONARY_SLANG, 'r') as inF:
-        variables.use_dic_slang = True
-        for line in inF:    
-            if float(line.split("\t")[1].strip()) > 0:
-                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                    variables.dic_positive_words.append(line.split("\t")[0].strip())
-
-            elif float(line.split("\t")[1].strip()) < 0:
-                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                   variables.dic_negative_words.append(line.split("\t")[0].strip())
-
-    print("    [slang dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
-
-# Vader Lexicon
-    startDic = time.time()
-    print("  [loading vader]")
-    with open(variables.DICTIONARY_VADER, 'r') as inF:
-        variables.use_dic_vader = True
-        for line in inF:
-            if float(line.split("\t")[1].strip()) > 0:
-                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                    variables.dic_positive_words_vader.append(line.split("\t")[0].strip())
-                    variables.dic_positive_value_vader.append(float(line.split("\t")[1].strip()))
-                    #variables.dic_positive_words.append(line.split("\t")[0].strip())
-                    #print("POSITIVE " + line.split("\t")[0])
-            else:
-                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                    variables.dic_negative_words_vader.append(line.split("\t")[0].strip())
-                    variables.dic_negative_value_vader.append(float(line.split("\t")[1].strip()))
-                    #variables.dic_negative_words.append(line.split("\t")[0].strip())
-                    #print("NEGATIVE " + line.split("\t")[0])
-    
-    print("    [vader dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
-
-# Sentiment140 Lexicon
-#    startDic = time.time()
-#    print("  [loading sentiment140]")
-#    with open(variables.DICTIONARY_SENTIMENT140, 'r') as inF:
-#        variables.use_dic_sentiment140 = True
-#        for line in inF:
-#            if float(line.split("\t")[1].strip()) > 0:
-#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-#                    variables.dic_positive_words_s140.append(line.split("\t")[0].strip())
-#                    variables.dic_positive_value_s140.append(float(line.split("\t")[1].strip()))
-#                    #variables.dic_positive_words.append(line.split("\t")[0].strip())
-#                    #print("POSITIVE " + line.split("\t")[0])
-#            else:
-#                if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-#                    variables.dic_negative_words_s140.append(line.split("\t")[0].strip())
-#                    variables.dic_negative_value_s140.append(float(line.split("\t")[1].strip()))
-#                    #variables.dic_negative_words.append(line.split("\t")[0].strip())
-#                    #print("NEGATIVE " + line.split("\t")[0])
-
-    print("    [sentiment140 dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
-
     # Performance improvement test
-    variables.dic_positive_words = set(variables.dic_positive_words)
-    variables.dic_negative_words = set(variables.dic_negative_words)
-    variables.dic_positive_hashtags = set(variables.dic_positive_hashtags)
-    variables.dic_negative_hashtags = set(variables.dic_negative_hashtags)
+    variables.dic_positive_words     = set(variables.dic_positive_words)
+    variables.dic_negative_words     = set(variables.dic_negative_words)
+    variables.dic_positive_hashtags  = set(variables.dic_positive_hashtags)
+    variables.dic_negative_hashtags  = set(variables.dic_negative_hashtags)
     variables.dic_positive_emoticons = set(variables.dic_positive_emoticons)
     variables.dic_negative_emoticons = set(variables.dic_negative_emoticons)
 
     end = time.time()
-    print("[all dictionaries loaded][" + str(format(end - start, '.3g')) + " seconds]\n")
+    print("[all dictionaries (" + str(variables.dic_loaded_total) + ") loaded][" + str(format(end - start, '.3g')) + " seconds]\n")
 
 
-# get tweets from id (SEMEVAL 2014 database)
+# Load tweets from id (SEMEVAL 2014 database)
 def loadTrainTweets():
     start = time.time()
     print("[loading tweets from train file Semeval 2014]")
@@ -248,10 +266,10 @@ def loadTrainTweets():
                     continue
     
     end = time.time()
-    print("[train tweets loaded][" + str(format(end - start, '.3g')) + " seconds]\n")
+    print("  [train tweets loaded (" + str(tweets_loaded) + " tweets)][" + str(format(end - start, '.3g')) + " seconds]\n")
 
 
-# get the test tweets from Semeval 2014 task 9
+# Load the test tweets from Semeval 2014 task 9
 def loadTestTweets():
     start = time.time()
     print("[loading tweets from test file Semeval 2014]")
@@ -349,53 +367,45 @@ def loadTestTweets():
 
                     tweets_loaded += 1
                 
+                    #SVM Values
                     variables.svm_values_tweets.append(tweet_parsed[3])
                     svm_values = []
                     svm_values = tweet_parsed[3].strip()[1:-1].split()
 
-
                     if(float(svm_values[0]) >= -0.4):
-                        #print("is negative -> " + str(svm_values))
                         variables.svm_is_neutral.append(False)
                         variables.svm_normalized_values.append(-1)
 
                     elif(float(svm_values[2]) > float(svm_values[1])):
                         variables.svm_is_neutral.append(False)
                         variables.svm_normalized_values.append(1)
-                        #print("is positive")
-                        #print(svm_values)
                     else:
-                        #print("is neutral -> " + str(svm_values))
                         variables.svm_is_neutral.append(True)
                         variables.svm_normalized_values.append(0)
+                    #SVM Values
                 
                 except Exception as e:
                     print("exception: " + e)
                     continue
     
     end = time.time()
-    print("[test tweets loaded][" + str(format(end - start, '.3g')) + " seconds]\n")
+    print("  [test tweets loaded (" + str(tweets_loaded) + " tweets)][" + str(format(end - start, '.3g')) + " seconds]\n")
 
-
+#Aux functions
 def add(left, right):
     return left + right
-
 
 def sub(left, right):
     return left - right
 
-
 def mul(left, right):
     return left * right
-
 
 def exp(par):
     return math.exp(par)
 
-
 def cos(par):
     return math.cos(par)
-
 
 def sin(par):
     return math.sin(par)
@@ -407,14 +417,12 @@ def protectedDiv(left, right):
     except:
         return 1
 
-
 # Log
 def protectedLog(value):
     try:
         return math.log10(value)
     except:
         return 1    
-
 
 # Sqrt
 def protectedSqrt(value):
@@ -423,15 +431,11 @@ def protectedSqrt(value):
     except:
         return 1  
 
-
 def invertSignal(val):
     return -val
 
-
+#Phrase manipulation functions
 def negativeWordsQuantity(phrase):
-    #negative_words = variables.negative_words_quantity_cache
-
-    #if negative_words > -1:
     negative_words = 0
     words = phrase.split()
     
@@ -439,23 +443,16 @@ def negativeWordsQuantity(phrase):
         if word in variables.dic_negative_words:
             negative_words += 1
 
-    #variables.negative_words_quantity_cache = negative_words
-
     return negative_words
 
 
 def positiveWordsQuantity(phrase):
-    #positive_words = variables.positive_words_quantity_cache
-    
-    #if positive_words > -1:
     positive_words = 0
     words = phrase.split()
     
     for word in words:
         if word in variables.dic_positive_words:
             positive_words += 1
-    
-    #variables.positive_words_quantity_cache = positive_words
     
     return positive_words    
 
@@ -481,7 +478,7 @@ def polaritySum2(phrase):
             invert = True
 
         # LIU pos/neg words
-        if variables.use_dic_liu:
+        if variables.dic_liu_loaded:
             if word in variables.dic_positive_words:
                 if invert:
                     total_sum -= 1
@@ -507,7 +504,7 @@ def polaritySum2(phrase):
                 dic_quantity += 1
 
         # AFFIN
-        if variables.use_dic_affin:
+        if variables.dic_affin_loaded:
             if word in variables.dic_positive_words_affin:
                 if invert:
                     total_sum -= variables.dic_positive_value_affin[variables.dic_positive_words_affin.index(word)]
@@ -528,7 +525,7 @@ def polaritySum2(phrase):
                 dic_quantity += 1
 
         # VADER
-        if variables.use_dic_vader:
+        if variables.dic_vader_loaded:
             if word in variables.dic_positive_words_vader:
                 if invert:
                     total_sum -= variables.dic_positive_value_vader[variables.dic_positive_words_vader.index(word)]
@@ -549,7 +546,7 @@ def polaritySum2(phrase):
                 dic_quantity += 1
 
         # SENTIMENT140
-        if variables.use_dic_sentiment140:
+        if variables.dic_sentiment140_loaded:
             if word in variables.dic_positive_words_s140:
                 if invert:
                     total_sum -= variables.dic_positive_value_s140[variables.dic_positive_words_s140.index(word)]
