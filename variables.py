@@ -24,11 +24,17 @@ DICTIONARY_SENTIMENT140 = 'dictionaries/sentiment140_unigram.txt'
 
 model_results = []
 
+use_svm_neutral 	  = False
+use_url_to_neutral	  = False
+use_emoticon_analysis = False
+use_only_gp 	      = False
+use_only_svm		  = False
+
 use_dic_liu          = True
 use_dic_sentiwordnet = False
 use_dic_affin        = True
 use_dic_vader        = True
-use_dic_sentiment140 = False
+use_dic_sentiment140 = True
 use_dic_slang        = False
 use_dic_effect       = False
 use_dic_semeval2015  = False

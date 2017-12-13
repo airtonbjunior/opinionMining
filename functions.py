@@ -478,7 +478,7 @@ def polaritySum2(phrase):
             invert = True
 
         # LIU pos/neg words
-        if variables.dic_liu_loaded:
+        if(variables.use_dic_liu and variables.dic_liu_loaded):
             if word in variables.dic_positive_words:
                 if invert:
                     total_sum -= 1
@@ -504,7 +504,7 @@ def polaritySum2(phrase):
                 dic_quantity += 1
 
         # AFFIN
-        if variables.dic_affin_loaded:
+        if(variables.use_dic_affin and variables.dic_affin_loaded):
             if word in variables.dic_positive_words_affin:
                 if invert:
                     total_sum -= variables.dic_positive_value_affin[variables.dic_positive_words_affin.index(word)]
@@ -525,7 +525,7 @@ def polaritySum2(phrase):
                 dic_quantity += 1
 
         # VADER
-        if variables.dic_vader_loaded:
+        if(variables.use_dic_vader and variables.dic_vader_loaded):
             if word in variables.dic_positive_words_vader:
                 if invert:
                     total_sum -= variables.dic_positive_value_vader[variables.dic_positive_words_vader.index(word)]
@@ -546,7 +546,7 @@ def polaritySum2(phrase):
                 dic_quantity += 1
 
         # SENTIMENT140
-        if variables.dic_sentiment140_loaded:
+        if(variables.use_dic_sentiment140 and variables.dic_sentiment140_loaded):
             if word in variables.dic_positive_words_s140:
                 if invert:
                     total_sum -= variables.dic_positive_value_s140[variables.dic_positive_words_s140.index(word)]
@@ -565,7 +565,6 @@ def polaritySum2(phrase):
                     total_sum += variables.dic_negative_value_s140[variables.dic_negative_words_s140.index(word)]
                 
                 dic_quantity += 1
-        
 
         index += 1 # word of phrase
         invert = False
@@ -1060,27 +1059,27 @@ def evaluateMessages(base, model):
         neutral_because_url = False
         
         try:
-            # Check if there are emoticons. If yes, make the emoticon-based process
-            if(hasEmoticons(message)):
+            if(variables.use_emoticon_analysis and hasEmoticons(message)):
                 result = emoticonsPolaritySum(message)
 
             # If the tweet has url, set neutral (intuition to test)
-            elif(len(getURLs(message)) > 0):
+            elif(variables.use_url_to_neutral and len(getURLs(message)) > 0):
                 result = 0
                 neutral_url_qtty += 1
                 neutral_because_url = True
 
             # Check if SVM are saying that the message are neutral
-            #elif(variables.svm_normalized_values[index] == 0):
-            #if(variables.svm_normalized_values[index] == 0):
-            #    result = variables.svm_normalized_values[index]
+            elif(variables.use_svm_neutral and variables.svm_normalized_values[index] == 0):
+                result = 0
 
+            # SVM only
+            elif(variables.use_only_svm):
+                result = variables.svm_normalized_values[index]
+            
+            # GP only
             else:
                 result = float(eval(model_analysis))
-            #    result = variables.svm_normalized_values[index]
-            
-            #result = variables.svm_normalized_values[index]
-            #result = float(eval(model_analysis))
+
 
         except Exception as e:
             print("exception: " + str(e))
@@ -1206,13 +1205,13 @@ def evaluateMessages(base, model):
     print("[false_negative]: " + str(false_negative))
     print("[true_neutral]: " + str(true_neutral))
     print("[false_neutral]: " + str(false_neutral))
+    print("[dictionary quantity]: " + str(variables.dic_loaded_total))
     
-
-    print("\nNeutral choosed because of URL -> " + str(neutral_url_qtty) + "\n")
-    print("\nCorrect Neutral prediction because of URL -> " + str(neutral_url_correct_pred) + "\n")
+    if(variables.use_url_to_neutral):
+        print("\nNeutral choosed because of URL -> " + str(neutral_url_qtty))
+        print("\nCorrect Neutral prediction because of URL -> " + str(neutral_url_correct_pred))
     
-
-    print("\n\n")
+    print("\n")
     print("Confusion Matrix\n")
     print("          |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |")
     print("--------------------------------------------------")
@@ -1263,7 +1262,8 @@ def resultsAnalysis():
 
     with open(variables.FILE_RESULTS, 'a') as f:
         f.write("\n\n##Statistics##\n\n")
-        f.write(str(models) + " models evaluated\n\n")
+        f.write(str(models) + " models evaluated\n")
+        f.write(str(variables.dic_loaded_total) + " dictionaries\n\n")
         f.write("AVGs")
         f.write("\nAVG Tweets2013 F1 SemEval\t" + str(round((sum(t2k13_list) / models), 4)))
         f.write("\nAVG Tweets2014 F1 SemEval\t" + str(round((sum(t2k14_list) / models), 4)))
