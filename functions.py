@@ -502,6 +502,11 @@ def dictionaryWeights(w1, w2, w3, w4, w5, w6, w7):
     variables.semeval2015_weight  = w7
 
 
+def neutralRange(inferior, superior):
+    variables.neutral_inferior_range = inferior
+    variables.neutral_superior_range = superior
+
+
 def polaritySum2(phrase):
     total_sum = 0
     dic_quantity = 0
@@ -1685,35 +1690,35 @@ def evaluateMessages(base, model):
             model_results_to_count_occurrences.append(result)
 
         if messages_score[index] > 0:
-            if result > 0:
+            if result > variables.neutral_superior_range:
                 true_positive += 1
                 if base == "all":
                     goldPos_classPos_value.append(result)
             else:
-                if result == 0:
+                if result >= variables.neutral_inferior_range and result <= variables.neutral_superior_range:
                     false_neutral += 1
                     goldPos_classNeu += 1
                     if base == "all":
                         goldPos_classNeu_value.append(result)
-                else:
+                elif result < variables.neutral_inferior_range:
                     false_negative += 1
                     goldPos_classNeg += 1
                     if base == "all":
                         goldPos_classNeg_value.append(result)
                 
         elif messages_score[index] < 0:
-            if result < 0:
+            if result < variables.neutral_inferior_range:
                 true_negative += 1
                 if base == "all":
                     goldNeg_classNeg_value.append(result)
             else:
                 false_negative_log += 1
-                if result == 0:
+                if result >= variables.neutral_inferior_range and result <= variables.neutral_superior_range:
                     false_neutral += 1
                     goldNeg_classNeu += 1
                     if base == "all":
                         goldNeg_classNeu_value.append(result)
-                else:
+                elif result > variables.neutral_superior_range:
                     false_positive += 1
                     goldNeg_classPos += 1
                     if base == "all":
@@ -1726,19 +1731,19 @@ def evaluateMessages(base, model):
                     #print("[Polarity calculated]: " + str(result))
 
         elif messages_score[index] == 0:
-            if result == 0:
+            if result >= variables.neutral_inferior_range and result <= variables.neutral_superior_range:
                 true_neutral += 1
                 if(neutral_because_url == True):
                     neutral_url_correct_pred += 1
                 if base == "all":
                     goldNeu_classNeu_value.append(result)
             else:
-                if result < 0:
+                if result < variables.neutral_inferior_range:
                     false_negative += 1
                     goldNeu_classNeg += 1
                     if base == "all":
                         goldNeu_classNeg_value.append(result)
-                else:
+                elif result > variables.neutral_superior_range:
                     false_positive += 1
                     goldNeu_classPos += 1
                     if base == "all":
@@ -1845,6 +1850,7 @@ def evaluateMessages(base, model):
             if base == "all":
                 f.write("\n")
 
+'''
     if (base == "all"):
         with open("commom_values_goldPos_classPos " + str(datetime.now()) + ".txt", 'a') as f:
             f.write(str(Counter(goldPos_classPos_value)))
@@ -1866,7 +1872,7 @@ def evaluateMessages(base, model):
             f.write(str(Counter(goldNeu_classNeg_value)))
         with open("commom_values_goldNeu_classNeu " + str(datetime.now()) + ".txt", 'a') as f:
             f.write(str(Counter(goldNeu_classNeu_value)))                                        
-
+'''
 
 def resultsAnalysis():
     models = 0

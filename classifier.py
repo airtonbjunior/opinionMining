@@ -30,7 +30,7 @@ evaluation_acumulated_time = 0
 start = time.time()
 
 # bypass because the bool is a subtype of int
-#class Bool(object): pass
+class Nothing(object): pass
 
 #pset = gp.PrimitiveSetTyped("MAIN", [str, str], float)
 pset = gp.PrimitiveSetTyped("MAIN", [str], float)
@@ -38,9 +38,9 @@ pset.addPrimitive(operator.add, [float,float], float)
 pset.addPrimitive(operator.sub, [float,float], float)
 pset.addPrimitive(operator.mul, [float,float], float)
 pset.addPrimitive(protectedDiv, [float,float], float)
-pset.addPrimitive(addI, [int,int], int)
-pset.addPrimitive(subI, [int,int], int)
-pset.addPrimitive(mulI, [int,int], int)
+#pset.addPrimitive(addI, [int,int], int)
+#pset.addPrimitive(subI, [int,int], int)
+#pset.addPrimitive(mulI, [int,int], int)
 pset.addPrimitive(math.exp, [float], float)
 pset.addPrimitive(math.cos, [float], float)
 pset.addPrimitive(math.sin, [float], float)
@@ -56,7 +56,7 @@ pset.addPrimitive(negativeEmoticons, [str], float)
 
 # Temporary removed
 #pset.addPrimitive(polaritySum2, [str], float)
-pset.addPrimitive(polaritySumAVG, [str], float)
+#pset.addPrimitive(polaritySumAVG, [str], float)
 # Temporary removed
 
 pset.addPrimitive(passInt, [int], int)
@@ -84,6 +84,7 @@ pset.addPrimitive(replaceBoosterWords, [str], str)
 pset.addPrimitive(boostUpperCase, [str], str)
 
 #pset.addPrimitive(dictionaryWeights, [float, float, float, float, float, float, float], None)
+pset.addPrimitive(neutralRange, [float, float], Nothing)
 
 pset.addTerminal(True, bool)
 pset.addTerminal(False, bool)
@@ -95,8 +96,8 @@ pset.addTerminal(1.5, float)
 pset.addTerminal(2.0, float)
 
 pset.addEphemeralConstant("rand", lambda: random.uniform(0, 2), float)
-pset.addEphemeralConstant("rand2", lambda: random.uniform(0, 3), float)
-pset.addEphemeralConstant("randInt", lambda: random.randint(0, 3), int)
+#pset.addEphemeralConstant("rand2", lambda: random.uniform(0, 3), float)
+#pset.addEphemeralConstant("randInt", lambda: random.randint(0, 3), int)
 
 pset.renameArguments(ARG0='x')
 #pset.renameArguments(ARG0='y')
@@ -324,6 +325,9 @@ def evalSymbRegTweetsFromSemeval(individual):
 
     if variables.best_fitness < fitnessReturn:
         if variables.best_fitness != 0:
+            # save partial best individual (in case we need stop evolution)
+            with open(variables.BEST_INDIVIDUAL, 'w') as f:
+                f.write(str(individual))
             variables.best_fitness_history.append(variables.best_fitness)
         variables.best_fitness = fitnessReturn
         variables.fitness_positive = is_positive

@@ -25,6 +25,8 @@ DICTIONARY_SEMEVAL2015  = 'dictionaries/SemEval2015-English-Twitter-Lexicon.txt'
 #DICTIONARY_EFFECT  = 'dictionaries/goldStandard.tff'
 DICTIONARY_EFFECT  = 'dictionaries/EffectWordNet.tff'
 
+BEST_INDIVIDUAL = 'partial-best-individual ' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+
 model_results = []
 
 use_svm_neutral 	  = False
@@ -32,6 +34,9 @@ use_url_to_neutral	  = False
 use_emoticon_analysis = False
 use_only_gp 	      = False
 use_only_svm		  = False
+
+neutral_inferior_range = 0
+neutral_superior_range = 0
 
 liu_weight       	= 1
 sentiwordnet_weight = 1
