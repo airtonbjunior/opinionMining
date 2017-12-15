@@ -20,7 +20,10 @@ DICTIONARY_SENTIWORDNET = 'dictionaries/SentiWordNet_3.0.0_20130122.txt'
 DICTIONARY_AFFIN = 'dictionaries/affin.txt'
 DICTIONARY_SLANG = 'dictionaries/slangSD.txt'
 DICTIONARY_VADER = 'dictionaries/vaderLexicon.txt'
-DICTIONARY_SENTIMENT140 = 'dictionaries/sentiment140_unigram.txt'
+#DICTIONARY_SENTIMENT140 = 'dictionaries/sentiment140_unigram.txt'
+DICTIONARY_SEMEVAL2015  = 'dictionaries/SemEval2015-English-Twitter-Lexicon.txt'
+#DICTIONARY_EFFECT  = 'dictionaries/goldStandard.tff'
+DICTIONARY_EFFECT  = 'dictionaries/EffectWordNet.tff'
 
 model_results = []
 
@@ -30,11 +33,18 @@ use_emoticon_analysis = False
 use_only_gp 	      = False
 use_only_svm		  = False
 
+liu_weight       	= 1
+sentiwordnet_weight = 1
+affin_weight        = 1
+vader_weight        = 1
+slang_weight        = 1
+effect_weight       = 1
+semeval2015_weight  = 1
+
 use_dic_liu          = True
 use_dic_sentiwordnet = False
 use_dic_affin        = True
-use_dic_vader        = True
-use_dic_sentiment140 = True
+use_dic_vader        = False
 use_dic_slang        = False
 use_dic_effect       = False
 use_dic_semeval2015  = False
@@ -43,7 +53,6 @@ dic_liu_loaded 			= False
 dic_sentiwordnet_loaded = False
 dic_affin_loaded		= False
 dic_vader_loaded		= False
-dic_sentiment140_loaded = False
 dic_slang_loaded		= False
 dic_effect_loaded		= False
 dic_semeval2015_loaded	= False
@@ -56,18 +65,18 @@ MAX_NEUTRAL_TWEETS   = 1400
 
 CROSSOVER = 0.9
 MUTATION = 0.1
-GENERATIONS = 100
-POPULATION  = 100
+GENERATIONS = 51
+POPULATION  = 200
 cicles_unchanged = 0
 generations_unchanged = 0
-max_unchanged_generations = 50
+max_unchanged_generations = 250
 max_unchanged_cicles = 9999999999
 
 generations_unchanged_reached_msg = False
 
 TOTAL_MODELS = 3
 
-FILE_RESULTS = 'test_results-'+ str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+FILE_RESULTS = 'test_results-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 TRAIN_RESULTS = 'train-' + str(TOTAL_MODELS) + 'models_' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 
 tweets_semeval       = []
@@ -80,20 +89,40 @@ tweet_semeval_index  = 0
 dic_positive_words       = []
 dic_negative_words       = []
 
+dic_positive_words_sentiwordnet = []
+dic_negative_words_sentiwordnet = []
+dic_positive_value_sentiwordnet = []
+dic_negative_value_sentiwordnet = []
+
+dic_positive_words_semeval2015 = []
+dic_negative_words_semeval2015 = []
+dic_positive_value_semeval2015 = []
+dic_negative_value_semeval2015 = []
+
+dic_positive_words_slang = []
+dic_negative_words_slang = []
+dic_positive_value_slang = []
+dic_negative_value_slang = []
+
 dic_positive_words_affin = []
 dic_negative_words_affin = []
 dic_positive_value_affin = []
 dic_negative_value_affin = []
+
+dic_positive_words_effect = []
+dic_negative_words_effect = []
+dic_positive_value_effect = []
+dic_negative_value_effect = []
 
 dic_positive_words_vader = []
 dic_negative_words_vader = []
 dic_positive_value_vader = []
 dic_negative_value_vader = []
 
-dic_positive_words_s140 = []
-dic_negative_words_s140 = []
-dic_positive_value_s140 = []
-dic_negative_value_s140 = []
+#dic_positive_words_s140 = []
+#dic_negative_words_s140 = []
+#dic_positive_value_s140 = []
+#dic_negative_value_s140 = []
 
 dic_positive_hashtags  = []
 dic_negative_hashtags  = []
@@ -193,4 +222,4 @@ log_times = True
 
 save_file_results = True
 
-stop_words = set(stopwords.words('english'))
+stop_words = set([x.lower() for x in stopwords.words('english')])

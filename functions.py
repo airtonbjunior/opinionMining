@@ -14,6 +14,9 @@ from nltk.stem import WordNetLemmatizer
 import matplotlib.pyplot as plt
 import numpy as np
 
+from collections import Counter
+from datetime import datetime
+
 import variables
 
 # Load the dictionaries
@@ -67,22 +70,29 @@ def getDictionary():
         startDic = time.time()
         print("  [loading sentiwordnet]")
         with open(variables.DICTIONARY_SENTIWORDNET, 'r') as inF9:
-            variables.use_dic_sentiwordnet = True
+            variables.dic_sentiwordnet_loaded = True
             variables.dic_loaded_total += 1
             for line9 in inF9:
                 if float(line9.split("\t")[2]) > float(line9.split("\t")[3]): #positive greater than negative
                     words = line9.split("\t")[4].lower().strip().split()
                     for word in words:
-                        if not "_" in word and not word in variables.dic_positive_words:
-                            variables.dic_positive_words.append(word[:word.find("#")])
-                            #print("POSITIVE: " + word[:word.find("#")])
+                        if not "_" in word:
+                            #variables.dic_positive_words.append(word[:word.find("#")])
+                            w = word[:word.find("#")]
+                            if(w not in variables.dic_positive_words_sentiwordnet and len(w) > 2):
+                                variables.dic_positive_words_sentiwordnet.append(w)
+                                variables.dic_positive_value_sentiwordnet.append(1)
                 
                 elif float(line9.split("\t")[2]) < float(line9.split("\t")[3]):
                     words = line9.split("\t")[4].lower().strip().split()
                     for word in words:
-                        if not "_" in word and not word in variables.dic_negative_words:
-                            variables.dic_negative_words.append(word[:word.find("#")])
-                            #print("NEGATIVE: " + word[:word.find("#")])
+                        if not "_" in word:
+                            #variables.dic_negative_words.append(word[:word.find("#")])
+                            w = word[:word.find("#")]
+                            if(w not in variables.dic_negative_words_sentiwordnet and len(w) > 2):
+                                variables.dic_negative_words_sentiwordnet.append(w)
+                                variables.dic_negative_value_sentiwordnet.append(-1)                            
+
         
         print("    [sentiwordnet dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
 
@@ -90,21 +100,19 @@ def getDictionary():
     if(variables.use_dic_effect):
         startDic = time.time()
         print("  [loading effect]")
-        with open('dictionaries/goldStandard.tff', 'r') as inF8:
+        with open(variables.DICTIONARY_EFFECT, 'r') as inF8:
             variables.dic_effect_loaded = True
             variables.dic_loaded_total += 1
             for line8 in inF8:
                 if (line8.split()[1] == "+Effect"):
                     for word in line8.split()[2].split(","):
-                        if word not in variables.dic_negative_words and word not in variables.dic_positive_words:
-                            variables.dic_positive_words.append(word)
-                            #print("[positive word]: " + word)
+                        variables.dic_positive_words_effect.append(word)
+                        variables.dic_positive_value_effect.append(1)
 
-                elif (line8.split()[1] == "-Effect"):
+                elif (line8.split()[1].lower() == "-effect"):
                     for word in line8.split()[2].split(","):
-                        if word not in variables.dic_negative_words and word not in variables.dic_positive_words:
-                            variables.dic_negative_words.append(word) 
-                            #print("[negative word]: " + word)
+                        variables.dic_negative_words_effect.append(word)
+                        variables.dic_negative_value_effect.append(-1)
 
         print("    [effect dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
 
@@ -112,7 +120,7 @@ def getDictionary():
     if(variables.use_dic_semeval2015):
         startDic = time.time()
         print("  [loading semeval2015]")
-        with open('dictionaries/SemEval2015-English-Twitter-Lexicon.txt', 'r') as inF7:
+        with open(variables.DICTIONARY_SEMEVAL2015, 'r') as inF7:
             variables.dic_semeval2015_loaded = True
             variables.dic_loaded_total += 1
             for line7 in inF7:
@@ -121,12 +129,14 @@ def getDictionary():
                     if "#" in line7.split("\t")[1].strip():
                         variables.dic_positive_hashtags.append(line7.split("\t")[1].strip()[1:])
                     else:
-                        variables.dic_positive_words.append(line7.split("\t")[1].strip())
+                        variables.dic_positive_words_semeval2015.append(line7.split("\t")[1].strip())
+                        variables.dic_positive_value_semeval2015.append(float(line7.split("\t")[0]))
                 elif float(line7.split("\t")[0]) < 0 and not ' ' in line7.split("\t")[1].strip():
                     if "#" in line7.split("\t")[1].strip():
                         variables.dic_negative_hashtags.append(line7.split("\t")[1].strip()[1:])
                     else:
-                        variables.dic_negative_words.append(line7.split("\t")[1].strip())
+                        variables.dic_negative_words_semeval2015.append(line7.split("\t")[1].strip())
+                        variables.dic_negative_value_semeval2015.append(float(line7.split("\t")[0]))
         
         print("    [semeval2015 dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
 
@@ -139,15 +149,11 @@ def getDictionary():
             variables.dic_loaded_total += 1
             for line in inF:
                 if float(line.split("\t")[1].strip()) > 0:
-                    #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
                     variables.dic_positive_words_affin.append(line.split("\t")[0].strip())
                     variables.dic_positive_value_affin.append(float(line.split("\t")[1].strip()))
-                    #print("POSITIVE AFFIN " + line.split("\t")[0] + " " + line.split("\t")[1].strip())
                 else:
-                    #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
                     variables.dic_negative_words_affin.append(line.split("\t")[0].strip())
                     variables.dic_negative_value_affin.append(float(line.split("\t")[1].strip()))
-                    #print("NEGATIVE AFFIN " + line.split("\t")[0] + " " + line.split("\t")[1].strip())
 
         print("    [affin dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
 
@@ -156,17 +162,16 @@ def getDictionary():
         startDic = time.time()
         print("  [loading slang]")
         with codecs.open(variables.DICTIONARY_SLANG, "r", "latin-1") as inF:
-        #with open(variables.DICTIONARY_SLANG, 'r') as inF:
             variables.dic_slang_loaded = True
             variables.dic_loaded_total += 1
             for line in inF:    
                 if float(line.split("\t")[1].strip()) > 0:
-                    if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                        variables.dic_positive_words.append(line.split("\t")[0].strip())
+                    variables.dic_positive_words_slang.append(line.split("\t")[0].strip())
+                    variables.dic_positive_value_slang.append(float(line.split("\t")[1].strip()))
 
                 elif float(line.split("\t")[1].strip()) < 0:
-                    if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                       variables.dic_negative_words.append(line.split("\t")[0].strip())
+                    variables.dic_negative_words_slang.append(line.split("\t")[0].strip())
+                    variables.dic_negative_value_slang.append(float(line.split("\t")[1].strip()))
 
         print("    [slang dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
 
@@ -179,42 +184,36 @@ def getDictionary():
             variables.dic_loaded_total += 1
             for line in inF:
                 if float(line.split("\t")[1].strip()) > 0:
-                    if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                        variables.dic_positive_words_vader.append(line.split("\t")[0].strip())
-                        variables.dic_positive_value_vader.append(float(line.split("\t")[1].strip()))
-                        #variables.dic_positive_words.append(line.split("\t")[0].strip())
-                        #print("POSITIVE " + line.split("\t")[0])
+                    #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                    variables.dic_positive_words_vader.append(line.split("\t")[0].strip())
+                    variables.dic_positive_value_vader.append(float(line.split("\t")[1].strip()))
+                    #variables.dic_positive_words.append(line.split("\t")[0].strip())
+                    #print("POSITIVE " + line.split("\t")[0])
                 else:
-                    if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                        variables.dic_negative_words_vader.append(line.split("\t")[0].strip())
-                        variables.dic_negative_value_vader.append(float(line.split("\t")[1].strip()))
-                        #variables.dic_negative_words.append(line.split("\t")[0].strip())
-                        #print("NEGATIVE " + line.split("\t")[0])
+                    #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
+                    variables.dic_negative_words_vader.append(line.split("\t")[0].strip())
+                    variables.dic_negative_value_vader.append(float(line.split("\t")[1].strip()))
+                    #variables.dic_negative_words.append(line.split("\t")[0].strip())
+                    #print("NEGATIVE " + line.split("\t")[0])
         
         print("    [vader dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
 
-    # SENTIMENT140
-    if(variables.use_dic_sentiment140):  
-        startDic = time.time()
-        print("  [loading sentiment140]")
-        with open(variables.DICTIONARY_SENTIMENT140, 'r') as inF:
-            variables.dic_sentiment140_loaded = True
-            variables.dic_loaded_total += 1
-            for line in inF:
-                if float(line.split("\t")[1].strip()) > 0:
-                    if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                        variables.dic_positive_words_s140.append(line.split("\t")[0].strip())
-                        variables.dic_positive_value_s140.append(float(line.split("\t")[1].strip()))
-                        #variables.dic_positive_words.append(line.split("\t")[0].strip())
-                        #print("POSITIVE " + line.split("\t")[0])
-                else:
-                    if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                        variables.dic_negative_words_s140.append(line.split("\t")[0].strip())
-                        variables.dic_negative_value_s140.append(float(line.split("\t")[1].strip()))
-                        #variables.dic_negative_words.append(line.split("\t")[0].strip())
-                        #print("NEGATIVE " + line.split("\t")[0])
-
-        print("    [sentiment140 dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
+#    # SENTIMENT140
+#    if(variables.use_dic_sentiment140):  
+#        startDic = time.time()
+#        print("  [loading sentiment140]")
+#        with open(variables.DICTIONARY_SENTIMENT140, 'r') as inF:
+#            variables.dic_sentiment140_loaded = True
+#            variables.dic_loaded_total += 1
+#            for line in inF:
+#                if float(line.split("\t")[1].strip()) > 0:
+#                    variables.dic_positive_words_s140.append(line.split("\t")[0].strip())
+#                    variables.dic_positive_value_s140.append(float(line.split("\t")[1].strip()))
+#                else:
+#                    variables.dic_negative_words_s140.append(line.split("\t")[0].strip())
+#                    variables.dic_negative_value_s140.append(float(line.split("\t")[1].strip()))
+#
+#        print("    [sentiment140 dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
 
     
     # Performance improvement test
@@ -234,6 +233,10 @@ def loadTrainTweets():
     start = time.time()
     print("[loading tweets from train file Semeval 2014]")
 
+    #positive_words = []
+    #negative_words = []
+    #neutral_words  = []
+
     tweets_loaded = 0
 
     with open(variables.SEMEVAL_TRAIN_FILE, 'r') as inF:
@@ -248,22 +251,40 @@ def loadTrainTweets():
                                 variables.positive_tweets += 1
                                 variables.tweets_semeval.append(tweet_parsed[3])
                                 variables.tweets_semeval_score.append(1)
+                                #for w in tweet_parsed[3].split():
+                                #    if w.strip().lower() not in variables.stop_words:
+                                #        positive_words.append(w.strip())
                                 tweets_loaded += 1
                         else:
                             if(variables.negative_tweets < variables.MAX_NEGATIVES_TWEETS):
                                 variables.negative_tweets += 1
                                 variables.tweets_semeval.append(tweet_parsed[3])
                                 variables.tweets_semeval_score.append(-1)
+                                #for w in tweet_parsed[3].split():
+                                #    if w.strip().lower() not in variables.stop_words:
+                                #        negative_words.append(w.strip())
                                 tweets_loaded += 1
                     else:
                         if(variables.neutral_tweets < variables.MAX_NEUTRAL_TWEETS):
                             variables.tweets_semeval.append(tweet_parsed[3])
                             variables.tweets_semeval_score.append(0)
                             variables.neutral_tweets += 1
+                            #for w in tweet_parsed[3].split():
+                            #    if w.strip().lower() not in variables.stop_words:
+                            #        neutral_words.append(w.strip())                            
                             tweets_loaded += 1
                 except:
                     print("exception")
                     continue
+
+    # save frequent words on file
+    #with open("commom_positive_words_nostopwords.txt", 'a') as f:
+    #    f.write(str(Counter(positive_words)))
+    #with open("commom_negative_words_nostopwords.txt", 'a') as f:
+    #    f.write(str(Counter(negative_words)))            
+    #with open("commom_neutral_words_nostopwords.txt", 'a') as f:
+    #    f.write(str(Counter(neutral_words)))
+    # save frequent words on file        
     
     end = time.time()
     print("  [train tweets loaded (" + str(tweets_loaded) + " tweets)][" + str(format(end - start, '.3g')) + " seconds]\n")
@@ -401,6 +422,15 @@ def sub(left, right):
 def mul(left, right):
     return left * right
 
+def addI(left, right):
+    return left + right
+
+def subI(left, right):
+    return left - right
+
+def mulI(left, right):
+    return left * right
+
 def exp(par):
     return math.exp(par)
 
@@ -409,6 +439,9 @@ def cos(par):
 
 def sin(par):
     return math.sin(par)
+
+def passInt(num):
+    return num
 
 # Protected Div (check division by zero)
 def protectedDiv(left, right):
@@ -457,6 +490,18 @@ def positiveWordsQuantity(phrase):
     return positive_words    
 
 
+# Sequence:
+# [w1]liu [w2]sentiwordnet [w3]affin [w4]vader [w5]slang [w6]effect [w7]semeval2015 
+def dictionaryWeights(w1, w2, w3, w4, w5, w6, w7):
+    variables.liu_weight          = w1
+    variables.sentiwordnet_weight = w2
+    variables.affin_weight        = w3
+    variables.vader_weight        = w4
+    variables.slang_weight        = w5
+    variables.effect_weight       = w6
+    variables.semeval2015_weight  = w7
+
+
 def polaritySum2(phrase):
     total_sum = 0
     dic_quantity = 0
@@ -489,6 +534,7 @@ def polaritySum2(phrase):
                 else: 
                     total_sum += 1
 
+                #print("find word " + word + " on liu positive")
                 dic_quantity += 1
 
             elif word in variables.dic_negative_words:
@@ -501,6 +547,30 @@ def polaritySum2(phrase):
                 else: 
                     total_sum -= 1
 
+                #print("find word " + word + " on liu negative")
+                dic_quantity += 1
+
+        # SENTIWORDNET
+        if(variables.use_dic_sentiwordnet and variables.dic_sentiwordnet_loaded):
+            if word in variables.dic_positive_words_sentiwordnet:
+                if invert:
+                    total_sum -= variables.dic_positive_value_sentiwordnet[variables.dic_positive_words_sentiwordnet.index(word)]
+                elif booster:
+                    total_sum += 2 * variables.dic_positive_value_sentiwordnet[variables.dic_positive_words_sentiwordnet.index(word)]
+                else:
+                    total_sum += variables.dic_positive_value_sentiwordnet[variables.dic_positive_words_sentiwordnet.index(word)]
+                
+                #print("find word " + word + " on sentiwordnet positive")
+                dic_quantity += 1
+            elif word in variables.dic_negative_words_sentiwordnet:
+                if invert:
+                    total_sum -= variables.dic_negative_value_sentiwordnet[variables.dic_negative_words_sentiwordnet.index(word)]
+                elif booster:
+                    total_sum += 2 * variables.dic_negative_value_sentiwordnet[variables.dic_negative_words_sentiwordnet.index(word)]
+                else:
+                    total_sum += variables.dic_negative_value_sentiwordnet[variables.dic_negative_words_sentiwordnet.index(word)]
+                
+                #print("find word " + word + " on sentiwordnet negative")
                 dic_quantity += 1
 
         # AFFIN
@@ -513,6 +583,7 @@ def polaritySum2(phrase):
                 else:
                     total_sum += variables.dic_positive_value_affin[variables.dic_positive_words_affin.index(word)]
                 
+                #print("find word " + word + " on affin positive")
                 dic_quantity += 1
             elif word in variables.dic_negative_words_affin:
                 if invert:
@@ -522,7 +593,8 @@ def polaritySum2(phrase):
                 else:
                     total_sum += variables.dic_negative_value_affin[variables.dic_negative_words_affin.index(word)]
                 
-                dic_quantity += 1
+                #print("find word " + word + " on affin negative")
+                dic_quantity += 1                
 
         # VADER
         if(variables.use_dic_vader and variables.dic_vader_loaded):
@@ -534,6 +606,7 @@ def polaritySum2(phrase):
                 else:
                     total_sum += variables.dic_positive_value_vader[variables.dic_positive_words_vader.index(word)]
                 
+                #print("find word " + word + " on vader positive")
                 dic_quantity += 1
             elif word in variables.dic_negative_words_vader:
                 if invert:
@@ -543,27 +616,76 @@ def polaritySum2(phrase):
                 else:
                     total_sum += variables.dic_negative_value_vader[variables.dic_negative_words_vader.index(word)]
                 
+                #print("find word " + word + " on vader negative")
                 dic_quantity += 1
 
-        # SENTIMENT140
-        if(variables.use_dic_sentiment140 and variables.dic_sentiment140_loaded):
-            if word in variables.dic_positive_words_s140:
+        # SLANG
+        if(variables.use_dic_slang and variables.dic_slang_loaded):
+            if word in variables.dic_positive_words_slang:
                 if invert:
-                    total_sum -= variables.dic_positive_value_s140[variables.dic_positive_words_s140.index(word)]
+                    total_sum -= variables.dic_positive_value_slang[variables.dic_positive_words_slang.index(word)]
                 elif booster:
-                    total_sum += 2 * variables.dic_positive_value_s140[variables.dic_positive_words_s140.index(word)]
+                    total_sum += 2 * variables.dic_positive_value_slang[variables.dic_positive_words_slang.index(word)]
                 else:
-                    total_sum += variables.dic_positive_value_s140[variables.dic_positive_words_s140.index(word)]
+                    total_sum += variables.dic_positive_value_slang[variables.dic_positive_words_slang.index(word)]
                 
+                #print("find word " + word + " on slang positive")
                 dic_quantity += 1
-            elif word in variables.dic_negative_words_s140:
+            elif word in variables.dic_negative_words_slang:
                 if invert:
-                    total_sum -= variables.dic_negative_value_s140[variables.dic_negative_words_s140.index(word)]
+                    total_sum -= variables.dic_negative_value_slang[variables.dic_negative_words_slang.index(word)]
                 elif booster:
-                    total_sum += 2 * variables.dic_negative_value_s140[variables.dic_negative_words_s140.index(word)]
+                    total_sum += 2 * variables.dic_negative_value_slang[variables.dic_negative_words_slang.index(word)]
                 else:
-                    total_sum += variables.dic_negative_value_s140[variables.dic_negative_words_s140.index(word)]
+                    total_sum += variables.dic_negative_value_slang[variables.dic_negative_words_slang.index(word)]
                 
+                #print("find word " + word + " on slang negative")                
+                dic_quantity += 1    
+        
+        # EFFECT
+        if(variables.use_dic_effect and variables.dic_effect_loaded):
+            if word in variables.dic_positive_words_effect:
+                if invert:
+                    total_sum -= variables.dic_positive_value_effect[variables.dic_positive_words_effect.index(word)]
+                elif booster:
+                    total_sum += 2 * variables.dic_positive_value_effect[variables.dic_positive_words_effect.index(word)]
+                else:
+                    total_sum += variables.dic_positive_value_effect[variables.dic_positive_words_effect.index(word)]
+                
+                #print("find word " + word + " on effect positive")
+                dic_quantity += 1
+            elif word in variables.dic_negative_words_effect:
+                if invert:
+                    total_sum -= variables.dic_negative_value_effect[variables.dic_negative_words_effect.index(word)]
+                elif booster:
+                    total_sum += 2 * variables.dic_negative_value_effect[variables.dic_negative_words_effect.index(word)]
+                else:
+                    total_sum += variables.dic_negative_value_effect[variables.dic_negative_words_effect.index(word)]
+                
+                #print("find word " + word + " on effect negative")                
+                dic_quantity += 1  
+
+        # SEMEVAL2015
+        if(variables.use_dic_semeval2015 and variables.dic_semeval2015_loaded):
+            if word in variables.dic_positive_words_semeval2015:
+                if invert:
+                    total_sum -= variables.dic_positive_value_semeval2015[variables.dic_positive_words_semeval2015.index(word)]
+                elif booster:
+                    total_sum += 2 * variables.dic_positive_value_semeval2015[variables.dic_positive_words_semeval2015.index(word)]
+                else:
+                    total_sum += variables.dic_positive_value_semeval2015[variables.dic_positive_words_semeval2015.index(word)]
+                
+                #print("find word " + word + " on semeval2015 positive")
+                dic_quantity += 1
+            elif word in variables.dic_negative_words_semeval2015:
+                if invert:
+                    total_sum -= variables.dic_negative_value_semeval2015[variables.dic_negative_words_semeval2015.index(word)]
+                elif booster:
+                    total_sum += 2 * variables.dic_negative_value_semeval2015[variables.dic_negative_words_semeval2015.index(word)]
+                else:
+                    total_sum += variables.dic_negative_value_semeval2015[variables.dic_negative_words_semeval2015.index(word)]
+                
+                #print("find word " + word + " on semeval2015 negative")                
                 dic_quantity += 1
 
         index += 1 # word of phrase
@@ -594,15 +716,19 @@ def polaritySumAVG(phrase):
 
     for word in words:
         # Check booster and inverter words
-        if index > 0 and words[index-1] == "insidenoteboosterword" and words[index-2] == "insidenoteinverterword":
+        if index > 0 and words[index-1] == "insidenoteboosterword" and (words[index-2] == "insidenoteinverterword" or words[index-3] == "insidenoteinverterword"):
+            #print("boosterAndInverter")
             boosterAndInverter = True
-        elif (index > 0 and words[index-1] == "insidenoteboosterword") or (index < len(words) - 1 and words[index+1] == "insidenoteboosterword" and (words[index-1] != "insidenoteboosterword" or index == 0)):
-            booster = True
         elif index > 0 and words[index-1] == "insidenoteinverterword":
+            #print("inverter")
             invert = True
+        elif (index > 0 and words[index-1] == "insidenoteboosterword") or (index < len(words) - 1 and words[index+1] == "insidenoteboosterword" and (words[index-1] != "insidenoteboosterword" or index == 0)):
+            #print("booster")
+            booster = True
+
 
         # LIU pos/neg words
-        if variables.use_dic_liu:
+        if(variables.use_dic_liu and variables.dic_liu_loaded):
             if word in variables.dic_positive_words:
                 if invert:
                     total_sum -= 1
@@ -613,8 +739,8 @@ def polaritySumAVG(phrase):
                 else: 
                     total_sum += 1
 
+                #print("find word " + word + " on liu positive")
                 dic_quantity += 1
-
             elif word in variables.dic_negative_words:
                 if invert:
                     total_sum += 1
@@ -625,73 +751,209 @@ def polaritySumAVG(phrase):
                 else: 
                     total_sum -= 1
 
+                #print("find word " + word + " on liu negative")
+                dic_quantity += 1
+
+        # SENTIWORDNET
+        if(variables.use_dic_sentiwordnet and variables.dic_sentiwordnet_loaded):
+            if word in variables.dic_positive_words_sentiwordnet:
+                if invert:
+                    #total_sum -= variables.dic_positive_value_sentiwordnet[variables.dic_positive_words_sentiwordnet.index(word)]
+                    total_sum -= 1
+                elif booster:
+                    #total_sum += 2 * variables.dic_positive_value_sentiwordnet[variables.dic_positive_words_sentiwordnet.index(word)]
+                    total_sum += 2
+                elif boosterAndInverter:
+                    total_sum -= 2
+                else:
+                    #total_sum += variables.dic_positive_value_sentiwordnet[variables.dic_positive_words_sentiwordnet.index(word)]
+                    total_sum += 1
+                
+                #print("find word " + word + " on sentiwordnet positive")
+                dic_quantity += 1
+            elif word in variables.dic_negative_words_sentiwordnet:
+                if invert:
+                    #total_sum -= variables.dic_negative_value_sentiwordnet[variables.dic_negative_words_sentiwordnet.index(word)]
+                    total_sum += 1
+                elif booster:
+                    #total_sum += 2 * variables.dic_negative_value_sentiwordnet[variables.dic_negative_words_sentiwordnet.index(word)]
+                    total_sum -= 2
+                elif boosterAndInverter:
+                    total_sum += 2
+                else:
+                    #total_sum += variables.dic_negative_value_sentiwordnet[variables.dic_negative_words_sentiwordnet.index(word)]
+                    total_sum -= 1
+                
+                #print("find word " + word + " on sentiwordnet negative")
                 dic_quantity += 1
 
         # AFFIN
-        if variables.use_dic_affin:
+        if(variables.use_dic_affin and variables.dic_affin_loaded):
             if word in variables.dic_positive_words_affin:
                 if invert:
-                    total_sum -= variables.dic_positive_value_affin[variables.dic_positive_words_affin.index(word)]
+                    #total_sum -= variables.dic_positive_value_affin[variables.dic_positive_words_affin.index(word)]
+                    total_sum -= 1
                 elif booster:
-                    total_sum += 2 * variables.dic_positive_value_affin[variables.dic_positive_words_affin.index(word)]
+                    #total_sum += 2 * variables.dic_positive_value_affin[variables.dic_positive_words_affin.index(word)]
+                    total_sum += 2
+                elif boosterAndInverter:
+                    total_sum -= 2                    
                 else:
-                    total_sum += variables.dic_positive_value_affin[variables.dic_positive_words_affin.index(word)]
+                    #total_sum += variables.dic_positive_value_affin[variables.dic_positive_words_affin.index(word)]
+                    total_sum += 1
                 
+                #print("find word " + word + " on affin positive")
                 dic_quantity += 1
             elif word in variables.dic_negative_words_affin:
                 if invert:
-                    total_sum -= variables.dic_negative_value_affin[variables.dic_negative_words_affin.index(word)]
+                    #total_sum -= variables.dic_negative_value_affin[variables.dic_negative_words_affin.index(word)]
+                    total_sum += 1
                 elif booster:
-                    total_sum += 2 * variables.dic_negative_value_affin[variables.dic_negative_words_affin.index(word)]
+                    #total_sum += 2 * variables.dic_negative_value_affin[variables.dic_negative_words_affin.index(word)]
+                    total_sum -= 2
+                elif boosterAndInverter:
+                    total_sum += 2                
                 else:
-                    total_sum += variables.dic_negative_value_affin[variables.dic_negative_words_affin.index(word)]
+                    #total_sum += variables.dic_negative_value_affin[variables.dic_negative_words_affin.index(word)]
+                    total_sum -= 1
                 
-                dic_quantity += 1
+                #print("find word " + word + " on affin negative")
+                dic_quantity += 1                
 
         # VADER
-        if variables.use_dic_vader:
+        if(variables.use_dic_vader and variables.dic_vader_loaded):
             if word in variables.dic_positive_words_vader:
                 if invert:
-                    total_sum -= variables.dic_positive_value_vader[variables.dic_positive_words_vader.index(word)]
+                    #total_sum -= variables.dic_positive_value_vader[variables.dic_positive_words_vader.index(word)]
+                    total_sum -= 1
                 elif booster:
-                    total_sum += 2 * variables.dic_positive_value_vader[variables.dic_positive_words_vader.index(word)]
+                    #total_sum += 2 * variables.dic_positive_value_vader[variables.dic_positive_words_vader.index(word)]
+                    total_sum += 2
+                elif boosterAndInverter:
+                    total_sum -= 2                      
                 else:
-                    total_sum += variables.dic_positive_value_vader[variables.dic_positive_words_vader.index(word)]
+                    #total_sum += variables.dic_positive_value_vader[variables.dic_positive_words_vader.index(word)]
+                    total_sum += 1
                 
+                #print("find word " + word + " on vader positive")
                 dic_quantity += 1
             elif word in variables.dic_negative_words_vader:
                 if invert:
-                    total_sum -= variables.dic_negative_value_vader[variables.dic_negative_words_vader.index(word)]
+                    #total_sum -= variables.dic_negative_value_vader[variables.dic_negative_words_vader.index(word)]
+                    total_sum += 1
                 elif booster:
-                    total_sum += 2 * variables.dic_negative_value_vader[variables.dic_negative_words_vader.index(word)]
+                    #total_sum += 2 * variables.dic_negative_value_vader[variables.dic_negative_words_vader.index(word)]
+                    total_sum -= 2
+                elif boosterAndInverter:
+                    total_sum += 2                      
                 else:
-                    total_sum += variables.dic_negative_value_vader[variables.dic_negative_words_vader.index(word)]
+                    #total_sum += variables.dic_negative_value_vader[variables.dic_negative_words_vader.index(word)]
+                    total_sum -= 1
                 
+                #print("find word " + word + " on vader negative")
                 dic_quantity += 1
 
-        # SENTIMENT140
-        if variables.use_dic_sentiment140:
-            if word in variables.dic_positive_words_s140:
+        # SLANG
+        if(variables.use_dic_slang and variables.dic_slang_loaded):
+            if word in variables.dic_positive_words_slang:
                 if invert:
-                    total_sum -= variables.dic_positive_value_s140[variables.dic_positive_words_s140.index(word)]
+                    #total_sum -= variables.dic_positive_value_slang[variables.dic_positive_words_slang.index(word)]
+                    total_sum -= 1
                 elif booster:
-                    total_sum += 2 * variables.dic_positive_value_s140[variables.dic_positive_words_s140.index(word)]
+                    #total_sum += 2 * variables.dic_positive_value_slang[variables.dic_positive_words_slang.index(word)]
+                    total_sum += 2
+                elif boosterAndInverter:
+                    total_sum -= 2                        
                 else:
-                    total_sum += variables.dic_positive_value_s140[variables.dic_positive_words_s140.index(word)]
+                    #total_sum += variables.dic_positive_value_slang[variables.dic_positive_words_slang.index(word)]
+                    total_sum += 1
                 
+                #print("find word " + word + " on slang positive")
                 dic_quantity += 1
-            elif word in variables.dic_negative_words_s140:
+            elif word in variables.dic_negative_words_slang:
                 if invert:
-                    total_sum -= variables.dic_negative_value_s140[variables.dic_negative_words_s140.index(word)]
+                    #total_sum -= variables.dic_negative_value_slang[variables.dic_negative_words_slang.index(word)]
+                    total_sum += 1
                 elif booster:
-                    total_sum += 2 * variables.dic_negative_value_s140[variables.dic_negative_words_s140.index(word)]
+                    #total_sum += 2 * variables.dic_negative_value_slang[variables.dic_negative_words_slang.index(word)]
+                    total_sum -= 2
+                elif boosterAndInverter:
+                    total_sum += 2                      
                 else:
-                    total_sum += variables.dic_negative_value_s140[variables.dic_negative_words_s140.index(word)]
+                    #total_sum += variables.dic_negative_value_slang[variables.dic_negative_words_slang.index(word)]
+                    total_sum -= 1
                 
-                dic_quantity += 1
+                #print("find word " + word + " on slang negative")                
+                dic_quantity += 1    
         
+        # EFFECT
+        if(variables.use_dic_effect and variables.dic_effect_loaded):
+            if word in variables.dic_positive_words_effect:
+                if invert:
+                    #total_sum -= variables.dic_positive_value_effect[variables.dic_positive_words_effect.index(word)]
+                    total_sum -= 1
+                elif booster:
+                    #total_sum += 2 * variables.dic_positive_value_effect[variables.dic_positive_words_effect.index(word)]
+                    total_sum += 2
+                elif boosterAndInverter:
+                    total_sum -= 2                     
+                else:
+                    #total_sum += variables.dic_positive_value_effect[variables.dic_positive_words_effect.index(word)]
+                    total_sum += 1
+                
+                #print("find word " + word + " on effect positive")
+                dic_quantity += 1
+            elif word in variables.dic_negative_words_effect:
+                if invert:
+                    #total_sum -= variables.dic_negative_value_effect[variables.dic_negative_words_effect.index(word)]
+                    total_sum += 1
+                elif booster:
+                    #total_sum += 2 * variables.dic_negative_value_effect[variables.dic_negative_words_effect.index(word)]
+                    total_sum -= 2
+                elif boosterAndInverter:
+                    total_sum += 2                      
+                else:
+                    #total_sum += variables.dic_negative_value_effect[variables.dic_negative_words_effect.index(word)]
+                    total_sum -= 1
+                
+                #print("find word " + word + " on effect negative")                
+                dic_quantity += 1  
 
+        # SEMEVAL2015
+        if(variables.use_dic_semeval2015 and variables.dic_semeval2015_loaded):
+            if word in variables.dic_positive_words_semeval2015:
+                if invert:
+                    #total_sum -= variables.dic_positive_value_semeval2015[variables.dic_positive_words_semeval2015.index(word)]
+                    total_sum -= 1
+                elif booster:
+                    #total_sum += 2 * variables.dic_positive_value_semeval2015[variables.dic_positive_words_semeval2015.index(word)]
+                    total_sum += 2
+                elif boosterAndInverter:
+                    total_sum -= 2                     
+                else:
+                    #total_sum += variables.dic_positive_value_semeval2015[variables.dic_positive_words_semeval2015.index(word)]
+                    total_sum += 1
+                
+                #print("find word " + word + " on semeval2015 positive")
+                dic_quantity += 1
+            elif word in variables.dic_negative_words_semeval2015:
+                if invert:
+                    #total_sum -= variables.dic_negative_value_semeval2015[variables.dic_negative_words_semeval2015.index(word)]
+                    total_sum += 1
+                elif booster:
+                    #total_sum += 2 * variables.dic_negative_value_semeval2015[variables.dic_negative_words_semeval2015.index(word)]
+                    total_sum -= 2
+                elif boosterAndInverter:
+                    total_sum += 2                      
+                else:
+                    #total_sum += variables.dic_negative_value_semeval2015[variables.dic_negative_words_semeval2015.index(word)]
+                    total_sum -= 1
+                
+                #print("find word " + word + " on semeval2015 negative")                
+                dic_quantity += 1                                              
+        
         if(dic_quantity > 1):
+            #print("i'll divide " + str(total_sum) + " by " + str(dic_quantity))
             #print("More than one dictionary " + str(dic_quantity) + " - word: " + word)
             total_sum_return += round(total_sum/dic_quantity, 4)
         elif(dic_quantity == 1):
@@ -709,8 +971,305 @@ def polaritySumAVG(phrase):
     return total_sum_return
 
 
+# ONLY TEST ONLY TEST ONLY TEST
+def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7):
+    total_sum = 0
+    total_sum_return = 0
+    dic_quantity = 0
+    index = 0
+    invert = False
+    booster = False
+    boosterAndInverter = False
+
+    total_weight = 0
+
+    phrase = phrase.strip()
+    words = phrase.split()
+
+
+    #i insidenoteinverterword love insidenoteboosterword film   alreadyboosteredbefore alreadynegatedbefore
+
+    for word in words:
+        # Check booster and inverter words
+        if index > 0 and words[index-1] == "insidenoteboosterword" and (words[index-2] == "insidenoteinverterword" or words[index-3] == "insidenoteinverterword"):
+            #print("boosterAndInverter")
+            boosterAndInverter = True
+        elif index > 0 and words[index-1] == "insidenoteinverterword":
+            #print("inverter")
+            invert = True
+        elif (index > 0 and words[index-1] == "insidenoteboosterword") or (index < len(words) - 1 and words[index+1] == "insidenoteboosterword" and (words[index-1] != "insidenoteboosterword" or index == 0)):
+            #print("booster")
+            booster = True
+
+
+        # LIU pos/neg words
+        if(variables.use_dic_liu and variables.dic_liu_loaded and w1 != 0):
+            if word in variables.dic_positive_words:
+                if invert:
+                    total_sum -= 1 * w1
+                elif booster:
+                    total_sum += 2 * w1
+                elif boosterAndInverter:
+                    total_sum -= 2 * w1
+                else: 
+                    total_sum += 1 * w1
+
+                #print("find word " + word + " on liu positive")
+                dic_quantity += 1
+                total_weight += w1
+
+            elif word in variables.dic_negative_words:
+                if invert:
+                    total_sum += 1 * w1
+                elif booster:
+                    total_sum -= 2 * w1
+                elif boosterAndInverter:
+                    total_sum += 2 * w1
+                else:
+                    total_sum -= 1 * w1
+
+                #print("find word " + word + " on liu negative")
+                dic_quantity += 1
+                total_weight += w1
+
+        # SENTIWORDNET
+        if(variables.use_dic_sentiwordnet and variables.dic_sentiwordnet_loaded and w2 != 0):
+            if word in variables.dic_positive_words_sentiwordnet:
+                if invert:
+                    #total_sum -= variables.dic_positive_value_sentiwordnet[variables.dic_positive_words_sentiwordnet.index(word)]
+                    total_sum -= 1 * w2
+                elif booster:
+                    #total_sum += 2 * variables.dic_positive_value_sentiwordnet[variables.dic_positive_words_sentiwordnet.index(word)]
+                    total_sum += 2 * w2
+                elif boosterAndInverter:
+                    total_sum -= 2 * w2
+                else:
+                    #total_sum += variables.dic_positive_value_sentiwordnet[variables.dic_positive_words_sentiwordnet.index(word)]
+                    total_sum += 1 * w2
+                
+                #print("find word " + word + " on sentiwordnet positive")
+                dic_quantity += 1 
+                total_weight += w2
+            elif word in variables.dic_negative_words_sentiwordnet:
+                if invert:
+                    #total_sum -= variables.dic_negative_value_sentiwordnet[variables.dic_negative_words_sentiwordnet.index(word)]
+                    total_sum += 1 * w2
+                elif booster:
+                    #total_sum += 2 * variables.dic_negative_value_sentiwordnet[variables.dic_negative_words_sentiwordnet.index(word)]
+                    total_sum -= 2 * w2
+                elif boosterAndInverter:
+                    total_sum += 2 * w2
+                else:
+                    #total_sum += variables.dic_negative_value_sentiwordnet[variables.dic_negative_words_sentiwordnet.index(word)]
+                    total_sum -= 1 * w2
+                
+                #print("find word " + word + " on sentiwordnet negative")
+                dic_quantity += 1
+                total_weight += w2
+
+        # AFFIN
+        if(variables.use_dic_affin and variables.dic_affin_loaded and w3 != 0):
+            if word in variables.dic_positive_words_affin:
+                if invert:
+                    #total_sum -= variables.dic_positive_value_affin[variables.dic_positive_words_affin.index(word)]
+                    total_sum -= 1 * w3
+                elif booster:
+                    #total_sum += 2 * variables.dic_positive_value_affin[variables.dic_positive_words_affin.index(word)]
+                    total_sum += 2 * w3
+                elif boosterAndInverter:
+                    total_sum -= 2 * w3                    
+                else:
+                    #total_sum += variables.dic_positive_value_affin[variables.dic_positive_words_affin.index(word)]
+                    total_sum += 1 * w3
+                
+                #print("find word " + word + " on affin positive")
+                dic_quantity += 1
+                total_weight += w3
+            elif word in variables.dic_negative_words_affin:
+                if invert:
+                    #total_sum -= variables.dic_negative_value_affin[variables.dic_negative_words_affin.index(word)]
+                    total_sum += 1 * w3
+                elif booster:
+                    #total_sum += 2 * variables.dic_negative_value_affin[variables.dic_negative_words_affin.index(word)]
+                    total_sum -= 2 * w3
+                elif boosterAndInverter:
+                    total_sum += 2 * w3                
+                else:
+                    #total_sum += variables.dic_negative_value_affin[variables.dic_negative_words_affin.index(word)]
+                    total_sum -= 1 * w3
+                
+                #print("find word " + word + " on affin negative")
+                dic_quantity += 1
+                total_weight += w3              
+
+        # VADER
+        if(variables.use_dic_vader and variables.dic_vader_loaded and w4 != 0):
+            if word in variables.dic_positive_words_vader:
+                if invert:
+                    #total_sum -= variables.dic_positive_value_vader[variables.dic_positive_words_vader.index(word)]
+                    total_sum -= 1 * w4
+                elif booster:
+                    #total_sum += 2 * variables.dic_positive_value_vader[variables.dic_positive_words_vader.index(word)]
+                    total_sum += 2 * w4
+                elif boosterAndInverter:
+                    total_sum -= 2 * w4                      
+                else:
+                    #total_sum += variables.dic_positive_value_vader[variables.dic_positive_words_vader.index(word)]
+                    total_sum += 1 * w4
+                
+                #print("find word " + word + " on vader positive")
+                dic_quantity += 1
+                total_weight += w4
+            elif word in variables.dic_negative_words_vader:
+                if invert:
+                    #total_sum -= variables.dic_negative_value_vader[variables.dic_negative_words_vader.index(word)]
+                    total_sum += 1 * w4
+                elif booster:
+                    #total_sum += 2 * variables.dic_negative_value_vader[variables.dic_negative_words_vader.index(word)]
+                    total_sum -= 2 * w4
+                elif boosterAndInverter:
+                    total_sum += 2 * w4                      
+                else:
+                    #total_sum += variables.dic_negative_value_vader[variables.dic_negative_words_vader.index(word)]
+                    total_sum -= 1 * w4
+                
+                #print("find word " + word + " on vader negative")
+                dic_quantity += 1
+                total_weight += w4
+
+        # SLANG
+        if(variables.use_dic_slang and variables.dic_slang_loaded and w5 != 0):
+            if word in variables.dic_positive_words_slang:
+                if invert:
+                    #total_sum -= variables.dic_positive_value_slang[variables.dic_positive_words_slang.index(word)]
+                    total_sum -= 1 * w5
+                elif booster:
+                    #total_sum += 2 * variables.dic_positive_value_slang[variables.dic_positive_words_slang.index(word)]
+                    total_sum += 2 * w5
+                elif boosterAndInverter:
+                    total_sum -= 2 * w5                        
+                else:
+                    #total_sum += variables.dic_positive_value_slang[variables.dic_positive_words_slang.index(word)]
+                    total_sum += 1 * w5
+                
+                #print("find word " + word + " on slang positive")
+                dic_quantity += 1
+                total_weight += w5
+            elif word in variables.dic_negative_words_slang:
+                if invert:
+                    #total_sum -= variables.dic_negative_value_slang[variables.dic_negative_words_slang.index(word)]
+                    total_sum += 1 * w5
+                elif booster:
+                    #total_sum += 2 * variables.dic_negative_value_slang[variables.dic_negative_words_slang.index(word)]
+                    total_sum -= 2 * w5
+                elif boosterAndInverter:
+                    total_sum += 2 * w5                     
+                else:
+                    #total_sum += variables.dic_negative_value_slang[variables.dic_negative_words_slang.index(word)]
+                    total_sum -= 1 * w5
+                
+                #print("find word " + word + " on slang negative")                
+                dic_quantity += 1
+                total_weight += w5  
+        
+        # EFFECT
+        if(variables.use_dic_effect and variables.dic_effect_loaded and w6 != 0):
+            if word in variables.dic_positive_words_effect:
+                if invert:
+                    #total_sum -= variables.dic_positive_value_effect[variables.dic_positive_words_effect.index(word)]
+                    total_sum -= 1 * w6
+                elif booster:
+                    #total_sum += 2 * variables.dic_positive_value_effect[variables.dic_positive_words_effect.index(word)]
+                    total_sum += 2 * w6
+                elif boosterAndInverter:
+                    total_sum -= 2 * w6                     
+                else:
+                    #total_sum += variables.dic_positive_value_effect[variables.dic_positive_words_effect.index(word)]
+                    total_sum += 1 * w6
+                
+                #print("find word " + word + " on effect positive")
+                dic_quantity += 1
+                total_weight += w6
+            elif word in variables.dic_negative_words_effect:
+                if invert:
+                    #total_sum -= variables.dic_negative_value_effect[variables.dic_negative_words_effect.index(word)]
+                    total_sum += 1 * w6
+                elif booster:
+                    #total_sum += 2 * variables.dic_negative_value_effect[variables.dic_negative_words_effect.index(word)]
+                    total_sum -= 2 * w6
+                elif boosterAndInverter:
+                    total_sum += 2 * w6                      
+                else:
+                    #total_sum += variables.dic_negative_value_effect[variables.dic_negative_words_effect.index(word)]
+                    total_sum -= 1 * w6
+                
+                #print("find word " + word + " on effect negative")                
+                dic_quantity += 1  
+                total_weight += w6
+
+        # SEMEVAL2015
+        if(variables.use_dic_semeval2015 and variables.dic_semeval2015_loaded and w7 != 0):
+            if word in variables.dic_positive_words_semeval2015:
+                if invert:
+                    #total_sum -= variables.dic_positive_value_semeval2015[variables.dic_positive_words_semeval2015.index(word)]
+                    total_sum -= 1 * w7
+                elif booster:
+                    #total_sum += 2 * variables.dic_positive_value_semeval2015[variables.dic_positive_words_semeval2015.index(word)]
+                    total_sum += 2 * w7
+                elif boosterAndInverter:
+                    total_sum -= 2 * w7                     
+                else:
+                    #total_sum += variables.dic_positive_value_semeval2015[variables.dic_positive_words_semeval2015.index(word)]
+                    total_sum += 1 * w7
+                
+                #print("find word " + word + " on semeval2015 positive")
+                dic_quantity += 1
+                total_weight += w7
+            elif word in variables.dic_negative_words_semeval2015:
+                if invert:
+                    #total_sum -= variables.dic_negative_value_semeval2015[variables.dic_negative_words_semeval2015.index(word)]
+                    total_sum += 1 * w7
+                elif booster:
+                    #total_sum += 2 * variables.dic_negative_value_semeval2015[variables.dic_negative_words_semeval2015.index(word)]
+                    total_sum -= 2 * w7
+                elif boosterAndInverter:
+                    total_sum += 2 * w7                      
+                else:
+                    #total_sum += variables.dic_negative_value_semeval2015[variables.dic_negative_words_semeval2015.index(word)]
+                    total_sum -= 1 * w7
+                
+                #print("find word " + word + " on semeval2015 negative")                
+                dic_quantity += 1
+                total_weight += w7                                            
+        
+        if(dic_quantity > 1):
+            #print("More than one dictionary " + str(dic_quantity) + " - word: " + word)
+            #total_sum_return += round(total_sum/dic_quantity, 4)
+            
+            #print("i'll divide " + str(total_sum) + " by " + str(total_weight))
+
+            if(total_weight > 0):
+                total_sum_return += round(total_sum/total_weight, 4)
+
+        elif(dic_quantity == 1):
+            total_sum_return += total_sum
+
+        dic_quantity = 0
+        total_sum    = 0
+        #total_weight = 0
+
+        index += 1 # word of phrase
+        invert = False
+        booster = False
+        boosterAndInverter = False
+    
+
+    return total_sum_return
+
+
 def replaceNegatingWords(phrase):
     phrase = phrase.lower()
+    replaced = False
 
     splitted_phrase = phrase.split()
 
@@ -726,19 +1285,26 @@ def replaceNegatingWords(phrase):
         negation_word = " " + negation_word + " "
         if negation_word in phrase:
         #if phrase.find(negation_word) > -1:
+            #print("A) [i'll negate the phrase '" + phrase + "' because it have the word " + negation_word + "]")
             phrase = phrase.replace(negation_word, " insidenoteinverterword ")
-
-    return phrase + " alreadynegatedbefore"
+            replaced = True
+            
+    if (replaced):
+        return phrase + " alreadynegatedbefore"
+    else:
+        return phrase
 
 
 def replaceBoosterWords(phrase):
     phrase = phrase + " "
     phrase = phrase.lower()
+    replaced = False
 
     if(phrase.split()[-1] == "alreadyboosteredbefore"):
         return phrase
     
     if len(phrase.split()) > 0 and phrase.split()[0] in variables.dic_booster_words:
+        #print("1) [i'll boost the phrase '" + phrase + "' because it have the word " + phrase.split()[0] + "]")
         phrase_list = phrase.split()
         phrase_list[0] = "insidenoteboosterword"
         phrase = ' '.join(phrase_list)
@@ -748,13 +1314,20 @@ def replaceBoosterWords(phrase):
         if booster_word in phrase: 
         #if phrase.find(booster_word) > -1:
             #print("has booster " + booster_word)
+            #print("2) [i'll boost the phrase '" + phrase + "' because it have the word " + booster_word + "]")
             phrase = phrase.replace(booster_word, " insidenoteboosterword ")
-
-        elif booster_word[-1] in phrase:
+            replaced = True
+        
+        #elif booster_word[-1] in phrase:
         #elif phrase.find(booster_word[-1]) > -1:
-            phrase = phrase.replace(booster_word, " insidenoteboosterword ")
+            #print("booster_word[-1]: " + booster_word[-1])
+            #print("3 i'll boost the phrase '" + phrase + "' because it have the word " + booster_word)
+            #phrase = phrase.replace(booster_word, " insidenoteboosterword ")
 
-    return phrase + " alreadyboosteredbefore" 
+    if (replaced):
+        return phrase + " alreadyboosteredbefore"
+    else:
+        return phrase
 
 
 def boostUpperCase(phrase):
@@ -913,6 +1486,12 @@ def getURLs(phrase):
     return re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', phrase)
 
 
+def hasURLs(phrase):
+    if len(getURLs(phrase)) > 0:
+        return True
+    return False
+
+
 def removeLinks(phrase):
     phrase_copy = phrase
     phrase_return = re.sub(r'http\S+', '', phrase_copy, flags=re.MULTILINE)
@@ -939,9 +1518,13 @@ neutral_url_qtty = 0
 neutral_url_correct_pred = 0
 # Testing
 
+model_results_to_count_occurrences = []
+
 # Evaluate the test messages using the model
 # http://text-analytics101.rxnlp.com/2014/10/computing-precision-and-recall-for.html
 def evaluateMessages(base, model):
+    global model_results_to_count_occurrences
+    print("[starting evaluation of " + base + " messages]")
     # Testing
     global neutral_url_qtty
     global neutral_url_correct_pred
@@ -969,6 +1552,18 @@ def evaluateMessages(base, model):
     goldNeu_classNeg = 0
     # confusion matrix 
 
+    # calc of mode
+    goldPos_classPos_value = []
+    goldPos_classNeg_value = []
+    goldPos_classNeu_value = []
+    goldNeg_classPos_value = []
+    goldNeg_classNeg_value = []
+    goldNeg_classNeu_value = []
+    goldNeu_classPos_value = []
+    goldNeu_classNeg_value = []
+    goldNeu_classNeu_value = []
+    # calc of mode
+    
     accuracy = 0
 
     precision_positive = 0
@@ -1086,28 +1681,43 @@ def evaluateMessages(base, model):
             #print("\n\n[WARNING] eval(model_analysis) exception for the message: " + message + "\n\n")
             continue
 
+        if(base == "all"):
+            model_results_to_count_occurrences.append(result)
+
         if messages_score[index] > 0:
             if result > 0:
                 true_positive += 1
+                if base == "all":
+                    goldPos_classPos_value.append(result)
             else:
                 if result == 0:
                     false_neutral += 1
                     goldPos_classNeu += 1
+                    if base == "all":
+                        goldPos_classNeu_value.append(result)
                 else:
                     false_negative += 1
                     goldPos_classNeg += 1
+                    if base == "all":
+                        goldPos_classNeg_value.append(result)
                 
         elif messages_score[index] < 0:
             if result < 0:
                 true_negative += 1
+                if base == "all":
+                    goldNeg_classNeg_value.append(result)
             else:
                 false_negative_log += 1
                 if result == 0:
                     false_neutral += 1
                     goldNeg_classNeu += 1
+                    if base == "all":
+                        goldNeg_classNeu_value.append(result)
                 else:
                     false_positive += 1
                     goldNeg_classPos += 1
+                    if base == "all":
+                        goldNeg_classPos_value.append(result)
 
                 #if false_negative_log <= 20:
                     #if false_negative_log == 1:  
@@ -1120,13 +1730,19 @@ def evaluateMessages(base, model):
                 true_neutral += 1
                 if(neutral_because_url == True):
                     neutral_url_correct_pred += 1
+                if base == "all":
+                    goldNeu_classNeu_value.append(result)
             else:
                 if result < 0:
                     false_negative += 1
                     goldNeu_classNeg += 1
+                    if base == "all":
+                        goldNeu_classNeg_value.append(result)
                 else:
                     false_positive += 1
                     goldNeu_classPos += 1
+                    if base == "all":
+                        goldNeu_classPos_value.append(result)
 
 
     if true_positive + false_positive + true_negative + false_negative > 0:
@@ -1229,6 +1845,28 @@ def evaluateMessages(base, model):
             if base == "all":
                 f.write("\n")
 
+    if (base == "all"):
+        with open("commom_values_goldPos_classPos " + str(datetime.now()) + ".txt", 'a') as f:
+            f.write(str(Counter(goldPos_classPos_value)))
+        with open("commom_values_goldPos_classNeg " + str(datetime.now()) + ".txt", 'a') as f:
+            f.write(str(Counter(goldPos_classNeg_value)))            
+        with open("commom_values_goldPos_classNeu " + str(datetime.now()) + ".txt", 'a') as f:
+            f.write(str(Counter(goldPos_classNeu_value)))
+
+        with open("commom_values_goldNeg_classPos " + str(datetime.now()) + ".txt", 'a') as f:
+            f.write(str(Counter(goldNeg_classPos_value)))
+        with open("commom_values_goldNeg_classNeg " + str(datetime.now()) + ".txt", 'a') as f:
+            f.write(str(Counter(goldNeg_classNeg_value)))
+        with open("commom_values_goldNeg_classNeu " + str(datetime.now()) + ".txt", 'a') as f:
+            f.write(str(Counter(goldNeg_classNeu_value))) 
+
+        with open("commom_values_goldNeu_classPos " + str(datetime.now()) + ".txt", 'a') as f:
+            f.write(str(Counter(goldNeu_classPos_value)))
+        with open("commom_values_goldNeu_classNeg " + str(datetime.now()) + ".txt", 'a') as f:
+            f.write(str(Counter(goldNeu_classNeg_value)))
+        with open("commom_values_goldNeu_classNeu " + str(datetime.now()) + ".txt", 'a') as f:
+            f.write(str(Counter(goldNeu_classNeu_value)))                                        
+
 
 def resultsAnalysis():
     models = 0
@@ -1261,77 +1899,75 @@ def resultsAnalysis():
                     allB_list.append(value)
 
     with open(variables.FILE_RESULTS, 'a') as f:
-        f.write("\n\n##Statistics##\n\n")
-        f.write(str(models) + " models evaluated\n")
-        f.write(str(variables.dic_loaded_total) + " dictionaries\n\n")
-        f.write("AVGs")
-        f.write("\nAVG Tweets2013 F1 SemEval\t" + str(round((sum(t2k13_list) / models), 4)))
-        f.write("\nAVG Tweets2014 F1 SemEval\t" + str(round((sum(t2k14_list) / models), 4)))
-        f.write("\nAVG SMS F1 SemEval\t" + str(round((sum(sms_list) / models), 4)))
-        f.write("\nAVG LiveJournal F1 SemEval\t" + str(round((sum(liveJ_list) / models), 4)))
-        f.write("\nAVG Sarcasm F1 SemEval\t" + str(round((sum(sarcasm_list) / models), 4)))
-        f.write("\nAVG All F1 SemEval\t" + str(round((sum(allB_list) / models), 4)))
-        f.write("\n\nBest Values")
-        f.write("\nBest Tweets2013 F1 value\t" + str(round(max(t2k13_list), 4)))
-        f.write("\nBest Tweets2014 F1 value\t" + str(round(max(t2k14_list), 4)))
-        f.write("\nBest SMS F1 value\t" + str(round(max(sms_list), 4)))
-        f.write("\nBest LiveJournal F1 value\t" + str(round(max(liveJ_list), 4)))
-        f.write("\nBest Sarcasm F1 value\t" + str(round(max(sarcasm_list), 4)))
-        f.write("\nBest All F1 value\t" + str(round(max(allB_list), 4)))
-        f.write("\n\nValues by database")
-        f.write("\nTweets2013 " + str(t2k13_list))
-        f.write("\nTweets2014 " + str(t2k14_list))
-        f.write("\nSMS " + str(sms_list))
-        f.write("\nLiveJournal " + str(liveJ_list))
-        f.write("\nSarcasm " + str(sarcasm_list))
-        f.write("\nAll " + str(allB_list))
-        f.write("\n\nStandard deviation")
-        f.write("\nStandard Deviation Tweets2013\t" + str(calcStdDeviation(calcVariance(t2k13_list, models))))
-        f.write("\nStandard Deviation Tweets2014\t" + str(calcStdDeviation(calcVariance(t2k14_list, models))))
-        f.write("\nStandard Deviation SMS\t" + str(calcStdDeviation(calcVariance(sms_list, models))))
-        f.write("\nStandard Deviation Live Journal\t" + str(calcStdDeviation(calcVariance(liveJ_list, models))))
-        f.write("\nStandard Deviation Sarcasm\t" + str(calcStdDeviation(calcVariance(sarcasm_list, models))))
-        f.write("\nStandard Deviation All\t" + str(calcStdDeviation(calcVariance(allB_list, models))))
+        if models > 0:
+            f.write("\n\n##Statistics##\n\n")
+            f.write(str(models) + " models evaluated\n")
+            f.write(str(variables.dic_loaded_total) + " dictionaries\n\n")
+            f.write("AVGs")
+            f.write("\nAVG Tweets2013 F1 SemEval\t" + str(round((sum(t2k13_list) / models), 4)))
+            f.write("\nAVG Tweets2014 F1 SemEval\t" + str(round((sum(t2k14_list) / models), 4)))
+            f.write("\nAVG SMS F1 SemEval\t" + str(round((sum(sms_list) / models), 4)))
+            f.write("\nAVG LiveJournal F1 SemEval\t" + str(round((sum(liveJ_list) / models), 4)))
+            f.write("\nAVG Sarcasm F1 SemEval\t" + str(round((sum(sarcasm_list) / models), 4)))
+            f.write("\nAVG All F1 SemEval\t" + str(round((sum(allB_list) / models), 4)))
+            f.write("\n\nBest Values")
+            f.write("\nBest Tweets2013 F1 value\t" + str(round(max(t2k13_list), 4)))
+            f.write("\nBest Tweets2014 F1 value\t" + str(round(max(t2k14_list), 4)))
+            f.write("\nBest SMS F1 value\t" + str(round(max(sms_list), 4)))
+            f.write("\nBest LiveJournal F1 value\t" + str(round(max(liveJ_list), 4)))
+            f.write("\nBest Sarcasm F1 value\t" + str(round(max(sarcasm_list), 4)))
+            f.write("\nBest All F1 value\t" + str(round(max(allB_list), 4)))
+            f.write("\n\nValues by database")
+            f.write("\nTweets2013 " + str(t2k13_list))
+            f.write("\nTweets2014 " + str(t2k14_list))
+            f.write("\nSMS " + str(sms_list))
+            f.write("\nLiveJournal " + str(liveJ_list))
+            f.write("\nSarcasm " + str(sarcasm_list))
+            f.write("\nAll " + str(allB_list))
+            f.write("\n\nStandard deviation")
+            f.write("\nStandard Deviation Tweets2013\t" + str(calcStdDeviation(calcVariance(t2k13_list, models))))
+            f.write("\nStandard Deviation Tweets2014\t" + str(calcStdDeviation(calcVariance(t2k14_list, models))))
+            f.write("\nStandard Deviation SMS\t" + str(calcStdDeviation(calcVariance(sms_list, models))))
+            f.write("\nStandard Deviation Live Journal\t" + str(calcStdDeviation(calcVariance(liveJ_list, models))))
+            f.write("\nStandard Deviation Sarcasm\t" + str(calcStdDeviation(calcVariance(sarcasm_list, models))))
+            f.write("\nStandard Deviation All\t" + str(calcStdDeviation(calcVariance(allB_list, models))))
 
     databases = ["tweets2013","tweets2014","sms","livejournal","sarcasm"]
 
-    N = models
-    ind = np.arange(N)  # the x locations for the groups
-    width = 0.10      # the width of the bars
+    #N = models
+    #ind = np.arange(N)  # the x locations for the groups
+    #width = 0.10      # the width of the bars
 
-    fig, ax = plt.subplots()
+    #fig, ax = plt.subplots()
     
-    rects1 = ax.bar(ind, t2k13_list, width, color='r')
-    rects2 = ax.bar(ind + width, t2k14_list, width, color='y')
-    rects3 = ax.bar(ind + width * 2, sms_list, width, color='b')
-    rects4 = ax.bar(ind + width * 3, liveJ_list, width, color='g')
-    rects5 = ax.bar(ind + width * 4, sarcasm_list, width, color='k')
+    #rects1 = ax.bar(ind, t2k13_list, width, color='r')
+    #rects2 = ax.bar(ind + width, t2k14_list, width, color='y')
+    #rects3 = ax.bar(ind + width * 2, sms_list, width, color='b')
+    #rects4 = ax.bar(ind + width * 3, liveJ_list, width, color='g')
+    #rects5 = ax.bar(ind + width * 4, sarcasm_list, width, color='k')
 
     # add some text for labels, title and axes ticks
-    ax.set_ylabel('F1')
-    ax.set_xlabel('Models')
-    ax.set_title('F1 by database')
+    #ax.set_ylabel('F1')
+    #ax.set_xlabel('Models')
+    #ax.set_title('F1 by database')
     #ax.set_xticks(ind + width / 2)
-    ax.set_xticklabels(np.arange(models))
+    #ax.set_xticklabels(np.arange(models))
     #ax.set_xticklabels(('Tweets2013', 'Tweets2014', 'SMS', 'SARCASM', 'LiveJournal'))
 
-    ax.legend((rects1[0], rects2[0], rects3[0], rects4[0], rects5[0]), ('Twitter2013', 'Twitter2014', 'SMS', 'LiveJournal', 'Sarcasm'))
+    #ax.legend((rects1[0], rects2[0], rects3[0], rects4[0], rects5[0]), ('Twitter2013', 'Twitter2014', 'SMS', 'LiveJournal', 'Sarcasm'))
 
-    def autolabel(rects):
-        """
-        Attach a text label above each bar displaying its height
-        """
-        for rect in rects:
-            height = rect.get_height()
-            ax.text(rect.get_x() + rect.get_width()/2., 1.05*height,
-                    '%.2f' % float(height),
-                    ha='center', va='bottom')
+    #def autolabel(rects):
+        #for rect in rects:
+        #    height = rect.get_height()
+        #    ax.text(rect.get_x() + rect.get_width()/2., 1.05*height,
+        #            '%.2f' % float(height),
+        #            ha='center', va='bottom')
 
-    autolabel(rects1)
-    autolabel(rects2)
-    autolabel(rects3)
-    autolabel(rects4)
-    autolabel(rects5)
+    #autolabel(rects1)
+    #autolabel(rects2)
+    #autolabel(rects3)
+    #autolabel(rects4)
+    #autolabel(rects5)
 
     #plt.show()
 
