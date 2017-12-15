@@ -29,12 +29,18 @@ evaluation_acumulated_time = 0
 # log time
 start = time.time()
 
+# bypass because the bool is a subtype of int
+#class Bool(object): pass
+
 #pset = gp.PrimitiveSetTyped("MAIN", [str, str], float)
 pset = gp.PrimitiveSetTyped("MAIN", [str], float)
 pset.addPrimitive(operator.add, [float,float], float)
 pset.addPrimitive(operator.sub, [float,float], float)
 pset.addPrimitive(operator.mul, [float,float], float)
 pset.addPrimitive(protectedDiv, [float,float], float)
+pset.addPrimitive(addI, [int,int], int)
+pset.addPrimitive(subI, [int,int], int)
+pset.addPrimitive(mulI, [int,int], int)
 pset.addPrimitive(math.exp, [float], float)
 pset.addPrimitive(math.cos, [float], float)
 pset.addPrimitive(math.sin, [float], float)
@@ -47,15 +53,24 @@ pset.addPrimitive(positiveHashtags, [str], float)
 pset.addPrimitive(negativeHashtags, [str], float)
 pset.addPrimitive(positiveEmoticons, [str], float)
 pset.addPrimitive(negativeEmoticons, [str], float)
-pset.addPrimitive(polaritySum2, [str], float)
+
+# Temporary removed
+#pset.addPrimitive(polaritySum2, [str], float)
 pset.addPrimitive(polaritySumAVG, [str], float)
+# Temporary removed
+
+pset.addPrimitive(passInt, [int], int)
+pset.addPrimitive(polaritySumAVGUsingWeights, [str, float, float, float, float, float, float, float], float)
+#pset.addPrimitive(polaritySumAVGUsingWeights, [str, int, int, int, int, int, int, int], float)
 pset.addPrimitive(hashtagPolaritySum, [str], float)
 pset.addPrimitive(emoticonsPolaritySum, [str], float)
 pset.addPrimitive(positiveWordsQuantity, [str], float)
 pset.addPrimitive(negativeWordsQuantity, [str], float)
 
+
 pset.addPrimitive(hasHashtag, [str], bool)
 pset.addPrimitive(hasEmoticons, [str], bool)
+pset.addPrimitive(hasURLs, [str], bool)
 
 pset.addPrimitive(if_then_else, [bool, float, float], float)
 
@@ -68,10 +83,20 @@ pset.addPrimitive(replaceNegatingWords, [str], str)
 pset.addPrimitive(replaceBoosterWords, [str], str)
 pset.addPrimitive(boostUpperCase, [str], str)
 
+#pset.addPrimitive(dictionaryWeights, [float, float, float, float, float, float, float], None)
+
 pset.addTerminal(True, bool)
 pset.addTerminal(False, bool)
 
-pset.addEphemeralConstant("rand", lambda: random.uniform(-2, 2), float)
+pset.addTerminal(0.0, float)
+pset.addTerminal(0.5, float)
+pset.addTerminal(1.0, float)
+pset.addTerminal(1.5, float)
+pset.addTerminal(2.0, float)
+
+pset.addEphemeralConstant("rand", lambda: random.uniform(0, 2), float)
+pset.addEphemeralConstant("rand2", lambda: random.uniform(0, 3), float)
+pset.addEphemeralConstant("randInt", lambda: random.randint(0, 3), int)
 
 pset.renameArguments(ARG0='x')
 #pset.renameArguments(ARG0='y')
@@ -425,7 +450,8 @@ if __name__ == "__main__":
     #    print("No parameter passed - Using the SemEval 2014 benchmark")
     #else:
     #    print(len(sys.argv))
-
+    print("[starting classifier module]")
+    
     getDictionary()
     loadTrainTweets()
 

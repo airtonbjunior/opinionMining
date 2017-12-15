@@ -15,7 +15,6 @@ def send_mail(ith, total, pop, gen, content):
 		SUBJECT = 'Model ' + str(ith) + ' of ' + str(total) + ' created! [' + str(pop) + 'pop' + str(gen) + 'gen]' + '[' + platform.system() + ']'
 	else:
 		SUBJECT = 'Last model created! [' + str(pop) + 'pop' + str(gen) + 'gen]' + '[' + platform.system() + ']'
-	#TEXT = 'Hey! A new model are created! Check this out!'
 
 	yag = yagmail.SMTP(FROM, 'sclassifier123')
 	yag.send(TO, SUBJECT, content)
