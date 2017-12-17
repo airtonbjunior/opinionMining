@@ -13,7 +13,8 @@ start = time.time()
 
 if __name__ == "__main__":
     print("[starting test module]")
-    getDictionary()
+    #loadTestTweets()
+    getDictionary("test")
 
     functions_to_evaluate = []
 
