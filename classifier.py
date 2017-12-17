@@ -372,8 +372,9 @@ def evalSymbRegTweetsFromSemeval(individual):
         print('{message: <{width}}'.format(message="[fitness] ", width=18) + " -> " + str(round(fitnessReturn, 5)) + " ****")
         print('{message: <{width}}'.format(message="[best fitness] ", width=18) + " -> " + str(round(variables.best_fitness, 5)))
         
+        print('{message: <{width}}'.format(message="[confusion matrix]", width=18) + " -> " + "[true_positive]: " + str(true_positive) + " " + "[false_positive]: " + str(false_positive) + " " + "[true_negative]: " + str(true_negative) + " " + "[false_negative]: " + str(false_negative) + " " + "[true_neutral]: " + str(true_neutral) + " " + "[false_neutral]: " + str(false_neutral) + "\n")
+
         if variables.log_all_metrics_each_cicle:
-            print('{message: <{width}}'.format(message="[confusion matrix]", width=18) + " -> " + "[true_positive]: " + str(true_positive) + " " + "[false_positive]: " + str(false_positive) + " " + "[true_negative]: " + str(true_negative) + " " + "[false_negative]: " + str(false_negative) + " " + "[true_neutral]: " + str(true_neutral) + " " + "[false_neutral]: " + str(false_neutral))
             print('{message: <{width}}'.format(message="[cicles unmodified]", width=24) + " -> " + str(variables.cicles_unchanged))
         
         print('{message: <{width}}'.format(message="[generations unmodified]", width=24) + " -> " + str(variables.generations_unchanged))
@@ -382,6 +383,7 @@ def evalSymbRegTweetsFromSemeval(individual):
         if variables.log_times:
             print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
         
+        print("-----------------------------")
         print("\n")   
     #logs
 
@@ -392,7 +394,7 @@ def evalSymbRegTweetsFromSemeval(individual):
 
 
 toolbox.register("evaluate", evalSymbRegTweetsFromSemeval)
-toolbox.register("select", tools.selTournament, tournsize=4)
+toolbox.register("select", tools.selTournament, tournsize=3)
 toolbox.register("mate", gp.cxOnePoint)
 toolbox.register("expr_mut", gp.genHalfAndHalf, min_=0, max_=10)
 toolbox.register("mutate", gp.mutUniform, expr=toolbox.expr_mut, pset=pset)
@@ -538,7 +540,6 @@ if __name__ == "__main__":
     #plt.plot(variables.best_fitness_per_generation_history)
     #plt.ylabel('f1')
     #plt.show()
-
 
 end = time.time()
 print("Script ends after " + str(format(end - start, '.3g')) + " seconds")
