@@ -20,10 +20,17 @@ from datetime import datetime
 import variables
 
 # Load the dictionaries
-def getDictionary():
+def getDictionary(module):
     start = time.time()
     startDic = 0
     print("\n[loading dictionaries]")
+
+    if module == "train":
+        loadTrainWords()
+    elif module == "test":
+        loadTestWords()
+    else:
+        print("[error! Unknow module on getDictionary function]")
 
     #BING LIU POSITIVE/NEGATIVE WORDS
     if(variables.use_dic_liu):
@@ -33,11 +40,19 @@ def getDictionary():
             variables.dic_liu_loaded = True
             variables.dic_loaded_total += 1
             for line in inF:
-                variables.dic_positive_words.append(line.lower().strip())
+                line = line.lower().strip()
+                if module == "train" and line in variables.all_train_words:
+                    variables.dic_positive_words.append(line)
+                elif module == "test" and line in variables.all_test_words:
+                    variables.dic_positive_words.append(line)
 
         with codecs.open(variables.DICTIONARY_NEGATIVE_WORDS, "r", "latin-1") as inF2:
             for line2 in inF2:
-                variables.dic_negative_words.append(line2.lower().strip())
+                line2 = line2.lower().strip()
+                if module == "train" and line2 in variables.all_train_words:
+                    variables.dic_negative_words.append(line2)
+                elif module == "test" and line2 in variables.all_test_words:
+                    variables.dic_negative_words.append(line2)
 
         with open(variables.DICTIONARY_POSITIVE_HASHTAGS, 'r') as inF3:
             for line3 in inF3:
@@ -63,7 +78,9 @@ def getDictionary():
             for line8 in inF8:
                 variables.dic_booster_words.append(line8.strip())
         
-        print("    [liu dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
+        print("    [" + str(len(variables.dic_positive_words) + len(variables.dic_negative_words)) + " words loaded]")
+        print("    [" + str(len(variables.dic_positive_words)) + " positive and " + str(len(variables.dic_negative_words)) + " negative]")
+        print("      [liu dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]\n")
 
     #SENTIWORDNET
     if(variables.use_dic_sentiwordnet):
@@ -73,28 +90,39 @@ def getDictionary():
             variables.dic_sentiwordnet_loaded = True
             variables.dic_loaded_total += 1
             for line9 in inF9:
-                if float(line9.split("\t")[2]) > float(line9.split("\t")[3]): #positive greater than negative
-                    words = line9.split("\t")[4].lower().strip().split()
+                splited = line9.split("\t")
+                if float(splited[2]) > float(splited[3]): #positive greater than negative
+                    words = splited[4].lower().strip().split() 
                     for word in words:
                         if not "_" in word:
                             #variables.dic_positive_words.append(word[:word.find("#")])
                             w = word[:word.find("#")]
                             if(w not in variables.dic_positive_words_sentiwordnet and len(w) > 2):
-                                variables.dic_positive_words_sentiwordnet.append(w)
-                                variables.dic_positive_value_sentiwordnet.append(1)
+                                if module == "train" and w in variables.all_train_words:
+                                    variables.dic_positive_words_sentiwordnet.append(w)
+                                    variables.dic_positive_value_sentiwordnet.append(1)
+                                elif module == "test" and w in variables.all_test_words:
+                                    variables.dic_positive_words_sentiwordnet.append(w)
+                                    variables.dic_positive_value_sentiwordnet.append(1)
                 
-                elif float(line9.split("\t")[2]) < float(line9.split("\t")[3]):
-                    words = line9.split("\t")[4].lower().strip().split()
+                elif float(splited[2]) < float(splited[3]):
+                    words = splited[4].lower().strip().split()
                     for word in words:
                         if not "_" in word:
                             #variables.dic_negative_words.append(word[:word.find("#")])
                             w = word[:word.find("#")]
                             if(w not in variables.dic_negative_words_sentiwordnet and len(w) > 2):
-                                variables.dic_negative_words_sentiwordnet.append(w)
-                                variables.dic_negative_value_sentiwordnet.append(-1)                            
+                                if module == "train" and w in variables.all_train_words:
+                                    variables.dic_negative_words_sentiwordnet.append(w)
+                                    variables.dic_negative_value_sentiwordnet.append(-1)
+                                elif module == "test" and w in variables.all_test_words:
+                                    variables.dic_negative_words_sentiwordnet.append(w)
+                                    variables.dic_negative_value_sentiwordnet.append(-1)
+                            
 
-        
-        print("    [sentiwordnet dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
+        print("    [" + str(len(variables.dic_positive_words_sentiwordnet) + len(variables.dic_negative_words_sentiwordnet)) + " words loaded]")
+        print("    [" + str(len(variables.dic_positive_words_sentiwordnet)) + " positive and " + str(len(variables.dic_negative_words_sentiwordnet)) + " negative]")
+        print("      [sentiwordnet dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]\n")
 
     #EFFECT
     if(variables.use_dic_effect):
@@ -104,17 +132,31 @@ def getDictionary():
             variables.dic_effect_loaded = True
             variables.dic_loaded_total += 1
             for line8 in inF8:
-                if (line8.split()[1] == "+Effect"):
-                    for word in line8.split()[2].split(","):
-                        variables.dic_positive_words_effect.append(word)
-                        variables.dic_positive_value_effect.append(1)
+                splited = line8.split() 
+                if (splited[1] == "+Effect"):
+                    for word in splited[2].split(","):
+                        word = word.lower().strip()
+                        if module == "train" and word in variables.all_train_words:
+                            variables.dic_positive_words_effect.append(word)
+                            variables.dic_positive_value_effect.append(1)
+                        elif module == "test" and word in variables.all_test_words:
+                            variables.dic_positive_words_effect.append(word)
+                            variables.dic_positive_value_effect.append(1)
 
-                elif (line8.split()[1].lower() == "-effect"):
-                    for word in line8.split()[2].split(","):
-                        variables.dic_negative_words_effect.append(word)
-                        variables.dic_negative_value_effect.append(-1)
+                elif (splited[1].lower() == "-effect"):
+                    for word in splited[2].split(","):
+                        word = word.lower().strip()
+                        if module == "train" and word in variables.all_train_words:
+                            variables.dic_negative_words_effect.append(word)
+                            variables.dic_negative_value_effect.append(-1)
+                        elif module == "test" and word in variables.all_test_words:
+                            variables.dic_negative_words_effect.append(word)
+                            variables.dic_negative_value_effect.append(-1)
+        
 
-        print("    [effect dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
+        print("    [" + str(len(variables.dic_positive_words_effect) + len(variables.dic_negative_words_effect)) + " words loaded]")
+        print("    [" + str(len(variables.dic_positive_words_effect)) + " positive and " + str(len(variables.dic_negative_words_effect)) + " negative]")
+        print("      [effect dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]\n")
 
     #SEMEVAL2015 
     if(variables.use_dic_semeval2015):
@@ -125,20 +167,32 @@ def getDictionary():
             variables.dic_loaded_total += 1
             for line7 in inF7:
                 #removing composite words for while 
-                if float(line7.split("\t")[0]) > 0 and not ' ' in line7.split("\t")[1].strip():
-                    if "#" in line7.split("\t")[1].strip():
-                        variables.dic_positive_hashtags.append(line7.split("\t")[1].strip()[1:])
+                splited = line7.split("\t")
+                if float(splited[0]) > 0 and not ' ' in splited[1].strip():
+                    if "#" in splited[1].strip():
+                        variables.dic_positive_hashtags.append(splited[1].strip()[1:])
                     else:
-                        variables.dic_positive_words_semeval2015.append(line7.split("\t")[1].strip())
-                        variables.dic_positive_value_semeval2015.append(float(line7.split("\t")[0]))
-                elif float(line7.split("\t")[0]) < 0 and not ' ' in line7.split("\t")[1].strip():
-                    if "#" in line7.split("\t")[1].strip():
-                        variables.dic_negative_hashtags.append(line7.split("\t")[1].strip()[1:])
+                        if module == "train" and splited[1].strip() in variables.all_train_words:
+                            variables.dic_positive_words_semeval2015.append(splited[1].strip())
+                            variables.dic_positive_value_semeval2015.append(float(splited[0]))
+                        elif module == "test" and splited[1].strip() in variables.all_test_words:
+                            variables.dic_positive_words_semeval2015.append(splited[1].strip())
+                            variables.dic_positive_value_semeval2015.append(float(splited[0]))
+                        
+                elif float(splited[0]) < 0 and not ' ' in splited[1].strip():
+                    if "#" in splited[1].strip():
+                        variables.dic_negative_hashtags.append(splited[1].strip()[1:])
                     else:
-                        variables.dic_negative_words_semeval2015.append(line7.split("\t")[1].strip())
-                        variables.dic_negative_value_semeval2015.append(float(line7.split("\t")[0]))
-        
-        print("    [semeval2015 dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
+                        if module == "train" and splited[1].strip() in variables.all_train_words:
+                            variables.dic_negative_words_semeval2015.append(splited[1].strip())
+                            variables.dic_negative_value_semeval2015.append(float(splited[0]))
+                        elif module == "test" and splited[1].strip() in variables.all_test_words:
+                            variables.dic_negative_words_semeval2015.append(splited[1].strip())
+                            variables.dic_negative_value_semeval2015.append(float(splited[0]))
+
+        print("    [" + str(len(variables.dic_positive_words_semeval2015) + len(variables.dic_negative_words_semeval2015)) + " words loaded]")
+        print("    [" + str(len(variables.dic_positive_words_semeval2015)) + " positive and " + str(len(variables.dic_negative_words_semeval2015)) + " negative]")
+        print("      [semeval2015 dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]\n")
 
     #AFFIN
     if(variables.use_dic_affin):
@@ -148,14 +202,25 @@ def getDictionary():
             variables.dic_affin_loaded = True
             variables.dic_loaded_total += 1
             for line in inF:
-                if float(line.split("\t")[1].strip()) > 0:
-                    variables.dic_positive_words_affin.append(line.split("\t")[0].strip())
-                    variables.dic_positive_value_affin.append(float(line.split("\t")[1].strip()))
+                splited = line.split("\t")
+                if float(splited[1].strip()) > 0:
+                    if module == "train" and splited[0].strip() in variables.all_train_words:
+                        variables.dic_positive_words_affin.append(splited[0].strip())
+                        variables.dic_positive_value_affin.append(float(splited[1].strip()))
+                    elif module == "test" and splited[0].strip() in variables.all_test_words:
+                        variables.dic_positive_words_affin.append(splited[0].strip())
+                        variables.dic_positive_value_affin.append(float(splited[1].strip()))
                 else:
-                    variables.dic_negative_words_affin.append(line.split("\t")[0].strip())
-                    variables.dic_negative_value_affin.append(float(line.split("\t")[1].strip()))
+                    if module == "train" and splited[0].strip() in variables.all_train_words:
+                        variables.dic_negative_words_affin.append(splited[0].strip())
+                        variables.dic_negative_value_affin.append(float(splited[1].strip()))
+                    elif module == "test" and splited[0].strip() in variables.all_test_words:
+                        variables.dic_negative_words_affin.append(splited[0].strip())
+                        variables.dic_negative_value_affin.append(float(splited[1].strip()))
 
-        print("    [affin dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
+        print("    [" + str(len(variables.dic_positive_words_affin) + len(variables.dic_negative_words_affin)) + " words loaded]")
+        print("    [" + str(len(variables.dic_positive_words_affin)) + " positive and " + str(len(variables.dic_negative_words_affin)) + " negative]")
+        print("      [affin dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]\n")
 
     #SLANG
     if(variables.use_dic_slang):
@@ -164,16 +229,27 @@ def getDictionary():
         with codecs.open(variables.DICTIONARY_SLANG, "r", "latin-1") as inF:
             variables.dic_slang_loaded = True
             variables.dic_loaded_total += 1
-            for line in inF:    
-                if float(line.split("\t")[1].strip()) > 0:
-                    variables.dic_positive_words_slang.append(line.split("\t")[0].strip())
-                    variables.dic_positive_value_slang.append(float(line.split("\t")[1].strip()))
+            for line in inF:
+                splited = line.split("\t")
+                if float(splited[1].strip()) > 0:
+                    if module == "train" and splited[0].strip() in variables.all_train_words:
+                        variables.dic_positive_words_slang.append(splited[0].strip())
+                        variables.dic_positive_value_slang.append(float(splited[1].strip()))
+                    elif module == "test" and splited[0].strip() in variables.all_test_words:
+                        variables.dic_positive_words_slang.append(splited[0].strip())
+                        variables.dic_positive_value_slang.append(float(splited[1].strip()))
 
                 elif float(line.split("\t")[1].strip()) < 0:
-                    variables.dic_negative_words_slang.append(line.split("\t")[0].strip())
-                    variables.dic_negative_value_slang.append(float(line.split("\t")[1].strip()))
-
-        print("    [slang dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
+                    if module == "train" and splited[0].strip() in variables.all_train_words:
+                        variables.dic_negative_words_slang.append(splited[0].strip())
+                        variables.dic_negative_value_slang.append(float(splited[1].strip()))
+                    elif module == "test" and splited[0].strip() in variables.all_test_words:
+                        variables.dic_negative_words_slang.append(splited[0].strip())
+                        variables.dic_negative_value_slang.append(float(splited[1].strip()))                  
+        
+        print("    [" + str(len(variables.dic_positive_words_slang) + len(variables.dic_negative_words_slang)) + " words loaded]")
+        print("    [" + str(len(variables.dic_positive_words_slang)) + " positive and " + str(len(variables.dic_negative_words_slang)) + " negative]")
+        print("      [slang dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]\n")
 
     #VADER
     if(variables.use_dic_vader):
@@ -183,38 +259,25 @@ def getDictionary():
             variables.dic_vader_loaded = True
             variables.dic_loaded_total += 1
             for line in inF:
-                if float(line.split("\t")[1].strip()) > 0:
-                    #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                    variables.dic_positive_words_vader.append(line.split("\t")[0].strip())
-                    variables.dic_positive_value_vader.append(float(line.split("\t")[1].strip()))
-                    #variables.dic_positive_words.append(line.split("\t")[0].strip())
-                    #print("POSITIVE " + line.split("\t")[0])
+                splited = line.split("\t")
+                if float(splited[1].strip()) > 0:
+                    if module == "train" and splited[0].strip() in variables.all_train_words:
+                        variables.dic_positive_words_vader.append(splited[0].strip())
+                        variables.dic_positive_value_vader.append(float(splited[1].strip()))
+                    elif module == "test" and splited[0].strip() in variables.all_test_words:
+                        variables.dic_positive_words_vader.append(splited[0].strip())
+                        variables.dic_positive_value_vader.append(float(splited[1].strip()))
                 else:
-                    #if not line.split("\t")[0].strip() in variables.dic_positive_words and not line.split("\t")[0].strip() in variables.dic_negative_words:
-                    variables.dic_negative_words_vader.append(line.split("\t")[0].strip())
-                    variables.dic_negative_value_vader.append(float(line.split("\t")[1].strip()))
-                    #variables.dic_negative_words.append(line.split("\t")[0].strip())
-                    #print("NEGATIVE " + line.split("\t")[0])
-        
-        print("    [vader dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
+                    if module == "train" and splited[0].strip() in variables.all_train_words:
+                        variables.dic_negative_words_vader.append(splited[0].strip())
+                        variables.dic_negative_value_vader.append(float(splited[1].strip()))
+                    elif module == "test" and splited[0].strip() in variables.all_test_words:
+                        variables.dic_negative_words_vader.append(splited[0].strip())
+                        variables.dic_negative_value_vader.append(float(splited[1].strip()))                      
 
-#    # SENTIMENT140
-#    if(variables.use_dic_sentiment140):  
-#        startDic = time.time()
-#        print("  [loading sentiment140]")
-#        with open(variables.DICTIONARY_SENTIMENT140, 'r') as inF:
-#            variables.dic_sentiment140_loaded = True
-#            variables.dic_loaded_total += 1
-#            for line in inF:
-#                if float(line.split("\t")[1].strip()) > 0:
-#                    variables.dic_positive_words_s140.append(line.split("\t")[0].strip())
-#                    variables.dic_positive_value_s140.append(float(line.split("\t")[1].strip()))
-#                else:
-#                    variables.dic_negative_words_s140.append(line.split("\t")[0].strip())
-#                    variables.dic_negative_value_s140.append(float(line.split("\t")[1].strip()))
-#
-#        print("    [sentiment140 dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]")
-
+        print("    [" + str(len(variables.dic_positive_words_vader) + len(variables.dic_negative_words_vader)) + " words loaded]")
+        print("    [" + str(len(variables.dic_positive_words_vader)) + " positive and " + str(len(variables.dic_negative_words_vader)) + " negative]")
+        print("      [vader dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]\n")
     
     # Performance improvement test
     variables.dic_positive_words     = set(variables.dic_positive_words)
@@ -228,14 +291,36 @@ def getDictionary():
     print("[all dictionaries (" + str(variables.dic_loaded_total) + ") loaded][" + str(format(end - start, '.3g')) + " seconds]\n")
 
 
+def loadTrainWords():
+    start = time.time()
+    print("\n  [loading train words]")
+    with open(variables.TRAIN_WORDS, 'r') as file:
+        for line in file:
+            variables.all_train_words.append(line.replace('\n', '').replace('\r', ''))
+
+    print("    [train words loaded (" + str(len(variables.all_train_words)) + " words)][" + str(format(time.time() - start, '.3g')) + " seconds]\n")
+
+
+def loadTestWords():
+    start = time.time()
+    print("\n  [loading test words]")    
+    start = time.time()
+    with open(variables.TEST_WORDS, 'r') as file:
+        for line in file:
+            variables.all_test_words.append(line.replace('\n', '').replace('\r', ''))
+
+    print("    [test words loaded (" + str(len(variables.all_test_words)) + " words)][" + str(format(time.time() - start, '.3g')) + " seconds]\n")
+
+
 # Load tweets from id (SEMEVAL 2014 database)
 def loadTrainTweets():
     start = time.time()
-    print("[loading tweets from train file Semeval 2014]")
+    print("\n[loading train tweets]")
 
     #positive_words = []
     #negative_words = []
     #neutral_words  = []
+    #train_words    = []
 
     tweets_loaded = 0
 
@@ -244,7 +329,6 @@ def loadTrainTweets():
             if tweets_loaded < variables.MAX_ANALYSIS_TWEETS:
                 tweet_parsed = line.split("\t")
                 try:
-                    # i'm ignoring the neutral tweets
                     if(tweet_parsed[2] != "neutral"):
                         if(tweet_parsed[2] == "positive"):
                             if(variables.positive_tweets < variables.MAX_POSITIVES_TWEETS):
@@ -252,8 +336,8 @@ def loadTrainTweets():
                                 variables.tweets_semeval.append(tweet_parsed[3])
                                 variables.tweets_semeval_score.append(1)
                                 #for w in tweet_parsed[3].split():
-                                #    if w.strip().lower() not in variables.stop_words:
-                                #        positive_words.append(w.strip())
+                                #    if removeAllPonctuation(w).strip().lower() not in positive_words:
+                                #        positive_words.append(removeAllPonctuation(w).strip().lower())
                                 tweets_loaded += 1
                         else:
                             if(variables.negative_tweets < variables.MAX_NEGATIVES_TWEETS):
@@ -261,8 +345,8 @@ def loadTrainTweets():
                                 variables.tweets_semeval.append(tweet_parsed[3])
                                 variables.tweets_semeval_score.append(-1)
                                 #for w in tweet_parsed[3].split():
-                                #    if w.strip().lower() not in variables.stop_words:
-                                #        negative_words.append(w.strip())
+                                #    if removeAllPonctuation(w).strip().lower() not in negative_words:
+                                #        negative_words.append(removeAllPonctuation(w).strip().lower())
                                 tweets_loaded += 1
                     else:
                         if(variables.neutral_tweets < variables.MAX_NEUTRAL_TWEETS):
@@ -270,21 +354,27 @@ def loadTrainTweets():
                             variables.tweets_semeval_score.append(0)
                             variables.neutral_tweets += 1
                             #for w in tweet_parsed[3].split():
-                            #    if w.strip().lower() not in variables.stop_words:
-                            #        neutral_words.append(w.strip())                            
+                            #    if removeAllPonctuation(w).strip().lower() not in neutral_words:
+                            #        neutral_words.append(removeAllPonctuation(w).strip().lower())                            
                             tweets_loaded += 1
                 except:
                     print("exception")
                     continue
 
-    # save frequent words on file
-    #with open("commom_positive_words_nostopwords.txt", 'a') as f:
-    #    f.write(str(Counter(positive_words)))
-    #with open("commom_negative_words_nostopwords.txt", 'a') as f:
-    #    f.write(str(Counter(negative_words)))            
-    #with open("commom_neutral_words_nostopwords.txt", 'a') as f:
-    #    f.write(str(Counter(neutral_words)))
-    # save frequent words on file        
+    #train_words = positive_words + negative_words + neutral_words
+    
+    # save words on file
+    #with open("words_train.txt", 'w') as f:
+    #    for word in train_words:
+    #        if len(word) > 0:
+    #            f.write(str(word) + "\n")
+    #with open("negative_words_train.txt", 'w') as f:
+    #    for word in negative_words:
+    #        f.write(str(word).lower().strip() + ",")
+    #with open("neutral_words_train.txt", 'w') as f:
+    #    for word in neutral_words:
+    #        f.write(str(word).lower().strip() + ",")
+    # save words on file        
     
     end = time.time()
     print("  [train tweets loaded (" + str(tweets_loaded) + " tweets)][" + str(format(end - start, '.3g')) + " seconds]\n")
@@ -293,9 +383,11 @@ def loadTrainTweets():
 # Load the test tweets from Semeval 2014 task 9
 def loadTestTweets():
     start = time.time()
-    print("[loading tweets from test file Semeval 2014]")
+    print("\n[loading test tweets]")
 
     tweets_loaded = 0
+
+    test_words = []
 
     with open(variables.SEMEVAL_TEST_FILE, 'r') as inF:
         for line in inF:
@@ -328,7 +420,7 @@ def loadTestTweets():
 
                     elif tweet_parsed[1] == "Twitter2014":
                         variables.tweets_2014.append(tweet_parsed[2])
-                        
+
                         if tweet_parsed[0] == "positive":
                             variables.tweets_2014_score.append(1)
                             variables.tweets_2014_positive += 1
@@ -343,7 +435,7 @@ def loadTestTweets():
 
                     elif tweet_parsed[1] == "SMS2013":
                         variables.sms_2013.append(tweet_parsed[2])
-                        
+
                         if tweet_parsed[0] == "positive":
                             variables.sms_2013_score.append(1)
                             variables.sms_2013_positive += 1
@@ -358,7 +450,7 @@ def loadTestTweets():
 
                     elif tweet_parsed[1] == "LiveJournal2014":
                         variables.tweets_liveJournal2014.append(tweet_parsed[2])
-                        
+
                         if tweet_parsed[0] == "positive":
                             variables.tweets_liveJournal2014_score.append(1)
                             variables.tweets_liveJournal2014_positive += 1
@@ -406,9 +498,9 @@ def loadTestTweets():
                     #SVM Values
                 
                 except Exception as e:
-                    print("exception: " + e)
+                    print("exception 1: " + e)
                     continue
-    
+
     end = time.time()
     print("  [test tweets loaded (" + str(tweets_loaded) + " tweets)][" + str(format(end - start, '.3g')) + " seconds]\n")
 
@@ -505,6 +597,7 @@ def dictionaryWeights(w1, w2, w3, w4, w5, w6, w7):
 def neutralRange(inferior, superior):
     variables.neutral_inferior_range = inferior
     variables.neutral_superior_range = superior
+    return 0
 
 
 def polaritySum2(phrase):
@@ -1278,7 +1371,7 @@ def replaceNegatingWords(phrase):
 
     splitted_phrase = phrase.split()
 
-    if(splitted_phrase[-1] == "alreadynegatedbefore"):
+    if(len(splitted_phrase) > 0 and splitted_phrase[-1] == "alreadynegatedbefore"):
         return phrase  
 
     if len(splitted_phrase) > 0 and splitted_phrase[0] in variables.dic_negation_words:
@@ -1305,7 +1398,9 @@ def replaceBoosterWords(phrase):
     phrase = phrase.lower()
     replaced = False
 
-    if(phrase.split()[-1] == "alreadyboosteredbefore"):
+    splitted_phrase = phrase.split()
+
+    if(len(splitted_phrase) > 0 and splitted_phrase[-1] == "alreadyboosteredbefore"):
         return phrase
     
     if len(phrase.split()) > 0 and phrase.split()[0] in variables.dic_booster_words:
@@ -1651,7 +1746,7 @@ def evaluateMessages(base, model):
         message = message.replace("\\u2018", "").replace("\\u2019", "").replace("\\u002c", "")        
         message = "'" + message + "'"
 
-        model_analysis = model.replace("(x)", "(" + message + ")")
+        model_analysis = model.replace("(x", "(" + message)
         
         if not len(message) > 0:
             continue
@@ -1682,7 +1777,7 @@ def evaluateMessages(base, model):
 
 
         except Exception as e:
-            print("exception: " + str(e))
+            print("exception 2: " + str(e))
             #print("\n\n[WARNING] eval(model_analysis) exception for the message: " + message + "\n\n")
             continue
 
