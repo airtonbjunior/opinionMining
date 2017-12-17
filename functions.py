@@ -1481,7 +1481,6 @@ def negativeEmoticons(phrase):
 def positiveHashtags(phrase):
     total = 0
     if "#" in phrase:
-        #print("has hashtag")
         hashtags = re.findall(r"#(\w+)", phrase)
 
         for hashtag in hashtags:
@@ -1498,7 +1497,6 @@ def positiveHashtags(phrase):
 def negativeHashtags(phrase):
     total = 0
     if "#" in phrase:
-        #print("has hashtag")
         hashtags = re.findall(r"#(\w+)", phrase)
 
         for hashtag in hashtags:
@@ -1611,7 +1609,7 @@ def removeDots(phrase):
 
 def removeAllPonctuation(phrase):
     phrase_copy = phrase
-    return phrase_copy.translate(str.maketrans('','',string.punctuation.replace("-", ""))) # keep hyphens
+    return phrase_copy.translate(str.maketrans('','',string.punctuation.replace("-", "").replace("#", ""))) # keep hyphens
 
 # Testing
 neutral_url_qtty = 0
