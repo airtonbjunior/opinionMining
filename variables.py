@@ -6,7 +6,7 @@
 from nltk.corpus import stopwords
 from datetime import datetime
 
-SEMEVAL_TRAIN_FILE = 'datasets/twitter-train-cleansed-B.txt'
+SEMEVAL_TRAIN_FILE = 'datasets/train/twitter-train-cleansed-B.txt'
 SEMEVAL_TEST_FILE  = 'datasets/test/SemEval2014-task9-test-B-all-tweets_withSVMValues.txt'
 DICTIONARY_POSITIVE_WORDS = 'dictionaries/positive-words.txt'
 DICTIONARY_NEGATIVE_WORDS = 'dictionaries/negative-words.txt'
@@ -20,14 +20,19 @@ DICTIONARY_SENTIWORDNET = 'dictionaries/SentiWordNet_3.0.0_20130122.txt'
 DICTIONARY_AFFIN = 'dictionaries/affin.txt'
 DICTIONARY_SLANG = 'dictionaries/slangSD.txt'
 DICTIONARY_VADER = 'dictionaries/vaderLexicon.txt'
-#DICTIONARY_SENTIMENT140 = 'dictionaries/sentiment140_unigram.txt'
 DICTIONARY_SEMEVAL2015  = 'dictionaries/SemEval2015-English-Twitter-Lexicon.txt'
-#DICTIONARY_EFFECT  = 'dictionaries/goldStandard.tff'
 DICTIONARY_EFFECT  = 'dictionaries/EffectWordNet.tff'
+#DICTIONARY_EFFECT  = 'dictionaries/goldStandard.tff'
+
+TRAIN_WORDS = 'datasets/train/words_train/words_train.txt'
+TEST_WORDS  = 'datasets/test/words_test.txt'
 
 BEST_INDIVIDUAL = 'partial-best-individual ' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 
 model_results = []
+
+all_train_words = []
+all_test_words  = []
 
 use_svm_neutral 	  = False
 use_url_to_neutral	  = False
@@ -47,12 +52,12 @@ effect_weight       = 1
 semeval2015_weight  = 1
 
 use_dic_liu          = True
-use_dic_sentiwordnet = False
+use_dic_sentiwordnet = True
 use_dic_affin        = True
-use_dic_vader        = False
-use_dic_slang        = False
-use_dic_effect       = False
-use_dic_semeval2015  = False
+use_dic_vader        = True
+use_dic_slang        = True
+use_dic_effect       = True
+use_dic_semeval2015  = True
 
 dic_liu_loaded 			= False
 dic_sentiwordnet_loaded = False
