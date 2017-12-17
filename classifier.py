@@ -32,7 +32,9 @@ start = time.time()
 # bypass because the bool is a subtype of int
 class Nothing(object): pass
 
-#pset = gp.PrimitiveSetTyped("MAIN", [str, str], float)
+
+# parameters: tweet, neutral_inferior_range, neutral_superior_range
+#pset = gp.PrimitiveSetTyped("MAIN", [str, float, float], float)
 pset = gp.PrimitiveSetTyped("MAIN", [str], float)
 pset.addPrimitive(operator.add, [float,float], float)
 pset.addPrimitive(operator.sub, [float,float], float)
@@ -59,7 +61,7 @@ pset.addPrimitive(negativeEmoticons, [str], float)
 #pset.addPrimitive(polaritySumAVG, [str], float)
 # Temporary removed
 
-pset.addPrimitive(passInt, [int], int)
+#pset.addPrimitive(passInt, [int], int)
 pset.addPrimitive(polaritySumAVGUsingWeights, [str, float, float, float, float, float, float, float], float)
 #pset.addPrimitive(polaritySumAVGUsingWeights, [str, int, int, int, int, int, int, int], float)
 pset.addPrimitive(hashtagPolaritySum, [str], float)
@@ -84,11 +86,15 @@ pset.addPrimitive(replaceBoosterWords, [str], str)
 pset.addPrimitive(boostUpperCase, [str], str)
 
 #pset.addPrimitive(dictionaryWeights, [float, float, float, float, float, float, float], None)
-pset.addPrimitive(neutralRange, [float, float], Nothing)
+#pset.addPrimitive(neutralRange, [float, float], float)
 
 pset.addTerminal(True, bool)
 pset.addTerminal(False, bool)
 
+#pset.addTerminal(-2.0, float)
+#pset.addTerminal(-1.5, float)
+#pset.addTerminal(-1.0, float)
+#pset.addTerminal(-0.5, float)
 pset.addTerminal(0.0, float)
 pset.addTerminal(0.5, float)
 pset.addTerminal(1.0, float)
@@ -96,11 +102,12 @@ pset.addTerminal(1.5, float)
 pset.addTerminal(2.0, float)
 
 pset.addEphemeralConstant("rand", lambda: random.uniform(0, 2), float)
-#pset.addEphemeralConstant("rand2", lambda: random.uniform(0, 3), float)
+#pset.addEphemeralConstant("rand2", lambda: random.uniform(-2, 0), float)
 #pset.addEphemeralConstant("randInt", lambda: random.randint(0, 3), int)
 
 pset.renameArguments(ARG0='x')
 #pset.renameArguments(ARG0='y')
+#pset.renameArguments(ARG0='z')
 
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 creator.create("Individual", gp.PrimitiveTree, fitness=creator.FitnessMax)
@@ -193,36 +200,36 @@ def evalSymbRegTweetsFromSemeval(individual):
 
         try:
             if float(variables.tweets_semeval_score[index]) > 0:
-                if float(func(variables.tweets_semeval[index])) > 0:
+                if float(func(variables.tweets_semeval[index])) > variables.neutral_superior_range:
                     correct_evaluations += 1 
                     is_positive   += 1
                     true_positive += 1
                 else:
-                    if float(func(variables.tweets_semeval[index])) == 0:
+                    if float(func(variables.tweets_semeval[index])) >= variables.neutral_inferior_range and float(func(variables.tweets_semeval[index])) <= variables.neutral_superior_range:
                         false_neutral += 1
-                    else:
+                    elif float(func(variables.tweets_semeval[index])) < variables.neutral_inferior_range:
                         false_negative += 1
 
             elif float(variables.tweets_semeval_score[index]) < 0:
-                if float(func(variables.tweets_semeval[index])) < 0:
+                if float(func(variables.tweets_semeval[index])) < variables.neutral_inferior_range:
                     correct_evaluations += 1 
                     is_negative   += 1
                     true_negative += 1
                 else:
-                    if float(func(variables.tweets_semeval[index])) == 0:
+                    if float(func(variables.tweets_semeval[index])) >= variables.neutral_inferior_range and float(func(variables.tweets_semeval[index])) <= variables.neutral_superior_range:
                         false_neutral += 1
-                    else:
+                    elif float(func(variables.tweets_semeval[index])) > variables.neutral_superior_range:
                         false_positive += 1
 
             elif float(variables.tweets_semeval_score[index]) == 0:
-                if float(func(variables.tweets_semeval[index])) == 0:
+                if float(func(variables.tweets_semeval[index])) >= variables.neutral_inferior_range and float(func(variables.tweets_semeval[index])) <= variables.neutral_superior_range:
                     correct_evaluations += 1 
                     is_neutral   += 1
                     true_neutral += 1
                 else:
-                    if float(func(variables.tweets_semeval[index])) < 0:
+                    if float(func(variables.tweets_semeval[index])) < variables.neutral_inferior_range:
                         false_negative += 1
-                    else:
+                    elif float(func(variables.tweets_semeval[index])) > variables.neutral_superior_range:
                         false_positive += 1
 
 
@@ -328,6 +335,7 @@ def evalSymbRegTweetsFromSemeval(individual):
             # save partial best individual (in case we need stop evolution)
             with open(variables.BEST_INDIVIDUAL, 'w') as f:
                 f.write(str(individual))
+                #f.write("\n\nNeutral Range -> [" + str(variables.neutral_inferior_range) + ", " + str(variables.neutral_superior_range) + "]")
             variables.best_fitness_history.append(variables.best_fitness)
         variables.best_fitness = fitnessReturn
         variables.fitness_positive = is_positive
@@ -455,8 +463,8 @@ if __name__ == "__main__":
     #else:
     #    print(len(sys.argv))
     print("[starting classifier module]")
-    
-    getDictionary()
+
+    getDictionary("train")
     loadTrainTweets()
 
     parameters = str(variables.CROSSOVER) + " crossover, " + str(variables.MUTATION) + " mutation, " + str(variables.POPULATION) + " population, " + str(variables.GENERATIONS) + " generation\n\n"
