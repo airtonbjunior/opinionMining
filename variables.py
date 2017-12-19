@@ -116,7 +116,7 @@ dic_booster_words      = []
 dic_positive_semeval2015  = {}
 dic_negative_semeval2015  = {}
 
-dic_positive_slang 	      = {}
+dic_positive_slang        = {}
 dic_negative_slang        = {}
 
 dic_positive_affin        = {}
@@ -125,8 +125,8 @@ dic_negative_affin        = {}
 dic_positive_sentiwordnet = {}
 dic_negative_sentiwordnet = {}
 
-dic_positive_effect 	  = {}
-dic_negative_effect 	  = {}
+dic_positive_effect       = {}
+dic_negative_effect       = {}
 
 dic_positive_vader        = {}
 dic_negative_vader        = {}
