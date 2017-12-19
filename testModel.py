@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
     with open(file_path, 'r') as inF:
         for line in inF:
-            if not line.startswith("[") and line not in ('\n', '\r\n'):
+            if not line.startswith("[") and line not in ('\n', '\r\n') and not line.startswith("#"):
                 functions_to_evaluate.append(str(line))
 
     for function_to_evaluate in functions_to_evaluate:
