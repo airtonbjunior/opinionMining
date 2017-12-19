@@ -29,32 +29,28 @@ evaluation_acumulated_time = 0
 # log time
 start = time.time()
 
-# bypass because the bool is a subtype of int
-class Nothing(object): pass
-
-
 # parameters: tweet, neutral_inferior_range, neutral_superior_range
 #pset = gp.PrimitiveSetTyped("MAIN", [str, float, float], float)
 pset = gp.PrimitiveSetTyped("MAIN", [str], float)
 pset.addPrimitive(operator.add, [float,float], float)
 pset.addPrimitive(operator.sub, [float,float], float)
 pset.addPrimitive(operator.mul, [float,float], float)
-pset.addPrimitive(protectedDiv, [float,float], float)
+#pset.addPrimitive(protectedDiv, [float,float], float)
 #pset.addPrimitive(addI, [int,int], int)
 #pset.addPrimitive(subI, [int,int], int)
 #pset.addPrimitive(mulI, [int,int], int)
-pset.addPrimitive(math.exp, [float], float)
-pset.addPrimitive(math.cos, [float], float)
-pset.addPrimitive(math.sin, [float], float)
-pset.addPrimitive(protectedSqrt, [float], float)
-pset.addPrimitive(protectedLog, [float], float)
-pset.addPrimitive(invertSignal, [float], float)
+#pset.addPrimitive(math.exp, [float], float)
+#pset.addPrimitive(math.cos, [float], float)
+#pset.addPrimitive(math.sin, [float], float)
+#pset.addPrimitive(protectedSqrt, [float], float)
+#pset.addPrimitive(protectedLog, [float], float)
+#pset.addPrimitive(invertSignal, [float], float)
 #pset.addPrimitive(math.pow, [float, float], float)
 
-pset.addPrimitive(positiveHashtags, [str], float)
-pset.addPrimitive(negativeHashtags, [str], float)
-pset.addPrimitive(positiveEmoticons, [str], float)
-pset.addPrimitive(negativeEmoticons, [str], float)
+#pset.addPrimitive(positiveHashtags, [str], float)
+#pset.addPrimitive(negativeHashtags, [str], float)
+#pset.addPrimitive(positiveEmoticons, [str], float)
+#pset.addPrimitive(negativeEmoticons, [str], float)
 
 # Temporary removed
 #pset.addPrimitive(polaritySum2, [str], float)
@@ -64,14 +60,14 @@ pset.addPrimitive(negativeEmoticons, [str], float)
 #pset.addPrimitive(passInt, [int], int)
 pset.addPrimitive(polaritySumAVGUsingWeights, [str, float, float, float, float, float, float, float], float)
 #pset.addPrimitive(polaritySumAVGUsingWeights, [str, int, int, int, int, int, int, int], float)
-pset.addPrimitive(hashtagPolaritySum, [str], float)
-pset.addPrimitive(emoticonsPolaritySum, [str], float)
+#pset.addPrimitive(hashtagPolaritySum, [str], float)
+#pset.addPrimitive(emoticonsPolaritySum, [str], float)
 pset.addPrimitive(positiveWordsQuantity, [str], float)
 pset.addPrimitive(negativeWordsQuantity, [str], float)
 
 
-pset.addPrimitive(hasHashtag, [str], bool)
-pset.addPrimitive(hasEmoticons, [str], bool)
+#pset.addPrimitive(hasHashtag, [str], bool)
+#pset.addPrimitive(hasEmoticons, [str], bool)
 pset.addPrimitive(hasURLs, [str], bool)
 
 pset.addPrimitive(if_then_else, [bool, float, float], float)
@@ -79,7 +75,7 @@ pset.addPrimitive(if_then_else, [bool, float, float], float)
 #pset.addPrimitive(stemmingText, [str], str)
 pset.addPrimitive(removeStopWords, [str], str)
 pset.addPrimitive(removeLinks, [str], str)
-pset.addPrimitive(removeEllipsis, [str], str)
+#pset.addPrimitive(removeEllipsis, [str], str)
 pset.addPrimitive(removeAllPonctuation, [str], str)
 pset.addPrimitive(replaceNegatingWords, [str], str)
 pset.addPrimitive(replaceBoosterWords, [str], str)
@@ -335,7 +331,8 @@ def evalSymbRegTweetsFromSemeval(individual):
             # save partial best individual (in case we need stop evolution)
             with open(variables.BEST_INDIVIDUAL, 'w') as f:
                 f.write(str(individual))
-                #f.write("\n\nNeutral Range -> [" + str(variables.neutral_inferior_range) + ", " + str(variables.neutral_superior_range) + "]")
+                f.write("\n\n# Generation -> " + str(generation_count))
+                f.write("\n# Neutral Range -> [" + str(variables.neutral_inferior_range) + ", " + str(variables.neutral_superior_range) + "]")
             variables.best_fitness_history.append(variables.best_fitness)
         variables.best_fitness = fitnessReturn
         variables.fitness_positive = is_positive
@@ -468,6 +465,7 @@ if __name__ == "__main__":
 
     getDictionary("train")
     loadTrainTweets()
+
 
     parameters = str(variables.CROSSOVER) + " crossover, " + str(variables.MUTATION) + " mutation, " + str(variables.POPULATION) + " population, " + str(variables.GENERATIONS) + " generation\n\n"
 
