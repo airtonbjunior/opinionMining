@@ -1,0 +1,5 @@
+Testes realizados após a reunião com o profº Celso, por skype, dia 20/12/2017
+
+1º Remover valores discretos (deixar só o 0.0) e evoluir só com os valores reais (duas constantes efêmeras, uma de [0,2] e outra de [0,3])
+2º Gerar mutação só nos terminais numéricos (pesos dos dicionários) com maior probabilidade
+3º Testando outras configurações de pop e gen (manter parâmetro de 25000 ciclos (51gen500pop de base))
