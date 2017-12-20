@@ -373,7 +373,7 @@ def loadTestTweets():
                         if tweet_parsed[0] == "positive":
                             variables.tweets_2013_score.append(1)
                             variables.tweets_2013_positive += 1
-                        
+
                         elif tweet_parsed[0] == "negative":
                             variables.tweets_2013_score.append(-1)
                             variables.tweets_2013_negative += 1
