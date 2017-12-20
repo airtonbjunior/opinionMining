@@ -179,12 +179,35 @@ def evalSymbRegTweetsFromSemeval(individual):
     f1_avg = 0
     f1_positive_negative_avg = 0
 
+    func_value = 0
+
     breaked = False
+    fitness_decreased = False
 
     # Transform the tree expression in a callable function
     func = toolbox.compile(expr=individual)
 
     for index, item in enumerate(variables.tweets_semeval):        
+        
+        if (str(individual).count(variables.massive_function) > variables.massive_functions_max) and variables.massive_functions_constraint:
+            print("\n[constraint][more than " + str(variables.massive_functions_max) + " massive(s) function(s)][bad individual][fitness zero]\n")
+            if variables.log_times:
+                print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
+            print("-----------------------------")
+            print("\n") 
+            breaked = True
+            break
+
+        # change the if_then_else clausule
+        if (not str(individual).startswith(variables.root_function) and not str(individual).startswith("if_then_else")) and variables.root_constraint and index == 0:
+            print("\n[constraint][root node is not " + variables.root_function + "][fitness decreased in " + str(variables.root_decreased_value * 100) + "%]\n")
+            #if variables.log_times:
+            #    print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
+            #print("-----------------------------")
+            #print("\n") 
+            fitness_decreased = True
+            #breaked = True
+            #break
 
         if variables.cicles_unchanged >= variables.max_unchanged_cicles:
             breaked = True
@@ -195,37 +218,40 @@ def evalSymbRegTweetsFromSemeval(individual):
                 print("\n[New cicle]: " + str(len(variables.tweets_semeval)) + " phrases to evaluate [" + str(variables.positive_tweets) + " positives, " + str(variables.negative_tweets) + " negatives and " + str(variables.neutral_tweets) + " neutrals]")
 
         try:
+
+            func_value = float(func(variables.tweets_semeval[index]))
+
             if float(variables.tweets_semeval_score[index]) > 0:
-                if float(func(variables.tweets_semeval[index])) > variables.neutral_superior_range:
+                if  func_value > variables.neutral_superior_range:
                     correct_evaluations += 1 
                     is_positive   += 1
                     true_positive += 1
                 else:
-                    if float(func(variables.tweets_semeval[index])) >= variables.neutral_inferior_range and float(func(variables.tweets_semeval[index])) <= variables.neutral_superior_range:
+                    if func_value >= variables.neutral_inferior_range and func_value <= variables.neutral_superior_range:
                         false_neutral += 1
-                    elif float(func(variables.tweets_semeval[index])) < variables.neutral_inferior_range:
+                    elif func_value < variables.neutral_inferior_range:
                         false_negative += 1
 
             elif float(variables.tweets_semeval_score[index]) < 0:
-                if float(func(variables.tweets_semeval[index])) < variables.neutral_inferior_range:
+                if func_value < variables.neutral_inferior_range:
                     correct_evaluations += 1 
                     is_negative   += 1
                     true_negative += 1
                 else:
-                    if float(func(variables.tweets_semeval[index])) >= variables.neutral_inferior_range and float(func(variables.tweets_semeval[index])) <= variables.neutral_superior_range:
+                    if func_value >= variables.neutral_inferior_range and func_value <= variables.neutral_superior_range:
                         false_neutral += 1
-                    elif float(func(variables.tweets_semeval[index])) > variables.neutral_superior_range:
+                    elif func_value > variables.neutral_superior_range:
                         false_positive += 1
 
             elif float(variables.tweets_semeval_score[index]) == 0:
-                if float(func(variables.tweets_semeval[index])) >= variables.neutral_inferior_range and float(func(variables.tweets_semeval[index])) <= variables.neutral_superior_range:
+                if func_value >= variables.neutral_inferior_range and func_value <= variables.neutral_superior_range:
                     correct_evaluations += 1 
                     is_neutral   += 1
                     true_neutral += 1
                 else:
-                    if float(func(variables.tweets_semeval[index])) < variables.neutral_inferior_range:
+                    if func_value < variables.neutral_inferior_range:
                         false_negative += 1
-                    elif float(func(variables.tweets_semeval[index])) > variables.neutral_superior_range:
+                    elif func_value > variables.neutral_superior_range:
                         false_positive += 1
 
 
@@ -237,7 +263,7 @@ def evalSymbRegTweetsFromSemeval(individual):
         if variables.log_all_messages:
             print("[phrase]: " + variables.tweets_semeval[index])
             print("[value]: " + str(variables.tweets_semeval_score[index]))
-            print("[calculated]:" + str(func(variables.tweets_semeval[index])))
+            print("[calculated]:" + func_value)
 
 
     if true_positive + false_positive + true_negative + false_negative > 0:
@@ -324,6 +350,8 @@ def evalSymbRegTweetsFromSemeval(individual):
     # The metric that represent the fitness
     # fitnessReturn = accuracy
     fitnessReturn = f1_positive_negative_avg
+    if fitness_decreased:
+        fitnessReturn -= fitnessReturn * variables.root_decreased_value # 80% of the original value
 
 
     if variables.best_fitness < fitnessReturn:
@@ -393,7 +421,7 @@ def evalSymbRegTweetsFromSemeval(individual):
 toolbox.register("evaluate", evalSymbRegTweetsFromSemeval)
 toolbox.register("select", tools.selTournament, tournsize=3)
 toolbox.register("mate", gp.cxOnePoint)
-toolbox.register("expr_mut", gp.genHalfAndHalf, min_=0, max_=10)
+toolbox.register("expr_mut", gp.genHalfAndHalf, min_=0, max_=6)
 toolbox.register("mutate", gp.mutUniform, expr=toolbox.expr_mut, pset=pset)
 
 toolbox.decorate("mate", gp.staticLimit(key=operator.attrgetter("height"), max_value=16))
