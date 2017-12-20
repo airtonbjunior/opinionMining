@@ -37,7 +37,7 @@ all_test_words  = []
 
 use_svm_neutral 	  = False
 use_url_to_neutral	  = False
-use_emoticon_analysis = False
+use_emoticon_analysis = True
 use_only_gp 	      = False
 use_only_svm		  = False
 
