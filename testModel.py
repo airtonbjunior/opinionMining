@@ -32,11 +32,11 @@ if __name__ == "__main__":
                 functions_to_evaluate.append(str(line))
 
     for function_to_evaluate in functions_to_evaluate:
-        #evaluateMessages("tweets2013", function_to_evaluate)
-        #evaluateMessages("tweets2014", function_to_evaluate)
-        #evaluateMessages("sms", function_to_evaluate)
-        #evaluateMessages("livejournal", function_to_evaluate)
-        #evaluateMessages("sarcasm", function_to_evaluate)
+        evaluateMessages("tweets2013", function_to_evaluate)
+        evaluateMessages("tweets2014", function_to_evaluate)
+        evaluateMessages("sms", function_to_evaluate)
+        evaluateMessages("livejournal", function_to_evaluate)
+        evaluateMessages("sarcasm", function_to_evaluate)
         evaluateMessages("all", function_to_evaluate)
 
     resultsAnalysis()
