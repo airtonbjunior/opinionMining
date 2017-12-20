@@ -1,0 +1,4 @@
+polaritySumAVGUsingWeights(x, 0.0, 1.0, 1.4904045891866566, 2.0, 2.0, 0.5, 1.0)
+
+# Generation -> 1
+# Neutral Range -> [0, 0]

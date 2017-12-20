@@ -1,0 +1,4 @@
+if_then_else(hasURLs(removeAllPonctuation(x)), 0.5, add(polaritySumAVGUsingWeights(x, sub(if_then_else(False, 0.0, 1.0), add(2.0, 0.5)), 1.5, 0.5, if_then_else(hasURLs(x), negativeWordsQuantity(x), add(1.5, 2.0)), 0.5, polaritySumAVGUsingWeights(replaceNegatingWords(x), add(1.3792305031806145, 1.0), add(0.0, 1.0), polaritySumAVGUsingWeights(x, 1.5, 1.0, 0.5, 1.0, 0.0, 1.355229762331541, 0.5), 2.0, 0.5, sub(0.5, 2.0), if_then_else(True, 0.0, 0.0)), 1.046568512300577), polaritySumAVGUsingWeights(x, polaritySumAVGUsingWeights(x, mul(1.0988397488270094, 0.14555723978151858), add(1.5, 0.5), 2.0, 0.8088494616678825, if_then_else(False, 0.0, 2.0), 2.0, if_then_else(False, 1.5, 1.0)), add(polaritySumAVGUsingWeights(x, 2.0, 2.0, 0.6760558082513357, 0.0, 1.8997778271112966, 1.5, 0.5), 2.0), 2.0, negativeWordsQuantity(replaceBoosterWords(x)), 0.0, 1.5, add(positiveWordsQuantity(x), add(1.5, 0.0)))))
+
+# Generation -> 1
+# Neutral Range -> [0, 0]

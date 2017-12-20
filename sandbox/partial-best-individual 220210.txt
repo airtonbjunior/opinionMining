@@ -1,0 +1,4 @@
+polaritySumAVGUsingWeights(removeAllPonctuation(boostUpperCase(x)), positiveWordsQuantity(x), sub(add(0.5, 1.0), add(1.0, 1.543361157143558)), positiveWordsQuantity(removeLinks(x)), mul(mul(1.0, 0.9187094422366959), positiveWordsQuantity(x)), 1.0, 0.0, add(0.0, 2.0))
+
+# Generation -> 1
+# Neutral Range -> [0, 0]
