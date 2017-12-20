@@ -1,0 +1,2 @@
+[PARAMS]: 0.9 crossover, 0.1 mutation, 200 population, 51 generation
+

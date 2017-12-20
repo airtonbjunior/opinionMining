@@ -1,0 +1,4 @@
+polaritySumAVGUsingWeights(removeAllPonctuation(removeAllPonctuation(replaceBoosterWords(x))), 1.5, 1.5, 1.5, 2.0, 0.6467626470757868, 0.17266987419597846, 1.5)
+
+# Generation -> 3
+# Neutral Range -> [0, 0]

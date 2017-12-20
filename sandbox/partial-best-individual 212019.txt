@@ -1,0 +1,4 @@
+sub(if_then_else(hasURLs(x), mul(1.0, 0.0), sub(1.5, 1.0)), polaritySumAVGUsingWeights(removeStopWords(x), positiveWordsQuantity(x), negativeWordsQuantity(x), add(2.0, 1.6552907312160479), sub(1.0, 0.5), negativeWordsQuantity(x), polaritySumAVGUsingWeights(x, 0.0, 1.5, 0.8359368138821801, 0.28766559747058795, 0.5, 0.0, 1.0), add(0.1879971557676703, 2.0)))
+
+# Generation -> 1
+# Neutral Range -> [0, 0]

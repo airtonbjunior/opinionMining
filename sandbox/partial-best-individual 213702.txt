@@ -1,0 +1,4 @@
+polaritySumAVGUsingWeights(removeAllPonctuation(removeStopWords(removeAllPonctuation(replaceNegatingWords(removeLinks(replaceBoosterWords(removeAllPonctuation(x))))))), 1.0, add(1.5, 2.0), if_then_else(False, 2.0, 0.5), if_then_else(False, 2.0, 0.5), 0.5, mul(2.0, 1.0), positiveWordsQuantity(x))
+
+# Generation -> 2
+# Neutral Range -> [0, 0]
