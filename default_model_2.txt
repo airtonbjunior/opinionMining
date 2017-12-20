@@ -1,8 +1,0 @@
-[PARAMS]: 0.9 crossover, 0.1 mutation, 100 population, 100 generation
-
-polaritySumAVGUsingWeights(replaceNegatingWords(replaceNegatingWords(removeLinks(removeAllPonctuation(boostUpperCase(removeStopWords(removeStopWords(replaceNegatingWords(replaceNegatingWords(replaceBoosterWords(removeLinks(x))))))))))), 0.33978015543718154, 0.9597162504205008, 0.5096861291798827, protectedLog(0.8868955791910949), 0.9730854266092412, 0.9730854266092412, 0.33978015543718154)
-polaritySumAVGUsingWeights(replaceNegatingWords(replaceNegatingWords(removeLinks(removeAllPonctuation(removeStopWords(removeStopWords(replaceNegatingWords(replaceNegatingWords(replaceBoosterWords(removeLinks(x)))))))))), 0.33978015543718154, 0.9730854266092412, 0.5096861291798827, if_then_else(True, 0.33978015543718154, 0.5679228874871409), 0.9730854266092412, 0.9730854266092412, 0.8868955791910949)
-polaritySumAVGUsingWeights(replaceNegatingWords(replaceNegatingWords(removeLinks(removeAllPonctuation(removeLinks(x))))), 0.33978015543718154, 0.9597162504205008, 0.5096861291798827, 0.9730854266092412, 0.9730854266092412, 0.9730854266092412, 0.33978015543718154)
-polaritySumAVGUsingWeights(replaceNegatingWords(replaceNegatingWords(removeLinks(removeAllPonctuation(removeLinks(x))))), 0.33978015543718154, 0.9597162504205008, 0.5096861291798827, 0.9730854266092412, 0.9730854266092412, 0.9730854266092412, 0.33978015543718154)
-
-
