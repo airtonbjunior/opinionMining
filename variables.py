@@ -81,11 +81,20 @@ MAX_NEUTRAL_TWEETS   = 1400
 CROSSOVER   = 0.9
 MUTATION    = 0.1
 GENERATIONS = 51
-POPULATION  = 200
+POPULATION  = 500
 cicles_unchanged = 0
 generations_unchanged = 0
 max_unchanged_generations = 250
 max_unchanged_cicles = 9999999999
+
+root_constraint = True
+root_function = "polaritySumAVGUsingWeights"
+#root_functions = ["polaritySumAVGUsingWeights", "if_then_else"]
+root_decreased_value = 0.2
+
+massive_functions_constraint = True
+massive_function = "polaritySumAVGUsingWeights"
+massive_functions_max = 1
 
 generations_unchanged_reached_msg = False
 
