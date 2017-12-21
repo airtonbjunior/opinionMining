@@ -1,0 +1,64 @@
+[Model]	polaritySumAVGUsingWeights(removeAllPonctuation(removeStopWords(removeAllPonctuation(replaceNegatingWords(replaceBoosterWords(x))))), sub(1.4917314878762928, 1.0666968653301865), if_then_else(hasURLs(removeAllPonctuation(removeAllPonctuation(removeStopWords(x)))), 1.695040482181927, 0.0), if_then_else(hasURLs(removeLinks(replaceNegatingWords(removeAllPonctuation(removeLinks(x))))), 0.5791933567949965, 0.252301850185894), if_then_else(hasURLs(removeLinks(boostUpperCase(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(x)))))), mul(1.4917314878762928, 1.5050939233561567), sub(1.4917314878762928, 1.4917314878762928)), 0.0, 0.0, 0.0)
+
+tweets2013	0.6073
+tweets2014	0.5914
+sms	0.5702
+livejournal	0.6794
+sarcasm	0.3974
+all	0.6092
+
+[Model]	polaritySumAVGUsingWeights(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(boostUpperCase(removeStopWords(replaceBoosterWords(replaceBoosterWords(removeLinks(replaceNegatingWords(replaceBoosterWords(x)))))))))))), 0.4405453203256887, 0.0, 0.2494501229744468, 0.0, 0.0, 0.0, 0.0)
+
+tweets2013	0.6075
+tweets2014	0.5947
+sms	0.5712
+livejournal	0.6826
+sarcasm	0.3974
+all	0.6105
+
+[Model]	if_then_else(hasURLs(x), add(sub(sub(0.0, add(negativeWordsQuantity(boostUpperCase(removeStopWords(boostUpperCase(boostUpperCase(removeStopWords(removeAllPonctuation(x))))))), mul(0.0, 0.0))), add(negativeWordsQuantity(boostUpperCase(removeStopWords(boostUpperCase(removeStopWords(removeStopWords(removeAllPonctuation(boostUpperCase(x)))))))), mul(0.0, 0.0))), positiveWordsQuantity(replaceNegatingWords(x))), add(polaritySumAVGUsingWeights(replaceNegatingWords(replaceNegatingWords(removeLinks(removeAllPonctuation(removeStopWords(replaceNegatingWords(x)))))), 0.32170186496512987, 0.0, 1.7518934561906048, 0.32170186496512987, 0.0, 0.0, 0.0), add(sub(add(0.0, mul(0.0, 0.0)), add(negativeWordsQuantity(boostUpperCase(removeStopWords(removeAllPonctuation(x)))), positiveWordsQuantity(removeStopWords(removeAllPonctuation(x))))), positiveWordsQuantity(x))))
+tweets2013	0.6143
+tweets2014	0.5666
+sms	0.5586
+livejournal	0.6776
+sarcasm	0.3904
+all	0.6044
+
+
+
+##Statistics##
+
+3 models evaluated
+7 dictionaries
+
+AVGs
+AVG Tweets2013 F1 SemEval	0.6097
+AVG Tweets2014 F1 SemEval	0.5842
+AVG SMS F1 SemEval	0.5667
+AVG LiveJournal F1 SemEval	0.6799
+AVG Sarcasm F1 SemEval	0.3951
+AVG All F1 SemEval	0.608
+
+Best Values
+Best Tweets2013 F1 value	0.6143
+Best Tweets2014 F1 value	0.5947
+Best SMS F1 value	0.5712
+Best LiveJournal F1 value	0.6826
+Best Sarcasm F1 value	0.3974
+Best All F1 value	0.6105
+
+Values by database
+Tweets2013 [0.6073, 0.6075, 0.6143]
+Tweets2014 [0.5914, 0.5947, 0.5666]
+SMS [0.5702, 0.5712, 0.5586]
+LiveJournal [0.6794, 0.6826, 0.6776]
+Sarcasm [0.3974, 0.3974, 0.3904]
+All [0.6092, 0.6105, 0.6044]
+
+Standard deviation
+Standard Deviation Tweets2013	0.003253715824509964
+Standard Deviation Tweets2014	0.012541220922311452
+Standard Deviation SMS	0.005718585683735317
+Standard Deviation Live Journal	0.002067741655902776
+Standard Deviation Sarcasm	0.003299831645537199
+Standard Deviation All	0.002623398982660119
