@@ -1,0 +1,4 @@
+polaritySumAVGUsingWeights(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(boostUpperCase(removeStopWords(replaceBoosterWords(replaceBoosterWords(removeLinks(replaceNegatingWords(replaceBoosterWords(x)))))))))))), 0.4405453203256887, 0.0, 0.2494501229744468, 0.0, 0.0, 0.0, 0.0)
+
+# Generation -> 38
+# Neutral Range -> [0, 0]
