@@ -1,4 +1,0 @@
-polaritySumAVGUsingWeights(replaceBoosterWords(removeAllPonctuation(removeAllPonctuation(removeAllPonctuation(removeStopWords(replaceBoosterWords(replaceNegatingWords(replaceNegatingWords(x)))))))), 0.5, 0.0, 0.5, positiveWordsQuantity(removeStopWords(replaceBoosterWords(removeLinks(removeAllPonctuation(replaceBoosterWords(replaceBoosterWords(removeLinks(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(removeAllPonctuation(removeAllPonctuation(replaceNegatingWords(x))))))))))))))), mul(mul(0.5, negativeWordsQuantity(x)), mul(0.5, 0.5)), 0.0, 0.0)
-
-# Generation -> 44
-# Neutral Range -> [0, 0]
