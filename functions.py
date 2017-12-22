@@ -1608,6 +1608,22 @@ neutral_url_correct_pred = 0
 
 model_results_to_count_occurrences = []
 
+def mutateW(individual):
+    mutated_individual = ""
+    #print("I'm in mutateW")
+    #print("I received the individual above:\n")
+    #print(str(individual))
+    #print(type(individual))
+    #print(dir(individual))
+    #print("fitness -> " + str(individual.fitness))
+    #print("----\n")
+    #for x in str(individual).split(","):
+    #    print("x part -> " + str(x))
+    #print("----\n")
+
+    return individual,
+
+
 # Evaluate the test messages using the model
 # http://text-analytics101.rxnlp.com/2014/10/computing-precision-and-recall-for.html
 def evaluateMessages(base, model):
