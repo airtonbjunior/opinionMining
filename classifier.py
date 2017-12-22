@@ -110,7 +110,7 @@ creator.create("Individual", gp.PrimitiveTree, fitness=creator.FitnessMax)
 
 toolbox = base.Toolbox()
 
-toolbox.register("expr", gp.genHalfAndHalf, pset=pset, min_=1, max_=10)
+toolbox.register("expr", gp.genHalfAndHalf, pset=pset, min_=1, max_=4)
 toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.expr)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("compile", gp.compile, pset=pset)
@@ -423,9 +423,112 @@ toolbox.register("select", tools.selTournament, tournsize=3)
 toolbox.register("mate", gp.cxOnePoint)
 toolbox.register("expr_mut", gp.genHalfAndHalf, min_=0, max_=6)
 toolbox.register("mutate", gp.mutUniform, expr=toolbox.expr_mut, pset=pset)
+toolbox.register("mutateEphemeral", gp.mutEphemeral)
+
 
 toolbox.decorate("mate", gp.staticLimit(key=operator.attrgetter("height"), max_value=16))
 toolbox.decorate("mutate", gp.staticLimit(key=operator.attrgetter("height"), max_value=16))
+
+
+def myVarAnd(population, toolbox, cxpb, mutpb):
+    #print("YAY, I'm in myVarAnd")
+
+    offspring = [toolbox.clone(ind) for ind in population]
+
+    # Apply crossover and mutation on the offspring
+    for i in range(1, len(offspring), 2):
+        if random.random() < cxpb:
+            offspring[i - 1], offspring[i] = toolbox.mate(offspring[i - 1],
+                                                          offspring[i])
+            del offspring[i - 1].fitness.values, offspring[i].fitness.values
+
+    for i in range(len(offspring)):
+        if random.random() < mutpb:
+            #print("MUTATE NORMAL")
+            offspring[i], = toolbox.mutate(offspring[i])
+            del offspring[i].fitness.values
+    
+    for i in range(len(offspring)):
+        if random.random() < variables.MUTATE_EPHEMERAL:
+            #print("MUTATE EPHEMERAL")
+            offspring[i], = toolbox.mutateEphemeral(offspring[i], "all")
+            del offspring[i].fitness.values
+    
+    # my mutation (only for w or other real values)
+    #for i in range(len(offspring)):
+    #    if random.random() < variables.MUTATION_W:
+    #        offspring[i], = mutateW(offspring[i])
+    #        del offspring[i].fitness.values
+
+    return offspring
+
+
+def myEaSimple(population, toolbox, cxpb, mutpb, ngen, stats=None,
+             halloffame=None, verbose=__debug__):
+
+    logbook = tools.Logbook()
+    logbook.header = ['gen', 'nevals'] + (stats.fields if stats else [])
+
+    # Evaluate the individuals with an invalid fitness
+    invalid_ind = [ind for ind in population if not ind.fitness.valid]
+    fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
+    for ind, fit in zip(invalid_ind, fitnesses):
+        ind.fitness.values = fit
+
+    if halloffame is not None:
+        halloffame.update(population)
+
+    record = stats.compile(population) if stats else {}
+    logbook.record(gen=0, nevals=len(invalid_ind), **record)
+    if verbose:
+        print(logbook.stream)
+
+    # Begin the generational process
+    for gen in range(1, ngen + 1):
+        # Select the next generation individuals
+        offspring = toolbox.select(population, len(population))
+
+        offspringOriginal = offspring
+
+        # Vary the pool of individuals
+        offspring = myVarAnd(offspring, toolbox, cxpb, mutpb)
+
+        #if random.random() < variables.MUTATION_W:
+        #    print("####################\n")
+        #    print("My W's Mutation HERE")
+        #    print("####################\n")
+
+
+        #for index, item in enumerate(offspring): 
+        #    if (offspringOriginal[index] != offspring[index]):
+        #        print("DEFAULT MUTATION!!!!!")
+        #        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n")
+        #        print("offspring original   -> " + str(offspringOriginal[index]) + "\n")
+        #        print("offspring modificado -> " + str(offspring[index]) + "\n")
+        #        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n")
+
+
+        # Evaluate the individuals with an invalid fitness
+        invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
+        fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
+        for ind, fit in zip(invalid_ind, fitnesses):
+            ind.fitness.values = fit
+
+        # Update the hall of fame with the generated individuals
+        if halloffame is not None:
+            halloffame.update(offspring)
+
+        # Replace the current population by the offspring
+        population[:] = offspring
+
+        # Append the current generation statistics to the logbook
+        record = stats.compile(population) if stats else {}
+        logbook.record(gen=gen, nevals=len(invalid_ind), **record)
+        if verbose:
+            print(logbook.stream)
+
+    return population, logbook
+
 
 
 def main():
@@ -445,7 +548,7 @@ def main():
         # Statistics objetc (updated inplace)
         # HallOfFame object that contain the best individuals
         # Whether or not to log the statistics
-    pop, log = algorithms.eaSimple(pop, toolbox, variables.CROSSOVER, variables.MUTATION, variables.GENERATIONS, stats=False,
+    pop, log = myEaSimple(pop, toolbox, variables.CROSSOVER, variables.MUTATION, variables.GENERATIONS, stats=False,
                                    halloffame=hof, verbose=False)
 
 
