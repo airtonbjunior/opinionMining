@@ -23,10 +23,12 @@ Automated creation of an Opinion Mining/Sentiment Analysis Classifier Model usin
 # References
 * Lexicons
   * [Bing Liu Lexicon](https://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html#lexicon)
+  * [SentiWordNet](http://sentiwordnet.isti.cnr.it/)
+  * [AFINN](http://www2.imm.dtu.dk/pubdb/views/publication_details.php?id=6010)
   * [Vader Lexicon](https://github.com/cjhutto/vaderSentiment) (Valence Aware Dictionary and sEntiment Reasoner)
   * [SlangSD](http://slangsd.com/) (Sentiment Dictionary for Slang Words)
   * [MPQA Effect Lexicon](http://mpqa.cs.pitt.edu/lexicons/effect_lexicon/)
-  * [SentiWordNet](http://sentiwordnet.isti.cnr.it/)
+  * SemEval2015 Lexicon
 
 # Old repository
 * [Related Works](https://airtonbjunior.github.io/mestrado/sentiment-analysis/presentation/related-works.pdf)
