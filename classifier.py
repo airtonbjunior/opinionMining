@@ -82,7 +82,7 @@ pset.addPrimitive(replaceBoosterWords, [str], str)
 pset.addPrimitive(boostUpperCase, [str], str)
 
 #pset.addPrimitive(dictionaryWeights, [float, float, float, float, float, float, float], None)
-#pset.addPrimitive(neutralRange, [float, float], float)
+pset.addPrimitive(neutralRange, [float, float], float)
 
 pset.addTerminal(True, bool)
 pset.addTerminal(False, bool)
@@ -97,8 +97,8 @@ pset.addTerminal(0.0, float)
 #pset.addTerminal(1.5, float)
 #pset.addTerminal(2.0, float)
 
-pset.addEphemeralConstant("rand", lambda: random.uniform(0, 2), float)
-pset.addEphemeralConstant("rand2", lambda: random.uniform(0, 3), float)
+pset.addEphemeralConstant("rand", lambda: random.uniform(-2, 2), float)
+pset.addEphemeralConstant("rand2", lambda: random.uniform(-2, 2), float)
 #pset.addEphemeralConstant("randInt", lambda: random.randint(0, 3), int)
 
 pset.renameArguments(ARG0='x')
@@ -126,6 +126,12 @@ def evalSymbRegTweetsFromSemeval(individual):
     global generation_count
     global best_of_generation
     new_generation = False
+
+    # test
+    variables.neutral_inferior_range = 0
+    variables.neutral_superior_range = 0
+    # test
+
 
     if variables.generations_unchanged >= variables.max_unchanged_generations:
         if(variables.generations_unchanged_reached_msg == False):
@@ -191,6 +197,16 @@ def evalSymbRegTweetsFromSemeval(individual):
         
         if (str(individual).count(variables.massive_function) > variables.massive_functions_max) and variables.massive_functions_constraint:
             print("\n[constraint][more than " + str(variables.massive_functions_max) + " massive(s) function(s)][bad individual][fitness zero]\n")
+            if variables.log_times:
+                print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
+            print("-----------------------------")
+            print("\n") 
+            breaked = True
+            break
+
+        # more than one neutralRange
+        if str(individual).count("neutralRange") > 1:
+            print("\n[constraint][more than one neutralRange function][bad individual][fitness zero]\n")
             if variables.log_times:
                 print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
             print("-----------------------------")
