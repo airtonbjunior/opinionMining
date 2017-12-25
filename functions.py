@@ -559,9 +559,19 @@ def dictionaryWeights(w1, w2, w3, w4, w5, w6, w7):
 
 
 def neutralRange(inferior, superior):
-    variables.neutral_inferior_range = inferior
-    variables.neutral_superior_range = superior
-    return 0
+    #print("##NEUTRAL RANGE##")
+    #print("Inferior -> " + str(inferior))
+    #print("Superior -> " + str(superior))
+
+    if float(inferior) > float(superior):
+        #print("@@FAIL, inferior greater than superior@@")
+        variables.neutral_inferior_range = 0
+        variables.neutral_superior_range = 0
+    else:
+        variables.neutral_inferior_range = inferior
+        variables.neutral_superior_range = superior
+    
+    return 0 # try not be used in other branches of the tree
 
 
 def polaritySum2(phrase):
@@ -1629,9 +1639,16 @@ def mutateW(individual):
 def evaluateMessages(base, model):
     global model_results_to_count_occurrences
     print("[starting evaluation of " + base + " messages]")
-    # Testing
+    
+    # test
     global neutral_url_qtty
     global neutral_url_correct_pred
+    # test
+
+    # test
+    variables.neutral_inferior_range = 0
+    variables.neutral_superior_range = 0
+    # test
 
     neutral_url_qtty = 0
     neutral_url_correct_pred = 0
