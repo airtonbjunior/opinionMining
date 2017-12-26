@@ -132,13 +132,14 @@ def evalSymbRegTweetsFromSemeval(individual):
     variables.neutral_superior_range = 0
     # test
 
-
+    # Check max unchanged generations
     if variables.generations_unchanged >= variables.max_unchanged_generations:
         if(variables.generations_unchanged_reached_msg == False):
             print("[Max unchanged generations (" + str(variables.max_unchanged_generations) + ") reached on generation " + str(generation_count) + "]")
         variables.generations_unchanged_reached_msg = True
         return 0,
 
+    # Log the number of each individual
     if iterate_count <= variables.POPULATION:
         print("[individual " + str(iterate_count) + " of the generation " + str(generation_count) + "]")
         iterate_count += 1
@@ -187,16 +188,21 @@ def evalSymbRegTweetsFromSemeval(individual):
 
     func_value = 0
 
+    # Constraint controls 
     breaked = False
     fitness_decreased = False
+    double_decreased = False
 
     # Transform the tree expression in a callable function
     func = toolbox.compile(expr=individual)
 
+    # Main loop
     for index, item in enumerate(variables.tweets_semeval):        
         
+        # Constraints
+        # Constraint 1: massive function - more than massive_functions_max
         if (str(individual).count(variables.massive_function) > variables.massive_functions_max) and variables.massive_functions_constraint:
-            print("\n[constraint][more than " + str(variables.massive_functions_max) + " massive(s) function(s)][bad individual][fitness zero]\n")
+            print("\n[CONSTRAINT][more than " + str(variables.massive_functions_max) + " massive(s) function(s)][bad individual][fitness zero]\n")
             if variables.log_times:
                 print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
             print("-----------------------------")
@@ -204,9 +210,12 @@ def evalSymbRegTweetsFromSemeval(individual):
             breaked = True
             break
 
-        # more than one neutralRange
-        if str(individual).count("neutralRange") > 1:
-            print("\n[constraint][more than one neutralRange function][bad individual][fitness zero]\n")
+        count_neutral_range = 0
+        count_neutral_range = str(individual).count("neutralRange")
+        
+        # Constraint 2: neutralRange - more than one neutralRange
+        if count_neutral_range > 1:
+            print("\n[CONSTRAINT][more than one neutralRange function][bad individual][fitness zero]\n")
             if variables.log_times:
                 print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
             print("-----------------------------")
@@ -214,27 +223,67 @@ def evalSymbRegTweetsFromSemeval(individual):
             breaked = True
             break
 
-        # change the if_then_else clausule
+        # neutralRange constraints
+        if(variables.neutral_range_constraint):
+            # Constraint 3: neutralRange - parameters and sequence values
+            if count_neutral_range == 1:
+                if(len(str(individual)[str(individual).find("neutralRange"):].split("(")[1].split(")")) < 2):
+                    
+                    # Fitness zero only on first generation
+                    if(generation_count == 1):
+                        print("\n[CONSTRAINT][neutralRange parameters is another function (variables ranges)][bad individual][fitness zero]\n")
+                        if variables.log_times:
+                            print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
+                        print("-----------------------------")
+                        print("\n") 
+                        breaked = True
+                        break
+                    elif(generation_count > 1 and index ==0):
+                        print("\n[CONSTRAINT][neutralRange parameters is another function (variables ranges)][fitness decreased in " + str(variables.root_decreased_value * 100) + "%]\n")
+                        if fitness_decreased:
+                            double_decreased = True
+                        fitness_decreased = True
+
+                else:
+                    arg1 = str(individual)[str(individual).find("neutralRange"):].split("(")[1].split(")")[0].split(",")[0]
+                    arg2 = str(individual)[str(individual).find("neutralRange"):].split("(")[1].split(")")[0].split(",")[1]
+                    if(is_float_try(arg1) and is_float_try(arg2)):
+                        if(float(arg1) > float(arg2)):
+                            print("\n[CONSTRAINT][neutralRange - inferior range is greater than superior][bad individual][fitness zero]\n")
+                            if variables.log_times:
+                                print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
+                            print("-----------------------------")
+                            print("\n") 
+                            breaked = True
+                            break
+            
+            # Constraint 4: neutralRange - function does not exist in the model
+            if count_neutral_range == 0 and index == 0:
+                print("\n[CONSTRAINT][model does not have neutralRange function][fitness decreased in " + str(variables.root_decreased_value * 100) + "%]\n")
+                if fitness_decreased:
+                    double_decreased = True
+                fitness_decreased = True
+
+        # Constraint 5: root function - functions root_functions (if_then_else hardcoded temporarily)
         if (not str(individual).startswith(variables.root_function) and not str(individual).startswith("if_then_else")) and variables.root_constraint and index == 0:
-            print("\n[constraint][root node is not " + variables.root_function + "][fitness decreased in " + str(variables.root_decreased_value * 100) + "%]\n")
-            #if variables.log_times:
-            #    print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
-            #print("-----------------------------")
-            #print("\n") 
+            print("\n[CONSTRAINT][root node is not " + variables.root_function + "][fitness decreased in " + str(variables.root_decreased_value * 100) + "%]\n")
+            if fitness_decreased:
+                double_decreased = True            
             fitness_decreased = True
-            #breaked = True
-            #break
 
+        # End Constraints
+
+        # Check cicle limit
         if variables.cicles_unchanged >= variables.max_unchanged_cicles:
             breaked = True
             break
 
+        # Log each new cicle
         if index == 0:
             if variables.log_all_metrics_each_cicle:
                 print("\n[New cicle]: " + str(len(variables.tweets_semeval)) + " phrases to evaluate [" + str(variables.positive_tweets) + " positives, " + str(variables.negative_tweets) + " negatives and " + str(variables.neutral_tweets) + " neutrals]")
 
         try:
-
             func_value = float(func(variables.tweets_semeval[index]))
 
             if float(variables.tweets_semeval_score[index]) > 0:
@@ -269,7 +318,6 @@ def evalSymbRegTweetsFromSemeval(individual):
                         false_negative += 1
                     elif func_value > variables.neutral_superior_range:
                         false_positive += 1
-
 
         except Exception as e: 
             print(e)
@@ -368,6 +416,8 @@ def evalSymbRegTweetsFromSemeval(individual):
     fitnessReturn = f1_positive_negative_avg
     if fitness_decreased:
         fitnessReturn -= fitnessReturn * variables.root_decreased_value # 80% of the original value
+    if double_decreased:
+        fitnessReturn -= fitnessReturn * variables.root_decreased_value # Again
 
 
     if variables.best_fitness < fitnessReturn:
