@@ -523,6 +523,13 @@ def protectedSqrt(value):
 def invertSignal(val):
     return -val
 
+def is_float_try(str):
+    try:
+        float(str)
+        return True
+    except ValueError:
+        return False
+
 #Phrase manipulation functions
 def negativeWordsQuantity(phrase):
     negative_words = 0
