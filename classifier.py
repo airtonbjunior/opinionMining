@@ -54,11 +54,11 @@ pset.addPrimitive(operator.mul, [float,float], float)
 
 # Temporary removed
 #pset.addPrimitive(polaritySum2, [str], float)
-#pset.addPrimitive(polaritySumAVG, [str], float)
+pset.addPrimitive(polaritySumAVG, [str], float)
 # Temporary removed
 
 #pset.addPrimitive(passInt, [int], int)
-pset.addPrimitive(polaritySumAVGUsingWeights, [str, float, float, float, float, float, float, float], float)
+#pset.addPrimitive(polaritySumAVGUsingWeights, [str, float, float, float, float, float, float, float], float)
 #pset.addPrimitive(polaritySumAVGUsingWeights, [str, int, int, int, int, int, int, int], float)
 #pset.addPrimitive(hashtagPolaritySum, [str], float)
 #pset.addPrimitive(emoticonsPolaritySum, [str], float)
@@ -82,7 +82,7 @@ pset.addPrimitive(replaceBoosterWords, [str], str)
 pset.addPrimitive(boostUpperCase, [str], str)
 
 #pset.addPrimitive(dictionaryWeights, [float, float, float, float, float, float, float], None)
-pset.addPrimitive(neutralRange, [float, float], float)
+#pset.addPrimitive(neutralRange, [float, float], float)
 
 pset.addTerminal(True, bool)
 pset.addTerminal(False, bool)
