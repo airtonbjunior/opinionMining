@@ -98,7 +98,7 @@ massive_functions_constraint = True
 massive_function = "polaritySumAVGUsingWeights"
 massive_functions_max = 1
 
-neutral_range_constraint = True
+neutral_range_constraint = False
 
 generations_unchanged_reached_msg = False
 
