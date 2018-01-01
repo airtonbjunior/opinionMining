@@ -1,0 +1,720 @@
+[tweets2013 messages]
+[messages evaluated]: 3813
+[correct evaluations]: 2345 (1203 positives, 381 negatives and 761 neutrals)
+[model]: polaritySumAVGUsingWeights(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(removeStopWords(replaceNegatingWords(replaceBoosterWords(replaceBoosterWords(boostUpperCase(replaceBoosterWords(x)))))))))), 0.5, 0.0, 0.31063506398117546, 0.0, 0.0, 0.0, 0.0)
+
+[accuracy]: 0.615
+[precision_positive]: 0.6282
+[precision_negative]: 0.4514
+[precision_neutral]: 0.722
+[precision_avg]: 0.6005
+[recall_positive]: 0.7653
+[recall_negative]: 0.6339
+[recall_neutral]: 0.464
+[recall avg]: 0.6211
+[f1_positive]: 0.69
+[f1_negative]: 0.5273
+[f1_neutral]: 0.565
+[f1 avg]: 0.5941
+[f1 avg SemEval (positive and negative)]: 0.6087
+[true_positive]: 1203
+[false_positive]: 712
+[true_negative]: 381
+[false_negative]: 463
+[true_neutral]: 761
+[false_neutral]: 293
+[dictionary quantity]: 7
+
+
+Confusion Matrix
+
+          |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+--------------------------------------------------
+Pred_Pos  |  1203      |  123       |  589       |
+Pred_Neg  |  173       |  381       |  290       |
+Pred_Neu  |  196       |  97        |  761       |
+
+
+[starting evaluation of tweets2014 messages]
+
+
+[tweets2014 messages]
+[messages evaluated]: 1853
+[correct evaluations]: 1130 (700 positives, 132 negatives and 298 neutrals)
+[model]: polaritySumAVGUsingWeights(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(removeStopWords(replaceNegatingWords(replaceBoosterWords(replaceBoosterWords(boostUpperCase(replaceBoosterWords(x)))))))))), 0.5, 0.0, 0.31063506398117546, 0.0, 0.0, 0.0, 0.0)
+
+[accuracy]: 0.6098
+[precision_positive]: 0.7007
+[precision_negative]: 0.3848
+[precision_neutral]: 0.5832
+[precision_avg]: 0.5562
+[recall_positive]: 0.7128
+[recall_negative]: 0.6535
+[recall_neutral]: 0.4454
+[recall avg]: 0.6039
+[f1_positive]: 0.7067
+[f1_negative]: 0.4844
+[f1_neutral]: 0.5051
+[f1 avg]: 0.5654
+[f1 avg SemEval (positive and negative)]: 0.5956
+[true_positive]: 700
+[false_positive]: 299
+[true_negative]: 132
+[false_negative]: 211
+[true_neutral]: 298
+[false_neutral]: 213
+[dictionary quantity]: 7
+
+
+Confusion Matrix
+
+          |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+--------------------------------------------------
+Pred_Pos  |  700       |  47        |  252       |
+Pred_Neg  |  92        |  132       |  119       |
+Pred_Neu  |  190       |  23        |  298       |
+
+
+[starting evaluation of sms messages]
+
+
+[sms messages]
+[messages evaluated]: 2093
+[correct evaluations]: 1303 (392 positives, 216 negatives and 695 neutrals)
+[model]: polaritySumAVGUsingWeights(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(removeStopWords(replaceNegatingWords(replaceBoosterWords(replaceBoosterWords(boostUpperCase(replaceBoosterWords(x)))))))))), 0.5, 0.0, 0.31063506398117546, 0.0, 0.0, 0.0, 0.0)
+
+[accuracy]: 0.6226
+[precision_positive]: 0.4656
+[precision_negative]: 0.5553
+[precision_neutral]: 0.8063
+[precision_avg]: 0.609
+[recall_positive]: 0.7967
+[recall_negative]: 0.5482
+[recall_neutral]: 0.5758
+[recall avg]: 0.6403
+[f1_positive]: 0.5877
+[f1_negative]: 0.5517
+[f1_neutral]: 0.6718
+[f1 avg]: 0.6038
+[f1 avg SemEval (positive and negative)]: 0.5697
+[true_positive]: 392
+[false_positive]: 450
+[true_negative]: 216
+[false_negative]: 173
+[true_neutral]: 695
+[false_neutral]: 167
+[dictionary quantity]: 7
+
+
+Confusion Matrix
+
+          |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+--------------------------------------------------
+Pred_Pos  |  392       |  75        |  375       |
+Pred_Neg  |  36        |  216       |  137       |
+Pred_Neu  |  64        |  103       |  695       |
+
+
+[starting evaluation of livejournal messages]
+
+
+[livejournal messages]
+[messages evaluated]: 1142
+[correct evaluations]: 763 (310 positives, 188 negatives and 265 neutrals)
+[model]: polaritySumAVGUsingWeights(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(removeStopWords(replaceNegatingWords(replaceBoosterWords(replaceBoosterWords(boostUpperCase(replaceBoosterWords(x)))))))))), 0.5, 0.0, 0.31063506398117546, 0.0, 0.0, 0.0, 0.0)
+
+[accuracy]: 0.6681
+[precision_positive]: 0.6798
+[precision_negative]: 0.6963
+[precision_neutral]: 0.637
+[precision_avg]: 0.671
+[recall_positive]: 0.726
+[recall_negative]: 0.6184
+[recall_neutral]: 0.6448
+[recall avg]: 0.6631
+[f1_positive]: 0.7022
+[f1_negative]: 0.6551
+[f1_neutral]: 0.6409
+[f1 avg]: 0.666
+[f1 avg SemEval (positive and negative)]: 0.6786
+[true_positive]: 310
+[false_positive]: 146
+[true_negative]: 188
+[false_negative]: 82
+[true_neutral]: 265
+[false_neutral]: 151
+[dictionary quantity]: 7
+
+
+Confusion Matrix
+
+          |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+--------------------------------------------------
+Pred_Pos  |  310       |  50        |  96        |
+Pred_Neg  |  32        |  188       |  50        |
+Pred_Neu  |  85        |  66        |  265       |
+
+
+[starting evaluation of sarcasm messages]
+
+
+[sarcasm messages]
+[messages evaluated]: 86
+[correct evaluations]: 37 (22 positives, 6 negatives and 9 neutrals)
+[model]: polaritySumAVGUsingWeights(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(removeStopWords(replaceNegatingWords(replaceBoosterWords(replaceBoosterWords(boostUpperCase(replaceBoosterWords(x)))))))))), 0.5, 0.0, 0.31063506398117546, 0.0, 0.0, 0.0, 0.0)
+
+[accuracy]: 0.4302
+[precision_positive]: 0.4681
+[precision_negative]: 0.6667
+[precision_neutral]: 0.3
+[precision_avg]: 0.4783
+[recall_positive]: 0.6667
+[recall_negative]: 0.15
+[recall_neutral]: 0.6923
+[recall avg]: 0.503
+[f1_positive]: 0.55
+[f1_negative]: 0.2449
+[f1_neutral]: 0.4186
+[f1 avg]: 0.4045
+[f1 avg SemEval (positive and negative)]: 0.3974
+[true_positive]: 22
+[false_positive]: 25
+[true_negative]: 6
+[false_negative]: 3
+[true_neutral]: 9
+[false_neutral]: 21
+[dictionary quantity]: 7
+
+
+Confusion Matrix
+
+          |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+--------------------------------------------------
+Pred_Pos  |  22        |  22        |  3         |
+Pred_Neg  |  2         |  6         |  1         |
+Pred_Neu  |  9         |  12        |  9         |
+
+
+[starting evaluation of all messages]
+
+
+[all messages]
+[messages evaluated]: 8987 (3506 positives, 1541 negatives, 3940 neutrals)
+[correct evaluations]: 5578 (2627 positives, 923 negatives and 2028 neutrals)
+[model]: polaritySumAVGUsingWeights(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(removeStopWords(replaceNegatingWords(replaceBoosterWords(replaceBoosterWords(boostUpperCase(replaceBoosterWords(x)))))))))), 0.5, 0.0, 0.31063506398117546, 0.0, 0.0, 0.0, 0.0)
+
+[accuracy]: 0.6207
+[precision_positive]: 0.6168
+[precision_negative]: 0.4976
+[precision_neutral]: 0.7059
+[precision_avg]: 0.6068
+[recall_positive]: 0.7493
+[recall_negative]: 0.599
+[recall_neutral]: 0.5147
+[recall avg]: 0.621
+[f1_positive]: 0.6766
+[f1_negative]: 0.5436
+[f1_neutral]: 0.5953
+[f1 avg]: 0.6052
+[f1 avg SemEval (positive and negative)]: 0.6101
+[true_positive]: 2627
+[false_positive]: 1632
+[true_negative]: 923
+[false_negative]: 932
+[true_neutral]: 2028
+[false_neutral]: 845
+[dictionary quantity]: 7
+
+
+Confusion Matrix
+
+          |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+--------------------------------------------------
+Pred_Pos  |  2627      |  317       |  1315      |
+Pred_Neg  |  335       |  923       |  597       |
+Pred_Neu  |  544       |  301       |  2028      |
+
+
+[starting evaluation of tweets2013 messages]
+
+
+[tweets2013 messages]
+[messages evaluated]: 3813
+[correct evaluations]: 2409 (1169 positives, 338 negatives and 902 neutrals)
+[model]: polaritySumAVGUsingWeights(removeAllPonctuation(removeAllPonctuation(removeAllPonctuation(replaceBoosterWords(removeStopWords(replaceNegatingWords(x)))))), 0.0, 0.0, 1.6561909157376327, positiveWordsQuantity(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(x)))), negativeWordsQuantity(x), 0.0, 0.0)
+
+[accuracy]: 0.6318
+[precision_positive]: 0.6364
+[precision_negative]: 0.4949
+[precision_neutral]: 0.6976
+[precision_avg]: 0.6096
+[recall_positive]: 0.7436
+[recall_negative]: 0.5624
+[recall_neutral]: 0.55
+[recall avg]: 0.6187
+[f1_positive]: 0.6858
+[f1_negative]: 0.5265
+[f1_neutral]: 0.6151
+[f1 avg]: 0.6091
+[f1 avg SemEval (positive and negative)]: 0.6062
+[true_positive]: 1169
+[false_positive]: 668
+[true_negative]: 338
+[false_negative]: 345
+[true_neutral]: 902
+[false_neutral]: 391
+[dictionary quantity]: 7
+
+
+Confusion Matrix
+
+          |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+--------------------------------------------------
+Pred_Pos  |  1169      |  133       |  535       |
+Pred_Neg  |  142       |  338       |  203       |
+Pred_Neu  |  261       |  130       |  902       |
+
+
+[starting evaluation of tweets2014 messages]
+
+
+[tweets2014 messages]
+[messages evaluated]: 1853
+[correct evaluations]: 1139 (674 positives, 118 negatives and 347 neutrals)
+[model]: polaritySumAVGUsingWeights(removeAllPonctuation(removeAllPonctuation(removeAllPonctuation(replaceBoosterWords(removeStopWords(replaceNegatingWords(x)))))), 0.0, 0.0, 1.6561909157376327, positiveWordsQuantity(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(x)))), negativeWordsQuantity(x), 0.0, 0.0)
+
+[accuracy]: 0.6147
+[precision_positive]: 0.7028
+[precision_negative]: 0.3869
+[precision_neutral]: 0.5891
+[precision_avg]: 0.5596
+[recall_positive]: 0.6864
+[recall_negative]: 0.5842
+[recall_neutral]: 0.5187
+[recall avg]: 0.5964
+[f1_positive]: 0.6945
+[f1_negative]: 0.4655
+[f1_neutral]: 0.5517
+[f1 avg]: 0.5705
+[f1 avg SemEval (positive and negative)]: 0.58
+[true_positive]: 674
+[false_positive]: 285
+[true_negative]: 118
+[false_negative]: 187
+[true_neutral]: 347
+[false_neutral]: 242
+[dictionary quantity]: 7
+
+
+Confusion Matrix
+
+          |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+--------------------------------------------------
+Pred_Pos  |  674       |  51        |  234       |
+Pred_Neg  |  99        |  118       |  88        |
+Pred_Neu  |  209       |  33        |  347       |
+
+
+[starting evaluation of sms messages]
+
+
+[sms messages]
+[messages evaluated]: 2093
+[correct evaluations]: 1313 (377 positives, 194 negatives and 742 neutrals)
+[model]: polaritySumAVGUsingWeights(removeAllPonctuation(removeAllPonctuation(removeAllPonctuation(replaceBoosterWords(removeStopWords(replaceNegatingWords(x)))))), 0.0, 0.0, 1.6561909157376327, positiveWordsQuantity(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(x)))), negativeWordsQuantity(x), 0.0, 0.0)
+
+[accuracy]: 0.6273
+[precision_positive]: 0.4748
+[precision_negative]: 0.5344
+[precision_neutral]: 0.7927
+[precision_avg]: 0.6007
+[recall_positive]: 0.7663
+[recall_negative]: 0.4924
+[recall_neutral]: 0.6147
+[recall avg]: 0.6245
+[f1_positive]: 0.5863
+[f1_negative]: 0.5125
+[f1_neutral]: 0.6925
+[f1 avg]: 0.5971
+[f1 avg SemEval (positive and negative)]: 0.5494
+[true_positive]: 377
+[false_positive]: 417
+[true_negative]: 194
+[false_negative]: 169
+[true_neutral]: 742
+[false_neutral]: 194
+[dictionary quantity]: 7
+
+
+Confusion Matrix
+
+          |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+--------------------------------------------------
+Pred_Pos  |  377       |  75        |  342       |
+Pred_Neg  |  46        |  194       |  123       |
+Pred_Neu  |  69        |  125       |  742       |
+
+
+[starting evaluation of livejournal messages]
+
+
+[livejournal messages]
+[messages evaluated]: 1142
+[correct evaluations]: 756 (302 positives, 161 negatives and 293 neutrals)
+[model]: polaritySumAVGUsingWeights(removeAllPonctuation(removeAllPonctuation(removeAllPonctuation(replaceBoosterWords(removeStopWords(replaceNegatingWords(x)))))), 0.0, 0.0, 1.6561909157376327, positiveWordsQuantity(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(x)))), negativeWordsQuantity(x), 0.0, 0.0)
+
+[accuracy]: 0.662
+[precision_positive]: 0.6848
+[precision_negative]: 0.7188
+[precision_neutral]: 0.6143
+[precision_avg]: 0.6726
+[recall_positive]: 0.7073
+[recall_negative]: 0.5296
+[recall_neutral]: 0.7129
+[recall avg]: 0.6499
+[f1_positive]: 0.6959
+[f1_negative]: 0.6098
+[f1_neutral]: 0.6599
+[f1 avg]: 0.6552
+[f1 avg SemEval (positive and negative)]: 0.6529
+[true_positive]: 302
+[false_positive]: 139
+[true_negative]: 161
+[false_negative]: 63
+[true_neutral]: 293
+[false_neutral]: 184
+[dictionary quantity]: 7
+
+
+Confusion Matrix
+
+          |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+--------------------------------------------------
+Pred_Pos  |  302       |  55        |  84        |
+Pred_Neg  |  29        |  161       |  34        |
+Pred_Neu  |  96        |  88        |  293       |
+
+
+[starting evaluation of sarcasm messages]
+
+
+[sarcasm messages]
+[messages evaluated]: 86
+[correct evaluations]: 39 (23 positives, 6 negatives and 10 neutrals)
+[model]: polaritySumAVGUsingWeights(removeAllPonctuation(removeAllPonctuation(removeAllPonctuation(replaceBoosterWords(removeStopWords(replaceNegatingWords(x)))))), 0.0, 0.0, 1.6561909157376327, positiveWordsQuantity(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(x)))), negativeWordsQuantity(x), 0.0, 0.0)
+
+[accuracy]: 0.4535
+[precision_positive]: 0.5
+[precision_negative]: 0.75
+[precision_neutral]: 0.3125
+[precision_avg]: 0.5208
+[recall_positive]: 0.697
+[recall_negative]: 0.15
+[recall_neutral]: 0.7692
+[recall avg]: 0.5387
+[f1_positive]: 0.5823
+[f1_negative]: 0.25
+[f1_neutral]: 0.4444
+[f1 avg]: 0.4256
+[f1 avg SemEval (positive and negative)]: 0.4161
+[true_positive]: 23
+[false_positive]: 23
+[true_negative]: 6
+[false_negative]: 2
+[true_neutral]: 10
+[false_neutral]: 22
+[dictionary quantity]: 7
+
+
+Confusion Matrix
+
+          |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+--------------------------------------------------
+Pred_Pos  |  23        |  21        |  2         |
+Pred_Neg  |  1         |  6         |  1         |
+Pred_Neu  |  9         |  13        |  10        |
+
+
+[starting evaluation of all messages]
+
+
+[all messages]
+[messages evaluated]: 8987 (3506 positives, 1541 negatives, 3940 neutrals)
+[correct evaluations]: 5656 (2545 positives, 817 negatives and 2294 neutrals)
+[model]: polaritySumAVGUsingWeights(removeAllPonctuation(removeAllPonctuation(removeAllPonctuation(replaceBoosterWords(removeStopWords(replaceNegatingWords(x)))))), 0.0, 0.0, 1.6561909157376327, positiveWordsQuantity(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(x)))), negativeWordsQuantity(x), 0.0, 0.0)
+
+[accuracy]: 0.6294
+[precision_positive]: 0.6242
+[precision_negative]: 0.5161
+[precision_neutral]: 0.6895
+[precision_avg]: 0.61
+[recall_positive]: 0.7259
+[recall_negative]: 0.5302
+[recall_neutral]: 0.5822
+[recall avg]: 0.6128
+[f1_positive]: 0.6712
+[f1_negative]: 0.523
+[f1_neutral]: 0.6313
+[f1 avg]: 0.6085
+[f1 avg SemEval (positive and negative)]: 0.5971
+[true_positive]: 2545
+[false_positive]: 1532
+[true_negative]: 817
+[false_negative]: 766
+[true_neutral]: 2294
+[false_neutral]: 1033
+[dictionary quantity]: 7
+
+
+Confusion Matrix
+
+          |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+--------------------------------------------------
+Pred_Pos  |  2545      |  335       |  1197      |
+Pred_Neg  |  317       |  817       |  449       |
+Pred_Neu  |  644       |  389       |  2294      |
+
+
+[starting evaluation of tweets2013 messages]
+
+
+[tweets2013 messages]
+[messages evaluated]: 3813
+[correct evaluations]: 2343 (1210 positives, 368 negatives and 765 neutrals)
+[model]: polaritySumAVGUsingWeights(replaceBoosterWords(removeAllPonctuation(removeAllPonctuation(removeAllPonctuation(removeStopWords(replaceBoosterWords(replaceNegatingWords(replaceNegatingWords(x)))))))), 0.5, 0.0, 0.5, positiveWordsQuantity(removeStopWords(replaceBoosterWords(removeLinks(removeAllPonctuation(replaceBoosterWords(replaceBoosterWords(removeLinks(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(removeAllPonctuation(removeAllPonctuation(replaceNegatingWords(x))))))))))))))), mul(mul(0.5, negativeWordsQuantity(x)), mul(0.5, 0.5)), 0.0, 0.0)
+
+[accuracy]: 0.6145
+[precision_positive]: 0.6247
+[precision_negative]: 0.4482
+[precision_neutral]: 0.7251
+[precision_avg]: 0.5993
+[recall_positive]: 0.7697
+[recall_negative]: 0.6123
+[recall_neutral]: 0.4665
+[recall avg]: 0.6162
+[f1_positive]: 0.6897
+[f1_negative]: 0.5176
+[f1_neutral]: 0.5677
+[f1 avg]: 0.5917
+[f1 avg SemEval (positive and negative)]: 0.6036
+[true_positive]: 1210
+[false_positive]: 727
+[true_negative]: 368
+[false_negative]: 453
+[true_neutral]: 765
+[false_neutral]: 290
+[dictionary quantity]: 7
+
+
+Confusion Matrix
+
+          |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+--------------------------------------------------
+Pred_Pos  |  1210      |  135       |  592       |
+Pred_Neg  |  170       |  368       |  283       |
+Pred_Neu  |  192       |  98        |  765       |
+
+
+[starting evaluation of tweets2014 messages]
+
+
+[tweets2014 messages]
+[messages evaluated]: 1853
+[correct evaluations]: 1122 (697 positives, 129 negatives and 296 neutrals)
+[model]: polaritySumAVGUsingWeights(replaceBoosterWords(removeAllPonctuation(removeAllPonctuation(removeAllPonctuation(removeStopWords(replaceBoosterWords(replaceNegatingWords(replaceNegatingWords(x)))))))), 0.5, 0.0, 0.5, positiveWordsQuantity(removeStopWords(replaceBoosterWords(removeLinks(removeAllPonctuation(replaceBoosterWords(replaceBoosterWords(removeLinks(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(removeAllPonctuation(removeAllPonctuation(replaceNegatingWords(x))))))))))))))), mul(mul(0.5, negativeWordsQuantity(x)), mul(0.5, 0.5)), 0.0, 0.0)
+
+[accuracy]: 0.6055
+[precision_positive]: 0.6998
+[precision_negative]: 0.3696
+[precision_neutral]: 0.5827
+[precision_avg]: 0.5507
+[recall_positive]: 0.7098
+[recall_negative]: 0.6386
+[recall_neutral]: 0.4425
+[recall avg]: 0.5969
+[f1_positive]: 0.7048
+[f1_negative]: 0.4682
+[f1_neutral]: 0.503
+[f1 avg]: 0.5587
+[f1 avg SemEval (positive and negative)]: 0.5865
+[true_positive]: 697
+[false_positive]: 299
+[true_negative]: 129
+[false_negative]: 220
+[true_neutral]: 296
+[false_neutral]: 212
+[dictionary quantity]: 7
+
+
+Confusion Matrix
+
+          |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+--------------------------------------------------
+Pred_Pos  |  697       |  47        |  252       |
+Pred_Neg  |  99        |  129       |  121       |
+Pred_Neu  |  186       |  26        |  296       |
+
+
+[starting evaluation of sms messages]
+
+
+[sms messages]
+[messages evaluated]: 2093
+[correct evaluations]: 1296 (388 positives, 215 negatives and 693 neutrals)
+[model]: polaritySumAVGUsingWeights(replaceBoosterWords(removeAllPonctuation(removeAllPonctuation(removeAllPonctuation(removeStopWords(replaceBoosterWords(replaceNegatingWords(replaceNegatingWords(x)))))))), 0.5, 0.0, 0.5, positiveWordsQuantity(removeStopWords(replaceBoosterWords(removeLinks(removeAllPonctuation(replaceBoosterWords(replaceBoosterWords(removeLinks(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(removeAllPonctuation(removeAllPonctuation(replaceNegatingWords(x))))))))))))))), mul(mul(0.5, negativeWordsQuantity(x)), mul(0.5, 0.5)), 0.0, 0.0)
+
+[accuracy]: 0.6192
+[precision_positive]: 0.4597
+[precision_negative]: 0.5499
+[precision_neutral]: 0.8077
+[precision_avg]: 0.6058
+[recall_positive]: 0.7886
+[recall_negative]: 0.5457
+[recall_neutral]: 0.5742
+[recall avg]: 0.6362
+[f1_positive]: 0.5808
+[f1_negative]: 0.5478
+[f1_neutral]: 0.6712
+[f1 avg]: 0.5999
+[f1 avg SemEval (positive and negative)]: 0.5643
+[true_positive]: 388
+[false_positive]: 456
+[true_negative]: 215
+[false_negative]: 176
+[true_neutral]: 693
+[false_neutral]: 165
+[dictionary quantity]: 7
+
+
+Confusion Matrix
+
+          |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+--------------------------------------------------
+Pred_Pos  |  388       |  77        |  379       |
+Pred_Neg  |  41        |  215       |  135       |
+Pred_Neu  |  63        |  102       |  693       |
+
+
+[starting evaluation of livejournal messages]
+
+
+[livejournal messages]
+[messages evaluated]: 1142
+[correct evaluations]: 754 (311 positives, 179 negatives and 264 neutrals)
+[model]: polaritySumAVGUsingWeights(replaceBoosterWords(removeAllPonctuation(removeAllPonctuation(removeAllPonctuation(removeStopWords(replaceBoosterWords(replaceNegatingWords(replaceNegatingWords(x)))))))), 0.5, 0.0, 0.5, positiveWordsQuantity(removeStopWords(replaceBoosterWords(removeLinks(removeAllPonctuation(replaceBoosterWords(replaceBoosterWords(removeLinks(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(removeAllPonctuation(removeAllPonctuation(replaceNegatingWords(x))))))))))))))), mul(mul(0.5, negativeWordsQuantity(x)), mul(0.5, 0.5)), 0.0, 0.0)
+
+[accuracy]: 0.6602
+[precision_positive]: 0.6688
+[precision_negative]: 0.6885
+[precision_neutral]: 0.6331
+[precision_avg]: 0.6635
+[recall_positive]: 0.7283
+[recall_negative]: 0.5888
+[recall_neutral]: 0.6423
+[recall avg]: 0.6532
+[f1_positive]: 0.6973
+[f1_negative]: 0.6348
+[f1_neutral]: 0.6377
+[f1 avg]: 0.6566
+[f1 avg SemEval (positive and negative)]: 0.666
+[true_positive]: 311
+[false_positive]: 154
+[true_negative]: 179
+[false_negative]: 81
+[true_neutral]: 264
+[false_neutral]: 153
+[dictionary quantity]: 7
+
+
+Confusion Matrix
+
+          |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+--------------------------------------------------
+Pred_Pos  |  311       |  56        |  98        |
+Pred_Neg  |  32        |  179       |  49        |
+Pred_Neu  |  84        |  69        |  264       |
+
+
+[starting evaluation of sarcasm messages]
+
+
+[sarcasm messages]
+[messages evaluated]: 86
+[correct evaluations]: 38 (23 positives, 6 negatives and 9 neutrals)
+[model]: polaritySumAVGUsingWeights(replaceBoosterWords(removeAllPonctuation(removeAllPonctuation(removeAllPonctuation(removeStopWords(replaceBoosterWords(replaceNegatingWords(replaceNegatingWords(x)))))))), 0.5, 0.0, 0.5, positiveWordsQuantity(removeStopWords(replaceBoosterWords(removeLinks(removeAllPonctuation(replaceBoosterWords(replaceBoosterWords(removeLinks(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(removeAllPonctuation(removeAllPonctuation(replaceNegatingWords(x))))))))))))))), mul(mul(0.5, negativeWordsQuantity(x)), mul(0.5, 0.5)), 0.0, 0.0)
+
+[accuracy]: 0.4419
+[precision_positive]: 0.4792
+[precision_negative]: 0.6667
+[precision_neutral]: 0.3103
+[precision_avg]: 0.4854
+[recall_positive]: 0.697
+[recall_negative]: 0.15
+[recall_neutral]: 0.6923
+[recall avg]: 0.5131
+[f1_positive]: 0.5679
+[f1_negative]: 0.2449
+[f1_neutral]: 0.4286
+[f1 avg]: 0.4138
+[f1 avg SemEval (positive and negative)]: 0.4064
+[true_positive]: 23
+[false_positive]: 25
+[true_negative]: 6
+[false_negative]: 3
+[true_neutral]: 9
+[false_neutral]: 20
+[dictionary quantity]: 7
+
+
+Confusion Matrix
+
+          |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+--------------------------------------------------
+Pred_Pos  |  23        |  22        |  3         |
+Pred_Neg  |  2         |  6         |  1         |
+Pred_Neu  |  8         |  12        |  9         |
+
+
+[starting evaluation of all messages]
+
+
+[all messages]
+[messages evaluated]: 8987 (3506 positives, 1541 negatives, 3940 neutrals)
+[correct evaluations]: 5553 (2629 positives, 897 negatives and 2027 neutrals)
+[model]: polaritySumAVGUsingWeights(replaceBoosterWords(removeAllPonctuation(removeAllPonctuation(removeAllPonctuation(removeStopWords(replaceBoosterWords(replaceNegatingWords(replaceNegatingWords(x)))))))), 0.5, 0.0, 0.5, positiveWordsQuantity(removeStopWords(replaceBoosterWords(removeLinks(removeAllPonctuation(replaceBoosterWords(replaceBoosterWords(removeLinks(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(removeAllPonctuation(removeAllPonctuation(replaceNegatingWords(x))))))))))))))), mul(mul(0.5, negativeWordsQuantity(x)), mul(0.5, 0.5)), 0.0, 0.0)
+
+[accuracy]: 0.6179
+[precision_positive]: 0.6128
+[precision_negative]: 0.4902
+[precision_neutral]: 0.707
+[precision_avg]: 0.6033
+[recall_positive]: 0.7499
+[recall_negative]: 0.5821
+[recall_neutral]: 0.5145
+[recall avg]: 0.6155
+[f1_positive]: 0.6744
+[f1_negative]: 0.5322
+[f1_neutral]: 0.5956
+[f1 avg]: 0.6007
+[f1 avg SemEval (positive and negative)]: 0.6033
+[true_positive]: 2629
+[false_positive]: 1661
+[true_negative]: 897
+[false_negative]: 933
+[true_neutral]: 2027
+[false_neutral]: 840
+[dictionary quantity]: 7
+
+
+Confusion Matrix
+
+          |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+--------------------------------------------------
+Pred_Pos  |  2629      |  337       |  1324      |
+Pred_Neg  |  344       |  897       |  589       |
+Pred_Neu  |  533       |  307       |  2027      |
+
+
+
+
+[script ends after 73.9 seconds]
