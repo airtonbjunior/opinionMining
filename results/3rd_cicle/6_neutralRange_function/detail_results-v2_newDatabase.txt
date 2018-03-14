@@ -1,0 +1,34 @@
+[tweets2013 messages]
+[messages evaluated]: 3835
+[correct evaluations]: 2315 (1764 positives, 551 negatives and 0 neutrals)
+[model]: polaritySumAVGUsingWeights(boostUpperCase(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(replaceNegatingWords(removeStopWords(removeStopWords(replaceBoosterWords(replaceBoosterWords(removeStopWords(removeAllPonctuation(removeAllPonctuation(replaceBoosterWords(replaceNegatingWords(x)))))))))))))), 0.2177557000968422, 0.0, 0.17290005559460297, 0.0, mul(0.0, 0.0), mul(0.0, 0.0), 0.0)
+[accuracy]: 0.6037
+[precision_positive]: 0.7857
+[precision_negative]: 0.7497
+[precision_neutral]: 0.0
+[precision_avg]: 0.5118
+[recall_positive]: 0.744
+[recall_negative]: 0.3764
+[recall_neutral]: 0
+[recall avg]: 0.3735
+[f1_positive]: 0.7643
+[f1_negative]: 0.5011
+[f1_neutral]: 0
+[f1 avg]: 0.4218
+[f1 avg SemEval (positive and negative)]: 0.6327
+[true_positive]: 1764
+[false_positive]: 481
+[true_negative]: 551
+[false_negative]: 184
+[true_neutral]: 0
+[false_neutral]: 855
+[dictionary quantity]: 7
+
+
+Confusion Matrix
+
+          |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+--------------------------------------------------
+Pred_Pos  |  1764      |  481       |  0         |
+Pred_Neg  |  184       |  551       |  0         |
+Pred_Neu  |  423       |  432       |  0         |
