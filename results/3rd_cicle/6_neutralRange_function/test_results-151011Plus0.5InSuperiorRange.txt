@@ -1,0 +1,64 @@
+[Model]	polaritySumAVGUsingWeights(removeStopWords(removeAllPonctuation(replaceBoosterWords(removeAllPonctuation(replaceBoosterWords(removeAllPonctuation(replaceNegatingWords(boostUpperCase(x)))))))), 0.0, sub(0.0, 0.0), 0.9739437416547077, positiveWordsQuantity(removeLinks(replaceNegatingWords(removeLinks(removeAllPonctuation(boostUpperCase(removeAllPonctuation(x))))))), neutralRange(negativeWordsQuantity(removeStopWords(removeAllPonctuation(replaceNegatingWords(x)))), negativeWordsQuantity(replaceNegatingWords(replaceBoosterWords(replaceNegatingWords(removeAllPonctuation(removeStopWords(x))))))), sub(sub(0.0, 0.0), 0.0), 0.0)
+
+tweets2013	0.608
+tweets2014	0.5793
+sms	0.5757
+livejournal	0.6709
+sarcasm	0.4311
+all	0.6076
+
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(replaceNegatingWords(removeAllPonctuation(removeAllPonctuation(replaceNegatingWords(boostUpperCase(removeLinks(replaceBoosterWords(removeAllPonctuation(replaceNegatingWords(replaceBoosterWords(removeStopWords(replaceBoosterWords(replaceNegatingWords(removeAllPonctuation(x))))))))))))))), 0.18762709213050988, neutralRange(0.0, 0.18762709213050988), 0.1678153582908748, 0.0, 0.0, 0.0, 0.0)
+
+tweets2013	0.6247
+tweets2014	0.6056
+sms	0.6369
+livejournal	0.6927
+sarcasm	0.3891
+all	0.6327
+
+[Model]	polaritySumAVGUsingWeights(boostUpperCase(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(replaceNegatingWords(removeStopWords(removeStopWords(replaceBoosterWords(replaceBoosterWords(removeStopWords(removeAllPonctuation(removeAllPonctuation(replaceBoosterWords(replaceNegatingWords(x)))))))))))))), 0.2177557000968422, 0.0, 0.17290005559460297, 0.0, mul(0.0, 0.0), mul(0.0, 0.0), 0.0)
+tweets2013	0.6425
+tweets2014	0.6231
+sms	0.6351
+livejournal	0.7147
+sarcasm	0.4009
+all	0.648
+
+
+
+##Statistics##
+
+3 models evaluated
+7 dictionaries
+
+AVGs
+AVG Tweets2013 F1 SemEval	0.6251
+AVG Tweets2014 F1 SemEval	0.6027
+AVG SMS F1 SemEval	0.6159
+AVG LiveJournal F1 SemEval	0.6928
+AVG Sarcasm F1 SemEval	0.407
+AVG All F1 SemEval	0.6294
+
+Best Values
+Best Tweets2013 F1 value	0.6425
+Best Tweets2014 F1 value	0.6231
+Best SMS F1 value	0.6369
+Best LiveJournal F1 value	0.7147
+Best Sarcasm F1 value	0.4311
+Best All F1 value	0.648
+
+Values by database
+Tweets2013 [0.608, 0.6247, 0.6425]
+Tweets2014 [0.5793, 0.6056, 0.6231]
+SMS [0.5757, 0.6369, 0.6351]
+LiveJournal [0.6709, 0.6927, 0.7147]
+Sarcasm [0.4311, 0.3891, 0.4009]
+All [0.6076, 0.6327, 0.648]
+
+Standard deviation
+Standard Deviation Tweets2013	0.014086952197768754
+Standard Deviation Tweets2014	0.018001172801298853
+Standard Deviation SMS	0.028435189466574695
+Standard Deviation Live Journal	0.017881337260457382
+Standard Deviation Sarcasm	0.017686404068913746
+Standard Deviation All	0.016654195333975826
