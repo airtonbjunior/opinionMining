@@ -35,11 +35,13 @@ model_results = []
 all_train_words = []
 all_test_words  = []
 
-use_svm_neutral 	  = False
-use_url_to_neutral	  = False
-use_emoticon_analysis = False
-use_only_gp 	      = False
-use_only_svm		  = False
+use_svm_neutral 	  		= False
+use_url_to_neutral	  		= False
+use_date_to_neutral         = False
+use_url_and_date_to_neutral = False
+use_emoticon_analysis 		= True
+use_only_gp 	      		= False
+use_only_svm		  		= False
 
 neutral_inferior_range = 0
 neutral_superior_range = 0
@@ -73,25 +75,25 @@ dic_semeval2015_loaded	= False
 dic_loaded_total = 0
 
 # Balance the train tweets
-MAX_POSITIVES_TWEETS = 1400
-MAX_NEGATIVES_TWEETS = 1400
-MAX_NEUTRAL_TWEETS   = 1400
+MAX_POSITIVES_TWEETS = 1500
+MAX_NEGATIVES_TWEETS = 1500
+MAX_NEUTRAL_TWEETS   = 1500
 
 # GP Parameters
 CROSSOVER   = 0.9
 MUTATION    = 0.1
-MUTATION_W  = 0.5
-MUTATE_EPHEMERAL = 0.5
-GENERATIONS = 51
-POPULATION  = 500
+MUTATION_W  = 0.75
+MUTATE_EPHEMERAL = 0.75
+GENERATIONS = 450
+POPULATION  = 75
 cicles_unchanged = 0
 generations_unchanged = 0
 max_unchanged_generations = 250
 max_unchanged_cicles = 9999999999
 
 root_constraint = True
-#root_function = "polaritySumAVGUsingWeights"
-root_function = "polaritySumAVG"
+root_function = "polaritySumAVGUsingWeights"
+#root_function = "polaritySumAVG"
 #root_functions = ["polaritySumAVGUsingWeights", "if_then_else"]
 root_decreased_value = 0.2
 
@@ -99,11 +101,11 @@ massive_functions_constraint = True
 massive_function = "polaritySumAVGUsingWeights"
 massive_functions_max = 1
 
-neutral_range_constraint = False
+neutral_range_constraint = True
 
 generations_unchanged_reached_msg = False
 
-TOTAL_MODELS = 3
+TOTAL_MODELS = 5
 
 # Paths
 FILE_RESULTS  = 'test_results-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
@@ -192,6 +194,11 @@ f1_positive_history        = []
 f1_negative_history        = []
 f1_neutral_history         = []
 
+tweets_mukh = []
+tweets_mukh_score = []
+tweets_mukh_positive = 0
+tweets_mukh_negative = 0
+
 tweets_2013       = []
 tweets_2013_score = []
 tweets_2013_positive = 0
@@ -241,3 +248,9 @@ log_loads                  = True
 save_file_results = True
 
 stop_words = set([x.lower() for x in stopwords.words('english')])
+
+week_dates  = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
+month_dates = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december', 'jan', 'feb', 'mar', 'apr', 'may', 'june', 'july', 'aug', 'sept', 'oct', 'nov', 'dec']
+other_dates = ['tomorrow', 'yesterday', 'today']
+
+all_dates = week_dates + month_dates + other_dates
