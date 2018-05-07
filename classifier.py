@@ -54,21 +54,22 @@ pset.addPrimitive(operator.mul, [float,float], float)
 
 # Temporary removed
 #pset.addPrimitive(polaritySum2, [str], float)
-pset.addPrimitive(polaritySumAVG, [str], float)
+#pset.addPrimitive(polaritySumAVG, [str], float)
 # Temporary removed
 
 #pset.addPrimitive(passInt, [int], int)
-#pset.addPrimitive(polaritySumAVGUsingWeights, [str, float, float, float, float, float, float, float], float)
+pset.addPrimitive(polaritySumAVGUsingWeights, [str, float, float, float, float, float, float, float], float)
 #pset.addPrimitive(polaritySumAVGUsingWeights, [str, int, int, int, int, int, int, int], float)
-#pset.addPrimitive(hashtagPolaritySum, [str], float)
-#pset.addPrimitive(emoticonsPolaritySum, [str], float)
+pset.addPrimitive(hashtagPolaritySum, [str], float)
+pset.addPrimitive(emoticonsPolaritySum, [str], float)
 pset.addPrimitive(positiveWordsQuantity, [str], float)
 pset.addPrimitive(negativeWordsQuantity, [str], float)
 
 
-#pset.addPrimitive(hasHashtag, [str], bool)
-#pset.addPrimitive(hasEmoticons, [str], bool)
+pset.addPrimitive(hasHashtag, [str], bool)
+pset.addPrimitive(hasEmoticons, [str], bool)
 pset.addPrimitive(hasURLs, [str], bool)
+pset.addPrimitive(hasDates, [str], bool)
 
 pset.addPrimitive(if_then_else, [bool, float, float], float)
 
@@ -82,7 +83,7 @@ pset.addPrimitive(replaceBoosterWords, [str], str)
 pset.addPrimitive(boostUpperCase, [str], str)
 
 #pset.addPrimitive(dictionaryWeights, [float, float, float, float, float, float, float], None)
-#pset.addPrimitive(neutralRange, [float, float], float)
+pset.addPrimitive(neutralRange, [float, float], float)
 
 pset.addTerminal(True, bool)
 pset.addTerminal(False, bool)
@@ -97,8 +98,8 @@ pset.addTerminal(0.0, float)
 #pset.addTerminal(1.5, float)
 #pset.addTerminal(2.0, float)
 
-pset.addEphemeralConstant("rand", lambda: random.uniform(-2, 2), float)
-pset.addEphemeralConstant("rand2", lambda: random.uniform(-2, 2), float)
+pset.addEphemeralConstant("rand", lambda: random.uniform(0, 2), float)
+pset.addEphemeralConstant("rand2", lambda: random.uniform(0, 2), float)
 #pset.addEphemeralConstant("randInt", lambda: random.randint(0, 3), int)
 
 pset.renameArguments(ARG0='x')
@@ -226,36 +227,36 @@ def evalSymbRegTweetsFromSemeval(individual):
         # neutralRange constraints
         if(variables.neutral_range_constraint):
             # Constraint 3: neutralRange - parameters and sequence values
-            if count_neutral_range == 1:
-                if(len(str(individual)[str(individual).find("neutralRange"):].split("(")[1].split(")")) < 2):
-                    
-                    # Fitness zero only on first generation
-                    if(generation_count == 1):
-                        print("\n[CONSTRAINT][neutralRange parameters is another function (variables ranges)][bad individual][fitness zero]\n")
-                        if variables.log_times:
-                            print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
-                        print("-----------------------------")
-                        print("\n") 
-                        breaked = True
-                        break
-                    elif(generation_count > 1 and index ==0):
-                        print("\n[CONSTRAINT][neutralRange parameters is another function (variables ranges)][fitness decreased in " + str(variables.root_decreased_value * 100) + "%]\n")
-                        if fitness_decreased:
-                            double_decreased = True
-                        fitness_decreased = True
-
-                else:
-                    arg1 = str(individual)[str(individual).find("neutralRange"):].split("(")[1].split(")")[0].split(",")[0]
-                    arg2 = str(individual)[str(individual).find("neutralRange"):].split("(")[1].split(")")[0].split(",")[1]
-                    if(is_float_try(arg1) and is_float_try(arg2)):
-                        if(float(arg1) > float(arg2)):
-                            print("\n[CONSTRAINT][neutralRange - inferior range is greater than superior][bad individual][fitness zero]\n")
-                            if variables.log_times:
-                                print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
-                            print("-----------------------------")
-                            print("\n") 
-                            breaked = True
-                            break
+#            if count_neutral_range == 1:
+#                if(len(str(individual)[str(individual).find("neutralRange"):].split("(")[1].split(")")) < 2):
+#                    
+#                    # Fitness zero only on first generation
+#                    if(generation_count == 1):
+#                        print("\n[CONSTRAINT][neutralRange parameters is another function (variables ranges)][bad individual][fitness zero]\n")
+#                        if variables.log_times:
+#                            print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
+#                        print("-----------------------------")
+#                        print("\n") 
+#                        breaked = True
+#                        break
+#                    elif(generation_count > 1 and index ==0):
+#                        print("\n[CONSTRAINT][neutralRange parameters is another function (variables ranges)][fitness decreased in " + str(variables.root_decreased_value * 100) + "%]\n")
+#                        if fitness_decreased:
+#                            double_decreased = True
+#                        fitness_decreased = True
+#
+#                else:
+#                    arg1 = str(individual)[str(individual).find("neutralRange"):].split("(")[1].split(")")[0].split(",")[0]
+#                    arg2 = str(individual)[str(individual).find("neutralRange"):].split("(")[1].split(")")[0].split(",")[1]
+#                    if(is_float_try(arg1) and is_float_try(arg2)):
+#                        if(float(arg1) > float(arg2)):
+#                            print("\n[CONSTRAINT][neutralRange - inferior range is greater than superior][bad individual][fitness zero]\n")
+#                            if variables.log_times:
+#                                print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
+#                            print("-----------------------------")
+#                            print("\n") 
+#                            breaked = True
+#                            break
             
             # Constraint 4: neutralRange - function does not exist in the model
             if count_neutral_range == 0 and index == 0:
@@ -492,8 +493,8 @@ toolbox.register("mutate", gp.mutUniform, expr=toolbox.expr_mut, pset=pset)
 toolbox.register("mutateEphemeral", gp.mutEphemeral)
 
 
-toolbox.decorate("mate", gp.staticLimit(key=operator.attrgetter("height"), max_value=16))
-toolbox.decorate("mutate", gp.staticLimit(key=operator.attrgetter("height"), max_value=16))
+toolbox.decorate("mate", gp.staticLimit(key=operator.attrgetter("height"), max_value=10))
+toolbox.decorate("mutate", gp.staticLimit(key=operator.attrgetter("height"), max_value=10))
 
 
 def myVarAnd(population, toolbox, cxpb, mutpb):
