@@ -8,6 +8,7 @@ import re
 import string
 import time
 import codecs
+import dateparser
 
 from stemming.porter2 import stem
 from nltk.stem import WordNetLemmatizer
@@ -16,6 +17,7 @@ import numpy as np
 
 from collections import Counter
 from datetime import datetime
+from validate_email import validate_email
 
 import variables
 
@@ -353,7 +355,8 @@ def loadTestTweets():
 
     test_words = []
 
-    with open(variables.SEMEVAL_TEST_FILE, 'r') as inF:
+    with open(variables.SEMEVAL_TEST_FILE, 'r') as inF: #ORIGINAL FILE. ABOVE IS ONLY TEST
+    #with open("/home/airton/Projects/opinionMining/datasets/STS_Gold_All.txt", 'r') as inF: #only for test STS GOLD   
         for line in inF:
             if tweets_loaded < variables.MAX_ANALYSIS_TWEETS:
                 tweet_parsed = line.split("\t")
@@ -467,6 +470,38 @@ def loadTestTweets():
 
     end = time.time()
     print("  [test tweets loaded (" + str(tweets_loaded) + " tweets)][" + str(format(end - start, '.3g')) + " seconds]\n")
+
+
+def loadTestTweets_smuk():
+    start = time.time()
+    print("\n[loading test tweets - Mukherjee]")
+
+    tweets_loaded = 0
+    
+    with open('datasets/test/Dataset2.txt', 'r') as inF:
+        for line in inF:
+            if tweets_loaded < variables.MAX_ANALYSIS_TWEETS:
+                tweet_parsed = line.split(" $ ")
+
+                #print(tweet_parsed[0] + " - " + tweet_parsed[1])
+                
+                # I'm putting all the tweets on tweets2013 only for test
+                variables.tweets_2013.append(tweet_parsed[2])
+                if tweet_parsed[1] == "pos":
+                    variables.tweets_2013_score.append(1)
+                    variables.tweets_2013_positive += 1
+
+                elif tweet_parsed[1] == "neg":
+                    variables.tweets_2013_score.append(-1)
+                    variables.tweets_2013_negative += 1
+
+                #if tweet_parsed[0] == "pos":
+                #    variables.tweets_mukh.append(1)
+                #    variables.tweets_mukh_positive += 1
+                #else:
+                #    variables.tweets_mukh.append(-1)
+                #    variables.tweets_mukh_negative += 1
+
 
 #Aux functions
 def add(left, right):
@@ -1553,6 +1588,16 @@ def negativeHashtags(phrase):
     return total
 
 
+def hasDates(phrase):
+    mm = phrase.split()
+    for x in mm:
+        x = x.replace(",", "").replace("(", "").replace(")", "").replace(";", "").replace(":", "").replace("?", "").replace("!", "")
+        if x.lower() in variables.all_dates or len(re.findall('^[12][0-9]{3}$', x)) > 0 or len(re.findall('^([01]\d|2[0-3]):?([0-5]\d)$', x)) > 0:
+            return True
+
+    return False
+    #print(x + " - " + str(x.lower() in variables.all_dates) + " " + str(len(re.findall('^[12][0-9]{3}$', x))) + " " + str(len(re.findall('^([01]\d|2[0-3]):?([0-5]\d)$', x))))
+
 # Check if has hashtags on phrase
 def hasHashtag(phrase):
     return True if "#" in phrase else False
@@ -1628,6 +1673,15 @@ def getURLs(phrase):
     return re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', phrase)
 
 
+def hasEmails(phrase):
+    words = phrase.split()
+    for word in words:
+        if validate_email(word):
+            return True
+
+    return False
+
+
 def hasURLs(phrase):
     if len(getURLs(phrase)) > 0:
         return True
@@ -1687,6 +1741,7 @@ def evaluateMessages(base, model):
     # test
     global neutral_url_qtty
     global neutral_url_correct_pred
+    count_has_date = 0
     # test
 
     # test
@@ -1766,6 +1821,7 @@ def evaluateMessages(base, model):
 
     if len(variables.tweets_2013) == 0:
         loadTestTweets()
+        #loadTestTweets_smuk()
 
     if base == "tweets2013":
         messages = variables.tweets_2013
@@ -1822,11 +1878,24 @@ def evaluateMessages(base, model):
             if(variables.use_emoticon_analysis and hasEmoticons(message)):
                 result = emoticonsPolaritySum(message)
 
-            # If the tweet has url, set neutral (intuition to test)
-            elif(variables.use_url_to_neutral and len(getURLs(message)) > 0):
-                result = 0
-                neutral_url_qtty += 1
-                neutral_because_url = True
+            # If the tweet has url (and email now), set neutral (intuition to test)
+            #elif(variables.use_url_to_neutral and len(getURLs(message)) > 0 and hasEmails(message)):
+            elif(variables.use_url_to_neutral and (len(getURLs(message)) > 0 or hasEmails(message))):
+                result = float(eval(model_analysis))
+                if result < 0.5:                
+                    result = 0
+                    neutral_url_qtty += 1
+                    neutral_because_url = True
+
+            elif(variables.use_url_and_date_to_neutral and len(getURLs(message)) > 0 and hasDates(message)):
+                result = float(eval(model_analysis))
+                if result < 0.5:                
+                    result = 0
+
+            elif(variables.use_date_to_neutral and hasDates(message)):
+                result = float(eval(model_analysis))
+                if result < 0.5:
+                    result = 0                
 
             # Check if SVM are saying that the message are neutral
             elif(variables.use_svm_neutral and variables.svm_normalized_values[index] == 0):
@@ -1849,6 +1918,9 @@ def evaluateMessages(base, model):
         if(base == "all"):
             model_results_to_count_occurrences.append(result)
 
+
+        #variables.neutral_superior_range = variables.neutral_superior_range
+        
         if messages_score[index] > 0:
             if result > variables.neutral_superior_range:
                 true_positive += 1
@@ -1882,7 +1954,7 @@ def evaluateMessages(base, model):
                     false_positive += 1
                     goldNeg_classPos += 1
                     if base == "all":
-                        goldNeg_classPos_value.append(result)
+                        goldNeg_classPos_value.append(result)                        
 
                 #if false_negative_log <= 20:
                     #if false_negative_log == 1:  
@@ -1903,12 +1975,31 @@ def evaluateMessages(base, model):
                     goldNeu_classNeg += 1
                     if base == "all":
                         goldNeu_classNeg_value.append(result)
+
+                        # LOG - Check the neutral messages that are defined as positive
+                        print("[Neutral message] " + message)
+                        print("[-][Negative Polarity calculated] " + str(result) + " | [Neutral inferior range] " + str(variables.neutral_inferior_range) + " | [Neutral superior range] " + str(variables.neutral_superior_range))
+                        print("\n")
+
                 elif result > variables.neutral_superior_range:
                     false_positive += 1
                     goldNeu_classPos += 1
                     if base == "all":
                         goldNeu_classPos_value.append(result)
 
+                        # LOG - Check the neutral messages that are defined as positive
+                        print("[Neutral message] " + message)
+                        print("[+][Positive Polarity calculated] " + str(result) + " | [Neutral inferior range] " + str(variables.neutral_inferior_range) + " | [Neutral superior range] " + str(variables.neutral_superior_range))
+                        print("\n")
+
+                        #if (hasDates(message)):
+                        #    print("HAS DATE: " + message)
+                        #    count_has_date += 1
+                        #else:
+                        #    print("DOESN'T HAS DATE: " + message)
+
+
+    print(str(count_has_date))
 
     if true_positive + false_positive + true_negative + false_negative > 0:
         accuracy = (true_positive + true_negative + true_neutral) / (true_positive + false_positive + true_negative + false_negative + true_neutral + false_neutral)
