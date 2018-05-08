@@ -1,0 +1,326 @@
+[Model]	polaritySumAVGUsingWeights(removeStopWords(removeAllPonctuation(replaceBoosterWords(removeAllPonctuation(replaceBoosterWords(removeAllPonctuation(replaceNegatingWords(boostUpperCase(x)))))))), 0.0, sub(0.0, 0.0), 0.9739437416547077, positiveWordsQuantity(removeLinks(replaceNegatingWords(removeLinks(removeAllPonctuation(boostUpperCase(removeAllPonctuation(x))))))), neutralRange(negativeWordsQuantity(removeStopWords(removeAllPonctuation(replaceNegatingWords(x)))), negativeWordsQuantity(replaceNegatingWords(replaceBoosterWords(replaceNegatingWords(removeAllPonctuation(removeStopWords(x))))))), sub(sub(0.0, 0.0), 0.0), 0.0)
+
+tweets2013	0.607
+tweets2014	0.579
+sms	0.5736
+livejournal	0.6701
+sarcasm	0.4311
+all	0.6066
+
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(replaceNegatingWords(removeAllPonctuation(removeAllPonctuation(replaceNegatingWords(boostUpperCase(removeLinks(replaceBoosterWords(removeAllPonctuation(replaceNegatingWords(replaceBoosterWords(removeStopWords(replaceBoosterWords(replaceNegatingWords(removeAllPonctuation(x))))))))))))))), 0.18762709213050988, neutralRange(0.0, 0.18762709213050988), 0.1678153582908748, 0.0, 0.0, 0.0, 0.0)
+
+tweets2013	0.6115
+tweets2014	0.5956
+sms	0.5994
+livejournal	0.6772
+sarcasm	0.3891
+all	0.6164
+
+[Model]	polaritySumAVGUsingWeights(boostUpperCase(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(replaceNegatingWords(removeStopWords(removeStopWords(replaceBoosterWords(replaceBoosterWords(removeStopWords(removeAllPonctuation(removeAllPonctuation(replaceBoosterWords(replaceNegatingWords(x)))))))))))))), 0.2177557000968422, 0.0, 0.17290005559460297, 0.0, mul(0.0, 0.0), mul(0.0, 0.0), 0.0)
+
+tweets2013	0.6098
+tweets2014	0.6025
+sms	0.5648
+livejournal	0.6853
+sarcasm	0.3974
+all	0.6125
+
+[Model]	polaritySumAVGUsingWeights(removeAllPonctuation(replaceNegatingWords(replaceBoosterWords(x))), mul(emoticonsPolaritySum(boostUpperCase(removeAllPonctuation(replaceNegatingWords(boostUpperCase(x))))), 0.0), add(0.0, 0.0), add(positiveWordsQuantity(removeAllPonctuation(replaceNegatingWords(removeStopWords(replaceNegatingWords(removeLinks(removeAllPonctuation(replaceNegatingWords(boostUpperCase(boostUpperCase(x)))))))))), 0.0), 0.2969679152380287, 0.0, emoticonsPolaritySum(x), neutralRange(0.0, 0.4695766321457391))
+
+tweets2013	0.6244
+tweets2014	0.6022
+sms	0.5946
+livejournal	0.6533
+sarcasm	0.4377
+all	0.619
+
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(replaceBoosterWords(removeAllPonctuation(removeStopWords(replaceBoosterWords(replaceNegatingWords(replaceNegatingWords(x))))))), 0.41371784540448386, hashtagPolaritySum(x), 0.264530500035117, if_then_else(hasEmoticons(x), emoticonsPolaritySum(x), hashtagPolaritySum(removeLinks(boostUpperCase(x)))), add(0.0, 0.0), neutralRange(1.9875082593958566, 0.0), emoticonsPolaritySum(x))
+
+tweets2013	0.6141
+tweets2014	0.6096
+sms	0.5663
+livejournal	0.6817
+sarcasm	0.3859
+all	0.6152
+
+[Model]	polaritySumAVGUsingWeights(replaceBoosterWords(removeAllPonctuation(removeStopWords(boostUpperCase(replaceBoosterWords(replaceNegatingWords(boostUpperCase(replaceNegatingWords(replaceNegatingWords(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(x)))))))))))), add(0.0, 0.0), add(0.0, 0.0), positiveWordsQuantity(removeAllPonctuation(replaceNegatingWords(replaceNegatingWords(removeLinks(removeAllPonctuation(replaceNegatingWords(replaceNegatingWords(replaceNegatingWords(removeAllPonctuation(x)))))))))), 0.517977278631669, 0.0, 0.0, neutralRange(0.0, mul(0.6030691147861384, 1.3819575995634075)))
+
+tweets2013	0.6173
+tweets2014	0.5967
+sms	0.5982
+livejournal	0.6462
+sarcasm	0.4377
+all	0.6143
+
+[Model]	polaritySumAVGUsingWeights(boostUpperCase(removeStopWords(replaceNegatingWords(removeAllPonctuation(x)))), if_then_else(hasDates(removeStopWords(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(x))))), 0.0, sub(negativeWordsQuantity(x), 0.0)), 0.0, negativeWordsQuantity(removeAllPonctuation(removeStopWords(replaceNegatingWords(replaceNegatingWords(boostUpperCase(removeAllPonctuation(boostUpperCase(removeStopWords(replaceNegatingWords(x)))))))))), add(if_then_else(hasURLs(removeAllPonctuation(x)), 0.0, sub(0.0, 0.0)), 0.466417360999976), if_then_else(False, neutralRange(negativeWordsQuantity(x), 0.0), 0.0), 0.0, 0.0)
+
+tweets2013	0.6188
+tweets2014	0.5958
+sms	0.5521
+livejournal	0.6513
+sarcasm	0.4304
+all	0.6076
+
+[Model]	polaritySumAVGUsingWeights(replaceBoosterWords(replaceNegatingWords(removeAllPonctuation(removeAllPonctuation(replaceNegatingWords(boostUpperCase(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(removeAllPonctuation(removeAllPonctuation(replaceBoosterWords(replaceNegatingWords(x))))))))))))), sub(0.0, 0.0), if_then_else(True, emoticonsPolaritySum(x), 1.0440096455292933), 0.7146233191353402, emoticonsPolaritySum(x), 0.0, sub(hashtagPolaritySum(removeAllPonctuation(boostUpperCase(replaceNegatingWords(x)))), neutralRange(negativeWordsQuantity(x), negativeWordsQuantity(x))), 0.0)
+
+tweets2013	0.6204
+tweets2014	0.5988
+sms	0.5749
+livejournal	0.6665
+sarcasm	0.4346
+all	0.6158
+
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(boostUpperCase(boostUpperCase(replaceBoosterWords(removeAllPonctuation(removeAllPonctuation(removeAllPonctuation(removeAllPonctuation(boostUpperCase(replaceNegatingWords(removeLinks(replaceBoosterWords(x)))))))))))), if_then_else(hasURLs(removeAllPonctuation(replaceBoosterWords(boostUpperCase(boostUpperCase(removeAllPonctuation(boostUpperCase(replaceBoosterWords(x)))))))), hashtagPolaritySum(replaceNegatingWords(replaceNegatingWords(replaceNegatingWords(replaceNegatingWords(replaceBoosterWords(removeStopWords(boostUpperCase(x)))))))), 0.0), 0.0, 1.7165711097243543, neutralRange(negativeWordsQuantity(removeLinks(x)), add(mul(add(hashtagPolaritySum(replaceBoosterWords(removeAllPonctuation(boostUpperCase(x)))), if_then_else(hasDates(boostUpperCase(x)), 0.0, 0.0)), 0.0), negativeWordsQuantity(removeStopWords(removeStopWords(x))))), 0.0, emoticonsPolaritySum(x), hashtagPolaritySum(replaceBoosterWords(removeStopWords(replaceNegatingWords(boostUpperCase(replaceBoosterWords(removeAllPonctuation(replaceBoosterWords(x)))))))))
+
+tweets2013	0.6201
+tweets2014	0.6055
+sms	0.5724
+livejournal	0.6596
+sarcasm	0.4185
+all	0.6151
+
+[Model]	polaritySumAVGUsingWeights(removeLinks(removeAllPonctuation(removeLinks(removeLinks(replaceNegatingWords(replaceBoosterWords(removeAllPonctuation(x))))))), if_then_else(hasEmoticons(removeAllPonctuation(removeStopWords(boostUpperCase(boostUpperCase(x))))), 0.0, 0.0), 0.0, positiveWordsQuantity(boostUpperCase(removeAllPonctuation(removeAllPonctuation(boostUpperCase(removeAllPonctuation(removeLinks(boostUpperCase(replaceNegatingWords(removeStopWords(x)))))))))), 0.504080854169145, 0.0, emoticonsPolaritySum(x), neutralRange(if_then_else(hasEmoticons(removeAllPonctuation(x)), 1.4675963759508155, positiveWordsQuantity(removeAllPonctuation(removeLinks(replaceBoosterWords(removeLinks(removeAllPonctuation(removeLinks(boostUpperCase(replaceNegatingWords(replaceBoosterWords(x))))))))))), 0.8658856473271701))
+
+tweets2013	0.6266
+tweets2014	0.5984
+sms	0.6038
+livejournal	0.651
+sarcasm	0.4377
+all	0.6209
+
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(removeAllPonctuation(replaceNegatingWords(replaceNegatingWords(removeStopWords(replaceBoosterWords(replaceNegatingWords(replaceNegatingWords(replaceBoosterWords(x))))))))), sub(mul(1.4192614589562735, 0.0), neutralRange(sub(1.3932232258443826, 0.0), negativeWordsQuantity(replaceNegatingWords(replaceNegatingWords(replaceNegatingWords(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(x))))))))), mul(sub(mul(hashtagPolaritySum(replaceNegatingWords(replaceNegatingWords(removeAllPonctuation(replaceNegatingWords(removeStopWords(replaceNegatingWords(replaceNegatingWords(replaceBoosterWords(x))))))))), hashtagPolaritySum(replaceNegatingWords(x))), 0.0), 0.0), negativeWordsQuantity(removeAllPonctuation(replaceNegatingWords(replaceBoosterWords(removeAllPonctuation(x))))), sub(0.5170748784009533, 0.0), mul(emoticonsPolaritySum(removeStopWords(x)), mul(mul(sub(mul(mul(sub(1.4927919703957662, 0.0), hashtagPolaritySum(replaceNegatingWords(x))), 0.0), hashtagPolaritySum(boostUpperCase(replaceNegatingWords(x)))), mul(1.4660462135525156, 0.0)), mul(0.0, mul(sub(mul(mul(0.0, 0.0), hashtagPolaritySum(replaceNegatingWords(replaceNegatingWords(removeAllPonctuation(replaceNegatingWords(removeStopWords(replaceNegatingWords(replaceNegatingWords(removeStopWords(x)))))))))), 0.0), sub(0.5045162553890232, 0.0))))), emoticonsPolaritySum(removeStopWords(x)), hashtagPolaritySum(replaceBoosterWords(removeLinks(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(replaceNegatingWords(removeStopWords(x)))))))))
+
+tweets2013	0.6178
+tweets2014	0.5978
+sms	0.5579
+livejournal	0.6574
+sarcasm	0.4642
+all	0.6102
+
+[Model]	polaritySumAVGUsingWeights(removeAllPonctuation(removeLinks(replaceNegatingWords(removeAllPonctuation(removeLinks(replaceNegatingWords(boostUpperCase(x))))))), negativeWordsQuantity(x), neutralRange(0.2443882010910865, hashtagPolaritySum(x)), negativeWordsQuantity(removeAllPonctuation(removeLinks(x))), 0.21574184800637353, if_then_else(True, 0.0, 1.7462743574095234), hashtagPolaritySum(x), hashtagPolaritySum(x))
+
+tweets2013	0.6162
+tweets2014	0.59
+sms	0.5513
+livejournal	0.6497
+sarcasm	0.4451
+all	0.6044
+
+[Model]	polaritySumAVGUsingWeights(replaceBoosterWords(replaceNegatingWords(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(x))))), mul(mul(emoticonsPolaritySum(x), 1.221735426675587), 0.0), 0.0, 1.8404860229590583, if_then_else(hasDates(removeAllPonctuation(replaceBoosterWords(x))), if_then_else(True, mul(emoticonsPolaritySum(replaceNegatingWords(removeAllPonctuation(x))), 0.4453400823006459), if_then_else(True, emoticonsPolaritySum(x), emoticonsPolaritySum(x))), 0.7214104053078796), 0.0, mul(emoticonsPolaritySum(boostUpperCase(x)), 1.0409093727697476), neutralRange(if_then_else(True, negativeWordsQuantity(removeAllPonctuation(removeLinks(removeLinks(removeStopWords(x))))), negativeWordsQuantity(boostUpperCase(x))), negativeWordsQuantity(boostUpperCase(boostUpperCase(removeAllPonctuation(boostUpperCase(x)))))))
+
+tweets2013	0.6239
+tweets2014	0.6022
+sms	0.5739
+livejournal	0.6726
+sarcasm	0.3927
+all	0.6189
+
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(replaceNegatingWords(replaceBoosterWords(removeAllPonctuation(replaceNegatingWords(replaceBoosterWords(removeAllPonctuation(x))))))), 0.0, neutralRange(mul(sub(mul(emoticonsPolaritySum(replaceNegatingWords(x)), mul(0.0, 0.9641610388015922)), positiveWordsQuantity(x)), mul(if_then_else(hasEmoticons(removeAllPonctuation(replaceBoosterWords(removeAllPonctuation(removeLinks(x))))), 0.0, sub(mul(0.0, positiveWordsQuantity(replaceNegatingWords(x))), mul(hashtagPolaritySum(x), add(1.9370307576693984, 1.607826013698889)))), 1.307294367612133)), mul(0.0, positiveWordsQuantity(removeAllPonctuation(x)))), 1.444808866009778, add(positiveWordsQuantity(removeAllPonctuation(replaceNegatingWords(removeLinks(replaceBoosterWords(x))))), sub(mul(positiveWordsQuantity(x), mul(0.1431965479969619, 1.4160224511273587)), positiveWordsQuantity(removeAllPonctuation(x)))), 0.0, emoticonsPolaritySum(x), 0.0)
+
+tweets2013	0.6181
+tweets2014	0.6065
+sms	0.5752
+livejournal	0.6519
+sarcasm	0.3977
+all	0.6126
+
+[Model]	polaritySumAVGUsingWeights(boostUpperCase(replaceBoosterWords(boostUpperCase(replaceBoosterWords(replaceBoosterWords(replaceNegatingWords(removeAllPonctuation(removeAllPonctuation(boostUpperCase(x))))))))), neutralRange(negativeWordsQuantity(removeAllPonctuation(x)), negativeWordsQuantity(removeAllPonctuation(x))), 0.0, negativeWordsQuantity(removeAllPonctuation(removeAllPonctuation(boostUpperCase(replaceBoosterWords(x))))), if_then_else(hasHashtag(removeAllPonctuation(boostUpperCase(replaceNegatingWords(x)))), 0.532696761227563, positiveWordsQuantity(removeAllPonctuation(replaceNegatingWords(x)))), 0.0, emoticonsPolaritySum(x), hashtagPolaritySum(removeAllPonctuation(x)))
+
+tweets2013	0.6027
+tweets2014	0.5726
+sms	0.5933
+livejournal	0.6357
+sarcasm	0.4626
+all	0.6029
+
+[Model]	polaritySumAVGUsingWeights(removeAllPonctuation(replaceNegatingWords(replaceBoosterWords(boostUpperCase(replaceBoosterWords(replaceNegatingWords(removeAllPonctuation(replaceNegatingWords(x)))))))), 0.0, 0.0, add(add(add(1.5862280476912871, add(hashtagPolaritySum(removeAllPonctuation(replaceNegatingWords(x))), 0.20902119519293483)), if_then_else(False, add(0.4020744107809995, 0.7641168208175653), 0.0)), 1.068833264135769), emoticonsPolaritySum(x), neutralRange(negativeWordsQuantity(x), negativeWordsQuantity(removeStopWords(x))), emoticonsPolaritySum(boostUpperCase(x)), hashtagPolaritySum(replaceBoosterWords(x)))
+
+tweets2013	0.617
+tweets2014	0.6034
+sms	0.5698
+livejournal	0.6592
+sarcasm	0.4185
+all	0.6129
+
+[Model]	polaritySumAVGUsingWeights(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(x)))), hashtagPolaritySum(removeStopWords(removeLinks(replaceNegatingWords(removeAllPonctuation(x))))), 0.0, if_then_else(hasURLs(x), hashtagPolaritySum(x), mul(negativeWordsQuantity(replaceNegatingWords(x)), if_then_else(True, positiveWordsQuantity(x), 0.011084369933499039))), 0.12353804811257074, mul(sub(sub(0.0, 0.5051259499334975), 0.2868883476963764), emoticonsPolaritySum(x)), neutralRange(mul(sub(sub(mul(sub(0.0, 1.5218305680479658), emoticonsPolaritySum(replaceBoosterWords(x))), 1.2491803023404322), 0.8109296736202347), emoticonsPolaritySum(x)), mul(1.0347253508542544, sub(0.0, 1.7551706918263783))), 0.0)
+
+tweets2013	0.6269
+tweets2014	0.6131
+sms	0.5576
+livejournal	0.6586
+sarcasm	0.4838
+all	0.6165
+
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(removeAllPonctuation(removeAllPonctuation(replaceBoosterWords(removeLinks(boostUpperCase(x)))))), 0.0, 0.0, if_then_else(hasHashtag(x), negativeWordsQuantity(replaceNegatingWords(removeAllPonctuation(x))), negativeWordsQuantity(removeAllPonctuation(replaceBoosterWords(removeStopWords(x))))), if_then_else(hasEmoticons(x), positiveWordsQuantity(replaceBoosterWords(replaceBoosterWords(removeStopWords(replaceNegatingWords(x))))), positiveWordsQuantity(removeAllPonctuation(replaceNegatingWords(removeLinks(boostUpperCase(x)))))), 0.0, emoticonsPolaritySum(x), neutralRange(if_then_else(hasHashtag(x), negativeWordsQuantity(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(removeAllPonctuation(replaceBoosterWords(x)))))), negativeWordsQuantity(removeAllPonctuation(x))), negativeWordsQuantity(removeLinks(removeAllPonctuation(x)))))
+
+tweets2013	0.5973
+tweets2014	0.5719
+sms	0.5933
+livejournal	0.6348
+sarcasm	0.3784
+all	0.5991
+
+[Model]	polaritySumAVGUsingWeights(replaceBoosterWords(replaceBoosterWords(replaceNegatingWords(replaceBoosterWords(removeAllPonctuation(x))))), 0.0, emoticonsPolaritySum(x), 1.5852835252896968, negativeWordsQuantity(replaceBoosterWords(replaceNegatingWords(replaceBoosterWords(replaceBoosterWords(replaceNegatingWords(replaceBoosterWords(removeAllPonctuation(x)))))))), neutralRange(sub(negativeWordsQuantity(removeAllPonctuation(x)), emoticonsPolaritySum(x)), sub(negativeWordsQuantity(removeAllPonctuation(replaceBoosterWords(replaceNegatingWords(replaceBoosterWords(boostUpperCase(x)))))), emoticonsPolaritySum(boostUpperCase(x)))), emoticonsPolaritySum(x), negativeWordsQuantity(removeAllPonctuation(x)))
+
+tweets2013	0.6156
+tweets2014	0.5921
+sms	0.5763
+livejournal	0.6538
+sarcasm	0.4088
+all	0.6112
+
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(replaceBoosterWords(removeLinks(replaceNegatingWords(boostUpperCase(removeAllPonctuation(x)))))), neutralRange(add(0.0, add(positiveWordsQuantity(removeLinks(replaceNegatingWords(removeAllPonctuation(removeAllPonctuation(replaceBoosterWords(x)))))), negativeWordsQuantity(x))), negativeWordsQuantity(removeAllPonctuation(removeAllPonctuation(x)))), 0.0, negativeWordsQuantity(removeAllPonctuation(replaceBoosterWords(x))), positiveWordsQuantity(replaceBoosterWords(removeLinks(replaceNegatingWords(removeAllPonctuation(x))))), 0.0, emoticonsPolaritySum(removeLinks(x)), 0.0)
+
+tweets2013	0.5929
+tweets2014	0.5706
+sms	0.5842
+livejournal	0.6422
+sarcasm	0.3784
+all	0.5951
+
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(replaceBoosterWords(removeLinks(removeStopWords(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(removeAllPonctuation(x)))))))), mul(0.0, negativeWordsQuantity(removeAllPonctuation(replaceBoosterWords(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(replaceBoosterWords(x)))))))), mul(mul(0.0, positiveWordsQuantity(removeAllPonctuation(removeAllPonctuation(replaceBoosterWords(removeAllPonctuation(x)))))), emoticonsPolaritySum(x)), negativeWordsQuantity(removeLinks(replaceBoosterWords(replaceBoosterWords(replaceBoosterWords(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(replaceBoosterWords(x))))))))), positiveWordsQuantity(removeAllPonctuation(removeAllPonctuation(replaceBoosterWords(removeAllPonctuation(x))))), mul(0.0, negativeWordsQuantity(x)), neutralRange(negativeWordsQuantity(removeStopWords(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(removeAllPonctuation(x)))))), mul(negativeWordsQuantity(removeAllPonctuation(replaceBoosterWords(removeLinks(x)))), negativeWordsQuantity(removeAllPonctuation(x)))), emoticonsPolaritySum(x))
+
+tweets2013	0.596
+tweets2014	0.5745
+sms	0.5834
+livejournal	0.6348
+sarcasm	0.3784
+all	0.5967
+
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(x))), sub(mul(negativeWordsQuantity(x), emoticonsPolaritySum(replaceBoosterWords(x))), 0.0), emoticonsPolaritySum(replaceBoosterWords(x)), 0.6689716709833722, if_then_else(False, neutralRange(negativeWordsQuantity(x), negativeWordsQuantity(x)), emoticonsPolaritySum(x)), sub(sub(sub(0.0, emoticonsPolaritySum(x)), hashtagPolaritySum(x)), hashtagPolaritySum(x)), emoticonsPolaritySum(x), emoticonsPolaritySum(removeLinks(x)))
+
+tweets2013	0.6236
+tweets2014	0.6034
+sms	0.5735
+livejournal	0.6658
+sarcasm	0.4049
+all	0.6171
+
+[Model]	polaritySumAVGUsingWeights(removeLinks(removeLinks(removeStopWords(replaceNegatingWords(replaceBoosterWords(removeAllPonctuation(removeStopWords(replaceNegatingWords(x)))))))), 0.0, add(0.0, 0.0), positiveWordsQuantity(removeAllPonctuation(removeStopWords(replaceNegatingWords(removeAllPonctuation(removeAllPonctuation(removeAllPonctuation(x))))))), 0.5006607642508476, 0.0, hashtagPolaritySum(boostUpperCase(removeLinks(boostUpperCase(x)))), add(neutralRange(1.4089349806733926, negativeWordsQuantity(removeAllPonctuation(x))), sub(sub(emoticonsPolaritySum(x), 0.0), add(0.0, mul(1.0544385385670998, mul(0.0, 0.0))))))
+
+tweets2013	0.6198
+tweets2014	0.6106
+sms	0.5591
+livejournal	0.6637
+sarcasm	0.4268
+all	0.6141
+
+[Model]	polaritySumAVGUsingWeights(replaceBoosterWords(removeAllPonctuation(replaceBoosterWords(replaceNegatingWords(replaceNegatingWords(removeLinks(removeAllPonctuation(x))))))), 0.0, hashtagPolaritySum(replaceNegatingWords(replaceNegatingWords(removeStopWords(replaceBoosterWords(x))))), add(add(negativeWordsQuantity(removeLinks(removeAllPonctuation(removeLinks(replaceBoosterWords(x))))), 0.0), positiveWordsQuantity(removeAllPonctuation(replaceBoosterWords(replaceNegatingWords(replaceNegatingWords(removeLinks(removeAllPonctuation(x)))))))), positiveWordsQuantity(replaceNegatingWords(x)), 0.0, emoticonsPolaritySum(x), mul(hashtagPolaritySum(x), add(if_then_else(hasEmoticons(replaceBoosterWords(removeLinks(x))), 1.3842045089549733, neutralRange(1.1398702006939365, negativeWordsQuantity(removeLinks(removeAllPonctuation(removeLinks(replaceBoosterWords(x))))))), if_then_else(hasEmoticons(replaceBoosterWords(replaceBoosterWords(x))), positiveWordsQuantity(replaceNegatingWords(replaceBoosterWords(removeAllPonctuation(replaceBoosterWords(replaceNegatingWords(x)))))), mul(0.0, positiveWordsQuantity(removeStopWords(replaceNegatingWords(removeLinks(x)))))))))
+
+tweets2013	0.5954
+tweets2014	0.5728
+sms	0.5932
+livejournal	0.6146
+sarcasm	0.3448
+all	0.5933
+
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(removeLinks(replaceNegatingWords(boostUpperCase(replaceNegatingWords(removeAllPonctuation(replaceNegatingWords(x))))))))), neutralRange(mul(0.6626118706579338, 0.9546930383190821), negativeWordsQuantity(x)), 0.0, negativeWordsQuantity(removeLinks(replaceNegatingWords(removeAllPonctuation(replaceNegatingWords(replaceBoosterWords(removeLinks(removeAllPonctuation(removeAllPonctuation(x))))))))), positiveWordsQuantity(boostUpperCase(replaceNegatingWords(boostUpperCase(removeAllPonctuation(x))))), 0.0, emoticonsPolaritySum(x), hashtagPolaritySum(replaceNegatingWords(boostUpperCase(replaceBoosterWords(removeAllPonctuation(x))))))
+
+tweets2013	0.5948
+tweets2014	0.5708
+sms	0.5871
+livejournal	0.6362
+sarcasm	0.3959
+all	0.5965
+
+[Model]	polaritySumAVGUsingWeights(removeLinks(replaceBoosterWords(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(removeLinks(boostUpperCase(removeLinks(x)))))))), 0.0, 0.0, if_then_else(True, negativeWordsQuantity(removeAllPonctuation(removeLinks(boostUpperCase(removeStopWords(replaceBoosterWords(x)))))), 0.0), positiveWordsQuantity(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(removeLinks(x))))), 0.0, emoticonsPolaritySum(x), add(mul(hashtagPolaritySum(replaceBoosterWords(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(removeLinks(x)))))), 0.4805574074558261), neutralRange(negativeWordsQuantity(removeStopWords(removeAllPonctuation(removeLinks(removeAllPonctuation(removeAllPonctuation(boostUpperCase(x))))))), negativeWordsQuantity(removeAllPonctuation(x)))))
+
+tweets2013	0.5983
+tweets2014	0.5718
+sms	0.5933
+livejournal	0.6348
+sarcasm	0.3959
+all	0.5997
+
+[Model]	polaritySumAVGUsingWeights(removeLinks(replaceNegatingWords(removeAllPonctuation(removeAllPonctuation(removeAllPonctuation(replaceBoosterWords(replaceBoosterWords(x))))))), hashtagPolaritySum(boostUpperCase(removeAllPonctuation(x))), neutralRange(negativeWordsQuantity(x), negativeWordsQuantity(x)), add(0.6990865479968527, add(mul(hashtagPolaritySum(replaceNegatingWords(removeStopWords(x))), negativeWordsQuantity(x)), if_then_else(hasEmoticons(x), 1.5741101970286366, 0.9320647501105555))), emoticonsPolaritySum(x), emoticonsPolaritySum(removeAllPonctuation(replaceBoosterWords(removeLinks(removeLinks(boostUpperCase(removeAllPonctuation(x))))))), emoticonsPolaritySum(x), mul(add(add(1.9363289396776133, negativeWordsQuantity(removeStopWords(x))), add(1.0305099310160857, negativeWordsQuantity(x))), add(hashtagPolaritySum(replaceBoosterWords(boostUpperCase(removeAllPonctuation(removeAllPonctuation(replaceBoosterWords(replaceBoosterWords(x))))))), if_then_else(hasEmoticons(removeAllPonctuation(x)), 0.0, hashtagPolaritySum(removeLinks(replaceBoosterWords(replaceNegatingWords(x))))))))
+
+tweets2013	0.618
+tweets2014	0.6031
+sms	0.57
+livejournal	0.6587
+sarcasm	0.4185
+all	0.6132
+
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(removeAllPonctuation(replaceNegatingWords(x))))), 0.0, emoticonsPolaritySum(x), positiveWordsQuantity(replaceBoosterWords(removeAllPonctuation(x))), add(negativeWordsQuantity(removeStopWords(removeAllPonctuation(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(removeStopWords(x))))))), emoticonsPolaritySum(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(replaceNegatingWords(replaceBoosterWords(x))))))), sub(0.0, emoticonsPolaritySum(replaceNegatingWords(replaceNegatingWords(replaceBoosterWords(x))))), 0.0, if_then_else(hasHashtag(removeAllPonctuation(x)), mul(mul(neutralRange(sub(0.0, emoticonsPolaritySum(x)), sub(0.0, emoticonsPolaritySum(removeStopWords(removeLinks(x))))), negativeWordsQuantity(replaceNegatingWords(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(replaceNegatingWords(x))))))), negativeWordsQuantity(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(replaceNegatingWords(x)))))), 0.0))
+
+tweets2013	0.5957
+tweets2014	0.5826
+sms	0.5863
+livejournal	0.6128
+sarcasm	0.3706
+all	0.594
+
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(replaceBoosterWords(replaceNegatingWords(replaceBoosterWords(removeStopWords(replaceBoosterWords(removeAllPonctuation(replaceNegatingWords(x)))))))), if_then_else(False, 0.9118696559748201, 0.0), mul(mul(0.0, 1.0918883099222148), 0.0), 1.366176696850218, positiveWordsQuantity(boostUpperCase(removeAllPonctuation(removeAllPonctuation(replaceNegatingWords(x))))), if_then_else(False, 1.3957920142183071, mul(0.0, 0.0)), neutralRange(mul(0.44513346651519803, if_then_else(hasEmoticons(removeAllPonctuation(removeAllPonctuation(x))), emoticonsPolaritySum(replaceNegatingWords(removeAllPonctuation(x))), sub(hashtagPolaritySum(removeStopWords(x)), sub(emoticonsPolaritySum(x), sub(0.9013377925190449, 1.4784152870544724))))), 0.0), emoticonsPolaritySum(x))
+
+tweets2013	0.6148
+tweets2014	0.6088
+sms	0.5601
+livejournal	0.645
+sarcasm	0.4161
+all	0.6074
+
+[Model]	polaritySumAVGUsingWeights(replaceBoosterWords(replaceNegatingWords(removeAllPonctuation(replaceNegatingWords(replaceBoosterWords(boostUpperCase(removeLinks(x))))))), emoticonsPolaritySum(boostUpperCase(removeAllPonctuation(x))), emoticonsPolaritySum(x), 0.5119017608707859, emoticonsPolaritySum(removeLinks(boostUpperCase(x))), 0.0, neutralRange(negativeWordsQuantity(removeLinks(removeAllPonctuation(x))), negativeWordsQuantity(removeLinks(removeAllPonctuation(boostUpperCase(removeLinks(removeLinks(boostUpperCase(x)))))))), sub(hashtagPolaritySum(replaceBoosterWords(boostUpperCase(x))), if_then_else(False, emoticonsPolaritySum(replaceBoosterWords(x)), 0.0)))
+
+tweets2013	0.6192
+tweets2014	0.5948
+sms	0.5796
+livejournal	0.6657
+sarcasm	0.4381
+all	0.6159
+
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(replaceBoosterWords(removeAllPonctuation(x))), neutralRange(negativeWordsQuantity(removeAllPonctuation(x)), negativeWordsQuantity(removeAllPonctuation(x))), 0.0, add(emoticonsPolaritySum(boostUpperCase(x)), 1.219411766243928), emoticonsPolaritySum(x), 0.0, emoticonsPolaritySum(removeStopWords(x)), if_then_else(False, add(1.419466491391196, 0.4600629232965676), hashtagPolaritySum(removeStopWords(removeStopWords(replaceNegatingWords(x))))))
+
+tweets2013	0.6238
+tweets2014	0.6058
+sms	0.5782
+livejournal	0.6595
+sarcasm	0.4381
+all	0.6189
+
+[Model]	polaritySumAVGUsingWeights(replaceBoosterWords(boostUpperCase(replaceNegatingWords(removeAllPonctuation(x)))), mul(0.0, 0.0), 0.0, add(0.0, 1.8014098280804753), emoticonsPolaritySum(removeStopWords(x)), 0.0, mul(add(emoticonsPolaritySum(boostUpperCase(removeStopWords(x))), hashtagPolaritySum(replaceBoosterWords(removeAllPonctuation(x)))), 0.5314507362550303), neutralRange(negativeWordsQuantity(x), negativeWordsQuantity(removeAllPonctuation(x))))
+
+tweets2013	0.6199
+tweets2014	0.6071
+sms	0.5694
+livejournal	0.6588
+sarcasm	0.414
+all	0.6149
+
+
+
+##Statistics##
+
+32 models evaluated
+7 dictionaries
+
+AVGs
+AVG Tweets2013 F1 SemEval	0.6131
+AVG Tweets2014 F1 SemEval	0.5941
+AVG SMS F1 SemEval	0.5771
+AVG LiveJournal F1 SemEval	0.6534
+AVG Sarcasm F1 SemEval	0.4148
+AVG All F1 SemEval	0.6097
+
+Best Values
+Best Tweets2013 F1 value	0.6269
+Best Tweets2014 F1 value	0.6131
+Best SMS F1 value	0.6038
+Best LiveJournal F1 value	0.6853
+Best Sarcasm F1 value	0.4838
+Best All F1 value	0.6209
+
+Values by database
+Tweets2013 [0.607, 0.6115, 0.6098, 0.6244, 0.6141, 0.6173, 0.6188, 0.6204, 0.6201, 0.6266, 0.6178, 0.6162, 0.6239, 0.6181, 0.6027, 0.617, 0.6269, 0.5973, 0.6156, 0.5929, 0.596, 0.6236, 0.6198, 0.5954, 0.5948, 0.5983, 0.618, 0.5957, 0.6148, 0.6192, 0.6238, 0.6199]
+Tweets2014 [0.579, 0.5956, 0.6025, 0.6022, 0.6096, 0.5967, 0.5958, 0.5988, 0.6055, 0.5984, 0.5978, 0.59, 0.6022, 0.6065, 0.5726, 0.6034, 0.6131, 0.5719, 0.5921, 0.5706, 0.5745, 0.6034, 0.6106, 0.5728, 0.5708, 0.5718, 0.6031, 0.5826, 0.6088, 0.5948, 0.6058, 0.6071]
+SMS [0.5736, 0.5994, 0.5648, 0.5946, 0.5663, 0.5982, 0.5521, 0.5749, 0.5724, 0.6038, 0.5579, 0.5513, 0.5739, 0.5752, 0.5933, 0.5698, 0.5576, 0.5933, 0.5763, 0.5842, 0.5834, 0.5735, 0.5591, 0.5932, 0.5871, 0.5933, 0.57, 0.5863, 0.5601, 0.5796, 0.5782, 0.5694]
+LiveJournal [0.6701, 0.6772, 0.6853, 0.6533, 0.6817, 0.6462, 0.6513, 0.6665, 0.6596, 0.651, 0.6574, 0.6497, 0.6726, 0.6519, 0.6357, 0.6592, 0.6586, 0.6348, 0.6538, 0.6422, 0.6348, 0.6658, 0.6637, 0.6146, 0.6362, 0.6348, 0.6587, 0.6128, 0.645, 0.6657, 0.6595, 0.6588]
+Sarcasm [0.4311, 0.3891, 0.3974, 0.4377, 0.3859, 0.4377, 0.4304, 0.4346, 0.4185, 0.4377, 0.4642, 0.4451, 0.3927, 0.3977, 0.4626, 0.4185, 0.4838, 0.3784, 0.4088, 0.3784, 0.3784, 0.4049, 0.4268, 0.3448, 0.3959, 0.3959, 0.4185, 0.3706, 0.4161, 0.4381, 0.4381, 0.414]
+All [0.6066, 0.6164, 0.6125, 0.619, 0.6152, 0.6143, 0.6076, 0.6158, 0.6151, 0.6209, 0.6102, 0.6044, 0.6189, 0.6126, 0.6029, 0.6129, 0.6165, 0.5991, 0.6112, 0.5951, 0.5967, 0.6171, 0.6141, 0.5933, 0.5965, 0.5997, 0.6132, 0.594, 0.6074, 0.6159, 0.6189, 0.6149]
+
+Standard deviation
+Standard Deviation Tweets2013	0.010469299892274313
+Standard Deviation Tweets2014	0.01365654604942261
+Standard Deviation SMS	0.01418671494248669
+Standard Deviation Live Journal	0.01667682447618175
+Standard Deviation Sarcasm	0.029795120720513952
+Standard Deviation All	0.008194395355020097
