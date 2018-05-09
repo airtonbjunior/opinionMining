@@ -355,8 +355,8 @@ def loadTestTweets():
 
     test_words = []
 
-    with open(variables.SEMEVAL_TEST_FILE, 'r') as inF: #ORIGINAL FILE. ABOVE IS ONLY TEST
-    #with open("/home/airton/Projects/opinionMining/datasets/STS_Gold_All.txt", 'r') as inF: #only for test STS GOLD   
+    #with open(variables.SEMEVAL_TEST_FILE, 'r') as inF: #ORIGINAL FILE. ABOVE IS ONLY TEST
+    with open("datasets/STS_Gold_All.txt", 'r') as inF: #only for test STS GOLD   
         for line in inF:
             if tweets_loaded < variables.MAX_ANALYSIS_TWEETS:
                 tweet_parsed = line.split("\t")
@@ -472,6 +472,13 @@ def loadTestTweets():
     print("  [test tweets loaded (" + str(tweets_loaded) + " tweets)][" + str(format(end - start, '.3g')) + " seconds]\n")
 
 
+# TO-DO
+# STS dataset
+def loadTestTweets_STS():
+    return 0
+
+
+# Mukherjee dataset
 def loadTestTweets_smuk():
     start = time.time()
     print("\n[loading test tweets - Mukherjee]")
