@@ -472,9 +472,70 @@ def loadTestTweets():
     print("  [test tweets loaded (" + str(tweets_loaded) + " tweets)][" + str(format(end - start, '.3g')) + " seconds]\n")
 
 
+# Load STS train tweets
+def loadTrainTweets_STS():
+    start = time.time()
+    print("\n[loading STS train tweets]")
+
+    tweets_loaded = 0
+
+    with open(variables.SEMEVAL_TRAIN_FILE, 'r') as inF:
+        for line in inF:
+            if tweets_loaded < variables.MAX_ANALYSIS_TWEETS:
+                tweet_parsed = line.split("\t")
+                try:
+                    if(tweet_parsed[0] == "positive"):
+                        if(variables.positive_tweets < variables.MAX_POSITIVES_TWEETS):
+                            variables.positive_tweets += 1
+                            variables.tweets_sts.append(tweet_parsed[3])
+                            variables.tweets_sts_score.append(1)
+                            #variables.tweets_semeval.append(tweet_parsed[3])
+                            #variables.tweets_semeval_score.append(1)                            
+                            tweets_loaded += 1
+                    else:
+                        if(variables.negative_tweets < variables.MAX_NEGATIVES_TWEETS):
+                            variables.negative_tweets += 1
+                            variables.tweets_sts.append(tweet_parsed[3])
+                            variables.tweets_sts_score.append(-1)
+                            #variables.tweets_semeval.append(tweet_parsed[3])
+                            #variables.tweets_semeval_score.append(-1)
+                            tweets_loaded += 1
+                
+                except:
+                    print("exception")
+                    continue
+
+    end = time.time()
+    print("  [train STS tweets loaded (" + str(tweets_loaded) + " tweets)][" + str(format(end - start, '.3g')) + " seconds]\n")
+
+
 # TO-DO
 # STS dataset
 def loadTestTweets_STS():
+    start = time.time()
+    print("\n[loading test tweets (STS)]")    
+    
+    tweets_loaded = 0
+
+    with open(variables.STS_TEST_FILE, 'r') as f:
+        for line in f:
+            if tweets_loaded < variables.MAX_ANALYSIS_TWEETS:
+                tweet_parsed = line.split("\t")
+                try:
+                    if tweet_parsed[0] == "positive":
+                        variables.tweets_sts_score.append(1)
+                        variables.tweets_sts_positive += 1
+
+                    elif tweet_parsed[0] == "negative":
+                        variables.tweets_sts_score.append(-1)
+                        variables.tweets_sts_negative += 1
+
+                except Exception as e:
+                    print("exception 3: " + e)
+                    continue
+
+    end = time.time()
+    print("  [test tweets (STS) loaded (" + str(tweets_loaded) + " tweets)][" + str(format(end - start, '.3g')) + " seconds]\n")    
     return 0
 
 
