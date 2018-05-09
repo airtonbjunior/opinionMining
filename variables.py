@@ -9,6 +9,7 @@ from datetime import datetime
 # Paths
 SEMEVAL_TRAIN_FILE = 'datasets/train/twitter-train-cleansed-B.txt'
 SEMEVAL_TEST_FILE  = 'datasets/test/SemEval2014-task9-test-B-all-tweets_withSVMValues.txt'
+STS_TEST_FILE = 'datasets/STS_Gold_All.txt'
 DICTIONARY_POSITIVE_WORDS = 'dictionaries/positive-words.txt'
 DICTIONARY_NEGATIVE_WORDS = 'dictionaries/negative-words.txt'
 DICTIONARY_POSITIVE_HASHTAGS  = 'dictionaries/positive-hashtags.txt'
@@ -118,6 +119,9 @@ svm_is_neutral        = []
 svm_normalized_values = []
 tweet_semeval_index   = 0
 
+tweets_sts       = []
+tweets_sts_score = []
+
 # All are converted into sets because we don't need to keep the order
 dic_positive_words     = []
 dic_negative_words     = []
@@ -198,6 +202,11 @@ tweets_mukh = []
 tweets_mukh_score = []
 tweets_mukh_positive = 0
 tweets_mukh_negative = 0
+
+tweets_sts       = []
+tweets_sts_score = []
+tweets_sts_positive = 0
+tweets_sts_negative = 0
 
 tweets_2013       = []
 tweets_2013_score = []
