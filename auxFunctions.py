@@ -1,16 +1,17 @@
 import glob
 import nltk
+from datetime import datetime
 
 IMDB_TRAIN_FOLDER_POS   = 'IMDBdataset/train/pos/'
 IMDB_TRAIN_FOLDER_NEG   = 'IMDBdataset/train/neg/'
 IMDB_TRAIN_ALL_MESSAGES = 'IMDBdataset/train/imdbAllMessages.txt'
 
-STS_TRAIN_MESSAGES  	= 'STSGoldOriginal.csv'
-STS_TRAIN_ALL_MESSAGES  = '/home/airton/Projects/opinionMining/datasets/STS_Gold_All.txt'
+STS_TRAIN_MESSAGES  	= 'datasets/STSGoldOriginal.csv'
+STS_TRAIN_ALL_MESSAGES  = 'datasets/STS_Gold_All.txt'
 
 
-SEMEVAL_TRAIN_MESSAGES = '/home/airton/Projects/opinionMining/datasets/train/twitter-train-cleansed-B.txt'
-SEMEVAL_TRAIN_MESSAGES_MODIFIED = '/home/airton/Projects/opinionMining/datasets/train/twitter-train-cleansed-B-POSTagged.txt' 
+SEMEVAL_TRAIN_MESSAGES = 'datasets/train/twitter-train-cleansed-B.txt'
+SEMEVAL_TRAIN_MESSAGES_MODIFIED = 'datasets/train/twitter-train-cleansed-B-POSTagged' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt' 
 
 
 counter = 0
@@ -39,9 +40,9 @@ def loadOriginalSTSAndSave():
 		with open(STS_TRAIN_MESSAGES, 'r') as file_content:
 			for line in file_content:
 				if(line.split(";")[1] == "\"0\""):
-					f.write("positive" + '\t' + "Twitter2013" + '\t' + line.split(";")[2].replace('"', '').strip() + "\t[0  0  0]\n")
-				elif(line.split(";")[1] == "\"4\""):
 					f.write("negative" + '\t' + "Twitter2013" + '\t' + line.split(";")[2].replace('"', '').strip() + "\t[0  0  0]\n")
+				elif(line.split(";")[1] == "\"4\""):
+					f.write("positive" + '\t' + "Twitter2013" + '\t' + line.split(";")[2].replace('"', '').strip() + "\t[0  0  0]\n")
 
 
 
@@ -49,6 +50,7 @@ def testPosTag():
 	with open(SEMEVAL_TRAIN_MESSAGES, 'r') as f:
 		for line in f:			
 			tweet = nltk.word_tokenize(line.split('\t')[3])
+			print(tweet)
 			tagged_tweets = nltk.pos_tag(tweet)
 			with open(SEMEVAL_TRAIN_MESSAGES_MODIFIED, 'a') as fw:
 				for tagged_tweet in tagged_tweets:
@@ -64,5 +66,5 @@ def testPosTag():
 			
 
 if __name__ == "__main__":
-	#loadOriginalSTSAndSave()
-	testPosTag()
+	loadOriginalSTSAndSave()
+	#testPosTag()
