@@ -663,6 +663,7 @@ if __name__ == "__main__":
 
     getDictionary("train")
     loadTrainTweets()
+    #loadTrainTweets_STS()
 
 
     parameters = str(variables.CROSSOVER) + " crossover, " + str(variables.MUTATION) + " mutation, " + str(variables.POPULATION) + " population, " + str(variables.GENERATIONS) + " generation\n\n"
