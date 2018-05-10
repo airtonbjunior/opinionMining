@@ -355,8 +355,8 @@ def loadTestTweets():
 
     test_words = []
 
-    #with open(variables.SEMEVAL_TEST_FILE, 'r') as inF: #ORIGINAL FILE. ABOVE IS ONLY TEST
-    with open("datasets/STS_Gold_All.txt", 'r') as inF: #only for test STS GOLD   
+    with open(variables.SEMEVAL_TEST_FILE, 'r') as inF: #ORIGINAL FILE. ABOVE IS ONLY TEST
+    #with open("datasets/STS_Gold_All.txt", 'r') as inF: #only for test STS GOLD   
         for line in inF:
             if tweets_loaded < variables.MAX_ANALYSIS_TWEETS:
                 tweet_parsed = line.split("\t")
@@ -478,8 +478,9 @@ def loadTrainTweets_STS():
     print("\n[loading STS train tweets]")
 
     tweets_loaded = 0
-
-    with open(variables.SEMEVAL_TRAIN_FILE, 'r') as inF:
+    
+    with codecs.open("/home/airton/Desktop/training.1600000.processed.noemoticon.EDITED.csv", "r", "latin-1") as inF:
+    #with open(variables.SEMEVAL_TRAIN_FILE, 'r') as inF:
         for line in inF:
             if tweets_loaded < variables.MAX_ANALYSIS_TWEETS:
                 tweet_parsed = line.split("\t")
