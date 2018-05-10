@@ -29,7 +29,8 @@ DICTIONARY_EFFECT  = 'dictionaries/EffectWordNet.tff'
 TRAIN_WORDS = 'datasets/train/words_train/words_train.txt'
 TEST_WORDS  = 'datasets/test/words_test.txt'
 
-BEST_INDIVIDUAL = 'partial-best-individual ' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+BEST_INDIVIDUAL 		 = 'partial-best-individual ' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+BEST_INDIVIDUAL_2CLASSES = 'partial-best-individual-2classes ' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 
 model_results = []
 
@@ -76,8 +77,8 @@ dic_semeval2015_loaded	= False
 dic_loaded_total = 0
 
 # Balance the train tweets
-MAX_POSITIVES_TWEETS = 1500
-MAX_NEGATIVES_TWEETS = 1500
+MAX_POSITIVES_TWEETS = 3000
+MAX_NEGATIVES_TWEETS = 3000
 MAX_NEUTRAL_TWEETS   = 1500
 
 # GP Parameters
@@ -85,8 +86,8 @@ CROSSOVER   = 0.9
 MUTATION    = 0.1
 #MUTATION_W  = 0.75
 MUTATE_EPHEMERAL = 0.75
-GENERATIONS = 450
-POPULATION  = 75
+GENERATIONS = 150
+POPULATION  = 300
 cicles_unchanged = 0
 generations_unchanged = 0
 max_unchanged_generations = 250
@@ -108,9 +109,10 @@ generations_unchanged_reached_msg = False
 
 TOTAL_MODELS = 5
 
-# Paths
+#  
 FILE_RESULTS  = 'test_results-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 TRAIN_RESULTS = 'train-' + str(TOTAL_MODELS) + 'models_' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+TRAIN_RESULTS_2CLASSES = 'train-' + str(TOTAL_MODELS) + 'models_2classes_' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 
 tweets_semeval        = []
 tweets_semeval_score  = []
