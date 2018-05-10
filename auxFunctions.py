@@ -1,5 +1,6 @@
 import glob
 import nltk
+import codecs
 from datetime import datetime
 
 IMDB_TRAIN_FOLDER_POS   = 'IMDBdataset/train/pos/'
@@ -12,7 +13,6 @@ STS_TRAIN_ALL_MESSAGES  = 'datasets/STS_Gold_All.txt'
 
 SEMEVAL_TRAIN_MESSAGES = 'datasets/train/twitter-train-cleansed-B.txt'
 SEMEVAL_TRAIN_MESSAGES_MODIFIED = 'datasets/train/twitter-train-cleansed-B-POSTagged' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt' 
-
 
 counter = 0
 
@@ -45,6 +45,17 @@ def loadOriginalSTSAndSave():
 					f.write("positive" + '\t' + "Twitter2013" + '\t' + line.split(";")[2].replace('"', '').strip() + "\t[0  0  0]\n")
 
 
+def loadOriginalSTSTrainAndSave():
+	#with open('/home/airton/Desktop/training.1600000.processed.noemoticon.EDITED.csv', 'w') as f:
+	with codecs.open('/home/airton/Desktop/training.1600000.processed.noemoticon.EDITED.csv', "w", "latin-1") as f:
+		#with open('/home/airton/Desktop/training.1600000.processed.noemoticon.csv', 'r') as file_content:
+		with codecs.open('/home/airton/Desktop/training.1600000.processed.noemoticon.csv', "r", "latin-1") as file_content:
+			for line in file_content:
+				if(line.split("\",\"")[0] == "\"0"):
+					f.write("negative" + '\t' + "Twitter2013" + '\t' + line.split("\",\"")[5].replace('"', '').strip() + "\t[0  0  0]\n")
+				elif(line.split("\",\"")[0] == "\"4"):
+					f.write("positive" + '\t' + "Twitter2013" + '\t' + line.split("\",\"")[5].replace('"', '').strip() + "\t[0  0  0]\n")
+
 
 def testPosTag():
 	with open(SEMEVAL_TRAIN_MESSAGES, 'r') as f:
@@ -66,5 +77,5 @@ def testPosTag():
 			
 
 if __name__ == "__main__":
-	loadOriginalSTSAndSave()
+	loadOriginalSTSTrainAndSave()
 	#testPosTag()
