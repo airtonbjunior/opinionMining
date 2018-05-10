@@ -197,8 +197,13 @@ def evalSymbRegTweetsFromSemeval(individual):
     # Transform the tree expression in a callable function
     func = toolbox.compile(expr=individual)
 
+    # to work using another databases
+    TWEETS_TO_EVALUATE       = variables.tweets_semeval
+    TWEETS_SCORE_TO_EVALUATE = variables.tweets_semeval_score
+
     # Main loop
-    for index, item in enumerate(variables.tweets_semeval):        
+    #for index, item in enumerate(variables.tweets_semeval):
+    for index, item in enumerate(TWEETS_TO_EVALUATE):
         
         # Constraints
         # Constraint 1: massive function - more than massive_functions_max
@@ -282,12 +287,16 @@ def evalSymbRegTweetsFromSemeval(individual):
         # Log each new cicle
         if index == 0:
             if variables.log_all_metrics_each_cicle:
-                print("\n[New cicle]: " + str(len(variables.tweets_semeval)) + " phrases to evaluate [" + str(variables.positive_tweets) + " positives, " + str(variables.negative_tweets) + " negatives and " + str(variables.neutral_tweets) + " neutrals]")
+                #print("\n[New cicle]: " + str(len(variables.tweets_semeval)) + " phrases to evaluate [" + str(variables.positive_tweets) + " positives, " + str(variables.negative_tweets) + " negatives and " + str(variables.neutral_tweets) + " neutrals]")
+                print("\n[New cicle]: " + str(len(TWEETS_TO_EVALUATE)) + " phrases to evaluate [" + str(variables.positive_tweets) + " positives, " + str(variables.negative_tweets) + " negatives and " + str(variables.neutral_tweets) + " neutrals]")
 
         try:
-            func_value = float(func(variables.tweets_semeval[index]))
+            #func_value = float(func(variables.tweets_semeval[index]))
+            func_value = float(func(TWEETS_TO_EVALUATE[index]))
+            
 
-            if float(variables.tweets_semeval_score[index]) > 0:
+            #if float(variables.tweets_semeval_score[index]) > 0:
+            if float(TWEETS_SCORE_TO_EVALUATE[index]) > 0:
                 if  func_value > variables.neutral_superior_range:
                     correct_evaluations += 1 
                     is_positive   += 1
@@ -298,7 +307,8 @@ def evalSymbRegTweetsFromSemeval(individual):
                     elif func_value < variables.neutral_inferior_range:
                         false_negative += 1
 
-            elif float(variables.tweets_semeval_score[index]) < 0:
+            #elif float(variables.tweets_semeval_score[index]) < 0:
+            elif float(TWEETS_SCORE_TO_EVALUATE[index]) < 0:
                 if func_value < variables.neutral_inferior_range:
                     correct_evaluations += 1 
                     is_negative   += 1
@@ -309,7 +319,8 @@ def evalSymbRegTweetsFromSemeval(individual):
                     elif func_value > variables.neutral_superior_range:
                         false_positive += 1
 
-            elif float(variables.tweets_semeval_score[index]) == 0:
+            #elif float(variables.tweets_semeval_score[index]) == 0:
+            elif float(TWEETS_SCORE_TO_EVALUATE[index]) == 0:
                 if func_value >= variables.neutral_inferior_range and func_value <= variables.neutral_superior_range:
                     correct_evaluations += 1 
                     is_neutral   += 1
@@ -326,8 +337,10 @@ def evalSymbRegTweetsFromSemeval(individual):
 
         #logs
         if variables.log_all_messages:
-            print("[phrase]: " + variables.tweets_semeval[index])
-            print("[value]: " + str(variables.tweets_semeval_score[index]))
+            #print("[phrase]: " + variables.tweets_semeval[index])
+            print("[phrase]: " + TWEETS_TO_EVALUATE[index])
+            #print("[value]: " + str(variables.tweets_semeval_score[index]))
+            print("[value]: " + str(TWEETS_SCORE_TO_EVALUATE[index]))
             print("[calculated]:" + func_value)
 
 
