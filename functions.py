@@ -477,22 +477,22 @@ def loadTrainTweets_STS():
     print("\n[loading STS train tweets]")
 
     tweets_loaded = 0
-    
-    with codecs.open("/home/airton/Desktop/training.1600000.processed.noemoticon.EDITED.csv", "r", "latin-1") as inF:
-    #with open(variables.SEMEVAL_TRAIN_FILE, 'r') as inF:
+
+    with codecs.open(variables.STS_TRAIN_FILE, "r", "latin-1") as inF:
         for line in inF:
             if tweets_loaded < variables.MAX_ANALYSIS_TWEETS:
                 tweet_parsed = line.split("\t")
                 try:
-                    variables.tweets_sts.append(tweet_parsed[2])
                     if(tweet_parsed[0] == "positive"):
                         if(variables.positive_tweets < variables.MAX_POSITIVES_TWEETS):
-                            variables.positive_tweets += 1                            
+                            variables.positive_tweets += 1         
+                            variables.tweets_sts.append(tweet_parsed[2])                   
                             variables.tweets_sts_score.append(1)
                             tweets_loaded += 1
                     else:
                         if(variables.negative_tweets < variables.MAX_NEGATIVES_TWEETS):
                             variables.negative_tweets += 1
+                            variables.tweets_sts.append(tweet_parsed[2])
                             variables.tweets_sts_score.append(-1)
                             tweets_loaded += 1
                 
