@@ -9,7 +9,7 @@ from datetime import datetime
 # Paths
 SEMEVAL_TRAIN_FILE = 'datasets/train/twitter-train-cleansed-B.txt'
 SEMEVAL_TEST_FILE  = 'datasets/test/SemEval2014-task9-test-B-all-tweets_withSVMValues.txt'
-STS_TRAIN_FILE = 'datasets/test/STS/STS_Gold_All.txt'
+STS_TRAIN_FILE = 'datasets/train/STS/STStrain.1600000.processed.noemoticon.EDITED.csv'
 STS_TEST_FILE = 'datasets/test/STS/STS_Gold_All.txt'
 DICTIONARY_POSITIVE_WORDS = 'dictionaries/positive-words.txt'
 DICTIONARY_NEGATIVE_WORDS = 'dictionaries/negative-words.txt'
