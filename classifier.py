@@ -29,7 +29,6 @@ evaluation_acumulated_time = 0
 # log time
 start = time.time()
 
-# parameters: tweet, neutral_inferior_range, neutral_superior_range
 #pset = gp.PrimitiveSetTyped("MAIN", [str, float, float], float)
 pset = gp.PrimitiveSetTyped("MAIN", [str], float)
 pset.addPrimitive(operator.add, [float,float], float)
