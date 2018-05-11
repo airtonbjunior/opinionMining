@@ -355,8 +355,7 @@ def loadTestTweets():
 
     test_words = []
 
-    with open(variables.SEMEVAL_TEST_FILE, 'r') as inF: #ORIGINAL FILE. ABOVE IS ONLY TEST
-    #with open("datasets/STS_Gold_All.txt", 'r') as inF: #only for test STS GOLD   
+    with open(variables.SEMEVAL_TEST_FILE, 'r') as inF:
         for line in inF:
             if tweets_loaded < variables.MAX_ANALYSIS_TWEETS:
                 tweet_parsed = line.split("\t")
@@ -485,21 +484,16 @@ def loadTrainTweets_STS():
             if tweets_loaded < variables.MAX_ANALYSIS_TWEETS:
                 tweet_parsed = line.split("\t")
                 try:
+                    variables.tweets_sts.append(tweet_parsed[2])
                     if(tweet_parsed[0] == "positive"):
                         if(variables.positive_tweets < variables.MAX_POSITIVES_TWEETS):
-                            variables.positive_tweets += 1
-                            variables.tweets_sts.append(tweet_parsed[2])
+                            variables.positive_tweets += 1                            
                             variables.tweets_sts_score.append(1)
-                            #variables.tweets_semeval.append(tweet_parsed[3])
-                            #variables.tweets_semeval_score.append(1)                            
                             tweets_loaded += 1
                     else:
                         if(variables.negative_tweets < variables.MAX_NEGATIVES_TWEETS):
                             variables.negative_tweets += 1
-                            variables.tweets_sts.append(tweet_parsed[2])
                             variables.tweets_sts_score.append(-1)
-                            #variables.tweets_semeval.append(tweet_parsed[3])
-                            #variables.tweets_semeval_score.append(-1)
                             tweets_loaded += 1
                 
                 except:
@@ -510,7 +504,6 @@ def loadTrainTweets_STS():
     print("  [train STS tweets loaded (" + str(tweets_loaded) + " tweets)][" + str(format(end - start, '.3g')) + " seconds]\n")
 
 
-# TO-DO
 # STS dataset
 def loadTestTweets_STS():
     start = time.time()
@@ -523,12 +516,13 @@ def loadTestTweets_STS():
             if tweets_loaded < variables.MAX_ANALYSIS_TWEETS:
                 tweet_parsed = line.split("\t")
                 try:
+                    variables.tweets_sts_test.append(tweet_parsed[2])
                     if tweet_parsed[0] == "positive":
-                        variables.tweets_sts_score.append(1)
+                        variables.tweets_sts_score_test.append(1)
                         variables.tweets_sts_positive += 1
 
                     elif tweet_parsed[0] == "negative":
-                        variables.tweets_sts_score.append(-1)
+                        variables.tweets_sts_score_test.append(-1)
                         variables.tweets_sts_negative += 1
 
                 except Exception as e:
@@ -2296,6 +2290,223 @@ def resultsAnalysis():
     #autolabel(rects5)
 
     #plt.show()
+
+
+#####################################################################################
+## 2 classes ## 
+# TO-DO: refactory the code/functions
+#####################################################################################
+
+# Evaluate the test messages using the model
+# http://text-analytics101.rxnlp.com/2014/10/computing-precision-and-recall-for.html
+def evaluateMessages_2classes(model):
+    global model_results_to_count_occurrences
+    print("[starting evaluation of messages (2 classes)]")
+    
+    # test
+    count_has_date = 0
+    # test
+
+    # test
+    variables.neutral_inferior_range = 0
+    variables.neutral_superior_range = 0
+    # test
+
+    # parameters to calc the metrics
+    true_positive  = 0
+    true_negative  = 0
+    false_positive = 0
+    false_negative = 0
+
+    # confusion matrix 
+    goldPos_classNeg = 0
+    goldNeg_classPos = 0
+    # confusion matrix 
+
+    # calc of mode
+    goldPos_classPos_value = []
+    goldPos_classNeg_value = []
+    goldNeg_classPos_value = []
+    goldNeg_classNeg_value = []
+    # calc of mode
+    
+    accuracy = 0
+
+    precision_positive = 0
+    precision_negative = 0
+    precision_avg = 0
+
+    recall_positive = 0
+    recall_negative = 0
+    recall_avg = 0
+
+    f1_positive = 0
+    f1_negative = 0
+    
+    f1_avg = 0
+    f1_positive_negative_avg = 0
+
+    false_negative_log = 0
+
+    message = ""
+    model_analysis = ""
+    result = 0
+
+    messages = []
+    messages_score = []
+    messages_positive = 0
+    messages_negative = 0
+    
+    if len(variables.tweets_2013) == 0:
+        loadTestTweets_STS()
+        
+    messages = variables.tweets_sts_test
+    messages_score = variables.tweets_sts_score_test
+    messages_positive = variables.tweets_sts_positive
+    messages_negative = variables.tweets_sts_negative
+
+    for index, item in enumerate(messages): 
+        message = str(messages[index]).strip().replace("'", "")
+        message = message.replace("\\u2018", "").replace("\\u2019", "").replace("\\u002c", "")        
+        message = "'" + message + "'"
+
+        model_analysis = model.replace("(x", "(" + message)
+        
+        if not len(message) > 0:
+            continue
+        
+        try:
+            if(variables.use_emoticon_analysis and hasEmoticons(message)):
+                result = emoticonsPolaritySum(message)
+
+            # SVM only
+            elif(variables.use_only_svm):
+                result = variables.svm_normalized_values[index]
+            
+            # GP only
+            else:
+                result = float(eval(model_analysis))
+
+
+        except Exception as e:
+            print("exception 2: " + str(e))
+            continue
+        
+        if messages_score[index] > 0:
+            if result > variables.neutral_superior_range:
+                true_positive += 1
+            else:
+                false_negative += 1
+                goldPos_classNeg += 1
+                
+        elif messages_score[index] < 0:
+            if result < variables.neutral_inferior_range:
+                true_negative += 1
+            else:
+                false_positive += 1
+                goldNeg_classPos += 1
+
+
+    if true_positive + false_positive + true_negative + false_negative > 0:
+        accuracy = (true_positive + true_negative) / (true_positive + false_positive + true_negative + false_negative)
+
+    # Begin PRECISION
+    if true_positive + false_positive > 0:
+        precision_positive = true_positive / (true_positive + false_positive)
+
+
+    if true_negative + false_negative > 0:
+        precision_negative = true_negative / (true_negative + false_negative)
+    # End PRECISION
+
+    # Begin RECALL
+    if messages_positive > 0:
+        recall_positive = true_positive / messages_positive
+
+
+    if messages_negative > 0:
+        recall_negative = true_negative / messages_negative
+    # End RECALL
+
+    # Begin F1
+    if precision_positive + recall_positive > 0:
+        f1_positive = 2 * (precision_positive * recall_positive) / (precision_positive + recall_positive)
+
+    if precision_negative + recall_negative > 0:
+        f1_negative = 2 * (precision_negative * recall_negative) / (precision_negative + recall_negative)                
+    # End F1        
+
+    # Precision, Recall and f1 means
+    precision_avg = (precision_positive + precision_negative) / 2
+    
+    recall_avg = (recall_positive + recall_negative) / 2
+
+    f1_avg = (f1_positive + f1_negative) / 2
+
+    f1_positive_negative_avg = (f1_positive + f1_negative) / 2         
+
+    print("\n")
+
+    print("[messages evaluated]: " + str(len(messages)) + " (" + str(messages_positive) + " positives, " + str(messages_negative) + " negatives)")
+    print("[correct evaluations]: " + str(true_positive + true_negative) + " (" + str(true_positive) + " positives, " + str(true_negative) + " negatives)")
+    print("[model]: " + str(model))
+    print("[accuracy]: " + str(round(accuracy, 4)))
+    print("[precision_positive]: " + str(round(precision_positive, 4)))
+    print("[precision_negative]: " + str(round(precision_negative, 4)))
+    print("[precision_avg]: " + str(round(precision_avg, 4)))
+    print("[recall_positive]: " + str(round(recall_positive, 4)))
+    print("[recall_negative]: " + str(round(recall_negative, 4)))
+    print("[recall avg]: " + str(round(recall_avg, 4)))
+    print("[f1_positive]: " + str(round(f1_positive, 4)))
+    print("[f1_negative]: " + str(round(f1_negative, 4)))
+    print("[f1 avg]: " + str(round(f1_avg, 4)))
+    print("[f1 avg SemEval (positive and negative)]: " + str(round(f1_positive_negative_avg, 4)))    
+    print("[true_positive]: " + str(true_positive))
+    print("[false_positive]: " + str(false_positive))
+    print("[true_negative]: " + str(true_negative))
+    print("[false_negative]: " + str(false_negative))
+    print("[dictionary quantity]: " + str(variables.dic_loaded_total))
+
+    
+    print("\n")
+    print("Confusion Matrix\n")
+    print("          |  Gold_Pos  |  Gold_Neg  |")
+    print("-------------------------------------")
+    print("Pred_Pos  |  " + '{message: <{width}}'.format(message=str(true_positive), width=8) + "  |  " + '{message: <{width}}'.format(message=str(goldNeg_classPos), width=8) + "  |")
+    print("Pred_Neg  |  " + '{message: <{width}}'.format(message=str(goldPos_classNeg), width=8) + "  |  " + '{message: <{width}}'.format(message=str(true_negative), width=8) + "  |")
+
+    print("\n")
+
+    if variables.save_file_results:
+        with open(variables.FILE_RESULTS_2CLASSES, 'a') as f:
+            f.write("[Model]\t" + model + "\n")
+            f.write(str(round(f1_positive_negative_avg, 4)) + "\n")
+            f.write("\n")
+
+
+def resultsAnalysis_2classes():
+    models = 0
+
+    array_values = []
+
+    with open(variables.FILE_RESULTS_2CLASSES, 'r') as f:
+        for line in f:
+            if line.startswith("["):
+                models += 1
+            elif len(line) > 1:
+                value = float(line)
+                array_values.append(value)
+
+    with open(variables.FILE_RESULTS_2CLASSES, 'a') as f:
+        if models > 0:
+            f.write("\n\n##Statistics##\n\n")
+            f.write(str(models) + " models evaluated\n")
+            f.write(str(variables.dic_loaded_total) + " dictionaries\n\n")
+            f.write("AVG F1-measure:\t" + str(round((sum(array_values) / models), 4)))
+            f.write("\nBest F1-measure Value:\t" + str(round(max(array_values), 4)))
+            f.write("\n\nValues by model")
+            f.write("\n" + str(array_values))
+            f.write("\nStandard Deviation:\t" + str(calcStdDeviation(calcVariance(array_values, models))))
 
 
 def calcVariance(base, total_models):
