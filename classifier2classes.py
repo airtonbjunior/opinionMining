@@ -527,7 +527,6 @@ def main():
     print("[best accuracy]: " + str(variables.best_accuracy) + "\n")
     print("[best precision positive]: " + str(variables.best_precision_positive))
     print("[best precision negative]: " + str(variables.best_precision_negative))
-    #print("[best precision neutral]: "  + str(variables.best_precision_neutral))    
     print("[best precision avg]: " + str(variables.best_precision_avg))
     print("[best precision avg function]: " + variables.best_precision_avg_function + "\n")    
     print("[best recall positive]: " + str(variables.best_recall_positive))    
@@ -539,9 +538,7 @@ def main():
     print("[best f1 avg]: " + str(variables.best_f1_avg))
     print("[best f1 avg (+/-)]: " + str(variables.best_f1_positive_negative_avg))
     print("[best f1 avg function]: " + variables.best_f1_avg_function + "\n")       
-    #print(json.dumps(variables.all_fitness_history))
     print("\n")
-    #print(set(variables.all_fitness_history))
     #logs 
 
     end = time.time()
@@ -554,16 +551,10 @@ def main():
 
 
 if __name__ == "__main__":
-    #if(len(sys.argv) <= 1):
-    #    print("No parameter passed - Using the SemEval 2014 benchmark")
-    #else:
-    #    print(len(sys.argv))
     print("[starting classifier module]")
 
     getDictionary("train")
-    #loadTrainTweets()
     loadTrainTweets_STS()
-
 
     parameters = str(variables.CROSSOVER) + " crossover, " + str(variables.MUTATION) + " mutation, " + str(variables.POPULATION) + " population, " + str(variables.GENERATIONS) + " generation\n\n"
 
