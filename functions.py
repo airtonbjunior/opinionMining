@@ -488,7 +488,7 @@ def loadTrainTweets_STS():
                     if(tweet_parsed[0] == "positive"):
                         if(variables.positive_tweets < variables.MAX_POSITIVES_TWEETS):
                             variables.positive_tweets += 1
-                            variables.tweets_sts.append(tweet_parsed[3])
+                            variables.tweets_sts.append(tweet_parsed[2])
                             variables.tweets_sts_score.append(1)
                             #variables.tweets_semeval.append(tweet_parsed[3])
                             #variables.tweets_semeval_score.append(1)                            
@@ -496,7 +496,7 @@ def loadTrainTweets_STS():
                     else:
                         if(variables.negative_tweets < variables.MAX_NEGATIVES_TWEETS):
                             variables.negative_tweets += 1
-                            variables.tweets_sts.append(tweet_parsed[3])
+                            variables.tweets_sts.append(tweet_parsed[2])
                             variables.tweets_sts_score.append(-1)
                             #variables.tweets_semeval.append(tweet_parsed[3])
                             #variables.tweets_semeval_score.append(-1)
