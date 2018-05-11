@@ -9,7 +9,8 @@ from datetime import datetime
 # Paths
 SEMEVAL_TRAIN_FILE = 'datasets/train/twitter-train-cleansed-B.txt'
 SEMEVAL_TEST_FILE  = 'datasets/test/SemEval2014-task9-test-B-all-tweets_withSVMValues.txt'
-STS_TEST_FILE = 'datasets/STS_Gold_All.txt'
+STS_TRAIN_FILE = 'datasets/test/STS/STS_Gold_All.txt'
+STS_TEST_FILE = 'datasets/test/STS/STS_Gold_All.txt'
 DICTIONARY_POSITIVE_WORDS = 'dictionaries/positive-words.txt'
 DICTIONARY_NEGATIVE_WORDS = 'dictionaries/negative-words.txt'
 DICTIONARY_POSITIVE_HASHTAGS  = 'dictionaries/positive-hashtags.txt'
@@ -111,6 +112,8 @@ TOTAL_MODELS = 5
 
 #  
 FILE_RESULTS  = 'test_results-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+FILE_RESULTS_2CLASSES  = 'test_results-2classes' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+
 TRAIN_RESULTS = 'train-' + str(TOTAL_MODELS) + 'models_' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 TRAIN_RESULTS_2CLASSES = 'train-' + str(TOTAL_MODELS) + 'models_2classes_' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 
@@ -123,6 +126,12 @@ tweet_semeval_index   = 0
 
 tweets_sts       = []
 tweets_sts_score = []
+
+tweets_sts_test       = []
+tweets_sts_score_test = []
+
+tweets_sts_positive = 0
+tweets_sts_negative = 0
 
 # All are converted into sets because we don't need to keep the order
 dic_positive_words     = []
@@ -204,11 +213,6 @@ tweets_mukh = []
 tweets_mukh_score = []
 tweets_mukh_positive = 0
 tweets_mukh_negative = 0
-
-tweets_sts       = []
-tweets_sts_score = []
-tweets_sts_positive = 0
-tweets_sts_negative = 0
 
 tweets_2013       = []
 tweets_2013_score = []
