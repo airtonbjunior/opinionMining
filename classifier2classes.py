@@ -6,6 +6,9 @@
 # Genetic Programming lib: DEAP
 # References: https://github.com/DEAP/deap/blob/08986fc3848144903048c722564b7b1d92db33a1/examples/gp/symbreg.py
 #             https://github.com/DEAP/deap/blob/08986fc3848144903048c722564b7b1d92db33a1/examples/gp/spambase.py
+#
+#
+# This script is prepared to work with 2-classes classifier - for 3-classes classifier, check classifier.py
 
 import time
 import operator
@@ -29,10 +32,9 @@ evaluation_acumulated_time = 0
 # log time
 start = time.time()
 
-# parameters: tweet, neutral_inferior_range, neutral_superior_range
 #pset = gp.PrimitiveSetTyped("MAIN", [str, float, float], float)
 pset = gp.PrimitiveSetTyped("MAIN", [str], float)
-pset.addPrimitive(operator.add, [float,float], float)
+#pset.addPrimitive(operator.add, [float,float], float)
 #pset.addPrimitive(operator.sub, [float,float], float)
 #pset.addPrimitive(operator.mul, [float,float], float)
 #pset.addPrimitive(protectedDiv, [float,float], float)
@@ -78,8 +80,6 @@ pset.addPrimitive(replaceNegatingWords, [str], str)
 pset.addPrimitive(replaceBoosterWords, [str], str)
 pset.addPrimitive(boostUpperCase, [str], str)
 
-#pset.addPrimitive(neutralRange, [float, float], float)
-
 pset.addTerminal(True, bool)
 pset.addTerminal(False, bool)
 
@@ -95,11 +95,9 @@ pset.addTerminal(0.0, float)
 
 pset.addEphemeralConstant("rand", lambda: random.uniform(0, 2), float)
 pset.addEphemeralConstant("rand2", lambda: random.uniform(0, 2), float)
-#pset.addEphemeralConstant("randInt", lambda: random.randint(0, 3), int)
+pset.addEphemeralConstant("rand3", lambda: random.uniform(-2, 2), float)
 
 pset.renameArguments(ARG0='x')
-#pset.renameArguments(ARG0='y')
-#pset.renameArguments(ARG0='z')
 
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 creator.create("Individual", gp.PrimitiveTree, fitness=creator.FitnessMax)
@@ -122,11 +120,6 @@ def evalSymbRegTweetsFromSemeval(individual):
     global generation_count
     global best_of_generation
     new_generation = False
-
-    # test
-    variables.neutral_inferior_range = 0
-    variables.neutral_superior_range = 0
-    # test
 
     # Check max unchanged generations
     if variables.generations_unchanged >= variables.max_unchanged_generations:
@@ -154,26 +147,21 @@ def evalSymbRegTweetsFromSemeval(individual):
 
     is_positive = 0
     is_negative = 0
-    is_neutral  = 0
     
     # parameters to calc the metrics
     true_positive  = 0
     true_negative  = 0
-    true_neutral   = 0
     false_positive = 0
     false_negative = 0
-    false_neutral  = 0
 
     accuracy = 0
 
     precision_positive = 0
     precision_negative = 0
-    precision_neutral  = 0
     precision_avg = 0
 
     recall_positive = 0
     recall_negative = 0
-    recall_neutral  = 0
     recall_avg = 0
 
     f1_positive = 0
@@ -339,7 +327,6 @@ def evalSymbRegTweetsFromSemeval(individual):
             with open(variables.BEST_INDIVIDUAL_2CLASSES, 'w') as f:
                 f.write(str(individual))
                 f.write("\n\n# Generation -> " + str(generation_count))
-                #f.write("\n# Neutral Range -> [" + str(variables.neutral_inferior_range) + ", " + str(variables.neutral_superior_range) + "]")
             variables.best_fitness_history.append(variables.best_fitness)
         variables.best_fitness = fitnessReturn
         variables.fitness_positive = is_positive
@@ -622,17 +609,14 @@ if __name__ == "__main__":
 
         variables.best_precision_positive = 0
         variables.best_precision_negative = 0
-        variables.best_precision_neutral  = 0
         variables.best_precision_avg      = 0
 
         variables.best_recall_positive = 0
         variables.best_recall_negative = 0
-        variables.best_recall_neutral  = 0
         variables.best_recall_avg      = 0
 
         variables.best_f1_positive = 0
         variables.best_f1_negative = 0
-        variables.best_f1_neutral  = 0
         variables.best_f1_avg      = 0
         variables.best_f1_positive_negative_avg = 0
 
@@ -640,15 +624,6 @@ if __name__ == "__main__":
         variables.best_recall_avg_function    = ""
         variables.best_f1_avg_function        = ""
 
-    #print(len(variables.all_fitness_history))
-    #print(variables.all_fitness_history)
-    
-    # remove the 0's values to plot
-    #plt.plot(list(filter(lambda a: a != 0, variables.all_fitness_history)))    
-
-    #plt.plot(variables.best_fitness_per_generation_history)
-    #plt.ylabel('f1')
-    #plt.show()
 
 end = time.time()
 print("Script ends after " + str(format(end - start, '.3g')) + " seconds")
