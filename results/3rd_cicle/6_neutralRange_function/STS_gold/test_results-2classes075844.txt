@@ -1,0 +1,25 @@
+[Model]	polaritySumAVGUsingWeights(removeAllPonctuation(replaceBoosterWords(removeAllPonctuation(replaceBoosterWords(replaceBoosterWords(replaceBoosterWords(replaceBoosterWords(replaceBoosterWords(x)))))))), negativeWordsQuantity(replaceBoosterWords(replaceBoosterWords(x))), 1.0115151326423584, negativeWordsQuantity(replaceBoosterWords(removeAllPonctuation(replaceNegatingWords(replaceNegatingWords(replaceBoosterWords(replaceBoosterWords(x))))))), 1.7847685120861403, negativeWordsQuantity(replaceBoosterWords(replaceBoosterWords(stemmingText(removeAllPonctuation(replaceNegatingWords(replaceNegatingWords(replaceBoosterWords(replaceNegatingWords(x))))))))), -0.4125223273012275, 0.3136250159856062)
+
+0.7034
+
+[Model]	polaritySumAVGUsingWeights(removeAllPonctuation(replaceBoosterWords(removeAllPonctuation(boostUpperCase(x)))), negativeWordsQuantity(removeAllPonctuation(x)), 0.9261541844419761, negativeWordsQuantity(removeLinks(replaceNegatingWords(replaceBoosterWords(removeAllPonctuation(replaceBoosterWords(replaceBoosterWords(x))))))), 1.4229678545609867, negativeWordsQuantity(replaceBoosterWords(stemmingText(replaceNegatingWords(removeLinks(removeAllPonctuation(x)))))), -0.47269686048198434, 0.39612718087203014)
+
+0.7135
+
+[Model]	polaritySumAVGUsingWeights(removeLinks(replaceBoosterWords(replaceNegatingWords(removeLinks(removeAllPonctuation(x))))), if_then_else(hasEmoticons(replaceBoosterWords(removeLinks(stemmingText(removeAllPonctuation(x))))), 1.4035742038148744, 0.2149828258548463), -0.683700996214583, 1.729451911230118, 1.842434735375621, negativeWordsQuantity(removeLinks(replaceNegatingWords(removeLinks(stemmingText(stemmingText(removeAllPonctuation(boostUpperCase(replaceNegatingWords(x))))))))), if_then_else(hasURLs(boostUpperCase(removeAllPonctuation(x))), if_then_else(hasURLs(removeLinks(stemmingText(removeAllPonctuation(x)))), 1.5718559349980514, 1.2704568590770164), hashtagPolaritySum(replaceNegatingWords(replaceNegatingWords(replaceNegatingWords(removeLinks(removeAllPonctuation(x))))))), 0.19268117841960652)
+
+0.6982
+
+
+
+##Statistics##
+
+3 models evaluated
+7 dictionaries
+
+AVG F1-measure:	0.705
+Best F1-measure Value:	0.7135
+
+Values by model
+[0.7034, 0.7135, 0.6982]
+Standard Deviation:	0.006352077525415507
