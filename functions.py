@@ -2040,9 +2040,9 @@ def evaluateMessages(base, model):
                         goldNeu_classNeg_value.append(result)
 
                         # LOG - Check the neutral messages that are defined as positive
-                        print("[Neutral message] " + message)
-                        print("[-][Negative Polarity calculated] " + str(result) + " | [Neutral inferior range] " + str(variables.neutral_inferior_range) + " | [Neutral superior range] " + str(variables.neutral_superior_range))
-                        print("\n")
+                        #print("[Neutral message] " + message)
+                        #print("[-][Negative Polarity calculated] " + str(result) + " | [Neutral inferior range] " + str(variables.neutral_inferior_range) + " | [Neutral superior range] " + str(variables.neutral_superior_range))
+                        #print("\n")
 
                 elif result > variables.neutral_superior_range:
                     false_positive += 1
@@ -2051,9 +2051,9 @@ def evaluateMessages(base, model):
                         goldNeu_classPos_value.append(result)
 
                         # LOG - Check the neutral messages that are defined as positive
-                        print("[Neutral message] " + message)
-                        print("[+][Positive Polarity calculated] " + str(result) + " | [Neutral inferior range] " + str(variables.neutral_inferior_range) + " | [Neutral superior range] " + str(variables.neutral_superior_range))
-                        print("\n")
+                        #print("[Neutral message] " + message)
+                        #print("[+][Positive Polarity calculated] " + str(result) + " | [Neutral inferior range] " + str(variables.neutral_inferior_range) + " | [Neutral superior range] " + str(variables.neutral_superior_range))
+                        #print("\n")
 
                         #if (hasDates(message)):
                         #    print("HAS DATE: " + message)
