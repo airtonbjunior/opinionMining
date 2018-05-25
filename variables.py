@@ -8,7 +8,9 @@ from datetime import datetime
 
 # Paths
 SEMEVAL_TRAIN_FILE = 'datasets/train/twitter-train-cleansed-B.txt'
+SEMEVAL_TRAIN_FILE_SPELLCHECK = 'datasets/train/twitter-train-cleansed-B_spell.txt'
 SEMEVAL_TEST_FILE  = 'datasets/test/SemEval2014-task9-test-B-all-tweets_withSVMValues.txt'
+SEMEVAL_TEST_FILE_SPELLCHECK  = 'datasets/test/SemEval2014-task9-test-B-all-tweets_withSVMValues_spell.txt'
 STS_TRAIN_FILE = 'datasets/train/STS/STStrain.1600000.processed.noemoticon.EDITED.csv'
 STS_TEST_FILE = 'datasets/test/STS/STS_Gold_All.txt'
 DICTIONARY_POSITIVE_WORDS = 'dictionaries/positive-words.txt'
@@ -27,8 +29,10 @@ DICTIONARY_SEMEVAL2015  = 'dictionaries/SemEval2015-English-Twitter-Lexicon.txt'
 DICTIONARY_EFFECT  = 'dictionaries/EffectWordNet.tff'
 #DICTIONARY_EFFECT  = 'dictionaries/goldStandard.tff'
 
-TRAIN_WORDS = 'datasets/train/words_train/words_train.txt'
-TEST_WORDS  = 'datasets/test/words_test.txt'
+TRAIN_WORDS 		   = 'datasets/train/words_train/words_train.txt'
+TRAIN_WORDS_SPELLCHECK = 'datasets/train/words_train/words_train_spell.txt'
+TEST_WORDS             = 'datasets/test/words_test.txt'
+TEST_WORDS_SPELLCHECK  = 'datasets/test/words_test_spell.txt'
 
 BEST_INDIVIDUAL 		 = 'partial-best-individual ' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 BEST_INDIVIDUAL_2CLASSES = 'partial-best-individual-2classes ' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
