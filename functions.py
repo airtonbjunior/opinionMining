@@ -261,8 +261,34 @@ def getDictionary(module):
 
                 elif float(line.split("\t")[1].strip()) < 0:
                     if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test" and splited[0].strip() in variables.all_test_words):
-                        variables.dic_negative_nrc[splited[0].strip()] = float(splited[1].strip())                
+                        variables.dic_negative_nrc[splited[0].strip()] = float(splited[1].strip()) 
 
+        if variables.log_loads:
+            print("    [" + str(len(variables.dic_positive_nrc) + len(variables.dic_negative_nrc)) + " words loaded]")
+            print("    [" + str(len(variables.dic_positive_nrc)) + " positive and " + str(len(variables.dic_negative_nrc)) + " negative]")
+            print("      [NRC dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]\n")
+
+    #GENERAL INQUIRER
+    if(variables.use_dic_nrc):
+        startDic = time.time()
+        print("  [loading General Inquirer]")
+        with open(variables.DICTIONARY_GENERAL_INQUIRER, 'r') as inF:
+            variables.dic_gi_loaded = True
+            variables.dic_loaded_total += 1
+            for line in inF:
+                splited = line.split("\t")
+                if float(splited[1].strip()) > 0:
+                    if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test" and splited[0].strip() in variables.all_test_words):
+                        variables.dic_positive_gi[splited[0].strip()] = float(splited[1].strip())
+
+                elif float(line.split("\t")[1].strip()) < 0:
+                    if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test" and splited[0].strip() in variables.all_test_words):
+                        variables.dic_negative_gi[splited[0].strip()] = float(splited[1].strip())                                        
+
+        if variables.log_loads:
+            print("    [" + str(len(variables.dic_positive_gi) + len(variables.dic_negative_gi)) + " words loaded]")
+            print("    [" + str(len(variables.dic_positive_gi)) + " positive and " + str(len(variables.dic_negative_gi)) + " negative]")
+            print("      [General Inquirer dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]\n")
 
     # Performance improvement test
     variables.dic_positive_words     = set(variables.dic_positive_words)
@@ -1263,7 +1289,7 @@ def polaritySumAVG(phrase):
 
 
 # ONLY TEST ONLY TEST ONLY TEST
-def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8):
+def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9):
     total_sum = 0
     total_sum_return = 0
     dic_quantity = 0
@@ -1606,7 +1632,49 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8):
                     #total_sum -= 1 * w7
                         
                 dic_quantity += 1
-                total_weight += w8                                                          
+                total_weight += w8 
+
+        # GENERAL INQUIRER
+        if(variables.use_dic_gi and variables.dic_gi_loaded and w9!= 0):
+            if word in variables.dic_positive_gi:
+                
+                #print("word " + word + " on gi with the value " + str(variables.dic_positive_gi[word]))
+
+                if invert:
+                    total_sum -= variables.dic_positive_gi[word] * w9
+                    #total_sum -= 1 * w7
+                elif booster:
+                    total_sum += 2 * variables.dic_positive_gi[word] * w9
+                    #total_sum += 2 * w7
+                elif boosterAndInverter:
+                    #total_sum -= 2 * w7 
+                    total_sum -= 2 * variables.dic_positive_gi[word] * w9                    
+                else:
+                    #total_sum += variables.dic_positive_nrc[word]
+                    total_sum += variables.dic_positive_gi[word] * w9
+            
+                dic_quantity += 1
+                total_weight += w9
+
+            elif word in variables.dic_negative_gi:
+
+                #print("word " + word + " on gi with the value " + str(variables.dic_negative_gi[word]))
+
+                if invert:
+                    total_sum -= variables.dic_negative_gi[word] * w9
+                    #total_sum += 1 * w7
+                elif booster:
+                    total_sum += 2* variables.dic_negative_gi[word] * w9
+                    #total_sum -= 2 * w7
+                elif boosterAndInverter:
+                    total_sum -= 2 * variables.dic_negative_gi[word] * w9
+                    #total_sum += 2 * w7                      
+                else:
+                    total_sum += variables.dic_negative_gi[word] * w9
+                    #total_sum -= 1 * w7
+                        
+                dic_quantity += 1
+                total_weight += w9                                                                          
         
         if (dic_quantity > 1) and (total_weight != 0):
             total_sum_return += round(total_sum/total_weight, 4)

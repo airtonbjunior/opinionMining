@@ -57,7 +57,7 @@ pset.addPrimitive(operator.mul, [float,float], float)
 # Temporary removed
 
 #pset.addPrimitive(passInt, [int], int)
-pset.addPrimitive(polaritySumAVGUsingWeights, [str, float, float, float, float, float, float, float, float], float)
+pset.addPrimitive(polaritySumAVGUsingWeights, [str, float, float, float, float, float, float, float, float, float], float)
 #pset.addPrimitive(polaritySumAVGUsingWeights, [str, int, int, int, int, int, int, int], float)
 pset.addPrimitive(hashtagPolaritySum, [str], float)
 pset.addPrimitive(emoticonsPolaritySum, [str], float)

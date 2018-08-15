@@ -7,28 +7,29 @@ from nltk.corpus import stopwords
 from datetime import datetime
 
 # Paths
-SEMEVAL_TRAIN_FILE = 'datasets/train/twitter-train-cleansed-B.txt'
+SEMEVAL_TRAIN_FILE            = 'datasets/train/twitter-train-cleansed-B.txt'
 SEMEVAL_TRAIN_FILE_SPELLCHECK = 'datasets/train/twitter-train-cleansed-B_spell.txt'
-SEMEVAL_TEST_FILE  = 'datasets/test/SemEval2014-task9-test-B-all-tweets_withSVMValues.txt'
+SEMEVAL_TEST_FILE             = 'datasets/test/SemEval2014-task9-test-B-all-tweets_withSVMValues.txt'
 SEMEVAL_TEST_FILE_SPELLCHECK  = 'datasets/test/SemEval2014-task9-test-B-all-tweets_withSVMValues_spell.txt'
-STS_TRAIN_FILE = 'datasets/train/STS/STStrain.1600000.processed.noemoticon.EDITED.csv'
-STS_TEST_FILE = 'datasets/test/STS/STS_Gold_All.txt'
-DICTIONARY_POSITIVE_WORDS = 'dictionaries/positive-words.txt'
-DICTIONARY_NEGATIVE_WORDS = 'dictionaries/negative-words.txt'
+STS_TRAIN_FILE                = 'datasets/train/STS/STStrain.1600000.processed.noemoticon.EDITED.csv'
+STS_TEST_FILE                 = 'datasets/test/STS/STS_Gold_All.txt'
+DICTIONARY_POSITIVE_WORDS     = 'dictionaries/positive-words.txt'
+DICTIONARY_NEGATIVE_WORDS     = 'dictionaries/negative-words.txt'
 DICTIONARY_POSITIVE_HASHTAGS  = 'dictionaries/positive-hashtags.txt'
 DICTIONARY_NEGATIVE_HASHTAGS  = 'dictionaries/negative-hashtags.txt'
 DICTIONARY_POSITIVE_EMOTICONS = 'dictionaries/positive-emoticons.txt'
 DICTIONARY_NEGATIVE_EMOTICONS = 'dictionaries/negative-emoticons.txt'
-DICTIONARY_NEGATING_WORDS = 'dictionaries/negating-word-list.txt'
-DICTIONARY_BOOSTER_WORDS = 'dictionaries/boosterWords.txt'
-DICTIONARY_SENTIWORDNET = 'dictionaries/SentiWordNet_3.0.0_20130122.txt'
-DICTIONARY_AFFIN = 'dictionaries/affin.txt'
-DICTIONARY_SLANG = 'dictionaries/slangSD.txt'
-DICTIONARY_VADER = 'dictionaries/vaderLexicon.txt'
-DICTIONARY_SEMEVAL2015  = 'dictionaries/SemEval2015-English-Twitter-Lexicon.txt'
-DICTIONARY_EFFECT  = 'dictionaries/EffectWordNet.tff'
-#DICTIONARY_EFFECT  = 'dictionaries/goldStandard.tff'
-DICTIONARY_NRC  = 'dictionaries/nrc_words.txt'
+DICTIONARY_NEGATING_WORDS     = 'dictionaries/negating-word-list.txt'
+DICTIONARY_BOOSTER_WORDS      = 'dictionaries/boosterWords.txt'
+DICTIONARY_SENTIWORDNET       = 'dictionaries/SentiWordNet_3.0.0_20130122.txt'
+DICTIONARY_AFFIN              = 'dictionaries/affin.txt'
+DICTIONARY_SLANG              = 'dictionaries/slangSD.txt'
+DICTIONARY_VADER              = 'dictionaries/vaderLexicon.txt'
+DICTIONARY_SEMEVAL2015        = 'dictionaries/SemEval2015-English-Twitter-Lexicon.txt'
+DICTIONARY_EFFECT             = 'dictionaries/EffectWordNet.tff'
+DICTIONARY_NRC                = 'dictionaries/nrc_words.txt'
+DICTIONARY_GENERAL_INQUIRER   = 'dictionaries/general-inquirer.txt'
+
 
 USE_SPELLCHECKED_WORDS = True
 
@@ -63,6 +64,8 @@ vader_weight        = 1
 slang_weight        = 1
 effect_weight       = 1
 semeval2015_weight  = 1
+nrc_weight          = 1
+gi_weight           = 1
 
 # True: load the dictionary
 use_dic_liu          = True
@@ -73,6 +76,7 @@ use_dic_slang        = True
 use_dic_effect       = True
 use_dic_semeval2015  = True
 use_dic_nrc			 = True
+use_dic_gi           = True
 
 # Check if the dictionary was loaded
 dic_liu_loaded 			= False
@@ -83,6 +87,7 @@ dic_slang_loaded		= False
 dic_effect_loaded		= False
 dic_semeval2015_loaded	= False
 dic_nrc_loaded	        = False
+dic_gi_loaded	        = False
 
 dic_loaded_total = 0
 
@@ -173,6 +178,9 @@ dic_negative_vader        = {}
 
 dic_positive_nrc          = {}
 dic_negative_nrc          = {}
+
+dic_positive_gi           = {}
+dic_negative_gi           = {}
 
 # Counters
 positive_tweets = 0
