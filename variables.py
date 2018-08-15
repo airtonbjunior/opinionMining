@@ -28,6 +28,9 @@ DICTIONARY_VADER = 'dictionaries/vaderLexicon.txt'
 DICTIONARY_SEMEVAL2015  = 'dictionaries/SemEval2015-English-Twitter-Lexicon.txt'
 DICTIONARY_EFFECT  = 'dictionaries/EffectWordNet.tff'
 #DICTIONARY_EFFECT  = 'dictionaries/goldStandard.tff'
+DICTIONARY_NRC  = 'dictionaries/nrc_words.txt'
+
+USE_SPELLCHECKED_WORDS = True
 
 TRAIN_WORDS 		   = 'datasets/train/words_train/words_train.txt'
 TRAIN_WORDS_SPELLCHECK = 'datasets/train/words_train/words_train_spell.txt'
@@ -69,6 +72,7 @@ use_dic_vader        = True
 use_dic_slang        = True
 use_dic_effect       = True
 use_dic_semeval2015  = True
+use_dic_nrc			 = True
 
 # Check if the dictionary was loaded
 dic_liu_loaded 			= False
@@ -78,6 +82,7 @@ dic_vader_loaded		= False
 dic_slang_loaded		= False
 dic_effect_loaded		= False
 dic_semeval2015_loaded	= False
+dic_nrc_loaded	        = False
 
 dic_loaded_total = 0
 
@@ -112,7 +117,7 @@ neutral_range_constraint = True
 
 generations_unchanged_reached_msg = False
 
-TOTAL_MODELS = 5
+TOTAL_MODELS = 3
 
 #  
 FILE_RESULTS  = 'test_results-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
@@ -165,6 +170,9 @@ dic_negative_effect       = {}
 
 dic_positive_vader        = {}
 dic_negative_vader        = {}
+
+dic_positive_nrc          = {}
+dic_negative_nrc          = {}
 
 # Counters
 positive_tweets = 0

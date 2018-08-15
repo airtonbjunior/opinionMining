@@ -245,6 +245,25 @@ def getDictionary(module):
             print("    [" + str(len(variables.dic_positive_vader)) + " positive and " + str(len(variables.dic_negative_vader)) + " negative]")
             print("      [vader dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]\n")
     
+
+    #NRC
+    if(variables.use_dic_nrc):
+        startDic = time.time()
+        print("  [loading NRC]")
+        with open(variables.DICTIONARY_NRC, 'r') as inF:
+            variables.dic_nrc_loaded = True
+            variables.dic_loaded_total += 1
+            for line in inF:
+                splited = line.split("\t")
+                if float(splited[1].strip()) > 0:
+                    if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test" and splited[0].strip() in variables.all_test_words):
+                        variables.dic_positive_nrc[splited[0].strip()] = float(splited[1].strip())
+
+                elif float(line.split("\t")[1].strip()) < 0:
+                    if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test" and splited[0].strip() in variables.all_test_words):
+                        variables.dic_negative_nrc[splited[0].strip()] = float(splited[1].strip())                
+
+
     # Performance improvement test
     variables.dic_positive_words     = set(variables.dic_positive_words)
     variables.dic_negative_words     = set(variables.dic_negative_words)
@@ -260,7 +279,16 @@ def getDictionary(module):
 def loadTrainWords():
     start = time.time()
     print("\n  [loading train words]")
-    with open(variables.TRAIN_WORDS, 'r') as file:
+
+    fileWords = variables.TRAIN_WORDS
+
+    if variables.USE_SPELLCHECKED_WORDS:
+        print("  [using spellchecked words]")
+        fileWords = variables.TRAIN_WORDS_SPELLCHECK
+    else:
+        print("  [using original words]")
+
+    with open(fileWords, 'r') as file:
         for line in file:
             variables.all_train_words.append(line.replace('\n', '').replace('\r', ''))
 
@@ -269,7 +297,16 @@ def loadTrainWords():
 
 def loadTestWords():
     start = time.time()
-    print("\n  [loading test words]")    
+    print("\n  [loading test words]")  
+
+    fileWords = variables.TEST_WORDS
+
+    if variables.USE_SPELLCHECKED_WORDS:
+        print("  [using spellchecked words]")
+        fileWords = variables.TEST_WORDS_SPELLCHECK
+    else:
+        print("  [using original words]")
+
     start = time.time()
     with open(variables.TEST_WORDS, 'r') as file:
         for line in file:
@@ -1165,6 +1202,46 @@ def polaritySumAVG(phrase):
                     #total_sum -= 1 * w7
                         
                 dic_quantity += 1
+
+        # NRC
+        if(variables.use_dic_nrc and variables.dic_nrc_loaded):
+            if word in variables.dic_positive_nrc:
+                
+                #print("word " + word + " on nrc with the value " + str(variables.dic_positive_nrc[word]))
+
+                if invert:
+                    total_sum -= variables.dic_positive_nrc[word]
+                    #total_sum -= 1 * w7
+                elif booster:
+                    total_sum += 2 * variables.dic_positive_nrc[word]
+                    #total_sum += 2 * w7
+                elif boosterAndInverter:
+                    #total_sum -= 2 * w7 
+                    total_sum -= 2 * variables.dic_positive_nrc[word]
+                else:
+                    #total_sum += variables.dic_positive_semeval2015[word]
+                    total_sum += variables.dic_positive_nrc[word]
+            
+                dic_quantity += 1
+
+            elif word in variables.dic_negative_nrc:
+
+                #print("word " + word + " on nrc with the value " + str(variables.dic_negative_nrc[word]))
+
+                if invert:
+                    total_sum -= variables.dic_negative_nrc[word]
+                    #total_sum += 1 * w7
+                elif booster:
+                    total_sum += 2* variables.dic_negative_nrc[word]
+                    #total_sum -= 2 * w7
+                elif boosterAndInverter:
+                    total_sum -= 2 * variables.dic_negative_nrc[word]
+                    #total_sum += 2 * w7                      
+                else:
+                    total_sum += variables.dic_negative_nrc[word]
+                    #total_sum -= 1 * w7
+                        
+                dic_quantity += 1                
         
         if(dic_quantity > 1):
             #print("i'll divide " + str(total_sum) + " by " + str(dic_quantity))
@@ -1186,7 +1263,7 @@ def polaritySumAVG(phrase):
 
 
 # ONLY TEST ONLY TEST ONLY TEST
-def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7):
+def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8):
     total_sum = 0
     total_sum_return = 0
     dic_quantity = 0
@@ -1487,7 +1564,49 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7):
                     #total_sum -= 1 * w7
                         
                 dic_quantity += 1
-                total_weight += w7                                            
+                total_weight += w7
+
+        # NRC
+        if(variables.use_dic_nrc and variables.dic_nrc_loaded and w8 != 0):
+            if word in variables.dic_positive_nrc:
+                
+                #print("word " + word + " on nrc with the value " + str(variables.dic_positive_nrc[word]))
+
+                if invert:
+                    total_sum -= variables.dic_positive_nrc[word] * w8
+                    #total_sum -= 1 * w7
+                elif booster:
+                    total_sum += 2 * variables.dic_positive_nrc[word] * w8
+                    #total_sum += 2 * w7
+                elif boosterAndInverter:
+                    #total_sum -= 2 * w7 
+                    total_sum -= 2 * variables.dic_positive_nrc[word] * w8                    
+                else:
+                    #total_sum += variables.dic_positive_nrc[word]
+                    total_sum += variables.dic_positive_nrc[word] * w8
+            
+                dic_quantity += 1
+                total_weight += w8
+
+            elif word in variables.dic_negative_nrc:
+
+                #print("word " + word + " on nrc with the value " + str(variables.dic_negative_nrc[word]))
+
+                if invert:
+                    total_sum -= variables.dic_negative_nrc[word] * w8
+                    #total_sum += 1 * w7
+                elif booster:
+                    total_sum += 2* variables.dic_negative_nrc[word] * w8
+                    #total_sum -= 2 * w7
+                elif boosterAndInverter:
+                    total_sum -= 2 * variables.dic_negative_nrc[word] * w8
+                    #total_sum += 2 * w7                      
+                else:
+                    total_sum += variables.dic_negative_nrc[word] * w8
+                    #total_sum -= 1 * w7
+                        
+                dic_quantity += 1
+                total_weight += w8                                                          
         
         if (dic_quantity > 1) and (total_weight != 0):
             total_sum_return += round(total_sum/total_weight, 4)
@@ -1971,6 +2090,15 @@ def evaluateMessages(base, model):
             # GP only
             else:
                 result = float(eval(model_analysis))
+
+                # Test - if neutral, choose another polarity... I'm using SVM to choose another now
+                if result == 0:
+                    result = variables.svm_normalized_values[index]
+
+                    # Do it after this first test
+                    #if result == 0:
+                    #    result = #something
+
 
 
         except Exception as e:

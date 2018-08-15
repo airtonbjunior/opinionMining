@@ -57,7 +57,7 @@ pset.addPrimitive(operator.mul, [float,float], float)
 # Temporary removed
 
 #pset.addPrimitive(passInt, [int], int)
-pset.addPrimitive(polaritySumAVGUsingWeights, [str, float, float, float, float, float, float, float], float)
+pset.addPrimitive(polaritySumAVGUsingWeights, [str, float, float, float, float, float, float, float, float], float)
 #pset.addPrimitive(polaritySumAVGUsingWeights, [str, int, int, int, int, int, int, int], float)
 pset.addPrimitive(hashtagPolaritySum, [str], float)
 pset.addPrimitive(emoticonsPolaritySum, [str], float)
@@ -498,7 +498,7 @@ def evalSymbRegTweetsFromSemeval(individual):
 
 
 toolbox.register("evaluate", evalSymbRegTweetsFromSemeval)
-toolbox.register("select", tools.selTournament, tournsize=3)
+toolbox.register("select", tools.selTournament, tournsize=2)
 toolbox.register("mate", gp.cxOnePoint)
 toolbox.register("expr_mut", gp.genHalfAndHalf, min_=0, max_=6)
 toolbox.register("mutate", gp.mutUniform, expr=toolbox.expr_mut, pset=pset)
