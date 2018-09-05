@@ -1303,6 +1303,28 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9):
     phrase = phrase.strip()
     words = phrase.split()
 
+    variables.w1.append(w1)
+    variables.w2.append(w2)
+    variables.w3.append(w3)
+    variables.w4.append(w4)
+    variables.w5.append(w5)
+    variables.w6.append(w6)
+    variables.w7.append(w7)
+    variables.w8.append(w8)
+    variables.w9.append(w9)
+
+    variables.neutral_values.append("[" + str(variables.neutral_inferior_range) + "," + str(variables.neutral_superior_range) + "]")
+
+    #print("w1: " + str(w1))
+    #print("w2: " + str(w2))
+    #print("w3: " + str(w3))
+    #print("w4: " + str(w4))
+    #print("w5: " + str(w5))
+    #print("w6: " + str(w6))
+    #print("w7: " + str(w7))
+    #print("w8: " + str(w8))
+    #print("w9: " + str(w9))
+
     for word in words:
         # Check booster and inverter words
         if index > 0 and words[index-1] == "insidenoteboosterword" and (words[index-2] == "insidenoteinverterword" or words[index-3] == "insidenoteinverterword"):
@@ -1688,8 +1710,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9):
         index += 1 # word of phrase
         invert = False
         booster = False
-        boosterAndInverter = False
-    
+        boosterAndInverter = False 
 
     return total_sum_return
 
@@ -2257,9 +2278,6 @@ def evaluateMessages(base, model):
                         #else:
                         #    print("DOESN'T HAS DATE: " + message)
 
-
-    print(str(count_has_date))
-
     if true_positive + false_positive + true_negative + false_negative > 0:
         accuracy = (true_positive + true_negative + true_neutral) / (true_positive + false_positive + true_negative + false_negative + true_neutral + false_neutral)
 
@@ -2356,9 +2374,32 @@ def evaluateMessages(base, model):
         with open(variables.FILE_RESULTS, 'a') as f:
             if base == "tweets2013":
                 f.write("[Model]\t" + model + "\n")
+                f.write("# [results - f1]\n")
+
             f.write(base + "\t" + str(round(f1_positive_negative_avg, 4)) + "\n")
             if base == "all":
-                f.write("\n")
+                # PUT the dictionaries weights here
+                f.write("\n# [weights]\n")
+                f.write("# w1: " + str(set(variables.w1)) + "\n")
+                f.write("# w2: " + str(set(variables.w2)) + "\n")
+                f.write("# w3: " + str(set(variables.w3)) + "\n")
+                f.write("# w4: " + str(set(variables.w4)) + "\n")
+                f.write("# w5: " + str(set(variables.w5)) + "\n")
+                f.write("# w6: " + str(set(variables.w6)) + "\n")
+                f.write("# w7: " + str(set(variables.w7)) + "\n")
+                f.write("# w8: " + str(set(variables.w8)) + "\n")
+                f.write("# w9: " + str(set(variables.w9)) + "\n\n")
+
+                f.write("# [neutral ranges]\n")
+                f.write("# " + str(set(variables.neutral_values)) + "\n\n")
+
+                f.write("# [confusion matrix]\n")
+                f.write("#           |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |\n")
+                f.write("# --------------------------------------------------\n")
+                f.write("# Pred_Pos  |  " + '{message: <{width}}'.format(message=str(true_positive), width=8) + "  |  " + '{message: <{width}}'.format(message=str(goldNeg_classPos), width=8) + "  |  " + '{message: <{width}}'.format(message=str(goldNeu_classPos), width=8) + "  |\n")
+                f.write("# Pred_Neg  |  " + '{message: <{width}}'.format(message=str(goldPos_classNeg), width=8) + "  |  " + '{message: <{width}}'.format(message=str(true_negative), width=8) + "  |  " + '{message: <{width}}'.format(message=str(goldNeu_classNeg), width=8) + "  |\n")
+                f.write("# Pred_Neu  |  " + '{message: <{width}}'.format(message=str(goldPos_classNeu), width=8) + "  |  " + '{message: <{width}}'.format(message=str(goldNeg_classNeu), width=8) + "  |  " + '{message: <{width}}'.format(message=str(true_neutral), width=8)  + "  |\n\n")
+                f.write("# ---------//---------\n\n")
 
 '''
     if (base == "all"):
@@ -2398,7 +2439,7 @@ def resultsAnalysis():
         for line in f:
             if line.startswith("["):
                 models += 1
-            elif len(line) > 1:
+            elif len(line) > 1 and not line.startswith("#"):
                 base = line.split("\t")[0]
                 value = float(line.split("\t")[1])
                 if base == "tweets2013":
@@ -2440,7 +2481,7 @@ def resultsAnalysis():
             f.write("\nLiveJournal " + str(liveJ_list))
             f.write("\nSarcasm " + str(sarcasm_list))
             f.write("\nAll " + str(allB_list))
-            f.write("\n\nStandard deviation")
+            f.write("\n\nStandard Deviation")
             f.write("\nStandard Deviation Tweets2013\t" + str(calcStdDeviation(calcVariance(t2k13_list, models))))
             f.write("\nStandard Deviation Tweets2014\t" + str(calcStdDeviation(calcVariance(t2k14_list, models))))
             f.write("\nStandard Deviation SMS\t" + str(calcStdDeviation(calcVariance(sms_list, models))))
