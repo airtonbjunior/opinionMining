@@ -39,6 +39,17 @@ if __name__ == "__main__":
         evaluateMessages("sarcasm", function_to_evaluate)
         evaluateMessages("all", function_to_evaluate)
 
+        variables.w1 = []
+        variables.w2 = []
+        variables.w3 = []
+        variables.w4 = []
+        variables.w5 = []
+        variables.w6 = []
+        variables.w7 = []
+        variables.w8 = []
+        variables.w9 = []
+        variables.neutral_values = []
+
     resultsAnalysis()
 
 # log time
