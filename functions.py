@@ -1303,17 +1303,19 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9):
     phrase = phrase.strip()
     words = phrase.split()
 
-    variables.w1.append(w1)
-    variables.w2.append(w2)
-    variables.w3.append(w3)
-    variables.w4.append(w4)
-    variables.w5.append(w5)
-    variables.w6.append(w6)
-    variables.w7.append(w7)
-    variables.w8.append(w8)
-    variables.w9.append(w9)
 
-    variables.neutral_values.append("[" + str(variables.neutral_inferior_range) + ", " + str(variables.neutral_superior_range) + "]")
+    if variables.calling_by_test_file:
+        variables.w1.append(w1)
+        variables.w2.append(w2)
+        variables.w3.append(w3)
+        variables.w4.append(w4)
+        variables.w5.append(w5)
+        variables.w6.append(w6)
+        variables.w7.append(w7)
+        variables.w8.append(w8)
+        variables.w9.append(w9)
+
+        variables.neutral_values.append("[" + str(variables.neutral_inferior_range) + ", " + str(variables.neutral_superior_range) + "]")
 
     for word in words:
         # Check booster and inverter words
