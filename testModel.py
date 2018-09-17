@@ -16,6 +16,8 @@ if __name__ == "__main__":
     #loadTestTweets()
     getDictionary("test")
 
+    variables.calling_by_test_file = True
+
     functions_to_evaluate = []
 
     import tkinter as tk
@@ -51,6 +53,8 @@ if __name__ == "__main__":
         variables.neutral_values = []
 
     resultsAnalysis()
+
+    variables.calling_by_test_file = False
 
 # log time
 end = time.time()
