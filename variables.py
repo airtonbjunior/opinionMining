@@ -79,6 +79,8 @@ w9 = []
 
 neutral_values = []
 
+calling_by_test_file = False
+
 # True: load the dictionary
 use_dic_liu          = True
 use_dic_sentiwordnet = True
