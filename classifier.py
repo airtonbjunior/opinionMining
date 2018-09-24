@@ -464,7 +464,7 @@ def evalSymbRegTweetsFromSemeval(individual):
 
 
     #logs   
-    if variables.log_parcial_results and not breaked: 
+    if variables.log_parcial_results and not breaked:# and not variables.calling_by_ag_file: 
         if variables.log_all_metrics_each_cicle:
             print("[correct evaluations] " + str(correct_evaluations))
             print('{message: <{width}}'.format(message="[accuracy] ", width=18) + " -> " + str(round(accuracy, 3)))
@@ -493,6 +493,9 @@ def evalSymbRegTweetsFromSemeval(individual):
 
     evaluation_acumulated_time += time.time() - start
 
+    if variables.calling_by_ag_file:
+        return fitnessReturn
+    
     return fitnessReturn,
 
 
@@ -678,10 +681,10 @@ if __name__ == "__main__":
     #loadTrainTweets_STS()
 
 
-    parameters = str(variables.CROSSOVER) + " crossover, " + str(variables.MUTATION) + " mutation, " + str(variables.POPULATION) + " population, " + str(variables.GENERATIONS) + " generation\n\n"
+    parameters = str(variables.CROSSOVER) + " crossover, " + str(variables.MUTATION) + " mutation, " + str(variables.POPULATION) + " population, " + str(variables.GENERATIONS) + " generation"
 
     with open(variables.TRAIN_RESULTS, 'a') as f:
-        f.write("[PARAMS]: " + parameters)
+        f.write("[PARAMS]: " + parameters + "\n" + "[DICTIONARIES]: " + str(variables.dic_loaded_total) + "\n\n")
     
     for i in range(variables.TOTAL_MODELS):
         main()
