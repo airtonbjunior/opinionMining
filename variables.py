@@ -30,7 +30,6 @@ DICTIONARY_EFFECT             = 'dictionaries/EffectWordNet.tff'
 DICTIONARY_NRC                = 'dictionaries/nrc_words.txt'
 DICTIONARY_GENERAL_INQUIRER   = 'dictionaries/general-inquirer.txt'
 
-
 USE_SPELLCHECKED_WORDS = True
 
 TRAIN_WORDS 		   = 'datasets/train/words_train/words_train.txt'
@@ -67,19 +66,10 @@ semeval2015_weight  = 1
 nrc_weight          = 1
 gi_weight           = 1
 
-w1 = []
-w2 = []
-w3 = []
-w4 = []
-w5 = []
-w6 = []
-w7 = []
-w8 = []
-w9 = []
-
 neutral_values = []
 
 calling_by_test_file = False
+calling_by_ag_file   = False
 
 # True: load the dictionary
 use_dic_liu          = True
@@ -110,18 +100,28 @@ MAX_POSITIVES_TWEETS = 3000
 MAX_NEGATIVES_TWEETS = 3000
 MAX_NEUTRAL_TWEETS   = 1500
 
-# GP Parameters
+# GP/GA Parameters
 CROSSOVER        = 0.9
+AG_CROSSOVER     = 0.9
+
 MUTATION         = 0.1
-#MUTATION_W      = 0.75
+AG_MUTATION      = 0.1
 MUTATE_EPHEMERAL = 0.75
-GENERATIONS      = 100
-POPULATION       = 250
+
+GENERATIONS      = 5
+AG_GENERATIONS   = 5
+
+POPULATION       = 5
+AG_POPULATION    = 5
+
 cicles_unchanged = 0
 generations_unchanged     = 0
 max_unchanged_generations = 250
 max_unchanged_cicles      = 9999999999
 
+TOTAL_MODELS = 2
+
+# Constraints
 root_constraint = True
 root_function = "polaritySumAVGUsingWeights"
 #root_function = "polaritySumAVG"
@@ -136,9 +136,7 @@ neutral_range_constraint = True
 
 generations_unchanged_reached_msg = False
 
-TOTAL_MODELS = 3
-
-#  
+# File names
 FILE_RESULTS  = 'test_results-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 FILE_RESULTS_2CLASSES  = 'test_results-2classes' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 
@@ -293,6 +291,25 @@ log_parcial_results        = True
 log_times           	   = True
 log_loads                  = True
 
+w1 = []
+w2 = []
+w3 = []
+w4 = []
+w5 = []
+w6 = []
+w7 = []
+w8 = []
+w9 = []
+
+ag_w1 = 0
+ag_w2 = 0
+ag_w3 = 0
+ag_w4 = 0
+ag_w5 = 0
+ag_w6 = 0
+ag_w7 = 0
+ag_w8 = 0
+ag_w9 = 0
 
 save_file_results = True
 
