@@ -1288,7 +1288,7 @@ def polaritySumAVG(phrase):
     return total_sum_return
 
 
-# ONLY TEST ONLY TEST ONLY TEST
+
 def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9):
     total_sum = 0
     total_sum_return = 0
@@ -1303,6 +1303,16 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9):
     phrase = phrase.strip()
     words = phrase.split()
 
+    if variables.calling_by_ag_file:
+        w1 = variables.ag_w1
+        w2 = variables.ag_w2
+        w3 = variables.ag_w3
+        w4 = variables.ag_w4
+        w5 = variables.ag_w5
+        w6 = variables.ag_w6
+        w7 = variables.ag_w7
+        w8 = variables.ag_w8
+        w9 = variables.ag_w9
 
     if variables.calling_by_test_file:
         variables.w1.append(w1)
