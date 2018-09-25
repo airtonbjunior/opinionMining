@@ -38,6 +38,7 @@ TEST_WORDS             = 'datasets/test/words_test.txt'
 TEST_WORDS_SPELLCHECK  = 'datasets/test/words_test_spell.txt'
 
 BEST_INDIVIDUAL 		 = 'partial-best-individual ' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+BEST_INDIVIDUAL_AG 		 = 'ag-partial-best-individual ' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 BEST_INDIVIDUAL_2CLASSES = 'partial-best-individual-2classes ' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 
 model_results = []
@@ -105,14 +106,14 @@ CROSSOVER        = 0.9
 AG_CROSSOVER     = 0.9
 
 MUTATION         = 0.1
-AG_MUTATION      = 0.1
+AG_MUTATION      = 0.3
 MUTATE_EPHEMERAL = 0.75
 
 GENERATIONS      = 5
-AG_GENERATIONS   = 5
+AG_GENERATIONS   = 50
 
 POPULATION       = 5
-AG_POPULATION    = 5
+AG_POPULATION    = 100
 
 cicles_unchanged = 0
 generations_unchanged     = 0
@@ -204,6 +205,8 @@ fitness_negative = 0
 fitness_neutral  = 0
 
 # Save the best values 
+best_AG_weights_combination = []
+
 best_fitness = 0
 best_fitness_history  = []
 best_fitness_per_generation_history = []
