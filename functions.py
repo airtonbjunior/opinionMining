@@ -1315,6 +1315,20 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9):
         w9 = variables.ag_w9
 
     if variables.calling_by_test_file:
+        #TEST
+        w = [0.0, 0.572173275024241, 2.963193289922133, 2.9880454572450192, -0.0220200613743744, 0.3326869498826932, -0.06009481380185022, 1.0, 1.0]
+        w = [1, 0, 0, 0, 0, 0, 0, 0, 0]
+        w = [1.2250583815399576, 0.0, 1.4119514898378256, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0] # one more "good" individual
+        #w1 = w[0]
+        #w2 = w[1]
+        #w3 = w[2]
+        #w4 = w[3]
+        #w5 = w[4]
+        #w6 = w[5]
+        #w7 = w[6]
+        #w8 = w[7]
+        #w9 = w[8]
+
         variables.w1.append(w1)
         variables.w2.append(w2)
         variables.w3.append(w3)
@@ -1339,6 +1353,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9):
             #print("booster")
             booster = True
 
+        #print(word + "\n")
 
         # LIU pos/neg words
         if(variables.use_dic_liu and variables.dic_liu_loaded and w1 != 0):
