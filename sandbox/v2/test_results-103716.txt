@@ -1,0 +1,107 @@
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(removeStopWords(boostUpperCase(replaceBoosterWords(removeAllPonctuation(replaceNegatingWords(replaceBoosterWords(removeAllPonctuation(x)))))))), if_then_else(hasDates(removeLinks(removeLinks(boostUpperCase(x)))), sub(positiveWordsQuantity(removeAllPonctuation(x)), positiveWordsQuantity(removeLinks(x))), 1.2123905646952362), mul(0.0, 0.0), add(add(1.7403793069142626, emoticonsPolaritySum(x)), 0.31878467195813376), add(1.133088564113988, emoticonsPolaritySum(replaceBoosterWords(replaceBoosterWords(removeAllPonctuation(boostUpperCase(removeLinks(x))))))), mul(emoticonsPolaritySum(replaceBoosterWords(replaceBoosterWords(replaceNegatingWords(removeAllPonctuation(removeStopWords(removeAllPonctuation(x))))))), mul(add(1.408838739014075, mul(mul(0.34015615622737916, 0.0), 0.0)), 0.0)), mul(0.0, 1.506624961123453), emoticonsPolaritySum(x), neutralRange(0.5816868256399734, negativeWordsQuantity(removeAllPonctuation(x))), 0.0)
+
+tweets2013	0.5737
+tweets2014	0.5594
+sms	0.497
+livejournal	0.6364
+sarcasm	0.4445
+all	0.6223
+
+# [weights]
+# w1: {0, 1.2123905646952362, 2, 3, 1}
+# w2: {0.0}
+# w3: {1.0591639788723963, 2.0591639788723963, 3.0591639788723963}
+# w4: {1.133088564113988, 2.1330885641139883}
+# w5: {0.0}
+# w6: {0.0}
+# w7: {0, 1, -1}
+# w8: {0}
+# w9: {0.0}
+
+# [neutral ranges]
+# {'[0.5816868256399734,5]', '[0.5816868256399734,3]', '[0,0]', '[0.5816868256399734,1]', '[0.5816868256399734,4]', '[0.5816868256399734,2]'}
+
+[Model]	polaritySumAVGUsingWeights(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(boostUpperCase(removeAllPonctuation(replaceBoosterWords(replaceBoosterWords(removeAllPonctuation(x)))))))), neutralRange(0.0, 0.0), 0.0, 1.7284302107217944, 0.5465959993695406, 0.0, emoticonsPolaritySum(x), hashtagPolaritySum(replaceNegatingWords(removeAllPonctuation(replaceNegatingWords(replaceBoosterWords(removeAllPonctuation(x)))))), 0.0, 0.0)
+
+tweets2013	0.5759
+tweets2014	0.5655
+sms	0.5097
+livejournal	0.6359
+sarcasm	0.4837
+all	0.6349
+
+# [weights]
+# w1: {0}
+# w2: {0.0}
+# w3: {1.7284302107217944}
+# w4: {0.5465959993695406}
+# w5: {0.0}
+# w6: {0, 1, -1}
+# w7: {0, 1, 2, -1, -2}
+# w8: {0.0}
+# w9: {0.0}
+
+# [neutral ranges]
+# {'[0.0,0.0]', '[0.5816868256399734,5]', '[0.5816868256399734,3]', '[0,0]', '[0.5816868256399734,1]', '[0.5816868256399734,4]', '[0.5816868256399734,2]'}
+
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(x))), 0.9755967295618415, hashtagPolaritySum(replaceNegatingWords(replaceNegatingWords(removeLinks(x)))), add(negativeWordsQuantity(x), add(add(mul(add(0.0, positiveWordsQuantity(x)), 1.9753416114018283), mul(add(negativeWordsQuantity(replaceNegatingWords(removeLinks(removeAllPonctuation(x)))), positiveWordsQuantity(x)), add(0.0, 0.6391231701372937))), 0.33088093818376696)), mul(mul(0.9125304308159357, if_then_else(True, 0.22375503408851238, 0.9965971250728374)), 1.1027183801835299), neutralRange(1.0560476677291426, hashtagPolaritySum(replaceBoosterWords(removeAllPonctuation(replaceBoosterWords(removeAllPonctuation(x)))))), emoticonsPolaritySum(replaceNegatingWords(x)), positiveWordsQuantity(removeAllPonctuation(x)), mul(positiveWordsQuantity(removeStopWords(x)), 0.0), 0.0)
+
+tweets2013	0.5771
+tweets2014	0.563
+sms	0.4958
+livejournal	0.6453
+sarcasm	0.4012
+all	0.6205
+
+# [weights]
+# w1: {0.9755967295618415}
+# w2: {0, 1, 2, -1, -2}
+# w3: {0.33088093818376696, 1.9700041083210607, 2.945345719722889, 0.9700041083210607, 4.86271523013477, 5.248250448595648, 3.584468889860182, 4.584468889860182, 8.174275282801133, 7.198933671399304, 1.6091272784583543, 6.198933671399304, 2.609127278458354, 5.223592059997476, 5.559810501262011, 12.091644793213014, 3.609127278458354, 2.2482504485956483, 10.788740064340256, 11.452521623075722, 3.2482504485956483, 4.248250448595648, 13.403204845879378, 5.86271523013477, 6.86271523013477, 7.86271523013477, 8.198933671399304, 8.838056841536599, 8.813398452938427, 8.526496788870237, 8.477180011673891, 9.813398452938427, 10.477180011673891, 11.427863234477549, 11.140961570409356, 12.427863234477549, 2.970004108321061, 3.8873736187329415, 4.223592059997476, 4.8873736187329415, 4.804743129144822, 1.330880938183767, 5.8873736187329415, 6.223592059997476, 6.8873736187329415, 6.838056841536598, 7.838056841536598, 7.526496788870236}
+# w4: {0.22515665319520992}
+# w5: {0}
+# w6: {0, 1, -1}
+# w7: {0, 1, 2, 3, 4, 5}
+# w8: {0.0}
+# w9: {0.0}
+
+# [neutral ranges]
+# {'[0.0,0.0]', '[0.5816868256399734,5]', '[0.5816868256399734,3]', '[1.0560476677291426,2]', '[0,0]', '[0.5816868256399734,1]', '[0.5816868256399734,4]', '[0.5816868256399734,2]'}
+
+
+
+##Statistics##
+
+3 models evaluated
+9 dictionaries
+
+AVGs
+AVG Tweets2013 F1 SemEval	0.5756
+AVG Tweets2014 F1 SemEval	0.5626
+AVG SMS F1 SemEval	0.5008
+AVG LiveJournal F1 SemEval	0.6392
+AVG Sarcasm F1 SemEval	0.4431
+AVG All F1 SemEval	0.6259
+
+Best Values
+Best Tweets2013 F1 value	0.5771
+Best Tweets2014 F1 value	0.5655
+Best SMS F1 value	0.5097
+Best LiveJournal F1 value	0.6453
+Best Sarcasm F1 value	0.4837
+Best All F1 value	0.6349
+
+Values by database
+Tweets2013 [0.5737, 0.5759, 0.5771]
+Tweets2014 [0.5594, 0.5655, 0.563]
+SMS [0.497, 0.5097, 0.4958]
+LiveJournal [0.6364, 0.6359, 0.6453]
+Sarcasm [0.4445, 0.4837, 0.4012]
+All [0.6223, 0.6349, 0.6205]
+
+Standard deviation
+Standard Deviation Tweets2013	0.001407914138796175
+Standard Deviation Tweets2014	0.0025037749277618507
+Standard Deviation SMS	0.006288790733431116
+Standard Deviation Live Journal	0.004318178628387972
+Standard Deviation Sarcasm	0.0336943450580196
+Standard Deviation All	0.006406246951218789
