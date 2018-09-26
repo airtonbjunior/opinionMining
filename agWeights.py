@@ -45,6 +45,9 @@ def evaluateIndividual(individual):
 	variables.ag_w8 = individual[7]
 	variables.ag_w9 = individual[8]
 
+	variables.neutral_inferior_range = individual[9]
+	variables.neutral_superior_range = individual[10]
+
 	variables.calling_by_ag_file = True
 	
 	fitnessReturn = evaluateAG(MODEL) # TO-DO: get the GA parameter instead of GP
@@ -60,6 +63,9 @@ def evaluateIndividual(individual):
 	variables.ag_w7 = 0
 	variables.ag_w8 = 0
 	variables.ag_w9 = 0
+
+	variables.neutral_inferior_range = 0
+	variables.neutral_superior_range = 0
 
 	return float(fitnessReturn),
 
@@ -78,8 +84,8 @@ def evaluateAG(individual):
     new_generation = False
 
     # test
-    variables.neutral_inferior_range = 0
-    variables.neutral_superior_range = 0
+    #variables.neutral_inferior_range = 0
+    #variables.neutral_superior_range = 0
     # test
 
     # Check max unchanged generations
@@ -149,6 +155,10 @@ def evaluateAG(individual):
     # to work using another databases
     TWEETS_TO_EVALUATE       = variables.tweets_semeval
     TWEETS_SCORE_TO_EVALUATE = variables.tweets_semeval_score
+
+    if variables.neutral_inferior_range > variables.neutral_superior_range:
+    	print("\n[CONSTRAINT][inferior range grater than superior][fitness zero][TEMPORARY]")
+    	return 0
 
     # Main loop
     # for index, item in enumerate(variables.tweets_semeval):
@@ -490,7 +500,7 @@ def loadModel():
 	with open(file_path, 'r') as inF:
 		for line in inF:
 		    if line.startswith("[DICTIONARIES]"):
-		    	INDIVIDUAL_SIZE = int(line.split(":")[1].strip())
+		    	INDIVIDUAL_SIZE = int(line.split(":")[1].strip()) + 2
 		    	print(str(INDIVIDUAL_SIZE))
 		    elif not line.startswith("[") and line not in ('\n', '\r\n') and not line.startswith("#"):
 		    	MODEL = str(line)
