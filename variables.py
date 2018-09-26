@@ -80,8 +80,8 @@ use_dic_vader        = True
 use_dic_slang        = True
 use_dic_effect       = True
 use_dic_semeval2015  = True
-use_dic_nrc			 = True
-use_dic_gi           = True
+use_dic_nrc			 = False
+use_dic_gi           = False
 
 # Check if the dictionary was loaded
 dic_liu_loaded 			= False
@@ -109,10 +109,10 @@ MUTATION         = 0.1
 AG_MUTATION      = 0.3
 MUTATE_EPHEMERAL = 0.75
 
-GENERATIONS      = 5
+GENERATIONS      = 100
 AG_GENERATIONS   = 50
 
-POPULATION       = 5
+POPULATION       = 100
 AG_POPULATION    = 100
 
 cicles_unchanged = 0
