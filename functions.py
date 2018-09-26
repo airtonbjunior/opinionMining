@@ -1319,6 +1319,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9):
         w = [0.0, 0.572173275024241, 2.963193289922133, 2.9880454572450192, -0.0220200613743744, 0.3326869498826932, -0.06009481380185022, 1.0, 1.0]
         w = [1, 0, 0, 0, 0, 0, 0, 0, 0]
         w = [1.2250583815399576, 0.0, 1.4119514898378256, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0] # one more "good" individual
+        w = [0.9070981681668906, 0.0, 1.95918920062765, 1.4752572131935011, 0.0, 0.0, 0.0, 0.0, 0.0] # one more "good" individual
         #w1 = w[0]
         #w2 = w[1]
         #w3 = w[2]
@@ -2033,8 +2034,8 @@ def evaluateMessages(base, model):
     # test
 
     # test
-    variables.neutral_inferior_range = 0
-    variables.neutral_superior_range = 0
+    #variables.neutral_inferior_range = 0
+    #variables.neutral_superior_range = 0
     # test
 
     neutral_url_qtty = 0
@@ -2198,8 +2199,8 @@ def evaluateMessages(base, model):
                 result = float(eval(model_analysis))
 
                 # Test - if neutral, choose another polarity... I'm using SVM to choose another now
-                if result == 0:
-                    result = variables.svm_normalized_values[index]
+                #if result == 0:
+                #    result = variables.svm_normalized_values[index]
 
                     # Do it after this first test
                     #if result == 0:
