@@ -80,8 +80,8 @@ use_dic_vader        = True
 use_dic_slang        = True
 use_dic_effect       = True
 use_dic_semeval2015  = True
-use_dic_nrc			 = False
-use_dic_gi           = False
+use_dic_nrc			 = True
+use_dic_gi           = True
 
 # Check if the dictionary was loaded
 dic_liu_loaded 			= False
