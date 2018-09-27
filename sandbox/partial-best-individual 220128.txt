@@ -1,4 +1,0 @@
-polaritySumAVGUsingWeights(removeStopWords(boostUpperCase(replaceNegatingWords(x))), positiveWordsQuantity(x), add(1.0, positiveWordsQuantity(x)), 2.0, negativeWordsQuantity(replaceNegatingWords(removeStopWords(removeLinks(x)))), 1.5, 1.5, 2.0)
-
-# Generation -> 1
-# Neutral Range -> [0, 0]

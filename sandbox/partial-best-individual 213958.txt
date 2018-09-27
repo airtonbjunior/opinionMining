@@ -1,4 +1,0 @@
-add(sub(sub(positiveWordsQuantity(removeLinks(replaceBoosterWords(boostUpperCase(x)))), add(negativeWordsQuantity(boostUpperCase(removeStopWords(x))), positiveWordsQuantity(boostUpperCase(replaceBoosterWords(x))))), negativeWordsQuantity(replaceNegatingWords(removeAllPonctuation(removeLinks(removeAllPonctuation(x)))))), positiveWordsQuantity(removeLinks(removeStopWords(replaceBoosterWords(replaceBoosterWords(removeLinks(x)))))))
-
-# Generation -> 1
-# Neutral Range -> [0, 0]
