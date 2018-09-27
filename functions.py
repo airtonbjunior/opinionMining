@@ -727,9 +727,9 @@ def dictionaryWeights(w1, w2, w3, w4, w5, w6, w7):
 
 
 def neutralRange(inferior, superior):
-    #print("##NEUTRAL RANGE##")
-    #print("Inferior -> " + str(inferior))
-    #print("Superior -> " + str(superior))
+
+    #if variables.calling_by_ag_file:
+    #    return 0
 
     if float(inferior) > float(superior):
         #print("@@FAIL, inferior greater than superior@@")
@@ -738,7 +738,8 @@ def neutralRange(inferior, superior):
     else:
         variables.neutral_inferior_range = inferior
         variables.neutral_superior_range = superior
-    
+
+
     return 0 # try not be used in other branches of the tree
 
 
@@ -1316,10 +1317,11 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9):
 
     if variables.calling_by_test_file:
         #TEST
-        w = [0.0, 0.572173275024241, 2.963193289922133, 2.9880454572450192, -0.0220200613743744, 0.3326869498826932, -0.06009481380185022, 1.0, 1.0]
-        w = [1, 0, 0, 0, 0, 0, 0, 0, 0]
-        w = [1.2250583815399576, 0.0, 1.4119514898378256, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0] # one more "good" individual
-        w = [0.9070981681668906, 0.0, 1.95918920062765, 1.4752572131935011, 0.0, 0.0, 0.0, 0.0, 0.0] # one more "good" individual
+        #w = [0.0, 0.572173275024241, 2.963193289922133, 2.9880454572450192, -0.0220200613743744, 0.3326869498826932, -0.06009481380185022, 1.0, 1.0]
+        #w = [1, 0, 0, 0, 0, 0, 0, 0, 0]
+        #w = [1.2250583815399576, 0.0, 1.4119514898378256, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0] # one more "good" individual
+        #w = [0.9070981681668906, 0.0, 1.95918920062765, 1.4752572131935011, 0.0, 0.0, 0.0, 0.0, 0.0] # one more "good" individual
+        #w = [1.0, 0.0, 1.0, 1.1009543916315279, 0.0, 0.0, 0.0, -0.8059644858852133, 1.303579956878811, -1.6076203174025039, 0.0]
         #w1 = w[0]
         #w2 = w[1]
         #w3 = w[2]
@@ -1330,6 +1332,9 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9):
         #w8 = w[7]
         #w9 = w[8]
 
+        #variables.neutral_inferior_range = w[9]
+        #variables.neutral_superior_range = w[10]
+        
         variables.w1.append(w1)
         variables.w2.append(w2)
         variables.w3.append(w3)
@@ -2218,7 +2223,6 @@ def evaluateMessages(base, model):
 
 
         #variables.neutral_superior_range = variables.neutral_superior_range
-        
         if messages_score[index] > 0:
             if result > variables.neutral_superior_range:
                 true_positive += 1
