@@ -409,6 +409,26 @@ def loadTrainTweets():
     print("  [train tweets loaded (" + str(tweets_loaded) + " tweets)][" + str(format(end - start, '.3g')) + " seconds]\n")
 
 
+def createChunks(message_list, n_chunks):
+    import random
+
+    ys = list(message_list)
+    random.shuffle(ys)
+    
+    ylen = len(ys)
+    size = int(ylen / n_chunks)
+    
+    chunks = [ys[0+size*i : size*(i+1)] for i in range(n_chunks)]
+    leftover = ylen - size*n_chunks
+    
+    edge = size * n_chunks
+    
+    for i in range(leftover):
+        chunks[i % n_chunks].append(ys[edge+i])
+    
+    return chunks
+
+
 # Load the test tweets from Semeval 2014 task 9
 def loadTestTweets():
     start = time.time()
