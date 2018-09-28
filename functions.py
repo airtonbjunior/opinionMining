@@ -330,11 +330,14 @@ def loadTestWords():
     if variables.USE_SPELLCHECKED_WORDS:
         print("  [using spellchecked words]")
         fileWords = variables.TEST_WORDS_SPELLCHECK
+    elif variables.USE_ONLY_POS_WORDS:
+        print("  [using only pos words]")
+        fileWords = variables.TEST_WORDS_POS_TAGGED_W
     else:
         print("  [using original words]")
 
     start = time.time()
-    with open(variables.TEST_WORDS, 'r') as file:
+    with open(fileWords, 'r') as file:
         for line in file:
             variables.all_test_words.append(line.replace('\n', '').replace('\r', ''))
 
@@ -665,17 +668,18 @@ def getPOSTag(message):
 def saveWordsTokenized(module):
     if module == "train":
         file_words     = variables.TRAIN_WORDS_SPELLCHECK
-        file_words_POS = variables.TRAIN_WORDS_POS_TAGGED
+        file_words_POS = variables.TRAIN_WORDS_POS_TAGGED_W
     elif module == "test":
         file_words     = variables.TEST_WORDS_SPELLCHECK
-        file_words_POS = variables.TEST_WORDS_POS_TAGGED
+        file_words_POS = variables.TEST_WORDS_POS_TAGGED_W
 
     with open(file_words, 'r') as f_words:
         for line in f_words:
             with open(file_words_POS, 'a') as f_words_POS:
                 w_class = str(getPOSTag(line)).split(",")[1].strip()[1:-3]
                 if w_class in variables.USE_POS_CLASSES:
-                    f_words_POS.write(line.strip() + "\t" + w_class + "\n")
+                    f_words_POS.write(line.strip() + "\n")
+                    #f_words_POS.write(line.strip() + "\t" + w_class + "\n")
 
 #Aux functions
 def add(left, right):
