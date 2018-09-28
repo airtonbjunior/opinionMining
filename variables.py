@@ -30,14 +30,17 @@ DICTIONARY_EFFECT             = 'dictionaries/EffectWordNet.tff'
 DICTIONARY_NRC                = 'dictionaries/nrc_words.txt'
 DICTIONARY_GENERAL_INQUIRER   = 'dictionaries/general-inquirer.txt'
 
-USE_SPELLCHECKED_WORDS     = True # set True if want to use the spellchecked words
+USE_SPELLCHECKED_WORDS     = False # set True if want to use the spellchecked words
+USE_ONLY_POS_WORDS         = False
+
 TRAIN_WORDS 		       = 'datasets/train/words_train/words_train.txt'
 TRAIN_WORDS_SPELLCHECK     = 'datasets/train/words_train/words_train_spell.txt'
 TRAIN_WORDS_POS_TAGGED     = 'datasets/train/words_train/words_train_spell_pos-tagged.txt'
+TRAIN_WORDS_POS_TAGGED_W   = 'datasets/train/words_train/words_train_spell_pos-tagged_w.txt' # tagged words but without the tags, only words
 
 TEST_WORDS                 = 'datasets/test/words_test.txt'
 TEST_WORDS_SPELLCHECK      = 'datasets/test/words_test_spell.txt'
-TEST_WORDS_POS_TAGGED      = 'datasets/test/words_test_spell_pos-tagged.txt'
+TEST_WORDS_POS_TAGGED_W    = 'datasets/test/words_test_spell_pos-tagged_W.txt' # tagged words but without the tags, only words
 
 BEST_INDIVIDUAL 		   = 'partial-best-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 BEST_INDIVIDUAL_AG 		   = 'ag-partial-best-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
@@ -49,7 +52,7 @@ INCORRECT_EVALUATIONS      = 'incorrect-evaluations-' + str(datetime.now())[11:1
 INVERT_SARCASM = False
 
 # According Penn Treebank Project
-USE_POS_CLASSES = ['VB', 'VBD', 'JJ', 'JJR', 'JJS', 'RB', 'RBR', 'RBS'] #, 'NN'] # use NN? I don't know
+USE_POS_CLASSES = ['VB', 'VBD', 'JJ', 'JJR', 'JJS', 'RB', 'RBR', 'RBS', 'NN'] # use NN? I don't know
 
 model_results = []
 
