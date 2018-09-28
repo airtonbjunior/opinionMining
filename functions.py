@@ -649,6 +649,34 @@ def loadTestTweets_smuk():
                 #    variables.tweets_mukh_negative += 1
 
 
+def getPOSTag(message):
+    import nltk
+    from nltk.tokenize import TweetTokenizer
+    
+    tknzr = TweetTokenizer()
+    tokens = tknzr.tokenize(message)
+
+    #tokens = nltk.word_tokenize(message)
+    tagged = nltk.pos_tag(tokens)
+
+    return tagged
+
+
+def saveWordsTokenized(module):
+    if module == "train":
+        file_words     = variables.TRAIN_WORDS_SPELLCHECK
+        file_words_POS = variables.TRAIN_WORDS_POS_TAGGED
+    elif module == "test":
+        file_words     = variables.TEST_WORDS_SPELLCHECK
+        file_words_POS = variables.TEST_WORDS_POS_TAGGED
+
+    with open(file_words, 'r') as f_words:
+        for line in f_words:
+            with open(file_words_POS, 'a') as f_words_POS:
+                w_class = str(getPOSTag(line)).split(",")[1].strip()[1:-3]
+                if w_class in variables.USE_POS_CLASSES:
+                    f_words_POS.write(line.strip() + "\t" + w_class + "\n")
+
 #Aux functions
 def add(left, right):
     return left + right
@@ -2176,6 +2204,10 @@ def evaluateMessages(base, model):
         messages_negative = variables.tweets_2013_negative + variables.tweets_2014_negative + variables.tweets_liveJournal2014_negative + variables.tweets_2014_sarcasm_negative + variables.sms_2013_negative
         messages_neutral  = variables.tweets_2013_neutral  + variables.tweets_2014_neutral  + variables.tweets_liveJournal2014_neutral  + variables.tweets_2014_sarcasm_neutral  + variables.sms_2013_neutral
 
+    with open(variables.INCORRECT_EVALUATIONS, 'a') as f_incorrect:
+        if base == "tweets2013": # only one header on file
+            f_incorrect.write("[gold]\t[prediction]\t[neutral range]\t[base]\t[message]\n\n")
+
     for index, item in enumerate(messages): 
         message = str(messages[index]).strip().replace("'", "")
         message = message.replace("\\u2018", "").replace("\\u2019", "").replace("\\u002c", "")        
@@ -2187,7 +2219,7 @@ def evaluateMessages(base, model):
             continue
         
         neutral_because_url = False
-        
+
         try:
             if(variables.use_emoticon_analysis and hasEmoticons(message)):
                 result = emoticonsPolaritySum(message)
@@ -2242,6 +2274,10 @@ def evaluateMessages(base, model):
             model_results_to_count_occurrences.append(result)
 
 
+        if base == "sarcasm" and variables.INVERT_SARCASM:
+            result *= -1
+
+
         #variables.neutral_superior_range = variables.neutral_superior_range
         if messages_score[index] > 0:
             if result > variables.neutral_superior_range:
@@ -2259,6 +2295,10 @@ def evaluateMessages(base, model):
                     goldPos_classNeg += 1
                     if base == "all":
                         goldPos_classNeg_value.append(result)
+
+                if base != "all" and variables.SAVE_INCORRECT_EVALUATIONS:
+                    with open(variables.INCORRECT_EVALUATIONS, 'a') as f_incorrect:
+                        f_incorrect.write(str(messages_score[index]) + "\t" + str(result) + "\t[" + str(variables.neutral_inferior_range) + ", " + str(variables.neutral_superior_range) + "]\t" + base + "\t" + message + "\n")
                 
         elif messages_score[index] < 0:
             if result < variables.neutral_inferior_range:
@@ -2277,6 +2317,10 @@ def evaluateMessages(base, model):
                     goldNeg_classPos += 1
                     if base == "all":
                         goldNeg_classPos_value.append(result)                        
+
+                if base != "all" and variables.SAVE_INCORRECT_EVALUATIONS:
+                    with open(variables.INCORRECT_EVALUATIONS, 'a') as f_incorrect:
+                        f_incorrect.write(str(messages_score[index]) + "\t" + str(result) + "\t[" + str(variables.neutral_inferior_range) + ", " + str(variables.neutral_superior_range) + "]\t" + base + "\t" + message + "\n")
 
                 #if false_negative_log <= 20:
                     #if false_negative_log == 1:  
@@ -2319,6 +2363,11 @@ def evaluateMessages(base, model):
                         #    count_has_date += 1
                         #else:
                         #    print("DOESN'T HAS DATE: " + message)
+
+                if base != "all" and variables.SAVE_INCORRECT_EVALUATIONS:
+                    with open(variables.INCORRECT_EVALUATIONS, 'a') as f_incorrect:
+                        f_incorrect.write(str(messages_score[index]) + "\t" + str(result) + "\t[" + str(variables.neutral_inferior_range) + ", " + str(variables.neutral_superior_range) + "]\t" + base + "\t" + message + "\n")
+
 
     if true_positive + false_positive + true_negative + false_negative > 0:
         accuracy = (true_positive + true_negative + true_neutral) / (true_positive + false_positive + true_negative + false_negative + true_neutral + false_neutral)
