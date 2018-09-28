@@ -509,4 +509,22 @@ def loadModel():
 
 
 if __name__ == "__main__":                
-	main()
+	#main()
+
+
+	saveWordsTokenized("test")
+
+	#print(str(getPOSTag("Hi there, i love you so much")))
+	#print(str(getPOSTag("This is a cooool #dummysmiley: :-) :-P <3 and some arrows < > -> <--")))
+
+	#getDictionary("train")
+	#loadTrainTweets()
+
+	#chunks = createChunks(variables.tweets_semeval, 10)
+
+	#c1, c2, c3, c4 = [x[0] for x in chunks], [x[1] for x in chunks], [x[2] for x in chunks], [x[3] for x in chunks]
+
+	#print(str(c1) + "\n")
+	#print(str(c2) + "\n")
+	#print(str(c3) + "\n")
+	#print(str(c4) + "\n")
