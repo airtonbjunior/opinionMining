@@ -30,16 +30,26 @@ DICTIONARY_EFFECT             = 'dictionaries/EffectWordNet.tff'
 DICTIONARY_NRC                = 'dictionaries/nrc_words.txt'
 DICTIONARY_GENERAL_INQUIRER   = 'dictionaries/general-inquirer.txt'
 
-USE_SPELLCHECKED_WORDS = True
+USE_SPELLCHECKED_WORDS     = True # set True if want to use the spellchecked words
+TRAIN_WORDS 		       = 'datasets/train/words_train/words_train.txt'
+TRAIN_WORDS_SPELLCHECK     = 'datasets/train/words_train/words_train_spell.txt'
+TRAIN_WORDS_POS_TAGGED     = 'datasets/train/words_train/words_train_spell_pos-tagged.txt'
 
-TRAIN_WORDS 		   = 'datasets/train/words_train/words_train.txt'
-TRAIN_WORDS_SPELLCHECK = 'datasets/train/words_train/words_train_spell.txt'
-TEST_WORDS             = 'datasets/test/words_test.txt'
-TEST_WORDS_SPELLCHECK  = 'datasets/test/words_test_spell.txt'
+TEST_WORDS                 = 'datasets/test/words_test.txt'
+TEST_WORDS_SPELLCHECK      = 'datasets/test/words_test_spell.txt'
+TEST_WORDS_POS_TAGGED      = 'datasets/test/words_test_spell_pos-tagged.txt'
 
-BEST_INDIVIDUAL 		 = 'partial-best-individual ' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
-BEST_INDIVIDUAL_AG 		 = 'ag-partial-best-individual ' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
-BEST_INDIVIDUAL_2CLASSES = 'partial-best-individual-2classes ' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+BEST_INDIVIDUAL 		   = 'partial-best-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+BEST_INDIVIDUAL_AG 		   = 'ag-partial-best-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+BEST_INDIVIDUAL_2CLASSES   = 'partial-best-2classes-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+
+SAVE_INCORRECT_EVALUATIONS = True
+INCORRECT_EVALUATIONS      = 'incorrect-evaluations-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+
+INVERT_SARCASM = False
+
+# According Penn Treebank Project
+USE_POS_CLASSES = ['VB', 'VBD', 'JJ', 'JJR', 'JJS', 'RB', 'RBR', 'RBS'] #, 'NN'] # use NN? I don't know
 
 model_results = []
 
@@ -80,8 +90,8 @@ use_dic_vader        = True
 use_dic_slang        = True
 use_dic_effect       = True
 use_dic_semeval2015  = True
-use_dic_nrc			 = True
-use_dic_gi           = True
+use_dic_nrc			 = False
+use_dic_gi           = False
 
 # Check if the dictionary was loaded
 dic_liu_loaded 			= False
@@ -137,12 +147,11 @@ neutral_range_constraint = True
 
 generations_unchanged_reached_msg = False
 
-# File names
-FILE_RESULTS  = 'test_results-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
-FILE_RESULTS_2CLASSES  = 'test_results-2classes' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+FILE_RESULTS             = 'test_results-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+FILE_RESULTS_2CLASSES    = 'test_results-2classes' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 
-TRAIN_RESULTS = 'train-' + str(TOTAL_MODELS) + 'models_' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
-TRAIN_RESULTS_2CLASSES = 'train-' + str(TOTAL_MODELS) + 'models_2classes_' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+TRAIN_RESULTS            = 'train-' + str(TOTAL_MODELS) + 'models_' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+TRAIN_RESULTS_2CLASSES   = 'train-' + str(TOTAL_MODELS) + 'models_2classes_' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 
 tweets_semeval        = []
 tweets_semeval_score  = []
