@@ -29,6 +29,8 @@ DICTIONARY_SEMEVAL2015        = 'dictionaries/SemEval2015-English-Twitter-Lexico
 DICTIONARY_EFFECT             = 'dictionaries/EffectWordNet.tff'
 DICTIONARY_NRC                = 'dictionaries/nrc_words.txt'
 DICTIONARY_GENERAL_INQUIRER   = 'dictionaries/general-inquirer.txt'
+DICTIONARY_S140               = 'dictionaries/sentiment140_unigram.txt'
+DICTIONARY_MPQA               = 'dictionaries/mpqa.txt'
 
 USE_SPELLCHECKED_WORDS     = False # set True if want to use the spellchecked words
 USE_ONLY_POS_WORDS         = False
@@ -80,6 +82,8 @@ effect_weight       = 1
 semeval2015_weight  = 1
 nrc_weight          = 1
 gi_weight           = 1
+s140_weight         = 1
+mpqa_weight         = 1
 
 neutral_values = []
 
@@ -96,6 +100,8 @@ use_dic_effect       = True
 use_dic_semeval2015  = True
 use_dic_nrc			 = True
 use_dic_gi           = True
+use_dic_s140         = True
+use_dic_mpqa         = True
 
 # Check if the dictionary was loaded
 dic_liu_loaded 			= False
@@ -107,6 +113,8 @@ dic_effect_loaded		= False
 dic_semeval2015_loaded	= False
 dic_nrc_loaded	        = False
 dic_gi_loaded	        = False
+dic_s140_loaded         = False
+dic_mpqa_loaded         = False
 
 dic_loaded_total = 0
 
@@ -208,6 +216,12 @@ dic_negative_nrc          = {}
 dic_positive_gi           = {}
 dic_negative_gi           = {}
 
+dic_positive_s140         = {}
+dic_negative_s140         = {}
+
+dic_positive_mpqa         = {}
+dic_negative_mpqa         = {}
+
 # Counters
 positive_tweets = 0
 negative_tweets = 0
@@ -307,25 +321,29 @@ log_parcial_results        = True
 log_times           	   = True
 log_loads                  = True
 
-w1 = []
-w2 = []
-w3 = []
-w4 = []
-w5 = []
-w6 = []
-w7 = []
-w8 = []
-w9 = []
+w1  = []
+w2  = []
+w3  = []
+w4  = []
+w5  = []
+w6  = []
+w7  = []
+w8  = []
+w9  = []
+w10 = []
+w11 = []
 
-ag_w1 = 0
-ag_w2 = 0
-ag_w3 = 0
-ag_w4 = 0
-ag_w5 = 0
-ag_w6 = 0
-ag_w7 = 0
-ag_w8 = 0
-ag_w9 = 0
+ag_w1  = 0
+ag_w2  = 0
+ag_w3  = 0
+ag_w4  = 0
+ag_w5  = 0
+ag_w6  = 0
+ag_w7  = 0
+ag_w8  = 0
+ag_w9  = 0
+ag_w10 = 0
+ag_w11 = 0
 
 save_file_results = True
 
