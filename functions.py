@@ -2314,6 +2314,11 @@ def evaluateMessages(base, model):
                         result = hashtagPolaritySum(message)
                     elif base == "sarcasm":
                         result = TextBlob(message).sentiment.polarity
+                    # when use this, the F1 for all messages increase
+                    #else:
+                    #    result = variables.svm_normalized_values[index]
+
+                
 
                 # Test - if neutral, choose another polarity... I'm using SVM to choose another now
                 #if result == 0:
