@@ -66,6 +66,7 @@ use_url_and_date_to_neutral = False
 use_emoticon_analysis 		= True
 use_only_gp 	      		= False
 use_only_svm		  		= False
+use_hashtag_analysis        = True
 
 neutral_inferior_range = 0
 neutral_superior_range = 0
@@ -329,6 +330,7 @@ ag_w9 = 0
 save_file_results = True
 
 stop_words = set([x.lower() for x in stopwords.words('english')])
+stop_words.remove("won")
 
 week_dates  = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 month_dates = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december', 'jan', 'feb', 'mar', 'apr', 'may', 'june', 'july', 'aug', 'sept', 'oct', 'nov', 'dec']
