@@ -287,7 +287,7 @@ def getDictionary(module):
     #GENERAL INQUIRER
     if(variables.use_dic_nrc):
         startDic = time.time()
-        print("  [loading General Inquirer]")
+        print("  [loading general inquirer]")
         with open(variables.DICTIONARY_GENERAL_INQUIRER, 'r') as inF:
             variables.dic_gi_loaded = True
             variables.dic_loaded_total += 1
@@ -306,7 +306,56 @@ def getDictionary(module):
         if variables.log_loads:
             print("    [" + str(len(variables.dic_positive_gi) + len(variables.dic_negative_gi)) + " words loaded]")
             print("    [" + str(len(variables.dic_positive_gi)) + " positive and " + str(len(variables.dic_negative_gi)) + " negative]")
-            print("      [General Inquirer dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]\n")
+            print("      [general inquirer dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]\n")
+
+    #SENTIMENT140
+    if(variables.use_dic_s140):
+        startDic = time.time()
+        print("  [loading sentiment 140]")
+        with open(variables.DICTIONARY_S140, 'r') as inF:
+            variables.dic_s140_loaded = True
+            variables.dic_loaded_total += 1
+            for line in inF:
+                splited = line.split("\t")
+                if float(splited[1].strip()) > 0:
+                    #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test" and splited[0].strip() in variables.all_test_words):
+                    if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
+                        variables.dic_positive_s140[splited[0].strip()] = float(splited[1].strip())
+
+                elif float(line.split("\t")[1].strip()) < 0:
+                    #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test" and splited[0].strip() in variables.all_test_words):
+                    if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
+                        variables.dic_negative_s140[splited[0].strip()] = float(splited[1].strip())                                        
+
+        if variables.log_loads:
+            print("    [" + str(len(variables.dic_positive_s140) + len(variables.dic_negative_s140)) + " words loaded]")
+            print("    [" + str(len(variables.dic_positive_s140)) + " positive and " + str(len(variables.dic_negative_s140)) + " negative]")
+            print("      [sentiment 140 dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]\n")
+
+    #MPQA
+    if(variables.use_dic_mpqa):
+        startDic = time.time()
+        print("  [loading mpqa]")
+        with open(variables.DICTIONARY_MPQA, 'r') as inF:
+            variables.dic_mpqa_loaded = True
+            variables.dic_loaded_total += 1
+            for line in inF:
+                splited = line.split(" ")
+                #print(str(splited[0].strip()) + " | " + str(splited[1].strip()))
+                if float(splited[1].strip()) > 0:
+                    #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test" and splited[0].strip() in variables.all_test_words):
+                    if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
+                        variables.dic_positive_mpqa[splited[0].strip()] = float(splited[1].strip())
+
+                elif float(line.split(" ")[1].strip()) < 0:
+                    #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test" and splited[0].strip() in variables.all_test_words):
+                    if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
+                        variables.dic_negative_mpqa[splited[0].strip()] = float(splited[1].strip())                                        
+
+        if variables.log_loads:
+            print("    [" + str(len(variables.dic_positive_mpqa) + len(variables.dic_negative_mpqa)) + " words loaded]")
+            print("    [" + str(len(variables.dic_positive_mpqa)) + " positive and " + str(len(variables.dic_negative_mpqa)) + " negative]")
+            print("      [mpqa dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]\n")                   
 
     # Performance improvement test
     variables.dic_positive_words     = set(variables.dic_positive_words)
@@ -1360,7 +1409,7 @@ def polaritySumAVG(phrase):
 
 
 
-def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9):
+def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0, w11=0):
     total_sum = 0
     total_sum_return = 0
     dic_quantity = 0
@@ -1375,22 +1424,20 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9):
     words = phrase.split()
 
     if variables.calling_by_ag_file:
-        w1 = variables.ag_w1
-        w2 = variables.ag_w2
-        w3 = variables.ag_w3
-        w4 = variables.ag_w4
-        w5 = variables.ag_w5
-        w6 = variables.ag_w6
-        w7 = variables.ag_w7
-        w8 = variables.ag_w8
-        w9 = variables.ag_w9
+        w1  = variables.ag_w1
+        w2  = variables.ag_w2
+        w3  = variables.ag_w3
+        w4  = variables.ag_w4
+        w5  = variables.ag_w5
+        w6  = variables.ag_w6
+        w7  = variables.ag_w7
+        w8  = variables.ag_w8
+        w9  = variables.ag_w9
+        w10 = variables.ag_w10
+        w11 = variables.ag_w11
 
     if variables.calling_by_test_file:
         #TEST
-        #w = [0.0, 0.572173275024241, 2.963193289922133, 2.9880454572450192, -0.0220200613743744, 0.3326869498826932, -0.06009481380185022, 1.0, 1.0]
-        #w = [1, 0, 0, 0, 0, 0, 0, 0, 0]
-        #w = [1.2250583815399576, 0.0, 1.4119514898378256, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0] # one more "good" individual
-        #w = [0.9070981681668906, 0.0, 1.95918920062765, 1.4752572131935011, 0.0, 0.0, 0.0, 0.0, 0.0] # one more "good" individual
         #w = [1.0, 0.0, 1.0, 1.1009543916315279, 0.0, 0.0, 0.0, -0.8059644858852133, 1.303579956878811, -1.6076203174025039, 0.0]
         #w1 = w[0]
         #w2 = w[1]
@@ -1414,6 +1461,8 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9):
         variables.w7.append(w7)
         variables.w8.append(w8)
         variables.w9.append(w9)
+        variables.w10.append(w10)
+        variables.w11.append(w11)
 
         variables.neutral_values.append("[" + str(variables.neutral_inferior_range) + ", " + str(variables.neutral_superior_range) + "]")
 
@@ -1817,7 +1866,92 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9):
                     #total_sum -= 1 * w7
                         
                 dic_quantity += 1
-                total_weight += w9                                                                          
+                total_weight += w9  
+
+        # S140
+        if(variables.use_dic_s140 and variables.dic_s140_loaded and w10!= 0):
+            if word in variables.dic_positive_s140:
+                
+                #print("word " + word + " on s140 with the value " + str(variables.dic_positive_s140[word]))
+
+                if invert:
+                    total_sum -= variables.dic_positive_s140[word] * w10
+                    #total_sum -= 1 * w7
+                elif booster:
+                    total_sum += 2 * variables.dic_positive_s140[word] * w10
+                    #total_sum += 2 * w7
+                elif boosterAndInverter:
+                    #total_sum -= 2 * w7 
+                    total_sum -= 2 * variables.dic_positive_s140[word] * w10                    
+                else:
+                    #total_sum += variables.dic_positive_nrc[word]
+                    total_sum += variables.dic_positive_s140[word] * w10
+            
+                dic_quantity += 1
+                total_weight += w10
+
+            elif word in variables.dic_negative_s140:
+
+                #print("word " + word + " on s140 with the value " + str(variables.dic_negative_s140[word]))
+
+                if invert:
+                    total_sum -= variables.dic_negative_s140[word] * w10
+                    #total_sum += 1 * w7
+                elif booster:
+                    total_sum += 2* variables.dic_negative_s140[word] * w10
+                    #total_sum -= 2 * w7
+                elif boosterAndInverter:
+                    total_sum -= 2 * variables.dic_negative_s140[word] * w10
+                    #total_sum += 2 * w7                      
+                else:
+                    total_sum += variables.dic_negative_s140[word] * w10
+                    #total_sum -= 1 * w7
+                        
+                dic_quantity += 1
+                total_weight += w10
+
+        # MPQA
+        if(variables.use_dic_s140 and variables.dic_mpqa_loaded and w11!= 0):
+            if word in variables.dic_positive_mpqa:
+                
+                #print("word " + word + " on mpqa with the value " + str(variables.dic_positive_mpqa[word]))
+
+                if invert:
+                    total_sum -= variables.dic_positive_mpqa[word] * w11
+                    #total_sum -= 1 * w7
+                elif booster:
+                    total_sum += 2 * variables.dic_positive_mpqa[word] * w11
+                    #total_sum += 2 * w7
+                elif boosterAndInverter:
+                    #total_sum -= 2 * w7 
+                    total_sum -= 2 * variables.dic_positive_mpqa[word] * w11                    
+                else:
+                    #total_sum += variables.dic_positive_nrc[word]
+                    total_sum += variables.dic_positive_mpqa[word] * w11
+            
+                dic_quantity += 1
+                total_weight += w11
+
+            elif word in variables.dic_negative_mpqa:
+
+                #print("word " + word + " on mpqa with the value " + str(variables.dic_negative_mpqa[word]))
+
+                if invert:
+                    total_sum -= variables.dic_negative_mpqa[word] * w11
+                    #total_sum += 1 * w7
+                elif booster:
+                    total_sum += 2* variables.dic_negative_mpqa[word] * w11
+                    #total_sum -= 2 * w7
+                elif boosterAndInverter:
+                    total_sum -= 2 * variables.dic_negative_mpqa[word] * w11
+                    #total_sum += 2 * w7                      
+                else:
+                    total_sum += variables.dic_negative_mpqa[word] * w11
+                    #total_sum -= 1 * w7
+                        
+                dic_quantity += 1
+                total_weight += w11                                                                                                          
+
 
         if (dic_quantity > 1) and (total_weight != 0):
             total_sum_return += round(total_sum/total_weight, 4)
