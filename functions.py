@@ -2306,10 +2306,14 @@ def evaluateMessages(base, model):
             # GP only
             else:
                 result = float(eval(model_analysis))
+                
+                from textblob import TextBlob
 
                 if result == 0:
                     if(variables.use_hashtag_analysis and hasHashtag(message)):
                         result = hashtagPolaritySum(message)
+                    elif base == "sarcasm":
+                        result = TextBlob(message).sentiment.polarity
 
                 # Test - if neutral, choose another polarity... I'm using SVM to choose another now
                 #if result == 0:
