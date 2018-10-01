@@ -189,6 +189,7 @@ arrogance
 arrogant
 arrogantly
 ashamed
+asshole
 asinine
 asininely
 asinininity
@@ -1065,6 +1066,9 @@ diappointed
 diatribe
 diatribes
 dick
+dicks
+dickhead
+dickheads
 dictator
 dictatorial
 die
@@ -3412,6 +3416,8 @@ pugnacious
 pugnaciously
 pugnacity
 punch
+punched
+punching
 punish
 punishable
 punitive

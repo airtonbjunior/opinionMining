@@ -462,6 +462,7 @@ condemn	-2
 condemnation	-2
 condemned	-2
 condemns	-2
+condolences	-2
 confidence	2
 confident	2
 conflict	-2
@@ -551,6 +552,7 @@ cynical	-2
 cynicism	-2
 damage	-3
 damages	-3
+dammit	-3
 damn	-4
 damned	-4
 damnit	-4
@@ -1045,6 +1047,7 @@ fuckers	-4
 fuckface	-4
 fuckhead	-4
 fucking	-4
+fucks	-4
 fucktard	-4
 fud	-3
 fuked	-4
@@ -2115,6 +2118,7 @@ steal	-2
 steals	-2
 stereotype	-2
 stereotyped	-2
+stfu	-5
 stifled	-1
 stimulate	1
 stimulated	1
@@ -2165,6 +2169,7 @@ success	2
 successful	3
 suck	-3
 sucks	-3
+sucking	-3
 suffer	-2
 suffering	-2
 suffers	-2
@@ -2456,7 +2461,7 @@ worst	-3
 worth	2
 worthless	-2
 worthy	2
-wow	4
+wow	1
 wowow	4
 wowww	4
 wrathful	-3

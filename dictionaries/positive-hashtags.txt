@@ -3,6 +3,8 @@ good
 great
 excellent
 excellence
+excited
+soexcited
 fine
 nice
 desirable
@@ -25,3 +27,7 @@ magnificent
 sensational
 super
 superb
+thanks
+thanxs
+congrat
+pretty
