@@ -511,8 +511,28 @@ def loadModel():
 if __name__ == "__main__":                
 	#main()
 
+    getDictionary("test")
 
-	saveWordsTokenized("test")
+    from textblob import TextBlob
+    #print(str(TextBlob("not a very great calculation").sentiment.subjectivity))
+    #print(str(TextBlob(message).sentiment.subjectivity))
+    #print(str(TextBlob(message).sentiment.polarity))
+
+    #message = 'Worst away day sat in a home end V Bolton 0-0 87 mins gone Berba scores I Jump up #awkward   #awaydays'
+    x = 'that was really horrifying .'
+
+    #x = 'my dear i will pray for you i love you'
+
+    print(str(polaritySumAVGUsingWeights(replaceBoosterWords(removeAllPonctuation(replaceNegatingWords(removeStopWords(removeAllPonctuation(replaceNegatingWords(removeLinks(boostUpperCase(x)))))))), 0.17594809303743952, hashtagPolaritySum(replaceBoosterWords(replaceNegatingWords(replaceNegatingWords(removeLinks(x))))), emoticonsPolaritySum(x), 0.19612448652451175, if_then_else(hasURLs(x), if_then_else(hasURLs(removeAllPonctuation(x)), emoticonsPolaritySum(x), emoticonsPolaritySum(removeAllPonctuation(replaceNegatingWords(x)))), 0.0), emoticonsPolaritySum(x), emoticonsPolaritySum(boostUpperCase(x)), emoticonsPolaritySum(replaceBoosterWords(x)), sub(neutralRange(1.6709136855853841, negativeWordsQuantity(x)), if_then_else(hasURLs(x), hashtagPolaritySum(replaceNegatingWords(removeStopWords(replaceNegatingWords(x)))), 0.0)))))
+
+
+    #print(str(hashtagPolaritySum(removeAllPonctuation(message))))
+
+    #print(str(emoticonsPolaritySum(removeAllPonctuation("@lexi_coppello :) test:) @yomaggieshields im with Nat so i dont wanna be rude! Tomorrow <3"))))
+    #print(str(hasEmoticons("'@robinlegare @Millsy11374 To be fair the link says 2nd \"\"Bachelorette\"\" couple...Jason & Molly are a \"\"Bachelor\"\" couple  :-)'")))
+    #print(str(emoticonsPolaritySum(removeAllPonctuation("'@robinlegare @Millsy11374 To be fair the link says 2nd \"\"Bachelorette\"\" couple...Jason & Molly are a \"\"Bachelor\"\" couple  :-)'"))))
+
+	# saveWordsTokenized("test")
 
 	#print(str(getPOSTag("Hi there, i love you so much")))
 	#print(str(getPOSTag("This is a cooool #dummysmiley: :-) :-P <3 and some arrows < > -> <--")))
