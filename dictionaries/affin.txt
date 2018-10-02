@@ -1457,6 +1457,9 @@ litigious	-2
 lively	2
 livid	-2
 lmfao	4
+lmfaoo	4
+lmfaooo	4
+lmfaoooo	4
 loathe	-3
 loathed	-3
 loathes	-3
