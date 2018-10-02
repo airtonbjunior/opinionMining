@@ -1221,6 +1221,7 @@ horrendous	-3
 horrible	-3
 horrific	-3
 horrified	-3
+horrifying	-3
 hostile	-2
 huckster	-2
 hug	2
