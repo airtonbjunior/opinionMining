@@ -98,7 +98,7 @@ pset.addTerminal(0.0, float)
 #pset.addTerminal(2.0, float)
 
 pset.addEphemeralConstant("rand", lambda: random.uniform(0, 2), float)
-pset.addEphemeralConstant("rand2", lambda: random.uniform(0, 2), float)
+pset.addEphemeralConstant("rand2", lambda: random.uniform(-2, 2), float)
 #pset.addEphemeralConstant("randInt", lambda: random.randint(0, 3), int)
 
 pset.renameArguments(ARG0='x')
