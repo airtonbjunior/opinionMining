@@ -513,15 +513,33 @@ if __name__ == "__main__":
 
     getDictionary("test")
 
-    from textblob import TextBlob
+
+    #with open('positivehashtagssaved.txt', 'a') as fsave:
+	#    with open('dictionaries/sentiment140_unigram.txt', 'r') as f:
+	#    	for line in f:
+	#    		if line.split("\t")[0].strip().startswith("#") and float(line.split("\t")[1].strip()) > 0:
+	#    			fsave.write(line.split("\t")[0][1:].strip() + "\n")
+
+
+
+
+    #from textblob import TextBlob
     #print(str(TextBlob("not a very great calculation").sentiment.subjectivity))
     #print(str(TextBlob(message).sentiment.subjectivity))
     #print(str(TextBlob(message).sentiment.polarity))
 
     #message = 'Worst away day sat in a home end V Bolton 0-0 87 mins gone Berba scores I Jump up #awkward   #awaydays'
-    x = 'that was really horrifying .'
-
+    #x = 'way too amped to sleep right now. it is physically impossible for me to take the SATs tomorrow'
+    x = 'yesssss , livejournal layouts 4lyfe .'
     #x = 'my dear i will pray for you i love you'
+
+    #print(str(hashtagPolaritySum(removeAllPonctuation(x))))
+
+    #for l in x.split():
+    #	print(str(getPOSTag(l)))
+
+    #print(str(getPOSTag(x)[0]))
+    #print(str(getPOSTag(y)))
 
     print(str(polaritySumAVGUsingWeights(replaceBoosterWords(removeAllPonctuation(replaceNegatingWords(removeStopWords(removeAllPonctuation(replaceNegatingWords(removeLinks(boostUpperCase(x)))))))), 0.17594809303743952, hashtagPolaritySum(replaceBoosterWords(replaceNegatingWords(replaceNegatingWords(removeLinks(x))))), emoticonsPolaritySum(x), 0.19612448652451175, if_then_else(hasURLs(x), if_then_else(hasURLs(removeAllPonctuation(x)), emoticonsPolaritySum(x), emoticonsPolaritySum(removeAllPonctuation(replaceNegatingWords(x)))), 0.0), emoticonsPolaritySum(x), emoticonsPolaritySum(boostUpperCase(x)), emoticonsPolaritySum(replaceBoosterWords(x)), sub(neutralRange(1.6709136855853841, negativeWordsQuantity(x)), if_then_else(hasURLs(x), hashtagPolaritySum(replaceNegatingWords(removeStopWords(replaceNegatingWords(x)))), 0.0)))))
 
