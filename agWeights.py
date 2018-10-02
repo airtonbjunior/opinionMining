@@ -530,8 +530,12 @@ if __name__ == "__main__":
 
     #message = 'Worst away day sat in a home end V Bolton 0-0 87 mins gone Berba scores I Jump up #awkward   #awaydays'
     #x = 'way too amped to sleep right now. it is physically impossible for me to take the SATs tomorrow'
-    x = 'yesssss , livejournal layouts 4lyfe .'
+    x = 'Thunderbolt and lightning may have been very very frightening for Queen but it is exciting for me... http://t.co/EmUHF4Aq'
+
     #x = 'my dear i will pray for you i love you'
+
+    #x = re.sub(r"([\w/'+$\s-]+|[^\w/'+$\s-]+)\s*", r"\1 ", x)
+    
 
     #print(str(hashtagPolaritySum(removeAllPonctuation(x))))
 
@@ -541,14 +545,9 @@ if __name__ == "__main__":
     #print(str(getPOSTag(x)[0]))
     #print(str(getPOSTag(y)))
 
-    print(str(polaritySumAVGUsingWeights(replaceBoosterWords(removeAllPonctuation(replaceNegatingWords(removeStopWords(removeAllPonctuation(replaceNegatingWords(removeLinks(boostUpperCase(x)))))))), 0.17594809303743952, hashtagPolaritySum(replaceBoosterWords(replaceNegatingWords(replaceNegatingWords(removeLinks(x))))), emoticonsPolaritySum(x), 0.19612448652451175, if_then_else(hasURLs(x), if_then_else(hasURLs(removeAllPonctuation(x)), emoticonsPolaritySum(x), emoticonsPolaritySum(removeAllPonctuation(replaceNegatingWords(x)))), 0.0), emoticonsPolaritySum(x), emoticonsPolaritySum(boostUpperCase(x)), emoticonsPolaritySum(replaceBoosterWords(x)), sub(neutralRange(1.6709136855853841, negativeWordsQuantity(x)), if_then_else(hasURLs(x), hashtagPolaritySum(replaceNegatingWords(removeStopWords(replaceNegatingWords(x)))), 0.0)))))
+    #print(str(polaritySumAVGUsingWeights(replaceBoosterWords(removeAllPonctuation(replaceNegatingWords(removeStopWords(removeAllPonctuation(replaceNegatingWords(removeLinks(boostUpperCase(x)))))))), 0.17594809303743952, hashtagPolaritySum(replaceBoosterWords(replaceNegatingWords(replaceNegatingWords(removeLinks(x))))), emoticonsPolaritySum(x), 0.19612448652451175, if_then_else(hasURLs(x), if_then_else(hasURLs(removeAllPonctuation(x)), emoticonsPolaritySum(x), emoticonsPolaritySum(removeAllPonctuation(replaceNegatingWords(x)))), 0.0), emoticonsPolaritySum(x), emoticonsPolaritySum(boostUpperCase(x)), emoticonsPolaritySum(replaceBoosterWords(x)), sub(neutralRange(1.6709136855853841, negativeWordsQuantity(x)), if_then_else(hasURLs(x), hashtagPolaritySum(replaceNegatingWords(removeStopWords(replaceNegatingWords(x)))), 0.0)))))
 
-
-    #print(str(hashtagPolaritySum(removeAllPonctuation(message))))
-
-    #print(str(emoticonsPolaritySum(removeAllPonctuation("@lexi_coppello :) test:) @yomaggieshields im with Nat so i dont wanna be rude! Tomorrow <3"))))
-    #print(str(hasEmoticons("'@robinlegare @Millsy11374 To be fair the link says 2nd \"\"Bachelorette\"\" couple...Jason & Molly are a \"\"Bachelor\"\" couple  :-)'")))
-    #print(str(emoticonsPolaritySum(removeAllPonctuation("'@robinlegare @Millsy11374 To be fair the link says 2nd \"\"Bachelorette\"\" couple...Jason & Molly are a \"\"Bachelor\"\" couple  :-)'"))))
+    print(str(polaritySumAVGUsingWeights(replaceNegatingWords(removeAllPonctuation(removeAllPonctuation(replaceNegatingWords(removeStopWords(replaceNegatingWords(replaceNegatingWords(x))))))), neutralRange(0.0, 0.0), 0.0, 1.3113316399583013, 0.5580832687368169, 0.0, 0.0, emoticonsPolaritySum(x), 0.0, 0.0)))
 
 	# saveWordsTokenized("test")
 
