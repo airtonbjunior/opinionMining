@@ -336,6 +336,7 @@ concise
 confidence
 confident
 congenial
+congrats
 congratulate
 congratulation
 congratulations
@@ -915,6 +916,7 @@ high-quality
 high-spirited
 hilarious
 hire
+hired
 hiring
 holy
 homage
@@ -1346,6 +1348,7 @@ premier
 prestige
 prestigious
 prettily
+pretty
 priceless
 pride
 principled

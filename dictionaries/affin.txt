@@ -1134,9 +1134,16 @@ gullible	-2
 gun	-1
 ha	2
 hacked	-1
+hah	3
 haha	3
+hahah	3
 hahaha	3
 hahahah	3
+hahahaha	3
+hahahahah	3
+hahahahaha	3
+hahahahahah	3
+hahahahahaha	3
 hail	2
 hailed	2
 hapless	-2
@@ -1604,6 +1611,7 @@ nice	3
 nifty	2
 niggas	-5
 nigger	-5
+nightmare	-3
 no	-1
 no fun	-3
 noble	2
@@ -1751,6 +1759,7 @@ praised	3
 praises	3
 praising	3
 pray	1
+prayer	1
 praying	1
 prays	1
 prblm	-2
@@ -2204,6 +2213,7 @@ swear	-2
 swearing	-2
 swears	-2
 sweet	2
+sweetest	2
 swift	2
 swiftly	2
 swindle	-3
@@ -2473,6 +2483,11 @@ yeah	1
 yearning	1
 yeees	2
 yes	1
+yess	1
+yesss	2
+yessss	2
+yesssss	2
+yessssss	3
 youthful	2
 yucky	-2
 yummy	3

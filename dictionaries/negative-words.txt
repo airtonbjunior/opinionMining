@@ -818,6 +818,7 @@ damage
 damaged
 damages
 damaging
+dammit
 damn
 damnable
 damnably
@@ -2707,6 +2708,7 @@ lengthy
 less-developed
 lesser-known
 letch
+leukemia
 lethal
 lethargic
 lethargy
