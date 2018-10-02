@@ -512,9 +512,12 @@ def loadTestTweets():
         for line in inF:
             if tweets_loaded < variables.MAX_ANALYSIS_TWEETS:
                 tweet_parsed = line.split("\t")
+
+                
+
                 try:
                     # TEST USING SVM - KEEP THE ORDER
-                    variables.all_messages_in_file_order.append(tweet_parsed[2])
+                    variables.all_messages_in_file_order.append(tweet_parsed[2].replace('right now', 'rightnow'))
                     if tweet_parsed[0] == "positive":
                         variables.all_polarities_in_file_order.append(1)
                     elif tweet_parsed[0] == "negative":
@@ -523,7 +526,7 @@ def loadTestTweets():
                         variables.all_polarities_in_file_order.append(0)
 
                     if tweet_parsed[1] == "Twitter2013":
-                        variables.tweets_2013.append(tweet_parsed[2])
+                        variables.tweets_2013.append(tweet_parsed[2].replace('right now', 'rightnow'))
                         
                         if tweet_parsed[0] == "positive":
                             variables.tweets_2013_score.append(1)
@@ -538,7 +541,7 @@ def loadTestTweets():
                             variables.tweets_2013_neutral += 1
 
                     elif tweet_parsed[1] == "Twitter2014":
-                        variables.tweets_2014.append(tweet_parsed[2])
+                        variables.tweets_2014.append(tweet_parsed[2].replace('right now', 'rightnow'))
 
                         if tweet_parsed[0] == "positive":
                             variables.tweets_2014_score.append(1)
@@ -553,7 +556,7 @@ def loadTestTweets():
                             variables.tweets_2014_neutral += 1
 
                     elif tweet_parsed[1] == "SMS2013":
-                        variables.sms_2013.append(tweet_parsed[2])
+                        variables.sms_2013.append(tweet_parsed[2].replace('right now', 'rightnow'))
 
                         if tweet_parsed[0] == "positive":
                             variables.sms_2013_score.append(1)
@@ -568,7 +571,7 @@ def loadTestTweets():
                             variables.sms_2013_neutral += 1
 
                     elif tweet_parsed[1] == "LiveJournal2014":
-                        variables.tweets_liveJournal2014.append(tweet_parsed[2])
+                        variables.tweets_liveJournal2014.append(tweet_parsed[2].replace('right now', 'rightnow'))
 
                         if tweet_parsed[0] == "positive":
                             variables.tweets_liveJournal2014_score.append(1)
@@ -583,7 +586,7 @@ def loadTestTweets():
                             variables.tweets_liveJournal2014_neutral += 1
 
                     elif tweet_parsed[1] == "Twitter2014Sarcasm":
-                        variables.tweets_2014_sarcasm.append(tweet_parsed[2])
+                        variables.tweets_2014_sarcasm.append(tweet_parsed[2].replace('right now', 'rightnow'))
                         
                         if tweet_parsed[0] == "positive":
                             variables.tweets_2014_sarcasm_score.append(1)
@@ -1812,16 +1815,12 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 
                 if invert:
                     total_sum -= variables.dic_negative_nrc[word] * w8
-                    #total_sum += 1 * w7
                 elif booster:
                     total_sum += 2* variables.dic_negative_nrc[word] * w8
-                    #total_sum -= 2 * w7
                 elif boosterAndInverter:
-                    total_sum -= 2 * variables.dic_negative_nrc[word] * w8
-                    #total_sum += 2 * w7                      
+                    total_sum -= 2 * variables.dic_negative_nrc[word] * w8                      
                 else:
                     total_sum += variables.dic_negative_nrc[word] * w8
-                    #total_sum -= 1 * w7
                         
                 dic_quantity += 1
                 total_weight += w8 
@@ -1834,15 +1833,11 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 
                 if invert:
                     total_sum -= variables.dic_positive_gi[word] * w9
-                    #total_sum -= 1 * w7
                 elif booster:
                     total_sum += 2 * variables.dic_positive_gi[word] * w9
-                    #total_sum += 2 * w7
-                elif boosterAndInverter:
-                    #total_sum -= 2 * w7 
+                elif boosterAndInverter: 
                     total_sum -= 2 * variables.dic_positive_gi[word] * w9                    
                 else:
-                    #total_sum += variables.dic_positive_nrc[word]
                     total_sum += variables.dic_positive_gi[word] * w9
             
                 dic_quantity += 1
@@ -1854,16 +1849,12 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 
                 if invert:
                     total_sum -= variables.dic_negative_gi[word] * w9
-                    #total_sum += 1 * w7
                 elif booster:
                     total_sum += 2* variables.dic_negative_gi[word] * w9
-                    #total_sum -= 2 * w7
                 elif boosterAndInverter:
-                    total_sum -= 2 * variables.dic_negative_gi[word] * w9
-                    #total_sum += 2 * w7                      
+                    total_sum -= 2 * variables.dic_negative_gi[word] * w9                      
                 else:
                     total_sum += variables.dic_negative_gi[word] * w9
-                    #total_sum -= 1 * w7
                         
                 dic_quantity += 1
                 total_weight += w9  
@@ -1876,15 +1867,11 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 
                 if invert:
                     total_sum -= variables.dic_positive_s140[word] * w10
-                    #total_sum -= 1 * w7
                 elif booster:
                     total_sum += 2 * variables.dic_positive_s140[word] * w10
-                    #total_sum += 2 * w7
-                elif boosterAndInverter:
-                    #total_sum -= 2 * w7 
+                elif boosterAndInverter: 
                     total_sum -= 2 * variables.dic_positive_s140[word] * w10                    
                 else:
-                    #total_sum += variables.dic_positive_nrc[word]
                     total_sum += variables.dic_positive_s140[word] * w10
             
                 dic_quantity += 1
@@ -1896,16 +1883,12 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 
                 if invert:
                     total_sum -= variables.dic_negative_s140[word] * w10
-                    #total_sum += 1 * w7
                 elif booster:
                     total_sum += 2* variables.dic_negative_s140[word] * w10
-                    #total_sum -= 2 * w7
                 elif boosterAndInverter:
-                    total_sum -= 2 * variables.dic_negative_s140[word] * w10
-                    #total_sum += 2 * w7                      
+                    total_sum -= 2 * variables.dic_negative_s140[word] * w10                      
                 else:
                     total_sum += variables.dic_negative_s140[word] * w10
-                    #total_sum -= 1 * w7
                         
                 dic_quantity += 1
                 total_weight += w10
@@ -1918,15 +1901,11 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 
                 if invert:
                     total_sum -= variables.dic_positive_mpqa[word] * w11
-                    #total_sum -= 1 * w7
                 elif booster:
                     total_sum += 2 * variables.dic_positive_mpqa[word] * w11
-                    #total_sum += 2 * w7
                 elif boosterAndInverter:
-                    #total_sum -= 2 * w7 
                     total_sum -= 2 * variables.dic_positive_mpqa[word] * w11                    
                 else:
-                    #total_sum += variables.dic_positive_nrc[word]
                     total_sum += variables.dic_positive_mpqa[word] * w11
             
                 dic_quantity += 1
@@ -1938,16 +1917,12 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 
                 if invert:
                     total_sum -= variables.dic_negative_mpqa[word] * w11
-                    #total_sum += 1 * w7
                 elif booster:
                     total_sum += 2* variables.dic_negative_mpqa[word] * w11
-                    #total_sum -= 2 * w7
                 elif boosterAndInverter:
                     total_sum -= 2 * variables.dic_negative_mpqa[word] * w11
-                    #total_sum += 2 * w7                      
                 else:
                     total_sum += variables.dic_negative_mpqa[word] * w11
-                    #total_sum -= 1 * w7
                         
                 dic_quantity += 1
                 total_weight += w11                                                                                                          
@@ -2091,6 +2066,7 @@ def positiveHashtags(phrase):
         hashtags = re.findall(r"#(\w+)", phrase)
 
         for hashtag in hashtags:
+            #print(hashtag)
             if hashtag.lower().strip() in variables.dic_positive_hashtags:
                 total += 1 
             else:
