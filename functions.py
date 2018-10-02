@@ -2375,6 +2375,9 @@ def evaluateMessages(base, model):
         message = message.replace("\\u2018", "").replace("\\u2019", "").replace("\\u002c", "")        
         message = "'" + message + "'"
 
+        # Test - separe ponctuaction
+        #message = re.sub(r"([\w/'+$\s-]+|[^\w/'+$\s-]+)\s*", r"\1 ", message)
+
         model_analysis = model.replace("(x", "(" + message)
         
         if not len(message) > 0:
@@ -2649,15 +2652,17 @@ def evaluateMessages(base, model):
             if base == "all":
                 # PUT the dictionaries weights here
                 f.write("\n# [weights]\n")
-                f.write("# w1: " + str(set(variables.w1)) + "\n")
-                f.write("# w2: " + str(set(variables.w2)) + "\n")
-                f.write("# w3: " + str(set(variables.w3)) + "\n")
-                f.write("# w4: " + str(set(variables.w4)) + "\n")
-                f.write("# w5: " + str(set(variables.w5)) + "\n")
-                f.write("# w6: " + str(set(variables.w6)) + "\n")
-                f.write("# w7: " + str(set(variables.w7)) + "\n")
-                f.write("# w8: " + str(set(variables.w8)) + "\n")
-                f.write("# w9: " + str(set(variables.w9)) + "\n\n")
+                f.write("# w1: " + str(set(variables.w1))  + "\n")
+                f.write("# w2: " + str(set(variables.w2))  + "\n")
+                f.write("# w3: " + str(set(variables.w3))  + "\n")
+                f.write("# w4: " + str(set(variables.w4))  + "\n")
+                f.write("# w5: " + str(set(variables.w5))  + "\n")
+                f.write("# w6: " + str(set(variables.w6))  + "\n")
+                f.write("# w7: " + str(set(variables.w7))  + "\n")
+                f.write("# w8: " + str(set(variables.w8))  + "\n")
+                f.write("# w9: " + str(set(variables.w9))  + "\n")
+                f.write("# w10: " + str(set(variables.w10)) + "\n")
+                f.write("# w11: " + str(set(variables.w11)) + "\n\n")
 
                 f.write("# [neutral ranges]\n")
                 f.write("# " + str(set(variables.neutral_values)) + "\n\n")
