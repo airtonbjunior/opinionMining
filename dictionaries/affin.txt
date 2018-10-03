@@ -561,6 +561,7 @@ daredevil	2
 daring	2
 darkest	-2
 darkness	-1
+daunting	-1
 dauntless	2
 dead	-3
 deadlock	-2
@@ -2071,6 +2072,7 @@ smiles	2
 smiling	2
 smog	-2
 sneaky	-1
+snore	-1
 snub	-2
 snubbed	-2
 snubbing	-2
@@ -2385,6 +2387,7 @@ victimized	-3
 victimizes	-3
 victimizing	-3
 victims	-3
+victory	-3
 vigilant	3
 vile	-3
 vindicate	2
