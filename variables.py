@@ -121,8 +121,8 @@ dic_mpqa_loaded         = False
 dic_loaded_total = 0
 
 # Balance the train tweets
-MAX_POSITIVES_TWEETS = 3000
-MAX_NEGATIVES_TWEETS = 3000
+MAX_POSITIVES_TWEETS = 1500
+MAX_NEGATIVES_TWEETS = 1500
 MAX_NEUTRAL_TWEETS   = 1500
 
 # GP/GA Parameters
@@ -133,10 +133,10 @@ MUTATION         = 0.1
 AG_MUTATION      = 0.3
 MUTATE_EPHEMERAL = 0.75
 
-GENERATIONS      = 195
+GENERATIONS      = 70
 AG_GENERATIONS   = 50
 
-POPULATION       = 100
+POPULATION       = 200
 AG_POPULATION    = 100
 
 cicles_unchanged = 0
