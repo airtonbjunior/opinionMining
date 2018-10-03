@@ -499,6 +499,26 @@ def createChunks(message_list, n_chunks):
     return chunks
 
 
+def createIndexChunks(all_index, n_chunks):
+    import random
+
+    ys = list(all_index)
+    random.shuffle(ys)
+    
+    ylen = len(ys)
+    size = int(ylen / n_chunks)
+    
+    chunks = [ys[0+size*i : size*(i+1)] for i in range(n_chunks)]
+    leftover = ylen - size*n_chunks
+    
+    edge = size * n_chunks
+    
+    for i in range(leftover):
+        chunks[i % n_chunks].append(ys[edge+i])
+    
+    return chunks
+
+
 # Load the test tweets from Semeval 2017 task 4a
 ###############################
 # TEST
