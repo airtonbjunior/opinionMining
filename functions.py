@@ -499,6 +499,56 @@ def createChunks(message_list, n_chunks):
     return chunks
 
 
+# Load the test tweets from Semeval 2017 task 4a
+###############################
+# TEST
+###############################
+def loadTestTweetsSemeval2017():
+    start = time.time()
+    print("\n[loading test tweets - semeval 2017]")
+    tweets_loaded = 0
+    test_words = []
+
+    with open(variables.SEMEVAL_2017_TEST_FILE, 'r') as inF:
+        for line in inF:
+            if tweets_loaded < variables.MAX_ANALYSIS_TWEETS or 1==1:
+                tweet_parsed = line.split("\t")
+
+                try:
+                    # TEST USING SVM - KEEP THE ORDER
+                    variables.all_messages_in_file_order.append(tweet_parsed[2].replace('right now', 'rightnow'))
+                    if tweet_parsed[1] == "positive":
+                        variables.all_polarities_in_file_order.append(1)
+                    elif tweet_parsed[1] == "negative":
+                        variables.all_polarities_in_file_order.append(-1)
+                    elif tweet_parsed[1] == "neutral":
+                        variables.all_polarities_in_file_order.append(0)
+
+                    if tweet_parsed[1] == "Twitter2013" or 1==1:
+                        variables.tweets_2013.append(tweet_parsed[2].replace('right now', 'rightnow'))
+                        
+                        if tweet_parsed[1] == "positive":
+                            variables.tweets_2013_score.append(1)
+                            variables.tweets_2013_positive += 1
+
+                        elif tweet_parsed[1] == "negative":
+                            variables.tweets_2013_score.append(-1)
+                            variables.tweets_2013_negative += 1
+                        
+                        elif tweet_parsed[1] == "neutral":
+                            variables.tweets_2013_score.append(0)
+                            variables.tweets_2013_neutral += 1
+
+                    tweets_loaded += 1
+                
+                except Exception as e:
+                    print("exception 1 (2017): " + str(e))
+                    continue
+
+    end = time.time()
+    print("  [test tweets (semeval 2017) loaded (" + str(tweets_loaded) + " tweets)][" + str(format(end - start, '.3g')) + " seconds]\n")
+
+
 # Load the test tweets from Semeval 2014 task 9
 def loadTestTweets():
     start = time.time()
@@ -2331,6 +2381,7 @@ def evaluateMessages(base, model):
 
     if len(variables.tweets_2013) == 0:
         loadTestTweets()
+        #loadTestTweetsSemeval2017()
         #loadTestTweets_smuk()
 
     if base == "tweets2013":
