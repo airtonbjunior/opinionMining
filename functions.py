@@ -513,8 +513,6 @@ def loadTestTweets():
             if tweets_loaded < variables.MAX_ANALYSIS_TWEETS:
                 tweet_parsed = line.split("\t")
 
-                
-
                 try:
                     # TEST USING SVM - KEEP THE ORDER
                     variables.all_messages_in_file_order.append(tweet_parsed[2].replace('right now', 'rightnow'))
@@ -620,7 +618,7 @@ def loadTestTweets():
                     #SVM Values
                 
                 except Exception as e:
-                    print("exception 1: " + e)
+                    print("exception 1: " + str(e))
                     continue
 
     end = time.time()
@@ -2236,6 +2234,14 @@ def mutateW(individual):
     return individual,
 
 
+def clean_tweet(tweet):
+    return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split())
+
+
+
+#from aylienapiclient import textapi
+#client = textapi.Client("f60113d3", "c05ff1ac96609b50c4620564d6b99f61")
+
 # Evaluate the test messages using the model
 # http://text-analytics101.rxnlp.com/2014/10/computing-precision-and-recall-for.html
 def evaluateMessages(base, model):
@@ -2375,7 +2381,7 @@ def evaluateMessages(base, model):
         message = message.replace("\\u2018", "").replace("\\u2019", "").replace("\\u002c", "")        
         message = "'" + message + "'"
 
-        # Test - separe ponctuaction
+        # Test - some pre-processing
         #message = re.sub(r"([\w/'+$\s-]+|[^\w/'+$\s-]+)\s*", r"\1 ", message)
 
         model_analysis = model.replace("(x", "(" + message)
@@ -2427,6 +2433,20 @@ def evaluateMessages(base, model):
                         result = hashtagPolaritySum(message)
                     elif base == "sarcasm":
                         result = TextBlob(message).sentiment.polarity
+                    #else:
+                        #parameters = {}
+                        #parameters["text"] = str(message)
+                        #sentiment = client.Sentiment(parameters)
+                        #if(sentiment["polarity"] == 'negative'):
+                        #    result = variables.neutral_inferior_range - 1
+                        #elif (sentiment["polarity"] == 'positive'):
+                        #    result = variables.neutral_superior_range + 1
+                        #else:
+                        #    result = 0
+                        #print()
+                        #result = variables.svm_normalized_values[index]
+                        #result = TextBlob(message).sentiment.polarity
+
                     # when use this, the F1 for all messages increase
                     #else:
                     #    result = variables.svm_normalized_values[index]
