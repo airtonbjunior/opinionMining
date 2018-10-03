@@ -511,7 +511,7 @@ def loadModel():
 if __name__ == "__main__":                
 	#main()
 
-    getDictionary("test")
+    #getDictionary("test")
 
 
     #with open('positivehashtagssaved.txt', 'a') as fsave:
@@ -530,12 +530,22 @@ if __name__ == "__main__":
 
     #message = 'Worst away day sat in a home end V Bolton 0-0 87 mins gone Berba scores I Jump up #awkward   #awaydays'
     #x = 'way too amped to sleep right now. it is physically impossible for me to take the SATs tomorrow'
-    x = 'Thunderbolt and lightning may have been very very frightening for Queen but it is exciting for me... http://t.co/EmUHF4Aq'
+    #x = ';-) please screen or delete this comment .'
+
 
     #x = 'my dear i will pray for you i love you'
 
     #x = re.sub(r"([\w/'+$\s-]+|[^\w/'+$\s-]+)\s*", r"\1 ", x)
     
+    #from textblob import TextBlob
+    #print(str(TextBlob(x).sentiment.polarity))
+
+    from aylienapiclient import textapi
+    client = textapi.Client("f60113d3", "c05ff1ac96609b50c4620564d6b99f61")
+
+    sentiment = client.Sentiment({'text': ';-) please screen or delete this comment .'})
+
+    print(sentiment["polarity"])
 
     #print(str(hashtagPolaritySum(removeAllPonctuation(x))))
 
@@ -545,9 +555,11 @@ if __name__ == "__main__":
     #print(str(getPOSTag(x)[0]))
     #print(str(getPOSTag(y)))
 
-    #print(str(polaritySumAVGUsingWeights(replaceBoosterWords(removeAllPonctuation(replaceNegatingWords(removeStopWords(removeAllPonctuation(replaceNegatingWords(removeLinks(boostUpperCase(x)))))))), 0.17594809303743952, hashtagPolaritySum(replaceBoosterWords(replaceNegatingWords(replaceNegatingWords(removeLinks(x))))), emoticonsPolaritySum(x), 0.19612448652451175, if_then_else(hasURLs(x), if_then_else(hasURLs(removeAllPonctuation(x)), emoticonsPolaritySum(x), emoticonsPolaritySum(removeAllPonctuation(replaceNegatingWords(x)))), 0.0), emoticonsPolaritySum(x), emoticonsPolaritySum(boostUpperCase(x)), emoticonsPolaritySum(replaceBoosterWords(x)), sub(neutralRange(1.6709136855853841, negativeWordsQuantity(x)), if_then_else(hasURLs(x), hashtagPolaritySum(replaceNegatingWords(removeStopWords(replaceNegatingWords(x)))), 0.0)))))
+    #loadTestTweets()
 
-    print(str(polaritySumAVGUsingWeights(replaceNegatingWords(removeAllPonctuation(removeAllPonctuation(replaceNegatingWords(removeStopWords(replaceNegatingWords(replaceNegatingWords(x))))))), neutralRange(0.0, 0.0), 0.0, 1.3113316399583013, 0.5580832687368169, 0.0, 0.0, emoticonsPolaritySum(x), 0.0, 0.0)))
+    #print(clean_tweet(x))
+
+    #print(str(polaritySumAVGUsingWeights(replaceNegatingWords(removeAllPonctuation(removeAllPonctuation(replaceNegatingWords(removeStopWords(replaceNegatingWords(replaceNegatingWords(x))))))), neutralRange(0.0, 0.0), 0.0, 1.3113316399583013, 0.5580832687368169, 0.0, 0.0, emoticonsPolaritySum(x), 0.0, 0.0)))
 
 	# saveWordsTokenized("test")
 
