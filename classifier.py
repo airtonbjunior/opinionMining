@@ -199,9 +199,18 @@ def evalSymbRegTweetsFromSemeval(individual):
     # to work using another databases
     TWEETS_TO_EVALUATE       = variables.tweets_semeval
     TWEETS_SCORE_TO_EVALUATE = variables.tweets_semeval_score
-
     # Main loop
     #for index, item in enumerate(variables.tweets_semeval):
+
+    #indexes = list(range(len(TWEETS_TO_EVALUATE)))
+    #chunks = createIndexChunks(indexes, 10)
+
+    #for c in chunks:
+    #    print(c)
+    #    print("\n")
+
+    #return 0
+
     for index, item in enumerate(TWEETS_TO_EVALUATE):
         
         # Constraints
@@ -229,39 +238,7 @@ def evalSymbRegTweetsFromSemeval(individual):
             break
 
         # neutralRange constraints
-        if(variables.neutral_range_constraint):
-            # Constraint 3: neutralRange - parameters and sequence values
-#            if count_neutral_range == 1:
-#                if(len(str(individual)[str(individual).find("neutralRange"):].split("(")[1].split(")")) < 2):
-#                    
-#                    # Fitness zero only on first generation
-#                    if(generation_count == 1):
-#                        print("\n[CONSTRAINT][neutralRange parameters is another function (variables ranges)][bad individual][fitness zero]\n")
-#                        if variables.log_times:
-#                            print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
-#                        print("-----------------------------")
-#                        print("\n") 
-#                        breaked = True
-#                        break
-#                    elif(generation_count > 1 and index ==0):
-#                        print("\n[CONSTRAINT][neutralRange parameters is another function (variables ranges)][fitness decreased in " + str(variables.root_decreased_value * 100) + "%]\n")
-#                        if fitness_decreased:
-#                            double_decreased = True
-#                        fitness_decreased = True
-#
-#                else:
-#                    arg1 = str(individual)[str(individual).find("neutralRange"):].split("(")[1].split(")")[0].split(",")[0]
-#                    arg2 = str(individual)[str(individual).find("neutralRange"):].split("(")[1].split(")")[0].split(",")[1]
-#                    if(is_float_try(arg1) and is_float_try(arg2)):
-#                        if(float(arg1) > float(arg2)):
-#                            print("\n[CONSTRAINT][neutralRange - inferior range is greater than superior][bad individual][fitness zero]\n")
-#                            if variables.log_times:
-#                                print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
-#                            print("-----------------------------")
-#                            print("\n") 
-#                            breaked = True
-#                            break
-            
+        if(variables.neutral_range_constraint):      
             # Constraint 4: neutralRange - function does not exist in the model
             if count_neutral_range == 0 and index == 0:
                 print("\n[CONSTRAINT][model does not have neutralRange function][fitness decreased in " + str(variables.root_decreased_value * 100) + "%]\n")
@@ -499,8 +476,326 @@ def evalSymbRegTweetsFromSemeval(individual):
     return fitnessReturn,
 
 
+# evaluation function with folds
+def evalSymbRegTweetsFromSemeval_folds(individual):
+    start = time.time()
+    global iterate_count
+    global generation_count
+    global best_of_generation
+    new_generation = False
+
+    # Check max unchanged generations
+    if variables.generations_unchanged >= variables.max_unchanged_generations:
+        if(variables.generations_unchanged_reached_msg == False):
+            print("[Max unchanged generations (" + str(variables.max_unchanged_generations) + ") reached on generation " + str(generation_count) + "]")
+        variables.generations_unchanged_reached_msg = True
+        return 0,
+
+    # Log the number of each individual
+    if iterate_count <= variables.POPULATION:
+        print("[individual " + str(iterate_count) + " of the generation " + str(generation_count) + "]")
+        iterate_count += 1
+    else:
+        generation_count += 1
+        iterate_count = 1
+        variables.best_fitness_per_generation_history.append(best_of_generation)
+        print("\n[new generation][start generation " + str(generation_count) + "]\n")
+        new_generation = True
+        best_of_generation = 0
+
+    global evaluation_acumulated_time
+    correct_evaluations = 0
+
+    fitnessReturn = 0
+
+    accuracy = 0
+    is_positive, is_negative, is_neutral = 0, 0, 0
+    true_positive, true_negative, true_neutral, false_positive, false_negative, false_neutral  = 0, 0, 0, 0, 0, 0
+    precision_positive, precision_negative, precision_neutral, precision_avg                   = 0, 0, 0, 0
+    recall_positive, recall_negative, recall_neutral, recall_avg                               = 0, 0, 0, 0
+    f1_positive, f1_negative, f1_neutral, f1_avg, f1_positive_negative_avg                     = 0, 0, 0, 0, 0
+    func_value = 0
+
+    # Constraint controls 
+    breaked, fitness_decreased, double_decreased = False, False, False
+
+    func = toolbox.compile(expr=individual)
+
+    TWEETS_TO_EVALUATE, TWEETS_SCORE_TO_EVALUATE = variables.tweets_semeval, variables.tweets_semeval_score
+
+    indexes = list(range(len(TWEETS_TO_EVALUATE)))
+    chunks = createIndexChunks(indexes, 10)
+
+    fitness_list = []
+
+    for fold in chunks:
+        
+        correct_evaluations = 0
+        fitnessReturn = 0
+        accuracy = 0
+        is_positive, is_negative, is_neutral = 0, 0, 0
+        true_positive, true_negative, true_neutral, false_positive, false_negative, false_neutral  = 0, 0, 0, 0, 0, 0
+        precision_positive, precision_negative, precision_neutral, precision_avg                   = 0, 0, 0, 0
+        recall_positive, recall_negative, recall_neutral, recall_avg                               = 0, 0, 0, 0
+        f1_positive, f1_negative, f1_neutral, f1_avg, f1_positive_negative_avg                     = 0, 0, 0, 0, 0
+        first = True
+
+        for index in fold:
+            # Constraints
+            # Constraint 1: massive function - more than massive_functions_max
+            if (str(individual).count(variables.massive_function) > variables.massive_functions_max) and variables.massive_functions_constraint:
+                print("\n[CONSTRAINT][more than " + str(variables.massive_functions_max) + " massive(s) function(s)][bad individual][fitness zero]\n")
+                if variables.log_times:
+                    print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
+                print("-----------------------------")
+                print("\n") 
+                breaked = True
+                break
+
+            count_neutral_range = 0
+            count_neutral_range = str(individual).count("neutralRange")
+            
+            # Constraint 2: neutralRange - more than one neutralRange
+            if count_neutral_range > 1:
+                print("\n[CONSTRAINT][more than one neutralRange function][bad individual][fitness zero]\n")
+                if variables.log_times:
+                    print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
+                print("-----------------------------")
+                print("\n") 
+                breaked = True
+                break
+
+            # neutralRange constraints
+            if(variables.neutral_range_constraint):      
+                # Constraint 4: neutralRange - function does not exist in the model
+                if count_neutral_range == 0 and index == 0:
+                    print("\n[CONSTRAINT][model does not have neutralRange function][fitness decreased in " + str(variables.root_decreased_value * 100) + "%]\n")
+                    if fitness_decreased:
+                        double_decreased = True
+                    fitness_decreased = True
+
+            # Constraint 5: root function - functions root_functions (if_then_else hardcoded temporarily)
+            if (not str(individual).startswith(variables.root_function) and not str(individual).startswith("if_then_else")) and variables.root_constraint and index == 0:
+                print("\n[CONSTRAINT][root node is not " + variables.root_function + "][fitness decreased in " + str(variables.root_decreased_value * 100) + "%]\n")
+                if fitness_decreased:
+                    double_decreased = True            
+                fitness_decreased = True
+
+            # Log each new cicle
+            if first:
+                if variables.log_all_metrics_each_cicle:
+                    print("\n[New cicle]: " + str(len(TWEETS_TO_EVALUATE)) + " phrases to evaluate [" + str(variables.positive_tweets) + " positives, " + str(variables.negative_tweets) + " negatives and " + str(variables.neutral_tweets) + " neutrals]")
+                    first = False
+
+            try:
+                func_value = float(func(TWEETS_TO_EVALUATE[index]))
+                
+                if float(TWEETS_SCORE_TO_EVALUATE[index]) > 0:
+                    if  func_value > variables.neutral_superior_range:
+                        correct_evaluations += 1 
+                        is_positive   += 1
+                        true_positive += 1
+                    else:
+                        if func_value >= variables.neutral_inferior_range and func_value <= variables.neutral_superior_range:
+                            false_neutral += 1
+                        elif func_value < variables.neutral_inferior_range:
+                            false_negative += 1
+
+                elif float(TWEETS_SCORE_TO_EVALUATE[index]) < 0:
+                    if func_value < variables.neutral_inferior_range:
+                        correct_evaluations += 1 
+                        is_negative   += 1
+                        true_negative += 1
+                    else:
+                        if func_value >= variables.neutral_inferior_range and func_value <= variables.neutral_superior_range:
+                            false_neutral += 1
+                        elif func_value > variables.neutral_superior_range:
+                            false_positive += 1
+
+                elif float(TWEETS_SCORE_TO_EVALUATE[index]) == 0:
+                    if func_value >= variables.neutral_inferior_range and func_value <= variables.neutral_superior_range:
+                        correct_evaluations += 1 
+                        is_neutral   += 1
+                        true_neutral += 1
+                    else:
+                        if func_value < variables.neutral_inferior_range:
+                            false_negative += 1
+                        elif func_value > variables.neutral_superior_range:
+                            false_positive += 1
+
+            except Exception as e: 
+                print(e)
+                continue
+
+            #logs
+            if variables.log_all_messages:
+                print("[phrase]: " + TWEETS_TO_EVALUATE[index])
+                print("[value]: " + str(TWEETS_SCORE_TO_EVALUATE[index]))
+                print("[calculated]:" + func_value)
+
+
+        if true_positive + false_positive + true_negative + false_negative > 0:
+            accuracy = (true_positive + true_negative + true_neutral) / (true_positive + false_positive + true_negative + false_negative + true_neutral + false_neutral)
+
+        if accuracy > variables.best_accuracy:
+            variables.best_accuracy = accuracy 
+
+        # Begin PRECISION
+        if true_positive + false_positive > 0:
+            precision_positive = true_positive / (true_positive + false_positive)
+            if precision_positive > variables.best_precision_positive:
+                variables.best_precision_positive = precision_positive
+
+
+        if true_negative + false_negative > 0:
+            precision_negative = true_negative / (true_negative + false_negative)
+            if precision_negative > variables.best_precision_negative:
+                variables.best_precision_negative = precision_negative
+        
+
+        if true_neutral + false_neutral > 0:
+            precision_neutral = true_neutral / (true_neutral + false_neutral)
+            if precision_neutral > variables.best_precision_neutral:
+                variables.best_precision_neutral = precision_neutral
+        # End PRECISION
+
+        # Begin RECALL
+        if is_positive > 0:
+            recall_positive = true_positive / is_positive
+            if recall_positive > variables.best_recall_positive:
+                variables.best_recall_positive = recall_positive
+
+
+        if is_negative > 0:
+            recall_negative = true_negative / is_negative
+            if recall_negative > variables.best_recall_negative:
+                variables.best_recall_negative = recall_negative
+
+        if is_neutral > 0:
+            recall_neutral = true_neutral / is_neutral
+            if recall_neutral > variables.best_recall_neutral:
+                variables.best_recall_neutral = recall_neutral
+        # End RECALL
+
+        # Begin F1
+        if precision_positive + recall_positive > 0:
+            f1_positive = 2 * (precision_positive * recall_positive) / (precision_positive + recall_positive)
+            if f1_positive > variables.best_f1_positive:
+                variables.best_f1_positive = f1_positive
+
+
+        if precision_negative + recall_negative > 0:
+            f1_negative = 2 * (precision_negative * recall_negative) / (precision_negative + recall_negative)        
+            if f1_negative > variables.best_f1_negative:
+                variables.best_f1_negative = f1_negative
+
+        if precision_neutral + recall_neutral > 0:
+            f1_neutral = 2 * (precision_neutral * recall_neutral) / (precision_neutral + recall_neutral)        
+            if f1_neutral > variables.best_f1_neutral:
+                variables.best_f1_neutral = f1_neutral            
+        # End F1
+
+        # Precision, Recall and f1 means
+        precision_avg = (precision_positive + precision_negative + precision_neutral) / 3
+        if precision_avg > variables.best_precision_avg:
+            variables.best_precision_avg = precision_avg
+            variables.best_precision_avg_function = str(individual)
+
+        recall_avg = (recall_positive + recall_negative + recall_neutral) / 3
+        if recall_avg > variables.best_recall_avg:
+            variables.best_recall_avg = recall_avg
+            variables.best_recall_avg_function = str(individual)
+
+        f1_avg = (f1_positive + f1_negative + f1_neutral) / 3
+        if f1_avg > variables.best_f1_avg:
+            variables.best_f1_avg = f1_avg
+            variables.best_f1_avg_function = str(individual)
+
+        f1_positive_negative_avg = (f1_positive + f1_negative) / 2
+        if f1_positive_negative_avg > variables.best_f1_positive_negative_avg:
+            variables.best_f1_positive_negative_avg = f1_positive_negative_avg
+
+        fitnessReturn = f1_positive_negative_avg
+        if fitness_decreased:
+            fitnessReturn -= fitnessReturn * variables.root_decreased_value # 80% of the original value
+        if double_decreased:
+            fitnessReturn -= fitnessReturn * variables.root_decreased_value # Again
+
+
+        fitness_list.append(fitnessReturn)
+
+    fitnessReturn = sum(fitness_list)/len(chunks)
+    
+    print("[fitness list] " + str(fitness_list))
+    print("fitness sum] " + str(sum(fitness_list)))
+    print("[number of chunks] " + str(len(chunks)))
+    print("[avg fitness] " + str(fitnessReturn) + "\n")
+
+    if variables.best_fitness < fitnessReturn:
+        if variables.best_fitness != 0:
+            with open(variables.BEST_INDIVIDUAL, 'w') as f:
+                f.write(str(individual))
+                f.write("\n\n# Generation -> " + str(generation_count))
+                f.write("\n# Neutral Range -> [" + str(variables.neutral_inferior_range) + ", " + str(variables.neutral_superior_range) + "]")
+            variables.best_fitness_history.append(variables.best_fitness)
+        variables.best_fitness = fitnessReturn
+        variables.fitness_positive = is_positive
+        variables.fitness_negative = is_negative
+        variables.fitness_neutral  = is_neutral
+        is_positive = 0
+        is_negative = 0
+        is_neutral  = 0
+        variables.cicles_unchanged = 0
+        variables.generations_unchanged = 0
+    else:
+        variables.cicles_unchanged += 1
+        if new_generation:
+            variables.generations_unchanged += 1
+
+
+    if not new_generation and best_of_generation < fitnessReturn:
+        best_of_generation = fitnessReturn
+
+
+    variables.all_fitness_history.append(fitnessReturn)
+
+
+    #logs   
+    if variables.log_parcial_results and not breaked:# and not variables.calling_by_ag_file: 
+        if variables.log_all_metrics_each_cicle:
+            print("[correct evaluations] " + str(correct_evaluations))
+            print('{message: <{width}}'.format(message="[accuracy] ", width=18) + " -> " + str(round(accuracy, 3)))
+            print('{message: <{width}}'.format(message="[precision] ", width=18) + " -> " + "[positive]: " + '{message: <{width}}'.format(message=str(round(precision_positive, 3)), width=6) + " " + "[negative]: " + '{message: <{width}}'.format(message=str(round(precision_negative, 3)), width=6) + " " + "[neutral]: " + '{message: <{width}}'.format(message=str(round(precision_neutral, 3)), width=6) + " " + "[avg]: " + '{message: <{width}}'.format(message=str(round(precision_avg, 3)), width=6))
+            print('{message: <{width}}'.format(message="[recall] ", width=18) + " -> " + "[positive]: " + '{message: <{width}}'.format(message=str(round(recall_positive, 3)), width=6) + " " + "[negative]: " + '{message: <{width}}'.format(message=str(round(recall_negative, 3)), width=6) + " " + "[neutral]: " + '{message: <{width}}'.format(message=str(round(recall_neutral, 3)), width=6) + " " + "[avg]: " + '{message: <{width}}'.format(message=str(round(recall_avg, 3)), width=6))
+            print('{message: <{width}}'.format(message="[f1] ", width=18) + " -> " + "[positive]: " + '{message: <{width}}'.format(message=str(round(f1_positive, 3)), width=6) + " " + "[negative]: " + '{message: <{width}}'.format(message=str(round(f1_negative, 3)), width=6) + " " + "[neutral]: " + '{message: <{width}}'.format(message=str(round(f1_neutral, 3)), width=6) + " " + "[avg]: " + '{message: <{width}}'.format(message=str(round(f1_avg, 3)), width=6))
+            print('{message: <{width}}'.format(message="[f1 SemEval] ", width=18) + " -> " + str(round(f1_positive_negative_avg, 3)))
+        
+        print('{message: <{width}}'.format(message="[fitness] ", width=18) + " -> " + str(round(fitnessReturn, 5)) + " ****")
+        print('{message: <{width}}'.format(message="[best fitness] ", width=18) + " -> " + str(round(variables.best_fitness, 5)))
+        
+        print('{message: <{width}}'.format(message="[confusion matrix]", width=18) + " -> " + "[true_positive]: " + str(true_positive) + " " + "[false_positive]: " + str(false_positive) + " " + "[true_negative]: " + str(true_negative) + " " + "[false_negative]: " + str(false_negative) + " " + "[true_neutral]: " + str(true_neutral) + " " + "[false_neutral]: " + str(false_neutral) + "\n")
+
+        if variables.log_all_metrics_each_cicle:
+            print('{message: <{width}}'.format(message="[cicles unmodified]", width=24) + " -> " + str(variables.cicles_unchanged))
+        
+        print('{message: <{width}}'.format(message="[generations unmodified]", width=24) + " -> " + str(variables.generations_unchanged))
+        print("[function]: " + str(individual))
+        
+        if variables.log_times:
+            print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
+        
+        print("-----------------------------")
+        print("\n")   
+    #logs
+
+    evaluation_acumulated_time += time.time() - start
+
+        
+    
+    return fitnessReturn,
 
 toolbox.register("evaluate", evalSymbRegTweetsFromSemeval)
+#toolbox.register("evaluate", evalSymbRegTweetsFromSemeval_folds)
 toolbox.register("select", tools.selTournament, tournsize=2)
 toolbox.register("mate", gp.cxOnePoint)
 toolbox.register("expr_mut", gp.genHalfAndHalf, min_=0, max_=6)
