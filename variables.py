@@ -9,7 +9,8 @@ from datetime import datetime
 # Paths
 SEMEVAL_TRAIN_FILE            = 'datasets/train/twitter-train-cleansed-B.txt'
 SEMEVAL_TRAIN_FILE_SPELLCHECK = 'datasets/train/twitter-train-cleansed-B_spell.txt'
-SEMEVAL_TEST_FILE             = 'datasets/test/SemEval2014-task9-test-B-all-tweets_withSVMValues.txt'
+#SEMEVAL_TEST_FILE             = 'datasets/test/SemEval2014-task9-test-B-all-tweets_withSVMValues.txt'
+SEMEVAL_TEST_FILE             = 'datasets/test/SemEval2014_SVM_Naive.txt'
 SEMEVAL_TEST_FILE_SPELLCHECK  = 'datasets/test/SemEval2014-task9-test-B-all-tweets_withSVMValues_spell.txt'
 SEMEVAL_TEST_FILE_ONLY_POS    = 'datasets/test/SemEval2014-task9-test-B-tweets-only-some-POS-classes.txt'
 SEMEVAL_2017_TEST_FILE 	      = 'datasets/test/SemEval2017-task4-test.subtask-A.english.txt'
@@ -71,6 +72,7 @@ use_emoticon_analysis 		= True
 use_only_gp 	      		= False
 use_only_svm		  		= False
 use_hashtag_analysis        = True
+use_only_naive_bayes        = True
 
 neutral_inferior_range = 0
 neutral_superior_range = 0
@@ -173,6 +175,8 @@ svm_values_tweets     = []
 svm_is_neutral        = []
 svm_normalized_values = []
 tweet_semeval_index   = 0
+
+naive_normalized_values = []
 
 tweets_sts       = []
 tweets_sts_score = []
@@ -278,40 +282,52 @@ tweets_mukh_score = []
 tweets_mukh_positive = 0
 tweets_mukh_negative = 0
 
-tweets_2013       = []
-tweets_2013_score = []
-tweets_2013_positive = 0
-tweets_2013_negative = 0
-tweets_2013_neutral  = 0
+tweets_2013             = []
+tweets_2013_score       = []
+tweets_2013_score_svm   = []
+tweets_2013_score_naive = []
+tweets_2013_positive    = 0
+tweets_2013_negative    = 0
+tweets_2013_neutral     = 0
 
-tweets_2014       = []
-tweets_2014_score = []
-tweets_2014_positive = 0
-tweets_2014_negative = 0
-tweets_2014_neutral  = 0
+tweets_2014             = []
+tweets_2014_score       = []
+tweets_2014_score_svm   = []
+tweets_2014_score_naive = []
+tweets_2014_positive    = 0
+tweets_2014_negative    = 0
+tweets_2014_neutral     = 0
 
-tweets_liveJournal2014       = []
-tweets_liveJournal2014_score = []
-tweets_liveJournal2014_positive = 0
-tweets_liveJournal2014_negative = 0
-tweets_liveJournal2014_neutral  = 0
+tweets_liveJournal2014             = []
+tweets_liveJournal2014_score       = []
+tweets_liveJournal2014_score_svm   = []
+tweets_liveJournal2014_score_naive = []
+tweets_liveJournal2014_positive    = 0
+tweets_liveJournal2014_negative    = 0
+tweets_liveJournal2014_neutral     = 0
 
-tweets_2014_sarcasm       = []
-tweets_2014_sarcasm_score = []
-tweets_2014_sarcasm_positive = 0
-tweets_2014_sarcasm_negative = 0
-tweets_2014_sarcasm_neutral  = 0
+tweets_2014_sarcasm             = []
+tweets_2014_sarcasm_score       = []
+tweets_2014_sarcasm_score_svm   = []
+tweets_2014_sarcasm_score_naive = []
+tweets_2014_sarcasm_positive    = 0
+tweets_2014_sarcasm_negative    = 0
+tweets_2014_sarcasm_neutral     = 0
 
-sms_2013       = []
-sms_2013_score = []
-sms_2013_positive = 0
-sms_2013_negative = 0
-sms_2013_neutral  = 0
+sms_2013             = []
+sms_2013_score       = []
+sms_2013_score_svm   = []
+sms_2013_score_naive = []
+sms_2013_positive    = 0
+sms_2013_negative    = 0
+sms_2013_neutral     = 0
 
-all_messages_in_file_order = []
-all_polarities_in_file_order = []
+all_messages_in_file_order         = []
+all_polarities_in_file_order       = []
+all_polarities_in_file_order_svm   = []
+all_polarities_in_file_order_naive = []
 
-MAX_ANALYSIS_TWEETS = 10000
+MAX_ANALYSIS_TWEETS = 100000
 
 false_neutral_log  = 0
 false_negative_log = 0
