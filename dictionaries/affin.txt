@@ -295,6 +295,10 @@ boastful	-2
 bold	2
 boldly	2
 bomb	-1
+booo	-1
+boooo	-1
+booooo	-1
+boooooo	-1
 boost	1
 boosted	1
 boosting	1
