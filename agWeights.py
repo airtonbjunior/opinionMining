@@ -540,12 +540,21 @@ if __name__ == "__main__":
     #from textblob import TextBlob
     #print(str(TextBlob(x).sentiment.polarity))
 
-    from aylienapiclient import textapi
-    client = textapi.Client("f60113d3", "c05ff1ac96609b50c4620564d6b99f61")
+    #from aylienapiclient import textapi
+    #client = textapi.Client("f60113d3", "c05ff1ac96609b50c4620564d6b99f61")
 
-    sentiment = client.Sentiment({'text': ';-) please screen or delete this comment .'})
+    #sentiment = client.Sentiment({'text': ';-) please screen or delete this comment .'})
 
-    print(sentiment["polarity"])
+    #print(sentiment["polarity"])
+	
+	#createTextBlobTrainFile()
+	#trainNaiveBayesClassifier('trainMessages3.json')
+	#classifier = loadNaiveBayesClassifier()
+	#print(str(classifier.classify("This is an amazing library!")))
+
+	#includeNaiveBayesValuesOnTestFile()
+
+	testMicrosoftClassifier()
 
     #print(str(hashtagPolaritySum(removeAllPonctuation(x))))
 
