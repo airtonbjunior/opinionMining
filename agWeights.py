@@ -520,9 +520,6 @@ if __name__ == "__main__":
 	#    		if line.split("\t")[0].strip().startswith("#") and float(line.split("\t")[1].strip()) > 0:
 	#    			fsave.write(line.split("\t")[0][1:].strip() + "\n")
 
-
-
-
     #from textblob import TextBlob
     #print(str(TextBlob("not a very great calculation").sentiment.subjectivity))
     #print(str(TextBlob(message).sentiment.subjectivity))
@@ -554,7 +551,10 @@ if __name__ == "__main__":
 
 	#includeNaiveBayesValuesOnTestFile()
 
-	testMicrosoftClassifier()
+	#testMicrosoftClassifier()
+	#createFileForMicrosoftClassifier()
+	#classifyUsingMicrosoftClassifier()
+	includeMicrosoftClassifierValuesOnTestFile()
 
     #print(str(hashtagPolaritySum(removeAllPonctuation(x))))
 
