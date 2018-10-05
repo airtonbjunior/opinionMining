@@ -538,7 +538,7 @@ def loadTestTweetsSemeval2017():
                     # TEST USING SVM - KEEP THE ORDER
                     variables.all_messages_in_file_order.append(tweet_parsed[2].replace('right now', 'rightnow'))
                     if tweet_parsed[1] == "positive":
-                        variables.all_polarities_in_file_order.append(1)Africadosul2010
+                        variables.all_polarities_in_file_order.append(1)
                     elif tweet_parsed[1] == "negative":
                         variables.all_polarities_in_file_order.append(-1)
                     elif tweet_parsed[1] == "neutral":
@@ -578,6 +578,16 @@ def normalize_naive_polarity(polarity_string):
         return 0
 
 
+
+def normalize_MS_polarity(polarity_string):
+    if float(polarity_string) > 0.5:
+        return 1
+    elif float(polarity_string) < 0.5:
+        return -1
+    elif float(polarity_string) == 0.5:
+        return 0
+
+
 # Load the test tweets from Semeval 2014 task 9
 def loadTestTweets():
     start = time.time()
@@ -592,9 +602,13 @@ def loadTestTweets():
             if tweets_loaded < variables.MAX_ANALYSIS_TWEETS:
                 tweet_parsed = line.split("\t")
 
-                svm_class, naive_class = 0, 0
+                svm_class, naive_class, MS_class = 0, 0, 0
 
                 try:
+                    #svm_class = 
+                    naive_class = normalize_naive_polarity(tweet_parsed[4].strip())
+                    MS_class    = normalize_MS_polarity(str(tweet_parsed[5].strip()))
+
                     # TEST USING SVM - KEEP THE ORDER
                     variables.all_messages_in_file_order.append(tweet_parsed[2].replace('right now', 'rightnow'))
                     if tweet_parsed[0] == "positive":
@@ -604,8 +618,8 @@ def loadTestTweets():
                     elif tweet_parsed[0] == "neutral":
                         variables.all_polarities_in_file_order.append(0)
 
-                    #svm_class = 
-                    naive_class = normalize_naive_polarity(tweet_parsed[4].strip())
+                    variables.all_polarities_in_file_order_naive.append(naive_class)
+                    variables.all_polarities_in_file_order_MS.append(MS_class)
 
                     if tweet_parsed[1] == "Twitter2013":
 
@@ -624,6 +638,7 @@ def loadTestTweets():
                             variables.tweets_2013_neutral += 1
 
                         variables.tweets_2013_score_naive.append(naive_class)
+                        variables.tweets_2013_score_MS.append(MS_class)
 
                     elif tweet_parsed[1] == "Twitter2014":
                         variables.tweets_2014.append(tweet_parsed[2].replace('right now', 'rightnow'))
@@ -641,6 +656,7 @@ def loadTestTweets():
                             variables.tweets_2014_neutral += 1
 
                         variables.tweets_2014_score_naive.append(naive_class)
+                        variables.tweets_2014_score_MS.append(MS_class)
 
                     elif tweet_parsed[1] == "SMS2013":
                         variables.sms_2013.append(tweet_parsed[2].replace('right now', 'rightnow'))
@@ -657,7 +673,8 @@ def loadTestTweets():
                             variables.sms_2013_score.append(0)
                             variables.sms_2013_neutral += 1
 
-                        variables.sms_score_naive.append(naive_class)
+                        variables.sms_2013_score_naive.append(naive_class)
+                        variables.sms_2013_score_MS.append(MS_class)
                     
                     elif tweet_parsed[1] == "LiveJournal2014":
                         variables.tweets_liveJournal2014.append(tweet_parsed[2].replace('right now', 'rightnow'))
@@ -675,6 +692,7 @@ def loadTestTweets():
                             variables.tweets_liveJournal2014_neutral += 1
 
                         variables.tweets_liveJournal2014_score_naive.append(naive_class)
+                        variables.tweets_liveJournal2014_score_MS.append(MS_class)
 
                     elif tweet_parsed[1] == "Twitter2014Sarcasm":
                         variables.tweets_2014_sarcasm.append(tweet_parsed[2].replace('right now', 'rightnow'))
@@ -692,6 +710,7 @@ def loadTestTweets():
                             variables.tweets_2014_sarcasm_neutral += 1
                         
                         variables.tweets_2014_sarcasm_score_naive.append(naive_class)
+                        variables.tweets_2014_sarcasm_score_MS.append(MS_class)
                     
                     tweets_loaded += 1
                 
@@ -712,13 +731,9 @@ def loadTestTweets():
                         variables.svm_normalized_values.append(0)
                     #SVM Values
 
-                    #Naive Bayes Values
-                    if str(tweet_parsed[4].strip()) == "positive":
-                        variables.naive_normalized_values.append(1)
-                    if str(tweet_parsed[4].strip()) == "negative":
-                        variables.naive_normalized_values.append(-1)
-                    if str(tweet_parsed[4].strip()) == "neutral":
-                        variables.naive_normalized_values.append(0)                                                
+                    # All Normalized Values
+                    #variables.naive_normalized_values.append(normalize_naive_polarity(tweet_parsed[4].strip()))   
+                    #variables.MS_normalized_values.append(normalize_MS_polarity(tweet_parsed[4].strip()))                                          
                 
                 except Exception as e:
                     print("exception 1: " + str(e))
@@ -759,7 +774,6 @@ def loadTrainTweets_STS():
 
     end = time.time()
     print("  [train STS tweets loaded (" + str(tweets_loaded) + " tweets)][" + str(format(end - start, '.3g')) + " seconds]\n")
-
 
 
 def createTextBlobTrainFile():
@@ -844,7 +858,55 @@ def includeNaiveBayesValuesOnTestFile():
     print("  [values included][" + str(format(end - start, '.3g')) + " seconds]\n")
 
 
-def testMicrosoftClassifier():
+def includeMicrosoftClassifierValuesOnTestFile():
+    start = time.time()
+    print("\n[including Microsoft Classifier values on test file]")
+
+    allMicrosoftValues = []
+
+    with open('microsoftScoresAll.txt', 'r') as mF: # Get all microsoft values on file and save this on test file
+        for line in mF:
+            allMicrosoftValues.append(line.strip())
+    
+    index_ = 0
+    with open('testWithSVM_Naive_MS.txt', 'a') as f_w:
+        with open(variables.SEMEVAL_TEST_FILE, 'r') as inF:
+            for line in inF:
+                f_w.write(str(line.split("\t")[0]) + "\t" + line.split("\t")[1] + "\t" + line.split("\t")[2] + "\t" + str(line.split("\t")[3]).strip() + "\t" + str(line.split("\t")[4]).strip() + "\t" + str(allMicrosoftValues[index_]) + "\n")
+                index_ += 1
+
+
+    end = time.time()
+    print("  [values included][" + str(format(end - start, '.3g')) + " seconds]\n")
+
+
+
+def createFileForMicrosoftClassifier():
+    id_tweet = 0
+    with open(variables.SEMEVAL_TEST_FILE, 'r') as inF:
+        with open('fileMicrosoftClassifier.json', 'a') as f_w:
+            f_w.write('{"documents": [\n')
+            for line in inF:
+                id_tweet += 1
+                tweet_parsed = line.split("\t")
+                f_w.write('{"id": "' + str(id_tweet) + '", "language": "en", "text": "' + str(tweet_parsed[2].strip().replace('"', '').replace("\\u2018", "").replace("\\u2019", "").replace("\\u002c", "")) + '"},\n')  
+            f_w.write("]}")
+
+
+def classifyUsingMicrosoftClassifier():
+    import variables2
+    testMicrosoftClassifier(variables2.microsoft_document_1000)
+    testMicrosoftClassifier(variables2.microsoft_document_2000)
+    testMicrosoftClassifier(variables2.microsoft_document_3000)
+    testMicrosoftClassifier(variables2.microsoft_document_4000)
+    testMicrosoftClassifier(variables2.microsoft_document_5000)
+    testMicrosoftClassifier(variables2.microsoft_document_6000)
+    testMicrosoftClassifier(variables2.microsoft_document_7000)
+    testMicrosoftClassifier(variables2.microsoft_document_8000)
+    testMicrosoftClassifier(variables2.microsoft_document_9000)
+
+
+def testMicrosoftClassifier(documents):
     subscription_key = "ae40849f41e84c5b85bde44f5e54cbbd"
     assert subscription_key
 
@@ -855,15 +917,19 @@ def testMicrosoftClassifier():
 
     sentiment_api_url = text_analytics_base_url + "sentiment"
 
-    documents = {'documents' : [
-        {'id': '1', 'language': 'en', 'text': 'it sounds really bad but it just couldnt have been worse timing .'},
-        {'id': '2', 'language': 'en', 'text': 'we confirm when we meeting then we arrange time again.'},
-    ]}
+    #documents = {'documents' : [
+    #    {'id': '1', 'language': 'en', 'text': 'it sounds really bad but it just couldnt have been worse timing .'},
+    #    {'id': '2', 'language': 'en', 'text': 'we confirm when we meeting then we arrange time again.'},
+    #]}
 
     headers   = {"Ocp-Apim-Subscription-Key": subscription_key}
     response  = requests.post(sentiment_api_url, headers=headers, json=documents)
     sentiments = response.json()
-    pprint(sentiments)
+    #print(sentiments['documents'])
+    with open('microsoftScoresAll.txt', 'a') as f_w:
+        for lines in sentiments['documents']:
+            f_w.write(str(lines['score']) + "\n")
+    #pprint(sentiments)
 
 
 # STS dataset
@@ -2548,14 +2614,16 @@ def evaluateMessages(base, model):
     if base == "tweets2013":
         messages             = variables.tweets_2013
         messages_score       = variables.tweets_2013_score
-        messages_score_naive = variables.tweets_2013_positive_naive
+        messages_score_naive = variables.tweets_2013_score_naive
+        messages_score_MS    = variables.tweets_2013_score_MS
         messages_positive    = variables.tweets_2013_positive
         messages_negative    = variables.tweets_2013_negative
         messages_neutral     = variables.tweets_2013_neutral
     elif base == "tweets2014":
         messages             = variables.tweets_2014
         messages_score       = variables.tweets_2014_score
-        messages_score_naive = variables.tweets_2014_positive_naive
+        messages_score_naive = variables.tweets_2014_score_naive
+        messages_score_MS    = variables.tweets_2014_score_MS
         messages_positive    = variables.tweets_2014_positive
         messages_negative    = variables.tweets_2014_negative
         messages_neutral     = variables.tweets_2014_neutral
@@ -2563,6 +2631,7 @@ def evaluateMessages(base, model):
         messages             = variables.tweets_liveJournal2014
         messages_score       = variables.tweets_liveJournal2014_score
         messages_score_naive = variables.tweets_liveJournal2014_score_naive
+        messages_score_MS    = variables.tweets_liveJournal2014_score_MS
         messages_positive    = variables.tweets_liveJournal2014_positive
         messages_negative    = variables.tweets_liveJournal2014_negative
         messages_neutral     = variables.tweets_liveJournal2014_neutral
@@ -2570,24 +2639,28 @@ def evaluateMessages(base, model):
         messages             = variables.tweets_2014_sarcasm
         messages_score       = variables.tweets_2014_sarcasm_score
         messages_score_naive = variables.tweets_2014_sarcasm_score_naive
+        messages_score_MS    = variables.tweets_2014_sarcasm_score_MS
         messages_positive    = variables.tweets_2014_sarcasm_positive
         messages_negative    = variables.tweets_2014_sarcasm_negative
         messages_neutral     = variables.tweets_2014_sarcasm_neutral
     elif base == "sms":
         messages = variables.sms_2013
         messages_score       = variables.sms_2013_score
-        messages_score_naive = variables.sms_2013_score_naive        
+        messages_score_naive = variables.sms_2013_score_naive
+        messages_score_MS    = variables.sms_2013_score_MS
         messages_positive    = variables.sms_2013_positive
         messages_negative    = variables.sms_2013_negative
         messages_neutral     = variables.sms_2013_neutral        
     elif base == "all":
-        messages = variables.all_messages_in_file_order
-        messages_score = variables.all_polarities_in_file_order
+        messages             = variables.all_messages_in_file_order
+        messages_score       = variables.all_polarities_in_file_order
+        messages_score_naive = variables.all_polarities_in_file_order_naive
+        messages_score_MS    = variables.all_polarities_in_file_order_MS
         #messages = variables.tweets_2013 + variables.tweets_2014 + variables.tweets_liveJournal2014 + variables.sms_2013 + variables.tweets_2014_sarcasm
         #messages_score = variables.tweets_2013_score + variables.tweets_2014_score + variables.tweets_liveJournal2014_score + variables.sms_2013_score + variables.tweets_2014_sarcasm_score
-        messages_positive = variables.tweets_2013_positive + variables.tweets_2014_positive + variables.tweets_liveJournal2014_positive + variables.tweets_2014_sarcasm_positive + variables.sms_2013_positive
-        messages_negative = variables.tweets_2013_negative + variables.tweets_2014_negative + variables.tweets_liveJournal2014_negative + variables.tweets_2014_sarcasm_negative + variables.sms_2013_negative
-        messages_neutral  = variables.tweets_2013_neutral  + variables.tweets_2014_neutral  + variables.tweets_liveJournal2014_neutral  + variables.tweets_2014_sarcasm_neutral  + variables.sms_2013_neutral
+        messages_positive    = variables.tweets_2013_positive + variables.tweets_2014_positive + variables.tweets_liveJournal2014_positive + variables.tweets_2014_sarcasm_positive + variables.sms_2013_positive
+        messages_negative    = variables.tweets_2013_negative + variables.tweets_2014_negative + variables.tweets_liveJournal2014_negative + variables.tweets_2014_sarcasm_negative + variables.sms_2013_negative
+        messages_neutral     = variables.tweets_2013_neutral  + variables.tweets_2014_neutral  + variables.tweets_liveJournal2014_neutral  + variables.tweets_2014_sarcasm_neutral  + variables.sms_2013_neutral
 
     with open(variables.INCORRECT_EVALUATIONS, 'a') as f_incorrect:
         if base == "tweets2013": # only one header on file
@@ -2639,9 +2712,16 @@ def evaluateMessages(base, model):
             elif(variables.use_only_svm):
                 result = variables.svm_normalized_values[index]
             
+            elif(variables.use_only_textblob_no_train):
+                result = TextBlob(message).sentiment.polarity
+
             # NaiveBayes only
             elif(variables.use_only_naive_bayes):
-                result = variables.naive_normalized_values[index]
+                result = messages_score_naive[index]
+
+            # MS classifier only
+            elif(variables.use_only_MS_classifier):
+                result = messages_score_MS[index]
 
             # GP only
             else:
