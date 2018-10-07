@@ -521,20 +521,6 @@ if __name__ == "__main__":
 	#    			fsave.write(line.split("\t")[0][1:].strip() + "\n")
 
     #from textblob import TextBlob
-    #print(str(TextBlob("not a very great calculation").sentiment.subjectivity))
-    #print(str(TextBlob(message).sentiment.subjectivity))
-    #print(str(TextBlob(message).sentiment.polarity))
-
-    #message = 'Worst away day sat in a home end V Bolton 0-0 87 mins gone Berba scores I Jump up #awkward   #awaydays'
-    #x = 'way too amped to sleep right now. it is physically impossible for me to take the SATs tomorrow'
-    #x = ';-) please screen or delete this comment .'
-
-
-    #x = 'my dear i will pray for you i love you'
-
-    #x = re.sub(r"([\w/'+$\s-]+|[^\w/'+$\s-]+)\s*", r"\1 ", x)
-    
-    #from textblob import TextBlob
     #print(str(TextBlob(x).sentiment.polarity))
 
     #from aylienapiclient import textapi
@@ -543,37 +529,6 @@ if __name__ == "__main__":
     #sentiment = client.Sentiment({'text': ';-) please screen or delete this comment .'})
 
     #print(sentiment["polarity"])
-	
-	#createTextBlobTrainFile()
-	#trainNaiveBayesClassifier('trainMessages3.json')
-	#classifier = loadNaiveBayesClassifier()
-	#print(str(classifier.classify("This is an amazing library!")))
-
-	#includeNaiveBayesValuesOnTestFile()
-
-	#testMicrosoftClassifier()
-	#createFileForMicrosoftClassifier()
-	#classifyUsingMicrosoftClassifier()
-	includeMicrosoftClassifierValuesOnTestFile()
-
-    #print(str(hashtagPolaritySum(removeAllPonctuation(x))))
-
-    #for l in x.split():
-    #	print(str(getPOSTag(l)))
-
-    #print(str(getPOSTag(x)[0]))
-    #print(str(getPOSTag(y)))
-
-    #loadTestTweets()
-
-    #print(clean_tweet(x))
-
-    #print(str(polaritySumAVGUsingWeights(replaceNegatingWords(removeAllPonctuation(removeAllPonctuation(replaceNegatingWords(removeStopWords(replaceNegatingWords(replaceNegatingWords(x))))))), neutralRange(0.0, 0.0), 0.0, 1.3113316399583013, 0.5580832687368169, 0.0, 0.0, emoticonsPolaritySum(x), 0.0, 0.0)))
-
-	# saveWordsTokenized("test")
-
-	#print(str(getPOSTag("Hi there, i love you so much")))
-	#print(str(getPOSTag("This is a cooool #dummysmiley: :-) :-P <3 and some arrows < > -> <--")))
 
 	#getDictionary("train")
 	#loadTrainTweets()
