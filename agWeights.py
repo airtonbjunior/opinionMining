@@ -513,6 +513,11 @@ if __name__ == "__main__":
 
     #getDictionary("test")
 
+	import lregression
+	lregression.trainAndPredict()
+	#lregression.saveOnlyLR()
+
+
 
     #with open('positivehashtagssaved.txt', 'a') as fsave:
 	#    with open('dictionaries/sentiment140_unigram.txt', 'r') as f:
