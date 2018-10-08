@@ -872,7 +872,7 @@ def includeNaiveBayesValuesOnTestFile():
     print("  [values included][" + str(format(end - start, '.3g')) + " seconds]\n")
 
 
-def saveLogisticRegressionPredictions():
+def saveLogisticRegressionPredictionsOnTestFile():
     start = time.time()
     print("\n[including LogisticRegression values on test file]")
     
@@ -913,6 +913,11 @@ def saveLogisticRegressionPredictions():
         ngram_range = (1, 2), 
         lowercase = False,
     )
+
+    #vectorizer = FeatureUnion([
+    #    ('cv', CountVectorizer(analyzer = 'word', ngram_range = (1,2), lowercase = False)),
+    #    ('av_len', AverageLenVectizer(...))
+    #])
 
     features = vectorizer.fit_transform(
         data
@@ -1056,7 +1061,7 @@ def normalize_s140(polarity_int):
         return "positive"
 
 
-def saveSentiment140Predictions():
+def saveSentiment140PredictionsOnTestFile():
     import urllib.request
     import json
     import var2
@@ -1083,6 +1088,35 @@ def saveSentiment140Predictions():
             all_lines_test_file.append(line)
 
     with open('test_SVM_MS_LReg_s140.txt', 'a') as f_s:
+        for index, polarities in enumerate(results):
+            f_s.write(all_lines_test_file[index].strip() + "\t" + str(polarities) + "\n")
+
+
+
+def saveAylienPredictionsOnTestFile():
+    import var2
+    from aylienapiclient import textapi
+    client = textapi.Client("f60113d3", "c05ff1ac96609b50c4620564d6b99f61")
+
+    all_lines_test_file = []
+    texts = []
+    #texts.append({'text': ';-) please screen or delete this comment .'})
+    #texts.append({'text': 'I hate you'})
+    #texts.append({'text': 'Today is sunny'})
+
+    
+    with open(variables.SEMEVAL_TEST_FILE, 'r') as t_f:
+        for line in t_f:
+            all_lines_test_file.append(line.strip())
+            texts.append("{'text': '" + str(clean_tweet(line.split("\t")[2])) + "'}")
+    
+    i = 0
+    for text in texts:
+        i += 1
+        sentiment = client.Sentiment(text)
+        print("line " + str(i) + str(sentiment["polarity"]))
+    
+    with open('test_SVM_MS_LReg_s140_Ayl.txt', 'a') as f_s:
         for index, polarities in enumerate(results):
             f_s.write(all_lines_test_file[index].strip() + "\t" + str(polarities) + "\n")
 
