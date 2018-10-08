@@ -602,6 +602,15 @@ def normalize_MS_polarity(polarity_string):
         return 0
 
 
+
+def getResultsClassifier(file_name):
+    results = []
+    with open(file_name, 'r') as f:
+        for line in f:
+            results.append(line.strip())
+
+    return results
+
 # Load the test tweets from Semeval 2014 task 9
 def loadTestTweets():
     start = time.time()
@@ -611,7 +620,11 @@ def loadTestTweets():
 
     test_words = []
 
+    # Test
+    LReg_results = getResultsClassifier("datasets/test/LReg_test_results.txt")
+
     with open(variables.SEMEVAL_TEST_FILE, 'r') as inF:
+        index_results = 0
         for line in inF:
             if tweets_loaded < variables.MAX_ANALYSIS_TWEETS:
                 tweet_parsed = line.split("\t")
@@ -622,8 +635,11 @@ def loadTestTweets():
                     svm_class   = normalize_svm_polarity(tweet_parsed[3].strip())
                     naive_class = normalize_naive_polarity(tweet_parsed[4].strip())
                     MS_class    = normalize_MS_polarity(str(tweet_parsed[5].strip()))
-                    LReg_class  = normalize_naive_polarity(tweet_parsed[6].strip()) # the same pattern of naive classifier ('positive', 'negative' and 'neutral')
+                    #LReg_class  = normalize_naive_polarity(tweet_parsed[6].strip()) # the same pattern of naive classifier ('positive', 'negative' and 'neutral')
+                    LReg_class  = normalize_naive_polarity(LReg_results[index_results].strip()) # the same pattern of naive classifier ('positive', 'negative' and 'neutral')
                     S140_class  = normalize_naive_polarity(tweet_parsed[7].strip()) # the same pattern of naive classifier ('positive', 'negative' and 'neutral')
+
+                    index_results += 1
 
                     # TEST USING SVM - KEEP THE ORDER
                     variables.all_messages_in_file_order.append(tweet_parsed[2].replace('right now', 'rightnow'))
