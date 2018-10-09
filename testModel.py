@@ -33,6 +33,13 @@ if __name__ == "__main__":
             if not line.startswith("[") and line not in ('\n', '\r\n') and not line.startswith("#"):
                 functions_to_evaluate.append(str(line))
 
+    #evaluateMessages("tweets2013", functions_to_evaluate, True)
+    #evaluateMessages("tweets2014", functions_to_evaluate, True)
+    #evaluateMessages("sms", functions_to_evaluate, True)
+    #evaluateMessages("livejournal", functions_to_evaluate, True)
+    #evaluateMessages("sarcasm", functions_to_evaluate, True)
+    #evaluateMessages("all", functions_to_evaluate, True)
+
     for function_to_evaluate in functions_to_evaluate:
         evaluateMessages("tweets2013", function_to_evaluate)
         evaluateMessages("tweets2014", function_to_evaluate)
