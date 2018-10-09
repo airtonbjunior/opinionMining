@@ -72,6 +72,7 @@ use_url_to_neutral	  		= False
 use_date_to_neutral         = False
 use_url_and_date_to_neutral = False
 use_emoticon_analysis 		= False
+use_only_emoticons          = False
 use_only_gp 	      		= False
 use_only_svm		  		= False
 use_hashtag_analysis        = False
@@ -80,7 +81,7 @@ use_only_naive_bayes        = False
 use_only_MS_classifier      = False
 use_only_LReg_classifier    = False
 use_only_S140_classifier    = False
-use_all_classifiers         = True
+use_all_classifiers         = False
 
 neutral_inferior_range = 0
 neutral_superior_range = 0
