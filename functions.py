@@ -572,7 +572,7 @@ def loadTestTweetsSemeval2017():
 
 def normalize_svm_polarity(polarity_string):  
     svm_values = []
-    svm_values = polarity_string.strip()[1:-1].split()
+    svm_values = polarity_string.strip().split()
 
     if(float(svm_values[0]) >= -0.4):
         return -1
@@ -607,7 +607,8 @@ def getResultsClassifier(file_name):
     results = []
     with open(file_name, 'r') as f:
         for line in f:
-            results.append(line.strip())
+            if not line.startswith("#"): # ignore comments
+                results.append(line.strip())
 
     return results
 
@@ -620,8 +621,10 @@ def loadTestTweets():
 
     test_words = []
 
-    # Test
-    LReg_results = getResultsClassifier("datasets/test/LReg_test_results.txt")
+    # Load results from each classifier
+    LReg_results  = getResultsClassifier("datasets/test/LReg_test_results.txt")
+    Naive_results = getResultsClassifier("datasets/test/Naive_test_results.txt") # class <tab> pos_prob <tab> neg_prob <tab> neu_prob
+    SVM_results   = getResultsClassifier("datasets/test/SVM_test_results.txt")   # confirm the values pattern
 
     with open(variables.SEMEVAL_TEST_FILE, 'r') as inF:
         index_results = 0
@@ -632,12 +635,14 @@ def loadTestTweets():
                 svm_class, naive_class, MS_class, LReg_class, S140_class = 0, 0, 0, 0, 0
 
                 try:
-                    svm_class   = normalize_svm_polarity(tweet_parsed[3].strip())
-                    naive_class = normalize_naive_polarity(tweet_parsed[4].strip())
-                    MS_class    = normalize_MS_polarity(str(tweet_parsed[5].strip()))
-                    #LReg_class  = normalize_naive_polarity(tweet_parsed[6].strip()) # the same pattern of naive classifier ('positive', 'negative' and 'neutral')
-                    LReg_class  = normalize_naive_polarity(LReg_results[index_results].strip()) # the same pattern of naive classifier ('positive', 'negative' and 'neutral')
-                    S140_class  = normalize_naive_polarity(tweet_parsed[7].strip()) # the same pattern of naive classifier ('positive', 'negative' and 'neutral')
+                    #svm_class   = normalize_svm_polarity(tweet_parsed[3].strip())
+                    svm_class    = normalize_svm_polarity(SVM_results[index_results].strip())
+                    #naive_class = normalize_naive_polarity(tweet_parsed[4].strip())
+                    naive_class  = normalize_naive_polarity(Naive_results[index_results].split("\t")[0].strip()) # index 0 contains the class - on 1, 2 and 3 we have the probs of each class
+                    MS_class     = normalize_MS_polarity(str(tweet_parsed[5].strip()))
+                    #LReg_class  = normalize_naive_polarity(tweet_parsed[6].strip())             # the same pattern of naive classifier ('positive', 'negative' and 'neutral')
+                    LReg_class   = normalize_naive_polarity(LReg_results[index_results].strip()) # the same pattern of naive classifier ('positive', 'negative' and 'neutral')
+                    S140_class   = normalize_naive_polarity(tweet_parsed[7].strip())             # the same pattern of naive classifier ('positive', 'negative' and 'neutral')
 
                     index_results += 1
 
@@ -770,6 +775,18 @@ def loadTestTweets():
 
     end = time.time()
     print("  [test tweets loaded (" + str(tweets_loaded) + " tweets)][" + str(format(end - start, '.3g')) + " seconds]\n")
+
+
+def saveSVMValuesOnFile():
+    all_svm_values = []
+    with open(variables.SEMEVAL_TEST_FILE, 'r') as f:
+        for line in f:
+            all_svm_values.append(str(line.split("\t")[3]))
+
+    with open('SVM_test_results.txt', 'a') as f:
+        for value in all_svm_values:
+            f.write(str(value[1:-1].split()[0]) + "\t" + str(value[1:-1].split()[1]) + "\t" + str(value[1:-1].split()[2]) + "\n")
+
 
 
 # Load STS train tweets
@@ -2607,8 +2624,8 @@ def hasEmoticons(phrase):
 
 # logic operators
 # Define a new if-then-else function
-def if_then_else(input, output1, output2):
-    if input: return output1
+def if_then_else(input_, output1, output2):
+    if input_: return output1
     else: return output2
 
 
@@ -2736,7 +2753,7 @@ def floatToStr_polarity_value(numerical_polarity_value, neutral_inferior_range, 
         return "neutral"
 
 
-def get_best_evaluation(classifiers_evaluations):
+def get_best_evaluation(classifiers_evaluations, type="majority"):
     negatives, neutrals, positives = 0, 0, 0
 
     # TO-DO: what to do when a drawn occur?
@@ -2766,9 +2783,11 @@ def get_best_evaluation(classifiers_evaluations):
     else: # there is no majority polarity
         if positives > neutrals or positives == neutrals:
             #print(str(v).strip() + " Positives: " + str(positives) + ", negatives: " + str(negatives) + ", neutrals: " + str(neutrals) + " I'll return positive")
+            print("Positives: " + str(positives) + ", negatives: " + str(negatives) + ", neutrals: " + str(neutrals) + " I'll return positive")
             return "positive"
         elif negatives > neutrals or negatives == neutrals:
             #print(str(v).strip() + " Positives: " + str(positives) + ", negatives: " + str(negatives) + ", neutrals: " + str(neutrals) + " I'll return negative")
+            print("Positives: " + str(positives) + ", negatives: " + str(negatives) + ", neutrals: " + str(neutrals) + " I'll return negative")
             return "negative"
 
 
@@ -2777,7 +2796,7 @@ def get_best_evaluation(classifiers_evaluations):
 
 # Evaluate the test messages using the model
 # http://text-analytics101.rxnlp.com/2014/10/computing-precision-and-recall-for.html
-def evaluateMessages(base, model):
+def evaluateMessages(base, model, model_ensemble=False):
     global model_results_to_count_occurrences
     print("[starting evaluation of " + base + " messages]")
     
@@ -2926,7 +2945,14 @@ def evaluateMessages(base, model):
         message = message.replace("\\u2018", "").replace("\\u2019", "").replace("\\u002c", "")        
         message = "'" + message + "'"
 
-        model_analysis = model.replace("(x", "(" + message)
+
+        # check if the analysis will use an ensemble of all models
+        if model_ensemble:
+            models_analysis = []
+            for mod in model:
+                models_analysis.append(mod.replace("(x", "(" + message))
+        else:
+            model_analysis = model.replace("(x", "(" + message)
         
         if not len(message) > 0:
             continue
@@ -2959,6 +2985,9 @@ def evaluateMessages(base, model):
             # Check if SVM are saying that the message are neutral
             elif(variables.use_svm_neutral and variables.svm_normalized_values[index] == 0):
                 result = 0
+
+            elif(variables.use_only_emoticons):
+                result = emoticonsPolaritySum(message)
 
             # SVM only
             elif(variables.use_only_svm):
@@ -3015,39 +3044,42 @@ def evaluateMessages(base, model):
 
             # GP only
             else:
-                #testing the svm on the bases that it's the best
-                if base == "tweets2014" or base == "sms":
-                    result = messages_score_svm[index]
+                if model_ensemble:
+                    results_models_ensemble = []
+                    for m in models_analysis:
+                        res = float(eval(m))
+                        if res > variables.neutral_superior_range:
+                            results_models_ensemble.append("positive")
+                        elif res < variables.neutral_inferior_range:
+                            results_models_ensemble.append("negative")
+                        else:
+                            results_models_ensemble.append("neutral")
+                    
+                    #print("results models ensemble " + str(results_models_ensemble))
+
+                    ensemble_result = get_best_evaluation(results_models_ensemble)
+                    if ensemble_result == "positive":
+                        result = variables.neutral_superior_range + 1
+                    elif ensemble_result == "negative":
+                        result = variables.neutral_inferior_range - 1
+                    elif ensemble_result == "neutral":
+                        result = random.uniform(variables.neutral_inferior_range, variables.neutral_superior_range)
+
                 else:
-                    result = float(eval(model_analysis))
-
-                if result == 0:
-                    if(variables.use_hashtag_analysis and hasHashtag(message)):
-                        result = hashtagPolaritySum(message)
-                    elif base == "sarcasm":
-                        result = TextBlob(message).sentiment.polarity
-                    else:
+                    #testing the svm on the bases that it's the best
+                    if base == "tweets2014" or base == "sms":
                         result = messages_score_svm[index]
-                        #result = messages_score_MS[index]
-                        
-                        # TO-DO: try to use the aylien classifier
+                    else:
+                        result = float(eval(model_analysis))
 
-                        #parameters = {}
-                        #parameters["text"] = str(message)
-                        #sentiment = client.Sentiment(parameters)
-                        #if(sentiment["polarity"] == 'negative'):
-                        #    result = variables.neutral_inferior_range - 1
-                        #elif (sentiment["polarity"] == 'positive'):
-                        #    result = variables.neutral_superior_range + 1
-                        #else:
-                        #    result = 0
-                        #print()
-                        #result = variables.svm_normalized_values[index]
-                        #result = TextBlob(message).sentiment.polarity
+                    if result == 0:
+                        if(variables.use_hashtag_analysis and hasHashtag(message)):
+                            result = hashtagPolaritySum(message)
+                        elif base == "sarcasm":
+                            result = TextBlob(message).sentiment.polarity
+                        else:
+                            result = messages_score_svm[index]
 
-                    # when use this, the F1 for all messages increase
-                    #else:
-                    #    result = variables.svm_normalized_values[index]
 
 
         except Exception as e:
@@ -3183,7 +3215,10 @@ def evaluateMessages(base, model):
     else:
         print("[messages evaluated]: " + str(len(messages)))
     print("[correct evaluations]: " + str(true_positive + true_negative + true_neutral) + " (" + str(true_positive) + " positives, " + str(true_negative) + " negatives and " + str(true_neutral) + " neutrals)")
-    print("[model]: " + str(model))
+    if not model_ensemble:
+        print("[model]: " + str(model))
+    else:
+        print("[ensemble of " + str(len(model)) + " models]")
     print("[accuracy]: " + str(round(accuracy, 4)))
     print("[precision_positive]: " + str(round(precision_positive, 4)))
     print("[precision_negative]: " + str(round(precision_negative, 4)))
@@ -3223,27 +3258,28 @@ def evaluateMessages(base, model):
     if variables.save_file_results:
         with open(variables.FILE_RESULTS, 'a') as f:
             if base == "tweets2013":
-                f.write("[Model]\t" + model + "\n")
+                if not model_ensemble:
+                    f.write("[Model]\t" + model + "\n")
                 f.write("# [results - f1]\n")
 
             f.write(base + "\t" + str(round(f1_positive_negative_avg, 4)) + "\n")
             if base == "all":
-                # PUT the dictionaries weights here
-                f.write("\n# [weights]\n")
-                f.write("# w1: " + str(set(variables.w1))  + "\n")
-                f.write("# w2: " + str(set(variables.w2))  + "\n")
-                f.write("# w3: " + str(set(variables.w3))  + "\n")
-                f.write("# w4: " + str(set(variables.w4))  + "\n")
-                f.write("# w5: " + str(set(variables.w5))  + "\n")
-                f.write("# w6: " + str(set(variables.w6))  + "\n")
-                f.write("# w7: " + str(set(variables.w7))  + "\n")
-                f.write("# w8: " + str(set(variables.w8))  + "\n")
-                f.write("# w9: " + str(set(variables.w9))  + "\n")
-                f.write("# w10: " + str(set(variables.w10)) + "\n")
-                f.write("# w11: " + str(set(variables.w11)) + "\n\n")
+                if not model_ensemble:
+                    f.write("\n# [weights]\n")
+                    f.write("# w1: " + str(set(variables.w1))  + "\n")
+                    f.write("# w2: " + str(set(variables.w2))  + "\n")
+                    f.write("# w3: " + str(set(variables.w3))  + "\n")
+                    f.write("# w4: " + str(set(variables.w4))  + "\n")
+                    f.write("# w5: " + str(set(variables.w5))  + "\n")
+                    f.write("# w6: " + str(set(variables.w6))  + "\n")
+                    f.write("# w7: " + str(set(variables.w7))  + "\n")
+                    f.write("# w8: " + str(set(variables.w8))  + "\n")
+                    f.write("# w9: " + str(set(variables.w9))  + "\n")
+                    f.write("# w10: " + str(set(variables.w10)) + "\n")
+                    f.write("# w11: " + str(set(variables.w11)) + "\n\n")
 
-                f.write("# [neutral ranges]\n")
-                f.write("# " + str(set(variables.neutral_values)) + "\n\n")
+                    f.write("# [neutral ranges]\n")
+                    f.write("# " + str(set(variables.neutral_values)) + "\n\n")
 
                 f.write("# [confusion matrix]\n")
                 f.write("#           |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |\n")
