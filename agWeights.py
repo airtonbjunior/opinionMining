@@ -513,10 +513,21 @@ if __name__ == "__main__":
 
     #getDictionary("test")
 
-	import lregression
-	lregression.trainAndPredict()
+	#import lregression
+	#lregression.trainAndPredict()
 	#lregression.saveOnlyLR()
 
+	
+	saveSVMValuesOnFile()
+
+	#import naive 
+	#naive.saveOnlyNaive()
+
+	#naive_classifier = naive.loadNaiveBayesClassifier()
+	#probs = naive_classifier.prob_classify("Today is sunday")
+	#print(str(probs.prob("pos")))
+	#print(str(probs.prob("neg")))
+	#print(str(probs.prob("neu")))
 
 
     #with open('positivehashtagssaved.txt', 'a') as fsave:
