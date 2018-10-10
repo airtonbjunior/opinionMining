@@ -33,31 +33,33 @@ if __name__ == "__main__":
             if not line.startswith("[") and line not in ('\n', '\r\n') and not line.startswith("#"):
                 functions_to_evaluate.append(str(line))
 
-    #evaluateMessages("tweets2013", functions_to_evaluate, True)
-    #evaluateMessages("tweets2014", functions_to_evaluate, True)
-    #evaluateMessages("sms", functions_to_evaluate, True)
-    #evaluateMessages("livejournal", functions_to_evaluate, True)
-    #evaluateMessages("sarcasm", functions_to_evaluate, True)
-    #evaluateMessages("all", functions_to_evaluate, True)
 
-    for function_to_evaluate in functions_to_evaluate:
-        evaluateMessages("tweets2013", function_to_evaluate)
-        evaluateMessages("tweets2014", function_to_evaluate)
-        evaluateMessages("sms", function_to_evaluate)
-        evaluateMessages("livejournal", function_to_evaluate)
-        evaluateMessages("sarcasm", function_to_evaluate)
-        evaluateMessages("all", function_to_evaluate)
+    if variables.use_gp_ensemble: 
+        evaluateMessages("tweets2013", functions_to_evaluate, True)
+        evaluateMessages("tweets2014", functions_to_evaluate, True)
+        evaluateMessages("sms", functions_to_evaluate, True)
+        evaluateMessages("livejournal", functions_to_evaluate, True)
+        evaluateMessages("sarcasm", functions_to_evaluate, True)
+        evaluateMessages("all", functions_to_evaluate, True)
+    else:
+        for function_to_evaluate in functions_to_evaluate:
+            evaluateMessages("tweets2013", function_to_evaluate)
+            evaluateMessages("tweets2014", function_to_evaluate)
+            evaluateMessages("sms", function_to_evaluate)
+            evaluateMessages("livejournal", function_to_evaluate)
+            evaluateMessages("sarcasm", function_to_evaluate)
+            evaluateMessages("all", function_to_evaluate)
 
-        variables.w1 = []
-        variables.w2 = []
-        variables.w3 = []
-        variables.w4 = []
-        variables.w5 = []
-        variables.w6 = []
-        variables.w7 = []
-        variables.w8 = []
-        variables.w9 = []
-        variables.neutral_values = []
+            variables.w1 = []
+            variables.w2 = []
+            variables.w3 = []
+            variables.w4 = []
+            variables.w5 = []
+            variables.w6 = []
+            variables.w7 = []
+            variables.w8 = []
+            variables.w9 = []
+            variables.neutral_values = []
 
     resultsAnalysis()
 
