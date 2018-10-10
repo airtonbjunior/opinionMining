@@ -528,8 +528,11 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
 
     fitness_list = []
 
+    fold_index = 0
+
     for fold in chunks:
         
+
         correct_evaluations = 0
         fitnessReturn = 0
         accuracy = 0
@@ -539,48 +542,59 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
         recall_positive, recall_negative, recall_neutral, recall_avg                               = 0, 0, 0, 0
         f1_positive, f1_negative, f1_neutral, f1_avg, f1_positive_negative_avg                     = 0, 0, 0, 0, 0
         first = True
+        # Constraint controls 
+        breaked, fitness_decreased, double_decreased = False, False, False
+        
+        # Constraints
+        # Constraint 1: massive function - more than massive_functions_max
+        if (str(individual).count(variables.massive_function) > variables.massive_functions_max) and variables.massive_functions_constraint:
+            print("\n[CONSTRAINT][more than " + str(variables.massive_functions_max) + " massive(s) function(s)][bad individual][fitness zero]\n")
+            if variables.log_times:
+                print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
+            print("-----------------------------")
+            print("\n") 
+            breaked = True
+            break
 
-        for index in fold:
-            # Constraints
-            # Constraint 1: massive function - more than massive_functions_max
-            if (str(individual).count(variables.massive_function) > variables.massive_functions_max) and variables.massive_functions_constraint:
-                print("\n[CONSTRAINT][more than " + str(variables.massive_functions_max) + " massive(s) function(s)][bad individual][fitness zero]\n")
-                if variables.log_times:
-                    print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
-                print("-----------------------------")
-                print("\n") 
-                breaked = True
-                break
+        count_neutral_range = 0
+        count_neutral_range = str(individual).count("neutralRange")
+        
+        # Constraint 2: neutralRange - more than one neutralRange
+        if count_neutral_range > 1:
+            print("\n[CONSTRAINT][more than one neutralRange function][bad individual][fitness zero]\n")
+            if variables.log_times:
+                print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
+            print("-----------------------------")
+            print("\n") 
+            breaked = True
+            break
 
-            count_neutral_range = 0
-            count_neutral_range = str(individual).count("neutralRange")
-            
-            # Constraint 2: neutralRange - more than one neutralRange
-            if count_neutral_range > 1:
-                print("\n[CONSTRAINT][more than one neutralRange function][bad individual][fitness zero]\n")
-                if variables.log_times:
-                    print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
-                print("-----------------------------")
-                print("\n") 
-                breaked = True
-                break
-
-            # neutralRange constraints
-            if(variables.neutral_range_constraint):      
-                # Constraint 4: neutralRange - function does not exist in the model
-                if count_neutral_range == 0 and index == 0:
+        # neutralRange constraints
+        if(variables.neutral_range_constraint):      
+            # Constraint 4: neutralRange - function does not exist in the model
+            if count_neutral_range == 0:
+                if fold_index == 0: #log only on first index
                     print("\n[CONSTRAINT][model does not have neutralRange function][fitness decreased in " + str(variables.root_decreased_value * 100) + "%]\n")
-                    if fitness_decreased:
-                        double_decreased = True
-                    fitness_decreased = True
-
-            # Constraint 5: root function - functions root_functions (if_then_else hardcoded temporarily)
-            if (not str(individual).startswith(variables.root_function) and not str(individual).startswith("if_then_else")) and variables.root_constraint and index == 0:
-                print("\n[CONSTRAINT][root node is not " + variables.root_function + "][fitness decreased in " + str(variables.root_decreased_value * 100) + "%]\n")
                 if fitness_decreased:
-                    double_decreased = True            
+                    double_decreased = True
                 fitness_decreased = True
 
+        # Constraint 5: root function - functions root_functions (if_then_else hardcoded temporarily)
+        #if (not str(individual).startswith(variables.root_function) and not str(individual).startswith("if_then_else")) and variables.root_constraint:# and fold_index == 0:
+        if (not str(individual).startswith(variables.root_function)) and variables.root_constraint:# and fold_index == 0:
+            if fold_index == 0: #log only on first index
+                print("[CONSTRAINT][root node is not " + variables.root_function + "][fitness decreased in " + str(variables.root_decreased_value * 100) + "%]\n")
+            if fitness_decreased:
+                double_decreased = True            
+            fitness_decreased = True
+
+
+        for index in fold:
+            #breaked = False
+            #breaked, fitness_decreased, double_decreased = False, False, False
+
+            #if(first):
+            #    print("[individual] " + str(individual))
             # Log each new cicle
             if first:
                 if variables.log_all_metrics_each_cicle:
@@ -591,9 +605,9 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
                 func_value = float(func(TWEETS_TO_EVALUATE[index]))
                 
                 if float(TWEETS_SCORE_TO_EVALUATE[index]) > 0:
+                    is_positive   += 1
                     if  func_value > variables.neutral_superior_range:
                         correct_evaluations += 1 
-                        is_positive   += 1
                         true_positive += 1
                     else:
                         if func_value >= variables.neutral_inferior_range and func_value <= variables.neutral_superior_range:
@@ -602,9 +616,9 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
                             false_negative += 1
 
                 elif float(TWEETS_SCORE_TO_EVALUATE[index]) < 0:
+                    is_negative   += 1
                     if func_value < variables.neutral_inferior_range:
                         correct_evaluations += 1 
-                        is_negative   += 1
                         true_negative += 1
                     else:
                         if func_value >= variables.neutral_inferior_range and func_value <= variables.neutral_superior_range:
@@ -613,9 +627,9 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
                             false_positive += 1
 
                 elif float(TWEETS_SCORE_TO_EVALUATE[index]) == 0:
+                    is_neutral   += 1
                     if func_value >= variables.neutral_inferior_range and func_value <= variables.neutral_superior_range:
                         correct_evaluations += 1 
-                        is_neutral   += 1
                         true_neutral += 1
                     else:
                         if func_value < variables.neutral_inferior_range:
@@ -633,6 +647,8 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
                 print("[value]: " + str(TWEETS_SCORE_TO_EVALUATE[index]))
                 print("[calculated]:" + func_value)
 
+        if breaked:
+            break
 
         if true_positive + false_positive + true_negative + false_negative > 0:
             accuracy = (true_positive + true_negative + true_neutral) / (true_positive + false_positive + true_negative + false_negative + true_neutral + false_neutral)
@@ -715,19 +731,30 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
         if f1_positive_negative_avg > variables.best_f1_positive_negative_avg:
             variables.best_f1_positive_negative_avg = f1_positive_negative_avg
 
+        
         fitnessReturn = f1_positive_negative_avg
+        orig = 0
         if fitness_decreased:
+            orig = fitnessReturn
             fitnessReturn -= fitnessReturn * variables.root_decreased_value # 80% of the original value
+            print("  [INDIVIDUAL]  " + str(individual))
+            print("     [POS: " + str(is_positive) + "] [NEG: " + str(is_negative) + "] [NEU: " + str(is_neutral) +"]")
+            print("       [FITNESS DECREASED] [ORIGINAL: " + str(orig) + "] [DECREASED: " + str(fitnessReturn) + "]")
+        orig = 0
         if double_decreased:
+            orig = fitnessReturn
             fitnessReturn -= fitnessReturn * variables.root_decreased_value # Again
+            print("         [FITNESS DOUBLE DECREASED] [ORIGINAL: " + str(orig) + "] [DECREASED: " + str(fitnessReturn) + "]")
 
+        print("\n")
 
         fitness_list.append(fitnessReturn)
+        fold_index += 1
 
     fitnessReturn = sum(fitness_list)/len(chunks)
     
     print("[fitness list] " + str(fitness_list))
-    print("fitness sum] " + str(sum(fitness_list)))
+    print("[fitness sum] " + str(sum(fitness_list)))
     print("[number of chunks] " + str(len(chunks)))
     print("[avg fitness] " + str(fitnessReturn) + "\n")
 
@@ -794,8 +821,12 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
     
     return fitnessReturn,
 
-toolbox.register("evaluate", evalSymbRegTweetsFromSemeval)
-#toolbox.register("evaluate", evalSymbRegTweetsFromSemeval_folds)
+#toolbox.register("evaluate", evalSymbRegTweetsFromSemeval)
+if variables.train_using_folds:
+    toolbox.register("evaluate", evalSymbRegTweetsFromSemeval_folds)
+else:
+    toolbox.register("evaluate", evalSymbRegTweetsFromSemeval)
+
 toolbox.register("select", tools.selTournament, tournsize=2)
 toolbox.register("mate", gp.cxOnePoint)
 toolbox.register("expr_mut", gp.genHalfAndHalf, min_=0, max_=6)
