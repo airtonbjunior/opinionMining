@@ -75,7 +75,7 @@ def getDictionary(module):
             variables.dic_loaded_total += 1
             for line in inF:
                 line = line.lower().strip()
-                if module == "train" and line in variables.all_train_words:
+                if module == "train":# and line in variables.all_train_words:
                     variables.dic_positive_words.append(line)
                 #elif module == "test" and line in variables.all_test_words:
                 elif module == "test":# and line in variables.all_test_words:
@@ -111,9 +111,9 @@ def getDictionary(module):
                             w = word[:word.find("#")]
                             if(len(w) > 2):
                                 #if (module == "train" and w in variables.all_train_words) or (module == "test" and w in variables.all_test_words):
-                                if (module == "train" and w in variables.all_train_words) or (module == "test"):# and w in variables.all_test_words):
+                                #if (module == "train" and w in variables.all_train_words) or (module == "test"):# and w in variables.all_test_words):
                                     #variables.dic_positive_sentiwordnet[w] = 1
-                                    variables.dic_positive_sentiwordnet[w] = float(splited[2])
+                                variables.dic_positive_sentiwordnet[w] = float(splited[2])
                 elif float(splited[2]) < float(splited[3]):
                     words = splited[4].lower().strip().split()
                     for word in words:
@@ -121,9 +121,9 @@ def getDictionary(module):
                             w = word[:word.find("#")]
                             if(len(w) > 2):
                                 #if (module == "train" and w in variables.all_train_words) or (module == "test" and w in variables.all_test_words):
-                                if (module == "train" and w in variables.all_train_words) or (module == "test"):# and w in variables.all_test_words):
+                                #if (module == "train" and w in variables.all_train_words) or (module == "test"):# and w in variables.all_test_words):
                                     #variables.dic_negative_sentiwordnet[w] = -1
-                                    variables.dic_negative_sentiwordnet[w] = float(splited[3]) * -1
+                                variables.dic_negative_sentiwordnet[w] = float(splited[3]) * -1
                             
         if variables.log_loads:
             print("    [" + str(len(variables.dic_positive_sentiwordnet) + len(variables.dic_negative_sentiwordnet)) + " words loaded]")
@@ -143,15 +143,15 @@ def getDictionary(module):
                     for word in splited[2].split(","):
                         word = word.lower().strip()
                         #if (module == "train" and word in variables.all_train_words) or (module == "test" and word in variables.all_test_words):
-                        if (module == "train" and w in variables.all_train_words) or (module == "test"):# and w in variables.all_test_words):
-                            variables.dic_positive_effect[word] = 1
+                        #if (module == "train" and w in variables.all_train_words) or (module == "test"):# and w in variables.all_test_words):
+                        variables.dic_positive_effect[word] = 1
 
                 elif (splited[1].lower() == "-effect"):
                     for word in splited[2].split(","):
                         word = word.lower().strip()
                         #if (module == "train" and word in variables.all_train_words) or (module == "test" and word in variables.all_test_words):
-                        if (module == "train" and w in variables.all_train_words) or (module == "test"):# and w in variables.all_test_words):
-                            variables.dic_negative_effect[word] = -1
+                        #if (module == "train" and w in variables.all_train_words) or (module == "test"):# and w in variables.all_test_words):
+                        variables.dic_negative_effect[word] = -1
 
         
         if variables.log_loads:
@@ -174,16 +174,16 @@ def getDictionary(module):
                         variables.dic_positive_hashtags.append(splited[1].strip()[1:])
                     else:
                         #if (module == "train" and splited[1].strip() in variables.all_train_words) or (module == "test" and splited[1].strip() in variables.all_test_words):
-                        if (module == "train" and splited[1].strip() in variables.all_train_words) or (module == "test"):# and splited[1].strip() in variables.all_test_words):
-                            variables.dic_positive_semeval2015[splited[1].strip()] = float(splited[0])
+                        #if (module == "train" and splited[1].strip() in variables.all_train_words) or (module == "test"):# and splited[1].strip() in variables.all_test_words):
+                        variables.dic_positive_semeval2015[splited[1].strip()] = float(splited[0])
 
                 elif float(splited[0]) < 0 and not ' ' in splited[1].strip():
                     if "#" in splited[1].strip():
                         variables.dic_negative_hashtags.append(splited[1].strip()[1:])
                     else:
                         #if (module == "train" and splited[1].strip() in variables.all_train_words) or (module == "test" and splited[1].strip() in variables.all_test_words):
-                        if (module == "train" and splited[1].strip() in variables.all_train_words) or (module == "test"):# and splited[1].strip() in variables.all_test_words):
-                            variables.dic_negative_semeval2015[splited[1].strip()] = float(splited[0])
+                        #if (module == "train" and splited[1].strip() in variables.all_train_words) or (module == "test"):# and splited[1].strip() in variables.all_test_words):
+                        variables.dic_negative_semeval2015[splited[1].strip()] = float(splited[0])
 
         if variables.log_loads:
             print("    [" + str(len(variables.dic_positive_semeval2015) + len(variables.dic_negative_semeval2015)) + " words loaded]")
@@ -201,12 +201,12 @@ def getDictionary(module):
                 splited = line.split("\t")
                 if float(splited[1].strip()) > 0:
                     #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test" and splited[0].strip() in variables.all_test_words):
-                    if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
-                        variables.dic_positive_affin[splited[0].strip()] = float(splited[1].strip())
+                    #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
+                    variables.dic_positive_affin[splited[0].strip()] = float(splited[1].strip())
                 else:
                     #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test" and splited[0].strip() in variables.all_test_words):
-                    if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
-                        variables.dic_negative_affin[splited[0].strip()] = float(splited[1].strip())
+                    #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
+                    variables.dic_negative_affin[splited[0].strip()] = float(splited[1].strip())
 
         if variables.log_loads:
             print("    [" + str(len(variables.dic_positive_affin) + len(variables.dic_negative_affin)) + " words loaded]")
@@ -224,13 +224,13 @@ def getDictionary(module):
                 splited = line.split("\t")
                 if float(splited[1].strip()) > 0:
                     #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test" and splited[0].strip() in variables.all_test_words):
-                    if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
-                        variables.dic_positive_slang[splited[0].strip()] = float(splited[1].strip())
+                    #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
+                    variables.dic_positive_slang[splited[0].strip()] = float(splited[1].strip())
 
                 elif float(line.split("\t")[1].strip()) < 0:
                     #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test" and splited[0].strip() in variables.all_test_words):
-                    if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
-                        variables.dic_negative_slang[splited[0].strip()] = float(splited[1].strip())
+                    #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
+                    variables.dic_negative_slang[splited[0].strip()] = float(splited[1].strip())
         
         if variables.log_loads:
             print("    [" + str(len(variables.dic_positive_slang) + len(variables.dic_negative_slang)) + " words loaded]")
@@ -248,12 +248,12 @@ def getDictionary(module):
                 splited = line.split("\t")
                 if float(splited[1].strip()) > 0:
                     #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test" and splited[0].strip() in variables.all_test_words):
-                    if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
-                        variables.dic_positive_vader[splited[0].strip()] = float(splited[1].strip())
+                    #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
+                    variables.dic_positive_vader[splited[0].strip()] = float(splited[1].strip())
                 else:
                     #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test" and splited[0].strip() in variables.all_test_words):
-                    if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
-                        variables.dic_negative_vader[splited[0].strip()] = float(splited[1].strip())
+                    #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
+                    variables.dic_negative_vader[splited[0].strip()] = float(splited[1].strip())
 
         if variables.log_loads:
             print("    [" + str(len(variables.dic_positive_vader) + len(variables.dic_negative_vader)) + " words loaded]")
@@ -272,13 +272,13 @@ def getDictionary(module):
                 splited = line.split("\t")
                 if float(splited[1].strip()) > 0:
                     #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test" and splited[0].strip() in variables.all_test_words):
-                    if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
-                        variables.dic_positive_nrc[splited[0].strip()] = float(splited[1].strip())
+                    #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
+                    variables.dic_positive_nrc[splited[0].strip()] = float(splited[1].strip())
 
                 elif float(line.split("\t")[1].strip()) < 0:
                     #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test" and splited[0].strip() in variables.all_test_words):
-                    if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
-                        variables.dic_negative_nrc[splited[0].strip()] = float(splited[1].strip()) 
+                    #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
+                    variables.dic_negative_nrc[splited[0].strip()] = float(splited[1].strip()) 
 
         if variables.log_loads:
             print("    [" + str(len(variables.dic_positive_nrc) + len(variables.dic_negative_nrc)) + " words loaded]")
@@ -296,13 +296,13 @@ def getDictionary(module):
                 splited = line.split("\t")
                 if float(splited[1].strip()) > 0:
                     #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test" and splited[0].strip() in variables.all_test_words):
-                    if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
-                        variables.dic_positive_gi[splited[0].strip()] = float(splited[1].strip())
+                    #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
+                    variables.dic_positive_gi[splited[0].strip()] = float(splited[1].strip())
 
                 elif float(line.split("\t")[1].strip()) < 0:
                     #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test" and splited[0].strip() in variables.all_test_words):
-                    if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
-                        variables.dic_negative_gi[splited[0].strip()] = float(splited[1].strip())                                        
+                    #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
+                    variables.dic_negative_gi[splited[0].strip()] = float(splited[1].strip())                                        
 
         if variables.log_loads:
             print("    [" + str(len(variables.dic_positive_gi) + len(variables.dic_negative_gi)) + " words loaded]")
@@ -320,13 +320,13 @@ def getDictionary(module):
                 splited = line.split("\t")
                 if float(splited[1].strip()) > 0:
                     #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test" and splited[0].strip() in variables.all_test_words):
-                    if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
-                        variables.dic_positive_s140[splited[0].strip()] = float(splited[1].strip())
+                    #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
+                    variables.dic_positive_s140[splited[0].strip()] = float(splited[1].strip())
 
                 elif float(line.split("\t")[1].strip()) < 0:
                     #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test" and splited[0].strip() in variables.all_test_words):
-                    if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
-                        variables.dic_negative_s140[splited[0].strip()] = float(splited[1].strip())                                        
+                    #if (module == "train" and splited[0].strip() in variables.all_train_words) or (module == "test"):# and splited[0].strip() in variables.all_test_words):
+                    variables.dic_negative_s140[splited[0].strip()] = float(splited[1].strip())                                        
 
         if variables.log_loads:
             print("    [" + str(len(variables.dic_positive_s140) + len(variables.dic_negative_s140)) + " words loaded]")
@@ -3066,19 +3066,22 @@ def evaluateMessages(base, model, model_ensemble=False):
                         result = random.uniform(variables.neutral_inferior_range, variables.neutral_superior_range)
 
                 else:
-                    #testing the svm on the bases that it's the best
-                    if base == "tweets2014" or base == "sms":
-                        result = messages_score_svm[index]
-                    else:
-                        result = float(eval(model_analysis))
+                    #print("[evaluate using only GP in normal mode (no ensemble)")
+                    result = float(eval(model_analysis))
 
-                    if result == 0:
-                        if(variables.use_hashtag_analysis and hasHashtag(message)):
-                            result = hashtagPolaritySum(message)
-                        elif base == "sarcasm":
-                            result = TextBlob(message).sentiment.polarity
-                        else:
-                            result = messages_score_svm[index]
+                    #testing the svm on the bases that it's the best
+                    #if base == "tweets2014" or base == "sms":
+                    #    result = messages_score_svm[index]
+                    #else:
+                    #    result = float(eval(model_analysis))
+
+                    #if result == 0:
+                    #    if(variables.use_hashtag_analysis and hasHashtag(message)):
+                    #        result = hashtagPolaritySum(message)
+                    #    elif base == "sarcasm":
+                    #        result = TextBlob(message).sentiment.polarity
+                    #    else:
+                    #        result = messages_score_svm[index]
 
 
 
