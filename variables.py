@@ -67,6 +67,8 @@ model_results = []
 all_train_words = []
 all_test_words  = []
 
+train_using_folds = True
+
 use_svm_neutral 	  		= False
 use_url_to_neutral	  		= False
 use_date_to_neutral         = False
@@ -82,6 +84,8 @@ use_only_MS_classifier      = False
 use_only_LReg_classifier    = False
 use_only_S140_classifier    = False
 use_all_classifiers         = False
+
+use_gp_ensemble = False # if False, all the models will be executed separated. If True, an ensemble of the models will be executed
 
 neutral_inferior_range = 0
 neutral_superior_range = 0
