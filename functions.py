@@ -520,6 +520,18 @@ def createIndexChunks(all_index, n_chunks):
     return chunks
 
 
+def createRandomIndexChunks(all_index, n_chunks):
+    ys = list(all_index)
+    size = int(len(ys) / n_chunks)
+
+    chunks = list()
+
+    for i in range(n_chunks): 
+        random.shuffle(ys)
+        chunks.append(list(ys[:size]))
+
+    return chunks
+
 # Load the test tweets from Semeval 2017 task 4a
 ###############################
 # TEST
@@ -2783,11 +2795,11 @@ def get_best_evaluation(classifiers_evaluations, type="majority"):
     else: # there is no majority polarity
         if positives > neutrals or positives == neutrals:
             #print(str(v).strip() + " Positives: " + str(positives) + ", negatives: " + str(negatives) + ", neutrals: " + str(neutrals) + " I'll return positive")
-            print("Positives: " + str(positives) + ", negatives: " + str(negatives) + ", neutrals: " + str(neutrals) + " I'll return positive")
+            #print("Positives: " + str(positives) + ", negatives: " + str(negatives) + ", neutrals: " + str(neutrals) + " I'll return positive")
             return "positive"
         elif negatives > neutrals or negatives == neutrals:
             #print(str(v).strip() + " Positives: " + str(positives) + ", negatives: " + str(negatives) + ", neutrals: " + str(neutrals) + " I'll return negative")
-            print("Positives: " + str(positives) + ", negatives: " + str(negatives) + ", neutrals: " + str(neutrals) + " I'll return negative")
+            #print("Positives: " + str(positives) + ", negatives: " + str(negatives) + ", neutrals: " + str(neutrals) + " I'll return negative")
             return "negative"
 
 
