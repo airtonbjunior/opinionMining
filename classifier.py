@@ -46,10 +46,10 @@ pset.addPrimitive(operator.mul, [float,float], float)
 #pset.addPrimitive(invertSignal, [float], float)
 #pset.addPrimitive(math.pow, [float, float], float)
 
-#pset.addPrimitive(positiveHashtags, [str], float)
-#pset.addPrimitive(negativeHashtags, [str], float)
-#pset.addPrimitive(positiveEmoticons, [str], float)
-#pset.addPrimitive(negativeEmoticons, [str], float)
+pset.addPrimitive(positiveHashtags, [str], float)
+pset.addPrimitive(negativeHashtags, [str], float)
+pset.addPrimitive(positiveEmoticons, [str], float)
+pset.addPrimitive(negativeEmoticons, [str], float)
 
 # Temporary removed
 #pset.addPrimitive(polaritySum2, [str], float)
@@ -57,7 +57,7 @@ pset.addPrimitive(operator.mul, [float,float], float)
 # Temporary removed
 
 #pset.addPrimitive(passInt, [int], int)
-pset.addPrimitive(polaritySumAVGUsingWeights, [str, float, float, float, float, float, float, float, float, float], float)
+pset.addPrimitive(polaritySumAVGUsingWeights, [str, float, float, float, float, float, float, float, float, float, float, float], float)
 #pset.addPrimitive(polaritySumAVGUsingWeights, [str, int, int, int, int, int, int, int], float)
 pset.addPrimitive(hashtagPolaritySum, [str], float)
 pset.addPrimitive(emoticonsPolaritySum, [str], float)
@@ -110,7 +110,7 @@ creator.create("Individual", gp.PrimitiveTree, fitness=creator.FitnessMax)
 
 toolbox = base.Toolbox()
 
-toolbox.register("expr", gp.genHalfAndHalf, pset=pset, min_=1, max_=4)
+toolbox.register("expr", gp.genHalfAndHalf, pset=pset, min_=1, max_=3)
 toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.expr)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("compile", gp.compile, pset=pset)
@@ -524,7 +524,8 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
     TWEETS_TO_EVALUATE, TWEETS_SCORE_TO_EVALUATE = variables.tweets_semeval, variables.tweets_semeval_score
 
     indexes = list(range(len(TWEETS_TO_EVALUATE)))
-    chunks = createIndexChunks(indexes, 10)
+    #chunks = createIndexChunks(indexes, 10)
+    chunks = createRandomIndexChunks(indexes, 10)
 
     fitness_list = []
 
@@ -746,7 +747,7 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
             fitnessReturn -= fitnessReturn * variables.root_decreased_value # Again
             print("         [FITNESS DOUBLE DECREASED] [ORIGINAL: " + str(orig) + "] [DECREASED: " + str(fitnessReturn) + "]")
 
-        print("\n")
+        #print("\n")
 
         fitness_list.append(fitnessReturn)
         fold_index += 1
