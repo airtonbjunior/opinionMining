@@ -155,42 +155,19 @@ def evalSymbRegTweetsFromSemeval(individual):
 
     fitnessReturn = 0
 
-    is_positive = 0
-    is_negative = 0
-    is_neutral  = 0
+    is_positive, is_negative, is_neutral = 0, 0, 0
     
-    # parameters to calc the metrics
-    true_positive  = 0
-    true_negative  = 0
-    true_neutral   = 0
-    false_positive = 0
-    false_negative = 0
-    false_neutral  = 0
-
-    accuracy = 0
-
-    precision_positive = 0
-    precision_negative = 0
-    precision_neutral  = 0
-    precision_avg = 0
-
-    recall_positive = 0
-    recall_negative = 0
-    recall_neutral  = 0
-    recall_avg = 0
-
-    f1_positive = 0
-    f1_negative = 0
-    f1_neutral  = 0
-    f1_avg = 0
-    f1_positive_negative_avg = 0
-
+    true_positive, true_negative, true_neutral, false_positive, false_negative, false_neutral  = 0, 0, 0, 0, 0, 0
+    precision_positive, precision_negative, precision_neutral, precision_avg                   = 0, 0, 0, 0
+    recall_positive, recall_negative, recall_neutral, recall_avg                               = 0, 0, 0, 0
+    f1_positive, f1_negative, f1_neutral, f1_avg, f1_positive_negative_avg                     = 0, 0, 0, 0, 0
+    accuracy   = 0
     func_value = 0
 
     # Constraint controls 
     breaked = False
     fitness_decreased = False
-    double_decreased = False
+    double_decreased  = False
 
     # Transform the tree expression in a callable function
     func = toolbox.compile(expr=individual)
