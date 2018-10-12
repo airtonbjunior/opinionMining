@@ -35,14 +35,48 @@ def safeDiv(left, right):
 def neg(value):
 	return -value
 
+def add3(v1, v2, v3):
+	return v1 + v2 + v3
+
+def add4(v1, v2, v3, v4):
+	return v1 + v2 + v3 + v4
+
+def add5(v1, v2, v3, v4, v5):
+	return v1 + v2 + v3 + v4 + v5
+
+def add6(v1, v2, v3, v4, v5, v6):
+	return v1 + v2 + v3 + v4 + v5 + v6	
+
+def mul3(v1, v2, v3):
+	return v1 * v2 * v3 
+
+def mul4(v1, v2, v3, v4):
+	return v1 * v2 * v3 * v4
+
+def mul5(v1, v2, v3, v4, v5):
+	return v1 * v2 * v3	* v4* v5
+
+def mul6(v1, v2, v3, v4, v5, v6):
+	return v1 * v2 * v3	* v4* v5 * v6
+
 pset = gp.PrimitiveSet("MAIN", 6)
 pset.addPrimitive(operator.add, 2)
+#pset.addPrimitive(add3, 3)
+#pset.addPrimitive(add4, 4)
+#pset.addPrimitive(add5, 5)
+#pset.addPrimitive(add6, 6)
 pset.addPrimitive(operator.sub, 2)
 pset.addPrimitive(operator.mul, 2)
+#pset.addPrimitive(mul3, 3)
+#pset.addPrimitive(mul4, 4)
+#pset.addPrimitive(mul5, 5)
+#pset.addPrimitive(mul6, 6)
 pset.addPrimitive(safeDiv, 2)
 pset.addPrimitive(operator.neg, 1)
 pset.addPrimitive(math.cos, 1)
 pset.addPrimitive(math.sin, 1)
+#pset.addPrimitive(math.log10, 1)
+#pset.addPrimitive(math.log2, 1)
 pset.addEphemeralConstant("randInt", lambda: random.randint(-2,2))
 pset.addEphemeralConstant("randFloat", lambda: random.uniform(-2,2))
 
@@ -177,9 +211,14 @@ def evalEnsemble_folds(individual):
 		fitness_list.append(f1_pos_neg_avg)
 		#fold_index += 1
 
-	if f1_pos_neg_avg > best_f1_pos_neg:
+	if f1_pos_neg_avg > best_f1_pos_neg and f1_pos_neg_avg != 0:
 		best_f1_pos_neg = f1_pos_neg_avg
 		best_model      = str(individual)
+		with open('sandbox/partial_results/' + variables.BEST_INDIVIDUAL_GP_ENSEMBLE, 'w') as f:
+			f.write(str(individual))
+			f.write("\n\n# Generation -> " + str(generation_count))
+			f.write("\n# f1_pos_neg -> " + str(best_f1_pos_neg))
+			f.write("\n# Folds -> True")
 
 	print("[fitness list] " + str(fitness_list))
 	print("[fitness sum]  " + str(sum(fitness_list)))
@@ -309,9 +348,14 @@ def evalEnsemble(individual):
 	f1_avg         = (f1_positive + f1_negative + f1_neutral) / 3
 	f1_pos_neg_avg = (f1_positive + f1_negative) / 2
 
-	if f1_pos_neg_avg > best_f1_pos_neg:
+	if f1_pos_neg_avg > best_f1_pos_neg and f1_pos_neg_avg != 0:
 		best_f1_pos_neg = f1_pos_neg_avg
 		best_model      = str(individual)
+		with open('sandbox/partial_results/' + variables.BEST_INDIVIDUAL_GP_ENSEMBLE, 'w') as f:
+			f.write(str(individual))
+			f.write("\n\n# Generation -> " + str(generation_count))
+			f.write("\n# f1_pos_neg -> " + str(best_f1_pos_neg))
+			f.write("\n# Folds -> False")
 
 	print("[correct    ]: " + str(correct) + " of " + str(len(test_values)) + " messages [" + str(is_positive) + " pos, " + str(is_negative) + " neg, " + str(is_neutral) + " neu]")
 	#print("[accuracy]: " + str(acc) + " ***")
