@@ -64,7 +64,6 @@ pset.addPrimitive(emoticonsPolaritySum, [str], float)
 pset.addPrimitive(positiveWordsQuantity, [str], float)
 pset.addPrimitive(negativeWordsQuantity, [str], float)
 
-
 pset.addPrimitive(hasHashtag, [str], bool)
 pset.addPrimitive(hasEmoticons, [str], bool)
 pset.addPrimitive(hasURLs, [str], bool)
@@ -830,13 +829,13 @@ else:
 
 toolbox.register("select", tools.selTournament, tournsize=2)
 toolbox.register("mate", gp.cxOnePoint)
-toolbox.register("expr_mut", gp.genHalfAndHalf, min_=0, max_=6)
+toolbox.register("expr_mut", gp.genHalfAndHalf, min_=0, max_=4)
 toolbox.register("mutate", gp.mutUniform, expr=toolbox.expr_mut, pset=pset)
 toolbox.register("mutateEphemeral", gp.mutEphemeral)
 
 
-toolbox.decorate("mate", gp.staticLimit(key=operator.attrgetter("height"), max_value=10))
-toolbox.decorate("mutate", gp.staticLimit(key=operator.attrgetter("height"), max_value=10))
+toolbox.decorate("mate", gp.staticLimit(key=operator.attrgetter("height"), max_value=5))
+toolbox.decorate("mutate", gp.staticLimit(key=operator.attrgetter("height"), max_value=5))
 
 
 def myVarAnd(population, toolbox, cxpb, mutpb):
