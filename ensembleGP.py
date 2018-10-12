@@ -24,13 +24,16 @@ from sendMail import *
 
 # log time
 start = time.time()
-
+print("[starting ensembleGP module]\n")
 
 def safeDiv(left, right):
     try:
         return left / right
     except ZeroDivisionError:
         return 0
+
+def neg(value):
+	return -value
 
 pset = gp.PrimitiveSet("MAIN", 6)
 pset.addPrimitive(operator.add, 2)
@@ -43,12 +46,12 @@ pset.addPrimitive(math.sin, 1)
 pset.addEphemeralConstant("randInt", lambda: random.randint(-2,2))
 pset.addEphemeralConstant("randFloat", lambda: random.uniform(-2,2))
 
-pset.renameArguments(ARG0='a')
-pset.renameArguments(ARG1='b')
-pset.renameArguments(ARG2='c')
-pset.renameArguments(ARG3='d')
-pset.renameArguments(ARG4='e')
-pset.renameArguments(ARG5='f')
+pset.renameArguments(ARG0='SVM1')
+pset.renameArguments(ARG1='SVM2')
+pset.renameArguments(ARG2='SVM3')
+pset.renameArguments(ARG3='NAIVE1')
+pset.renameArguments(ARG4='NAIVE2')
+pset.renameArguments(ARG5='NAIVE3')
 
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 creator.create("Individual", gp.PrimitiveTree, fitness=creator.FitnessMax)
@@ -59,6 +62,140 @@ toolbox.register("expr", gp.genHalfAndHalf, pset=pset, min_=4, max_=6)
 toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.expr)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("compile", gp.compile, pset=pset)
+
+
+def evalEnsemble_folds(individual):
+	start = time.time()
+	global test_values
+	global svm_probs
+	global naive_probs
+	global population
+	global iterate_count
+	global generation_count
+	global best_f1_pos_neg
+	global best_model
+
+	indexes = list(range(len(test_values)))
+	folds   = createRandomIndexChunks(indexes, 10)
+
+	fitness_list = []
+	#fold_index   = 0
+	
+	if iterate_count <= population:
+	    print("[individual " + str(iterate_count) + " of the generation " + str(generation_count) + "]\n")
+	    iterate_count += 1
+	else:
+	    generation_count += 1
+	    iterate_count = 1
+	    print("\n[new generation][start generation " + str(generation_count) + "]\n")
+
+	for fold in folds:
+		correct  = 0
+		accuracy = 0
+		is_positive, is_negative, is_neutral = 0, 0, 0
+		true_positive, true_negative, true_neutral, false_positive, false_negative, false_neutral  = 0, 0, 0, 0, 0, 0
+		precision_positive, precision_negative, precision_neutral, precision_avg                   = 0, 0, 0, 0
+		recall_positive, recall_negative, recall_neutral, recall_avg                               = 0, 0, 0, 0
+		f1_positive, f1_negative, f1_neutral, f1_avg, f1_pos_neg_avg                               = 0, 0, 0, 0, 0
+		first = True
+
+		for i in fold:
+			try:
+				func        = toolbox.compile(expr=individual)
+				func_result = float(func(svm_probs[0][i], svm_probs[1][i], svm_probs[2][i], naive_probs[0][i], naive_probs[1][i], naive_probs[2][i]))
+
+				if func_result >= variables.superior_range_gp_ensemble:
+					if test_values[i]   == 1:
+						is_positive     += 1
+						correct         += 1
+						true_positive   += 1
+					elif test_values[i] == -1:
+						is_negative     += 1
+						false_negative  += 1
+					elif test_values[i] == 0:
+						is_neutral      += 1
+						false_neutral   += 1
+
+				elif func_result <= variables.inferior_range_gp_ensemble:
+					if test_values[i]   == -1:
+						is_negative     += 1
+						correct         += 1
+						true_negative   += 1
+					elif test_values[i] == 1:
+						is_positive     += 1
+						false_positive  += 1
+					elif test_values[i] == 0:
+						is_neutral      += 1
+						false_neutral   += 0 
+
+				elif (func_result > variables.inferior_range_gp_ensemble and func_result < variables.superior_range_gp_ensemble):
+					if test_values[i]   == 0:
+						is_neutral      += 1
+						true_neutral    += 1
+						correct         += 1
+					elif test_values[i] == 1:
+						is_positive     += 1
+						false_positive  += 1
+					elif test_values[i] == -1:
+						is_negative     += 1
+						false_negative  += 1
+
+
+			except Exception as e:
+				print("Exception evalEnsemble_folds")
+				print(e)
+				continue
+        
+		accuracy = float(correct / len(fold))
+
+		if true_positive + false_positive > 0:
+			precision_positive = true_positive / (true_positive + false_positive)
+		if true_negative + false_negative > 0:
+			precision_negative = true_negative / (true_negative + false_negative)
+		if true_neutral + false_neutral > 0:
+			precision_neutral  = true_neutral  / (true_neutral + false_neutral)
+
+		if is_positive > 0:
+			recall_positive = true_positive   / is_positive
+		if is_negative > 0:
+			recall_negative = true_negative   / is_negative
+		if is_neutral > 0:
+			recall_neutral  = true_neutral    / is_neutral
+
+		if precision_positive + recall_positive > 0:
+			f1_positive = 2 * (precision_positive * recall_positive) / (precision_positive + recall_positive)
+		if precision_negative + recall_negative > 0:
+			f1_negative = 2 * (precision_negative * recall_negative) / (precision_negative + recall_negative)        
+		if precision_neutral + recall_neutral > 0:
+			f1_neutral  = 2 * (precision_neutral * recall_neutral)   / (precision_neutral + recall_neutral)        
+
+		precision_avg  = (precision_positive + precision_negative + precision_neutral) / 3
+		recall_avg     = (recall_positive + recall_negative + recall_neutral) / 3
+		f1_avg         = (f1_positive + f1_negative + f1_neutral) / 3
+		f1_pos_neg_avg = (f1_positive + f1_negative) / 2
+        
+		fitness_list.append(f1_pos_neg_avg)
+		#fold_index += 1
+
+	if f1_pos_neg_avg > best_f1_pos_neg:
+		best_f1_pos_neg = f1_pos_neg_avg
+		best_model      = str(individual)
+
+	print("[fitness list] " + str(fitness_list))
+	print("[fitness sum]  " + str(sum(fitness_list)))
+	print("[# of folds]   " + str(len(folds)))
+	print("[avg fitness]  " + str(sum(fitness_list)/len(folds)) + "\n")
+
+	print("[correct    ]: " + str(correct) + " of " + str(len(test_values)) + " messages [" + str(is_positive) + " pos, " + str(is_negative) + " neg, " + str(is_neutral) + " neu]")
+	print("[f1_pos_neg ]: " + str(f1_pos_neg_avg) + " ***")
+	if best_f1_pos_neg != 0:
+		print("[best f1_P_N]: " + str(best_f1_pos_neg))
+	print("[individual]:  " + str(individual))
+	print("\n[evaluated in " + str(format(time.time() - start, '.3g')) + " seconds]")
+	print("-------------------\n")
+
+	return sum(fitness_list)/len(folds),
+
 
 def evalEnsemble(individual):
 	start = time.time()
@@ -73,16 +210,16 @@ def evalEnsemble(individual):
 	global generation_count
 	global best_acc
 	global best_f1_pos_neg
+	global best_model
 
 	is_positive, is_negative, is_neutral = 0, 0, 0
 	true_positive, true_negative, true_neutral, false_positive, false_negative, false_neutral  = 0, 0, 0, 0, 0, 0
 	precision_positive, precision_negative, precision_neutral, precision_avg                   = 0, 0, 0, 0
 	recall_positive, recall_negative, recall_neutral, recall_avg                               = 0, 0, 0, 0
 	f1_positive, f1_negative, f1_neutral, f1_avg, f1_pos_neg_avg                               = 0, 0, 0, 0, 0
-
+	correct = 0
+	
 	print(str(individual) + "\n")
-
-	correct = 0 # accuracy, for while
 
 	# Log the number of each individual
 	if iterate_count <= population:
@@ -100,7 +237,7 @@ def evalEnsemble(individual):
 			func_result = float(func(svm_probs[0][i], svm_probs[1][i], svm_probs[2][i], naive_probs[0][i], naive_probs[1][i], naive_probs[2][i]))
 
 			# see how normalize this to consider a range of pos, neg and neu values
-			if func_result >= 1:
+			if func_result >= variables.superior_range_gp_ensemble:
 				if test_values[i]   == 1:
 					is_positive     += 1
 					correct         += 1
@@ -112,7 +249,7 @@ def evalEnsemble(individual):
 					is_neutral      += 1
 					false_neutral   += 1
 
-			elif func_result <= -1:
+			elif func_result <= variables.inferior_range_gp_ensemble:
 				if test_values[i]   == -1:
 					is_negative     += 1
 					correct         += 1
@@ -124,7 +261,7 @@ def evalEnsemble(individual):
 					is_neutral      += 1
 					false_neutral   += 0 
 
-			elif (func_result > -1 and func_result < 1):
+			elif (func_result > variables.inferior_range_gp_ensemble and func_result < variables.superior_range_gp_ensemble):
 				if test_values[i]   == 0:
 					is_neutral      += 1
 					true_neutral    += 1
@@ -138,7 +275,7 @@ def evalEnsemble(individual):
 			#print("func_result[" + str(i) + "] " + str(func_result))
 
 		except Exception as e: 
-			print("Exception 1")
+			print("Exception evalEnsemble")
 			print(e)
 			continue
 
@@ -151,21 +288,21 @@ def evalEnsemble(individual):
 	if true_negative + false_negative > 0:
 		precision_negative = true_negative / (true_negative + false_negative)
 	if true_neutral + false_neutral > 0:
-		precision_neutral = true_neutral / (true_neutral + false_neutral)
+		precision_neutral  = true_neutral  / (true_neutral + false_neutral)
 
 	if is_positive > 0:
-		recall_positive = true_positive / is_positive
+		recall_positive = true_positive   / is_positive
 	if is_negative > 0:
-		recall_negative = true_negative / is_negative
+		recall_negative = true_negative   / is_negative
 	if is_neutral > 0:
-		recall_neutral = true_neutral / is_neutral
+		recall_neutral  = true_neutral    / is_neutral
 
 	if precision_positive + recall_positive > 0:
 		f1_positive = 2 * (precision_positive * recall_positive) / (precision_positive + recall_positive)
 	if precision_negative + recall_negative > 0:
 		f1_negative = 2 * (precision_negative * recall_negative) / (precision_negative + recall_negative)        
 	if precision_neutral + recall_neutral > 0:
-		f1_neutral = 2 * (precision_neutral * recall_neutral) / (precision_neutral + recall_neutral)        
+		f1_neutral  = 2 * (precision_neutral * recall_neutral)   / (precision_neutral + recall_neutral)        
 
 	precision_avg  = (precision_positive + precision_negative + precision_neutral) / 3
 	recall_avg     = (recall_positive + recall_negative + recall_neutral) / 3
@@ -174,6 +311,7 @@ def evalEnsemble(individual):
 
 	if f1_pos_neg_avg > best_f1_pos_neg:
 		best_f1_pos_neg = f1_pos_neg_avg
+		best_model      = str(individual)
 
 	print("[correct    ]: " + str(correct) + " of " + str(len(test_values)) + " messages [" + str(is_positive) + " pos, " + str(is_negative) + " neg, " + str(is_neutral) + " neu]")
 	#print("[accuracy]: " + str(acc) + " ***")
@@ -186,7 +324,10 @@ def evalEnsemble(individual):
 	return f1_pos_neg_avg,
 
 
-toolbox.register("evaluate", evalEnsemble)
+if variables.train_using_folds_gp_ensemble:
+	toolbox.register("evaluate", evalEnsemble_folds)
+else:
+	toolbox.register("evaluate", evalEnsemble)
 toolbox.register("select", tools.selTournament, tournsize=3)
 toolbox.register("mate", gp.cxOnePoint)
 toolbox.register("expr_mut", gp.genFull, min_=0, max_=2)
@@ -245,6 +386,104 @@ def loadValues(file_path, module):
 	return values
 
 
+def testModel_ensembleGP(model):
+	global test_values
+	global svm_probs
+	global naive_probs
+
+	is_positive, is_negative, is_neutral = 0, 0, 0
+	true_positive, true_negative, true_neutral, false_positive, false_negative, false_neutral  = 0, 0, 0, 0, 0, 0
+	precision_positive, precision_negative, precision_neutral, precision_avg                   = 0, 0, 0, 0
+	recall_positive, recall_negative, recall_neutral, recall_avg                               = 0, 0, 0, 0
+	f1_positive, f1_negative, f1_neutral, f1_avg, f1_pos_neg_avg                               = 0, 0, 0, 0, 0
+	correct = 0
+
+	original_model = model
+
+	for i in range(len(test_values)):
+		model = original_model
+		model = model.replace("(SVM1", "(" + str(svm_probs[0][i])).replace("SVM1)", str(svm_probs[0][i]) + ")")
+		model = model.replace("(SVM2", "(" + str(svm_probs[1][i])).replace("SVM2)", str(svm_probs[1][i]) + ")")
+		model = model.replace("(SVM3", "(" + str(svm_probs[2][i])).replace("SVM3)", str(svm_probs[2][i]) + ")")
+		model = model.replace("(NAIVE1", "(" + str(naive_probs[0][i])).replace("NAIVE1)", str(naive_probs[0][i]) + ")")
+		model = model.replace("(NAIVE2", "(" + str(naive_probs[1][i])).replace("NAIVE2)", str(naive_probs[1][i]) + ")")
+		model = model.replace("(NAIVE3", "(" + str(naive_probs[2][i])).replace("NAIVE3)", str(naive_probs[2][i]) + ")")
+
+		result = float(eval(model))
+
+		if result >= variables.superior_range_gp_ensemble:
+			if test_values[i]   == 1:
+				is_positive     += 1
+				correct         += 1
+				true_positive   += 1
+			elif test_values[i] == -1:
+				is_negative     += 1
+				false_negative  += 1
+			elif test_values[i] == 0:
+				is_neutral      += 1
+				false_neutral   += 1
+
+		elif result <= variables.inferior_range_gp_ensemble:
+			if test_values[i]   == -1:
+				is_negative     += 1
+				correct         += 1
+				true_negative   += 1
+			elif test_values[i] == 1:
+				is_positive     += 1
+				false_positive  += 1
+			elif test_values[i] == 0:
+				is_neutral      += 1
+				false_neutral   += 0 
+
+		elif (result > variables.inferior_range_gp_ensemble and result < variables.superior_range_gp_ensemble):
+			if test_values[i]   == 0:
+				is_neutral      += 1
+				true_neutral    += 1
+				correct         += 1
+			elif test_values[i] == 1:
+				is_positive     += 1
+				false_positive  += 1
+			elif test_values[i] == -1:
+				is_negative     += 1
+				false_negative  += 1
+
+	acc = float(correct / len(test_values))
+
+	if true_positive + false_positive > 0:
+		precision_positive = true_positive / (true_positive + false_positive)
+	if true_negative + false_negative > 0:
+		precision_negative = true_negative / (true_negative + false_negative)
+	if true_neutral + false_neutral > 0:
+		precision_neutral  = true_neutral  / (true_neutral + false_neutral)
+
+	if is_positive > 0:
+		recall_positive = true_positive   / is_positive
+	if is_negative > 0:
+		recall_negative = true_negative   / is_negative
+	if is_neutral > 0:
+		recall_neutral  = true_neutral    / is_neutral
+
+	if precision_positive + recall_positive > 0:
+		f1_positive = 2 * (precision_positive * recall_positive) / (precision_positive + recall_positive)
+	if precision_negative + recall_negative > 0:
+		f1_negative = 2 * (precision_negative * recall_negative) / (precision_negative + recall_negative)        
+	if precision_neutral + recall_neutral > 0:
+		f1_neutral  = 2 * (precision_neutral * recall_neutral)   / (precision_neutral + recall_neutral)        
+
+	precision_avg  = (precision_positive + precision_negative + precision_neutral) / 3
+	recall_avg     = (recall_positive + recall_negative + recall_neutral) / 3
+	f1_avg         = (f1_positive + f1_negative + f1_neutral) / 3
+	f1_pos_neg_avg = (f1_positive + f1_negative) / 2
+
+
+	print("correct evals:  " + str(correct) + " messages of " + str(len(test_values)) + " (" + str(acc) + " accuracy)")
+	print("true positive:  " + str(true_positive))
+	print("true negative:  " + str(true_negative))
+	print("true neutral:   " + str(true_neutral))
+	print("f1 3 classes:   " + str(f1_avg))
+	print("f1 pos and neg: " + str(f1_pos_neg_avg))
+	return f1_pos_neg_avg
+
 # Global vars
 train_values = loadValues('datasets/train/twitter-train-cleansed-B.txt', 'train')
 test_values  = loadValues('datasets/test/SemEval2014_SVM_Naive_MS_Lreg_S140.txt', 'test')
@@ -258,11 +497,13 @@ generation_count = 1
 
 best_acc        = 0
 best_f1_pos_neg = 0
+best_model      = ""
 
 def main():
 	random.seed()
 	global population
 	global best_acc
+	global best_f1_pos_neg
 	
 	pop = toolbox.population(n=population)
 	hof = tools.HallOfFame(2)
@@ -270,10 +511,13 @@ def main():
 	pop, log = algorithms.eaSimple(pop, toolbox, 0.5, 0.1, 20, stats=False,
 	                               halloffame=hof, verbose=False)
 	
-	print("\n\n[best model]: " + str(hof[0]))
-	print("[best acc]:   " + str(best_acc) + "\n")
+	print("\n\n[best model ]: " + str(hof[0]))
+	#print("[best acc]:   " + str(best_acc) + "\n")
+	print("[best f1_P_N]:   " + str(best_f1_pos_neg) + "\n")
 	# print log
 	return pop, log, hof
 
 if __name__ == "__main__":
     main()
+    #x = testModel_ensembleGP("sub(safeDiv(sub(sub(SVM3, 0), mul(sub(sin(mul(add(SVM1, 1.9786153720017947), neg(-2))), add(neg(mul(NAIVE3, NAIVE3)), safeDiv(safeDiv(SVM2, sub(sin(mul(neg(mul(NAIVE3, NAIVE3)), neg(-2))), add(neg(mul(NAIVE3, NAIVE3)), safeDiv(safeDiv(SVM2, NAIVE1), safeDiv(NAIVE1, NAIVE1))))), safeDiv(NAIVE1, SVM3)))), -2)), safeDiv(mul(NAIVE3, NAIVE3), neg(-2))), cos(sub(mul(mul(NAIVE1, mul(add(-0.7083473166495553, -1.4732497725511893), safeDiv(SVM2, -2))), sin(NAIVE2)), sub(cos(NAIVE3), safeDiv(NAIVE1, NAIVE3)))))")
+    #print(x)
