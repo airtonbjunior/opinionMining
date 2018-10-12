@@ -68,6 +68,7 @@ all_train_words = []
 all_test_words  = []
 
 train_using_folds = True
+train_using_folds_gp_ensemble = True
 
 use_svm_neutral 	  		= False
 use_url_to_neutral	  		= False
@@ -89,6 +90,9 @@ use_gp_ensemble = False # if False, all the models will be executed separated. I
 
 neutral_inferior_range = 0
 neutral_superior_range = 0
+
+inferior_range_gp_ensemble = -1
+superior_range_gp_ensemble = 1
 
 liu_weight       	= 1
 sentiwordnet_weight = 1
