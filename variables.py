@@ -148,10 +148,10 @@ MUTATION         = 0.1
 AG_MUTATION      = 0.3
 MUTATE_EPHEMERAL = 0.75
 
-GENERATIONS      = 70
+GENERATIONS      = 100
 AG_GENERATIONS   = 50
 
-POPULATION       = 200
+POPULATION       = 150
 AG_POPULATION    = 100
 
 cicles_unchanged = 0
@@ -162,7 +162,7 @@ max_unchanged_cicles      = 9999999999
 TOTAL_MODELS = 2
 
 # Constraints
-root_constraint = True
+root_constraint = False
 root_function = "polaritySumAVGUsingWeights"
 #root_function = "polaritySumAVG"
 #root_functions = ["polaritySumAVGUsingWeights", "if_then_else"]
@@ -172,14 +172,14 @@ massive_functions_constraint = True
 massive_function = "polaritySumAVGUsingWeights"
 massive_functions_max = 1
 
-neutral_range_constraint = True
+neutral_range_constraint = False
 
 generations_unchanged_reached_msg = False
 
 FILE_RESULTS             = 'test_results-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 FILE_RESULTS_2CLASSES    = 'test_results-2classes' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 
-TRAIN_RESULTS            = 'train-' + str(TOTAL_MODELS) + 'models_' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+TRAIN_RESULTS            = 'train-' + str(TOTAL_MODELS) + 'mod' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 TRAIN_RESULTS_2CLASSES   = 'train-' + str(TOTAL_MODELS) + 'models_2classes_' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 
 tweets_semeval        = []
