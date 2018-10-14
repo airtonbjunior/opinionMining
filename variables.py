@@ -55,7 +55,7 @@ BEST_INDIVIDUAL_AG 		    = 'ag-partial-best-' + str(datetime.now())[11:13] + str
 BEST_INDIVIDUAL_GP_ENSEMBLE = 'gp-ens-part-best-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 BEST_INDIVIDUAL_2CLASSES    = 'partial-best-2classes-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 
-SAVE_INCORRECT_EVALUATIONS  = True
+SAVE_INCORRECT_EVALUATIONS  = False
 INCORRECT_EVALUATIONS       = 'incorrect-evaluations-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 
 INVERT_SARCASM = False
@@ -85,6 +85,7 @@ use_only_naive_bayes        = False
 use_only_MS_classifier      = False
 use_only_LReg_classifier    = False
 use_only_S140_classifier    = False
+use_only_RForest_classifier = True
 use_all_classifiers         = False
 
 use_gp_ensemble = False # if False, all the models will be executed separated. If True, an ensemble of the models will be executed
@@ -151,7 +152,7 @@ AG_CROSSOVER     = 0.9
 
 MUTATION         = 0.1
 AG_MUTATION      = 0.3
-MUTATE_EPHEMERAL = 0.75
+MUTATE_EPHEMERAL = 0.85
 
 GENERATIONS      = 100
 AG_GENERATIONS   = 50
@@ -309,6 +310,7 @@ tweets_2013_score_naive = []
 tweets_2013_score_MS    = []
 tweets_2013_score_LReg  = []
 tweets_2013_score_S140  = []
+tweets_2013_score_RFor  = []
 tweets_2013_positive    = 0
 tweets_2013_negative    = 0
 tweets_2013_neutral     = 0
@@ -320,6 +322,7 @@ tweets_2014_score_naive = []
 tweets_2014_score_MS    = []
 tweets_2014_score_LReg  = []
 tweets_2014_score_S140  = []
+tweets_2014_score_RFor  = []
 tweets_2014_positive    = 0
 tweets_2014_negative    = 0
 tweets_2014_neutral     = 0
@@ -331,6 +334,7 @@ tweets_liveJournal2014_score_naive = []
 tweets_liveJournal2014_score_MS    = []
 tweets_liveJournal2014_score_LReg  = []
 tweets_liveJournal2014_score_S140  = []
+tweets_liveJournal2014_score_RFor  = []
 tweets_liveJournal2014_positive    = 0
 tweets_liveJournal2014_negative    = 0
 tweets_liveJournal2014_neutral     = 0
@@ -342,6 +346,7 @@ tweets_2014_sarcasm_score_naive = []
 tweets_2014_sarcasm_score_MS    = []
 tweets_2014_sarcasm_score_LReg  = []
 tweets_2014_sarcasm_score_S140  = []
+tweets_2014_sarcasm_score_RFor  = []
 tweets_2014_sarcasm_positive    = 0
 tweets_2014_sarcasm_negative    = 0
 tweets_2014_sarcasm_neutral     = 0
@@ -353,6 +358,7 @@ sms_2013_score_naive = []
 sms_2013_score_MS    = []
 sms_2013_score_LReg  = []
 sms_2013_score_S140  = []
+sms_2013_score_RFor  = []
 sms_2013_positive    = 0
 sms_2013_negative    = 0
 sms_2013_neutral     = 0
@@ -364,6 +370,7 @@ all_polarities_in_file_order_naive = []
 all_polarities_in_file_order_MS    = []
 all_polarities_in_file_order_LReg  = []
 all_polarities_in_file_order_S140  = []
+all_polarities_in_file_order_RFor  = []
 
 MAX_ANALYSIS_TWEETS = 100000
 
