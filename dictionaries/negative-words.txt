@@ -3017,7 +3017,7 @@ nauseate
 nauseates
 nauseating
 nauseatingly
-naïve
+naive
 nebulous
 nebulously
 needless
