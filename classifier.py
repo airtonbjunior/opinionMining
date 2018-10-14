@@ -34,7 +34,7 @@ pset = gp.PrimitiveSetTyped("MAIN", [str], float)
 pset.addPrimitive(operator.add, [float,float], float)
 pset.addPrimitive(operator.sub, [float,float], float)
 pset.addPrimitive(operator.mul, [float,float], float)
-#pset.addPrimitive(protectedDiv, [float,float], float)
+pset.addPrimitive(protectedDiv, [float,float], float)
 #pset.addPrimitive(addI, [int,int], int)
 #pset.addPrimitive(subI, [int,int], int)
 #pset.addPrimitive(mulI, [int,int], int)
@@ -109,7 +109,7 @@ creator.create("Individual", gp.PrimitiveTree, fitness=creator.FitnessMax)
 
 toolbox = base.Toolbox()
 
-toolbox.register("expr", gp.genHalfAndHalf, pset=pset, min_=1, max_=3)
+toolbox.register("expr", gp.genHalfAndHalf, pset=pset, min_=1, max_=2)
 toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.expr)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("compile", gp.compile, pset=pset)
@@ -806,7 +806,7 @@ else:
 
 toolbox.register("select", tools.selTournament, tournsize=2)
 toolbox.register("mate", gp.cxOnePoint)
-toolbox.register("expr_mut", gp.genHalfAndHalf, min_=0, max_=4)
+toolbox.register("expr_mut", gp.genHalfAndHalf, min_=0, max_=3)
 toolbox.register("mutate", gp.mutUniform, expr=toolbox.expr_mut, pset=pset)
 toolbox.register("mutateEphemeral", gp.mutEphemeral)
 
