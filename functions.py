@@ -594,6 +594,37 @@ def normalize_svm_polarity(polarity_string):
         return 0
 
 
+def normalize_rforest_polarity(polarity_string):
+    # Check how to do it properly
+    # ['negative' 'neutral' 'positive']
+    negative_conf, neutral_conf, positive_conf  = float(polarity_string.split()[0]), float(polarity_string.split()[1]), float(polarity_string.split()[2])
+
+    #print(str(type(negative_conf)))
+    #print(str(neutral_conf))
+    #print(str(positive_conf))
+
+    #input("s")
+
+    if positive_conf > negative_conf and positive_conf > neutral_conf:
+        #sentiment = ('positive','ML')
+        return 1
+    elif negative_conf > positive_conf and negative_conf > neutral_conf:
+        #sentiment = ('negative','ML')
+        return -1
+    elif neutral_conf > positive_conf and neutral_conf > negative_conf:
+        #sentiment = ('neutral','ML')
+        return 0
+    else:
+        if positive_conf == neutral_conf:
+            #sentiment = ('positive','ML')
+            return 1
+        elif negative_conf == neutral_conf:
+            #sentiment = ('negative','ML')
+            return -1
+        else:
+            #sentiment = ('neutral','ML')
+            return 0
+
 def normalize_naive_polarity(polarity_string):
     if polarity_string == "positive":
         return 1
@@ -634,9 +665,10 @@ def loadTestTweets():
     test_words = []
 
     # Load results from each classifier
-    LReg_results  = getResultsClassifier("datasets/test/LReg_test_results.txt")
-    Naive_results = getResultsClassifier("datasets/test/Naive_test_results.txt") # class <tab> pos_prob <tab> neg_prob <tab> neu_prob
-    SVM_results   = getResultsClassifier("datasets/test/SVM_test_results.txt")   # confirm the values pattern
+    LReg_results    = getResultsClassifier("datasets/test/LReg_test_results.txt")
+    Naive_results   = getResultsClassifier("datasets/test/Naive_test_results.txt") # class <tab> pos_prob <tab> neg_prob <tab> neu_prob
+    SVM_results     = getResultsClassifier("datasets/test/SVM_test_results.txt")   # confirm the values pattern
+    RForest_results = getResultsClassifier("datasets/test/RandomForest_test_results.txt")   # confirm the values pattern
 
     with open(variables.SEMEVAL_TEST_FILE, 'r') as inF:
         index_results = 0
@@ -644,17 +676,20 @@ def loadTestTweets():
             if tweets_loaded < variables.MAX_ANALYSIS_TWEETS:
                 tweet_parsed = line.split("\t")
 
-                svm_class, naive_class, MS_class, LReg_class, S140_class = 0, 0, 0, 0, 0
+                svm_class, rforest_class, naive_class, MS_class, LReg_class, S140_class = 0, 0, 0, 0, 0, 0
 
                 try:
-                    #svm_class   = normalize_svm_polarity(tweet_parsed[3].strip())
-                    svm_class    = normalize_svm_polarity(SVM_results[index_results].strip())
-                    #naive_class = normalize_naive_polarity(tweet_parsed[4].strip())
-                    naive_class  = normalize_naive_polarity(Naive_results[index_results].split("\t")[0].strip()) # index 0 contains the class - on 1, 2 and 3 we have the probs of each class
-                    MS_class     = normalize_MS_polarity(str(tweet_parsed[5].strip()))
-                    #LReg_class  = normalize_naive_polarity(tweet_parsed[6].strip())             # the same pattern of naive classifier ('positive', 'negative' and 'neutral')
-                    LReg_class   = normalize_naive_polarity(LReg_results[index_results].strip()) # the same pattern of naive classifier ('positive', 'negative' and 'neutral')
-                    S140_class   = normalize_naive_polarity(tweet_parsed[7].strip())             # the same pattern of naive classifier ('positive', 'negative' and 'neutral')
+                    #svm_class    = normalize_svm_polarity(tweet_parsed[3].strip())
+                    svm_class     = normalize_svm_polarity(SVM_results[index_results].strip())
+                    #naive_class  = normalize_naive_polarity(tweet_parsed[4].strip())
+                    naive_class   = normalize_naive_polarity(Naive_results[index_results].split("\t")[0].strip()) # index 0 contains the class - on 1, 2 and 3 we have the probs of each class
+                    MS_class      = normalize_MS_polarity(str(tweet_parsed[5].strip()))
+                    #LReg_class   = normalize_naive_polarity(tweet_parsed[6].strip())             # the same pattern of naive classifier ('positive', 'negative' and 'neutral')
+                    LReg_class    = normalize_naive_polarity(LReg_results[index_results].strip()) # the same pattern of naive classifier ('positive', 'negative' and 'neutral')
+                    S140_class    = normalize_naive_polarity(tweet_parsed[7].strip())             # the same pattern of naive classifier ('positive', 'negative' and 'neutral')
+                    rforest_class = normalize_naive_polarity(RForest_results[index_results].split('\t')[3].strip())
+
+                    #print(str(rforest_class))
 
                     index_results += 1
 
@@ -672,6 +707,7 @@ def loadTestTweets():
                     variables.all_polarities_in_file_order_MS.append(MS_class)
                     variables.all_polarities_in_file_order_LReg.append(LReg_class)
                     variables.all_polarities_in_file_order_S140.append(S140_class)
+                    variables.all_polarities_in_file_order_RFor.append(rforest_class)
 
                     if tweet_parsed[1] == "Twitter2013":
 
@@ -694,6 +730,7 @@ def loadTestTweets():
                         variables.tweets_2013_score_MS.append(MS_class)
                         variables.tweets_2013_score_LReg.append(LReg_class)
                         variables.tweets_2013_score_S140.append(S140_class)
+                        variables.tweets_2013_score_RFor.append(rforest_class)
 
                     elif tweet_parsed[1] == "Twitter2014":
                         variables.tweets_2014.append(tweet_parsed[2].replace('right now', 'rightnow'))
@@ -715,6 +752,7 @@ def loadTestTweets():
                         variables.tweets_2014_score_MS.append(MS_class)
                         variables.tweets_2014_score_LReg.append(LReg_class)
                         variables.tweets_2014_score_S140.append(S140_class)
+                        variables.tweets_2014_score_RFor.append(rforest_class)
 
                     elif tweet_parsed[1] == "SMS2013":
                         variables.sms_2013.append(tweet_parsed[2].replace('right now', 'rightnow'))
@@ -736,6 +774,7 @@ def loadTestTweets():
                         variables.sms_2013_score_MS.append(MS_class)
                         variables.sms_2013_score_LReg.append(LReg_class)
                         variables.sms_2013_score_S140.append(S140_class)
+                        variables.sms_2013_score_RFor.append(rforest_class)
                     
                     elif tweet_parsed[1] == "LiveJournal2014":
                         variables.tweets_liveJournal2014.append(tweet_parsed[2].replace('right now', 'rightnow'))
@@ -757,6 +796,7 @@ def loadTestTweets():
                         variables.tweets_liveJournal2014_score_MS.append(MS_class)
                         variables.tweets_liveJournal2014_score_LReg.append(LReg_class)
                         variables.tweets_liveJournal2014_score_S140.append(S140_class)
+                        variables.tweets_liveJournal2014_score_RFor.append(rforest_class)
 
                     elif tweet_parsed[1] == "Twitter2014Sarcasm":
                         variables.tweets_2014_sarcasm.append(tweet_parsed[2].replace('right now', 'rightnow'))
@@ -778,6 +818,7 @@ def loadTestTweets():
                         variables.tweets_2014_sarcasm_score_MS.append(MS_class)
                         variables.tweets_2014_sarcasm_score_LReg.append(LReg_class)
                         variables.tweets_2014_sarcasm_score_S140.append(S140_class)
+                        variables.tweets_2014_sarcasm_score_RFor.append(rforest_class)
                     
                     tweets_loaded += 1                          
                 
@@ -2811,7 +2852,8 @@ def get_best_evaluation(classifiers_evaluations, type="majority"):
 def evaluateMessages(base, model, model_ensemble=False):
     global model_results_to_count_occurrences
     print("[starting evaluation of " + base + " messages]")
-    
+    if model_ensemble == True:
+        print("   [using ensemble of " + str(len(model)) + " models]")
     from textblob import TextBlob
 
     # test
@@ -2868,6 +2910,7 @@ def evaluateMessages(base, model, model_ensemble=False):
     messages_score_MS    = []
     messages_score_LReg  = []
     messages_score_S140  = []
+    messages_score_RFor  = []
     messages_positive, messages_negative, messages_neutral = 0, 0, 0
     
     total_positive = variables.tweets_2013_positive + variables.tweets_2014_positive + variables.tweets_liveJournal2014_positive + variables.tweets_2014_sarcasm_positive + variables.sms_2013_positive
@@ -2887,6 +2930,7 @@ def evaluateMessages(base, model, model_ensemble=False):
         messages_score_MS    = variables.tweets_2013_score_MS
         messages_score_LReg  = variables.tweets_2013_score_LReg
         messages_score_S140  = variables.tweets_2013_score_S140
+        messages_score_RFor  = variables.tweets_2013_score_RFor
         messages_positive    = variables.tweets_2013_positive
         messages_negative    = variables.tweets_2013_negative
         messages_neutral     = variables.tweets_2013_neutral
@@ -2898,6 +2942,7 @@ def evaluateMessages(base, model, model_ensemble=False):
         messages_score_MS    = variables.tweets_2014_score_MS
         messages_score_LReg  = variables.tweets_2014_score_LReg
         messages_score_S140  = variables.tweets_2014_score_S140
+        messages_score_RFor  = variables.tweets_2014_score_RFor
         messages_positive    = variables.tweets_2014_positive
         messages_negative    = variables.tweets_2014_negative
         messages_neutral     = variables.tweets_2014_neutral
@@ -2909,6 +2954,7 @@ def evaluateMessages(base, model, model_ensemble=False):
         messages_score_MS    = variables.tweets_liveJournal2014_score_MS
         messages_score_LReg  = variables.tweets_liveJournal2014_score_LReg
         messages_score_S140  = variables.tweets_liveJournal2014_score_S140
+        messages_score_RFor  = variables.tweets_liveJournal2014_score_RFor
         messages_positive    = variables.tweets_liveJournal2014_positive
         messages_negative    = variables.tweets_liveJournal2014_negative
         messages_neutral     = variables.tweets_liveJournal2014_neutral
@@ -2920,6 +2966,7 @@ def evaluateMessages(base, model, model_ensemble=False):
         messages_score_MS    = variables.tweets_2014_sarcasm_score_MS
         messages_score_LReg  = variables.tweets_2014_sarcasm_score_LReg
         messages_score_S140  = variables.tweets_2014_sarcasm_score_S140
+        messages_score_RFor  = variables.tweets_2014_sarcasm_score_RFor
         messages_positive    = variables.tweets_2014_sarcasm_positive
         messages_negative    = variables.tweets_2014_sarcasm_negative
         messages_neutral     = variables.tweets_2014_sarcasm_neutral
@@ -2931,6 +2978,7 @@ def evaluateMessages(base, model, model_ensemble=False):
         messages_score_MS    = variables.sms_2013_score_MS
         messages_score_LReg  = variables.sms_2013_score_LReg
         messages_score_S140  = variables.sms_2013_score_S140
+        messages_score_RFor  = variables.sms_2013_score_RFor
         messages_positive    = variables.sms_2013_positive
         messages_negative    = variables.sms_2013_negative
         messages_neutral     = variables.sms_2013_neutral        
@@ -2942,15 +2990,18 @@ def evaluateMessages(base, model, model_ensemble=False):
         messages_score_MS    = variables.all_polarities_in_file_order_MS
         messages_score_LReg  = variables.all_polarities_in_file_order_LReg
         messages_score_S140  = variables.all_polarities_in_file_order_S140
+        messages_score_RFor  = variables.all_polarities_in_file_order_RFor
         #messages = variables.tweets_2013 + variables.tweets_2014 + variables.tweets_liveJournal2014 + variables.sms_2013 + variables.tweets_2014_sarcasm
         #messages_score = variables.tweets_2013_score + variables.tweets_2014_score + variables.tweets_liveJournal2014_score + variables.sms_2013_score + variables.tweets_2014_sarcasm_score
         messages_positive    = variables.tweets_2013_positive + variables.tweets_2014_positive + variables.tweets_liveJournal2014_positive + variables.tweets_2014_sarcasm_positive + variables.sms_2013_positive
         messages_negative    = variables.tweets_2013_negative + variables.tweets_2014_negative + variables.tweets_liveJournal2014_negative + variables.tweets_2014_sarcasm_negative + variables.sms_2013_negative
         messages_neutral     = variables.tweets_2013_neutral  + variables.tweets_2014_neutral  + variables.tweets_liveJournal2014_neutral  + variables.tweets_2014_sarcasm_neutral  + variables.sms_2013_neutral
 
-    with open(variables.INCORRECT_EVALUATIONS, 'a') as f_incorrect:
-        if base == "tweets2013": # only one header on file
-            f_incorrect.write("[gold]\t[prediction]\t[neutral range]\t[base]\t[message]\n\n")
+    
+    if variables.SAVE_INCORRECT_EVALUATIONS:
+        with open(variables.INCORRECT_EVALUATIONS, 'a') as f_incorrect:
+            if base == "tweets2013": # only one header on file
+                f_incorrect.write("[gold]\t[prediction]\t[neutral range]\t[base]\t[message]\n\n")
 
     for index, item in enumerate(messages): 
         message = str(messages[index]).strip().replace("'", "")
@@ -3006,6 +3057,9 @@ def evaluateMessages(base, model, model_ensemble=False):
                 # TO-DO: normalize the values, considering the neutral range
                 result = messages_score_svm[index]
             
+            elif(variables.use_only_RForest_classifier):
+                result = messages_score_RFor[index]
+
             # Textblob default (no semeval training provided) only
             elif(variables.use_only_textblob_no_train):
                 result = TextBlob(message).sentiment.polarity
@@ -3275,6 +3329,8 @@ def evaluateMessages(base, model, model_ensemble=False):
             if base == "tweets2013":
                 if not model_ensemble:
                     f.write("[Model]\t" + model + "\n")
+                else:
+                    f.write("[Ensemble of " + str(len(models_analysis)) + " models]\n")
                 f.write("# [results - f1]\n")
 
             f.write(base + "\t" + str(round(f1_positive_negative_avg, 4)) + "\n")
