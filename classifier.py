@@ -63,6 +63,8 @@ pset.addPrimitive(hashtagPolaritySum, [str], float)
 pset.addPrimitive(emoticonsPolaritySum, [str], float)
 pset.addPrimitive(positiveWordsQuantity, [str], float)
 pset.addPrimitive(negativeWordsQuantity, [str], float)
+pset.addPrimitive(phraseLength, [str], float)
+pset.addPrimitive(wordCount, [str], float)
 
 pset.addPrimitive(hasHashtag, [str], bool)
 pset.addPrimitive(hasEmoticons, [str], bool)
@@ -109,7 +111,7 @@ creator.create("Individual", gp.PrimitiveTree, fitness=creator.FitnessMax)
 
 toolbox = base.Toolbox()
 
-toolbox.register("expr", gp.genHalfAndHalf, pset=pset, min_=1, max_=2)
+toolbox.register("expr", gp.genHalfAndHalf, pset=pset, min_=1, max_=1)
 toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.expr)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("compile", gp.compile, pset=pset)
@@ -389,7 +391,7 @@ def evalSymbRegTweetsFromSemeval(individual):
     if variables.best_fitness < fitnessReturn:
         if variables.best_fitness != 0:
             # save partial best individual (in case we need stop evolution)
-            with open(variables.BEST_INDIVIDUAL, 'w') as f:
+            with open('sandbox/partial_results/' + variables.BEST_INDIVIDUAL, 'w') as f:
                 f.write(str(individual))
                 f.write("\n\n# Generation -> " + str(generation_count))
                 f.write("\n# Neutral Range -> [" + str(variables.neutral_inferior_range) + ", " + str(variables.neutral_superior_range) + "]")
@@ -508,11 +510,9 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
     fold_index = 0
 
     for fold in chunks:
-        
-
         correct_evaluations = 0
-        fitnessReturn = 0
-        accuracy = 0
+        fitnessReturn       = 0
+        accuracy            = 0
         is_positive, is_negative, is_neutral = 0, 0, 0
         true_positive, true_negative, true_neutral, false_positive, false_negative, false_neutral  = 0, 0, 0, 0, 0, 0
         precision_positive, precision_negative, precision_neutral, precision_avg                   = 0, 0, 0, 0
@@ -737,12 +737,13 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
 
     if variables.best_fitness < fitnessReturn:
         if variables.best_fitness != 0:
-            with open(variables.BEST_INDIVIDUAL, 'w') as f:
+            with open('sandbox/partial_results/' + variables.BEST_INDIVIDUAL, 'w') as f:
                 f.write(str(individual))
                 f.write("\n\n# Generation -> " + str(generation_count))
                 f.write("\n# Neutral Range -> [" + str(variables.neutral_inferior_range) + ", " + str(variables.neutral_superior_range) + "]")
             variables.best_fitness_history.append(variables.best_fitness)
         variables.best_fitness = fitnessReturn
+        variables.best_fitness_history_dict[generation_count] = fitnessReturn
         variables.fitness_positive = is_positive
         variables.fitness_negative = is_negative
         variables.fitness_neutral  = is_neutral
@@ -957,7 +958,8 @@ def main():
     print("[best f1 negative]: " + str(variables.best_f1_negative))
     print("[best f1 avg]: " + str(variables.best_f1_avg))
     print("[best f1 avg (+/-)]: " + str(variables.best_f1_positive_negative_avg))
-    print("[best f1 avg function]: " + variables.best_f1_avg_function + "\n")       
+    print("[best f1 avg function]: " + variables.best_f1_avg_function)
+    print("[best fitness history]: " + str(variables.best_fitness_history_dict) + "\n")
     #print(json.dumps(variables.all_fitness_history))
     print("\n")
     #print(set(variables.all_fitness_history))
@@ -998,6 +1000,7 @@ if __name__ == "__main__":
         mail_content = "Parameters: " + parameters + "\n\n" + str(variables.model_results[len(variables.model_results) - 1]) + "\n"
         mail_content += "\n\nTotal tweets: " + str(variables.positive_tweets + variables.negative_tweets + variables.neutral_tweets) + " [" + str(variables.positive_tweets) + " positives, " + str(variables.negative_tweets) + " negatives and " + str(variables.neutral_tweets) + " neutrals]\n"
         mail_content += "Fitness (F1 pos and neg): " + str(variables.best_fitness) + " [" + str(variables.fitness_positive + variables.fitness_negative + variables.fitness_neutral) + " correct evaluations] ["+ str(variables.fitness_positive) + " positives, " + str(variables.fitness_negative) + " negatives and " + str(variables.fitness_neutral) + " neutrals]\n"
+        mail_content += "\nFitness evolution: " + str(variables.best_fitness_history_dict) + "\n"
 
         try:
             send_mail(i+1, variables.TOTAL_MODELS, variables.POPULATION, variables.GENERATIONS, mail_content)
@@ -1045,6 +1048,8 @@ if __name__ == "__main__":
         variables.best_precision_avg_function = ""
         variables.best_recall_avg_function    = ""
         variables.best_f1_avg_function        = ""
+
+        variables.best_fitness_history_dict = {}
 
     #print(len(variables.all_fitness_history))
     #print(variables.all_fitness_history)
