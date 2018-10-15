@@ -22,6 +22,33 @@ from validate_email import validate_email
 
 import variables
 
+
+#def loadDictionary(dictionary, file_path, word_index, polarity_index):
+    #startDic = time.time()
+    #print("  [loading " + str(dictionary) + "]")
+    
+    #posWords, negWords = [], []
+
+    #with open(variables.DICTIONARY_POSITIVE_WORDS, 'r') as inF:
+    #    variables.dic_liu_loaded = True
+    #    variables.dic_loaded_total += 1
+    #    for line in inF:
+    #        line = line.lower().strip()
+
+    #        posWords.
+
+    #        if module == "train":# and line in variables.all_train_words:
+    #            variables.dic_positive_words.append(line)
+            #elif module == "test" and line in variables.all_test_words:
+    #        elif module == "test":# and line in variables.all_test_words:
+    #            variables.dic_positive_words.append(line)
+    
+    #if variables.log_loads:
+    #    print("    [" + str(len(variables.dic_positive_words) + len(variables.dic_negative_words)) + " words loaded]")
+    #    print("    [" + str(len(variables.dic_positive_words)) + " positive and " + str(len(variables.dic_negative_words)) + " negative]")
+    #    print("      [liu dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]\n")
+
+
 # Load the dictionaries
 def getDictionary(module):
     start = time.time()
@@ -41,14 +68,16 @@ def getDictionary(module):
     with open(variables.DICTIONARY_POSITIVE_HASHTAGS, 'r') as inF:
         for line in inF:
             variables.dic_positive_hashtags.append(line.lower().strip())
+            variables.all_positive_words.append(line.lower().strip())
 
     with open(variables.DICTIONARY_NEGATIVE_HASHTAGS, 'r') as inF:
         for line in inF:
-            variables.dic_negative_hashtags.append(line.lower().strip())            
+            variables.dic_negative_hashtags.append(line.lower().strip())
+            variables.all_negative_words.append(line.lower().strip())
 
     with open(variables.DICTIONARY_POSITIVE_EMOTICONS, 'r') as inF:
         for line in inF:
-            variables.dic_positive_emoticons.append(line.strip()) 
+            variables.dic_positive_emoticons.append(line.strip())
 
     with open(variables.DICTIONARY_NEGATIVE_EMOTICONS, 'r') as inF:
         for line in inF:
@@ -74,21 +103,23 @@ def getDictionary(module):
             variables.dic_liu_loaded = True
             variables.dic_loaded_total += 1
             for line in inF:
-                line = line.lower().strip()
-                if module == "train":# and line in variables.all_train_words:
-                    variables.dic_positive_words.append(line)
+                variables.dic_positive_words.append(line.lower().strip())
+                variables.all_positive_words.append(line.lower().strip())
+                #if module == "train":# and line in variables.all_train_words:
+                #    variables.dic_positive_words.append(line)
                 #elif module == "test" and line in variables.all_test_words:
-                elif module == "test":# and line in variables.all_test_words:
-                    variables.dic_positive_words.append(line)
+                #elif module == "test":# and line in variables.all_test_words:
+                #    variables.dic_positive_words.append(line)
 
         with codecs.open(variables.DICTIONARY_NEGATIVE_WORDS, "r", "latin-1") as inF:
             for line in inF:
-                line = line.lower().strip()
-                if module == "train" and line in variables.all_train_words:
-                    variables.dic_negative_words.append(line)
+                variables.dic_negative_words.append(line.lower().strip())
+                variables.all_negative_words.append(line.lower().strip())
+                #if module == "train" and line in variables.all_train_words:
+                #    variables.dic_negative_words.append(line)
                 #elif module == "test" and line in variables.all_test_words:
-                elif module == "test":# and line in variables.all_test_words:
-                    variables.dic_negative_words.append(line)
+                #elif module == "test":# and line in variables.all_test_words:
+                #    variables.dic_negative_words.append(line)
         
         if variables.log_loads:
             print("    [" + str(len(variables.dic_positive_words) + len(variables.dic_negative_words)) + " words loaded]")
@@ -1391,6 +1422,14 @@ def positiveWordsQuantity(phrase):
             positive_words += 1
     
     return positive_words    
+
+
+def phraseLength(phrase):
+    return len(phrase.strip())
+
+
+def wordCount(phrase):
+    return len(phrase.split())
 
 
 # Sequence:
