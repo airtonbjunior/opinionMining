@@ -1,3 +1,0 @@
-[PARAMS]: 0.9 crossover, 0.1 mutation, 5 population, 5 generation
-
-polaritySumAVGUsingWeights(replaceBoosterWords(replaceNegatingWords(removeAllPonctuation(boostUpperCase(x)))), if_then_else(True, 0.17740132882523474, emoticonsPolaritySum(boostUpperCase(boostUpperCase(x)))), 0.0, 0.0569218566726688, add(hashtagPolaritySum(replaceNegatingWords(replaceNegatingWords(removeAllPonctuation(x)))), emoticonsPolaritySum(replaceBoosterWords(x))), 0.0, emoticonsPolaritySum(boostUpperCase(x)), hashtagPolaritySum(removeLinks(x)), neutralRange(0.0, sub(hashtagPolaritySum(x), hashtagPolaritySum(replaceNegatingWords(replaceNegatingWords(removeAllPonctuation(x)))))), 0.0)
