@@ -794,8 +794,6 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
     #logs
 
     evaluation_acumulated_time += time.time() - start
-
-        
     
     return fitnessReturn,
 
@@ -923,7 +921,7 @@ def main():
     random.seed()
 
     pop = toolbox.population(n=variables.POPULATION)
-    hof = tools.HallOfFame(4)
+    hof = tools.HallOfFame(3)
 
     # Parameters
         # population (list of individuals)
@@ -960,10 +958,35 @@ def main():
     print("[best f1 avg (+/-)]: " + str(variables.best_f1_positive_negative_avg))
     print("[best f1 avg function]: " + variables.best_f1_avg_function)
     print("[best fitness history]: " + str(variables.best_fitness_history_dict) + "\n")
+    #print("[best fitness per generation]: " + str(variables.best_fitness_per_generation_history))
     #print(json.dumps(variables.all_fitness_history))
     print("\n")
     #print(set(variables.all_fitness_history))
     #logs 
+
+    X = range(len(variables.best_fitness_per_generation_history))
+    Y = variables.best_fitness_per_generation_history
+
+    #z_s = [] 
+    #w_s = []
+    #for xx, yy in enumerate(variables.best_fitness_history_dict):
+    #    z_s.append(xx)
+    #    w_s.append(yy)
+    
+    #Z = z_s
+    #W = w_s
+
+    #plt.scatter(X,Y)
+    plt.plot(X,Y)
+
+    #plt.show()
+    plt.savefig(variables.TRAIN_RESULTS_IMG + "-all.png", bbox_inches='tight') # all models in one image
+    plt.savefig(variables.TRAIN_RESULTS_IMG + str(datetime.now())[14:16] + str(datetime.now())[17:19] + ".png", bbox_inches='tight') # one image per model
+
+    #plt.plot(Z,W)
+    #plt.savefig(variables.BEST_RESULTS_IMG + "-all.png", bbox_inches='tight') # all models in one image
+    #plt.savefig(variables.BEST_RESULTS_IMG + str(datetime.now())[14:16] + str(datetime.now())[17:19] + ".png", bbox_inches='tight') # one image per model
+
 
     end = time.time()
     print("[evaluation function consumed " + str(format(evaluation_acumulated_time, '.3g')) + " seconds]")
