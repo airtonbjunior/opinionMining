@@ -38,8 +38,8 @@ DICTIONARY_GENERAL_INQUIRER   = 'dictionaries/general-inquirer.txt'
 DICTIONARY_S140               = 'dictionaries/sentiment140_unigram.txt'
 DICTIONARY_MPQA               = 'dictionaries/mpqa.txt'
 
-USE_SPELLCHECKED_WORDS     = False # set True if want to use the spellchecked words
-USE_ONLY_POS_WORDS         = False
+USE_SPELLCHECKED_WORDS      = False # set True if want to use the spellchecked words
+USE_ONLY_POS_WORDS          = False
 
 TRAIN_WORDS 		        = 'datasets/train/words_train/words_train.txt'
 TRAIN_WORDS_SPELLCHECK      = 'datasets/train/words_train/words_train_spell.txt'
@@ -50,9 +50,9 @@ TEST_WORDS                  = 'datasets/test/words_test.txt'
 TEST_WORDS_SPELLCHECK       = 'datasets/test/words_test_spell.txt'
 TEST_WORDS_POS_TAGGED_W     = 'datasets/test/words_test_spell_pos-tagged_W.txt' # tagged words but without the tags, only words
 
-BEST_INDIVIDUAL 		    = 'partial-best-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
-BEST_INDIVIDUAL_AG 		    = 'ag-partial-best-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
-BEST_INDIVIDUAL_GP_ENSEMBLE = 'gp-ens-part-best-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+BEST_INDIVIDUAL 		    = 'partial-best-'          + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+BEST_INDIVIDUAL_AG 		    = 'ag-partial-best-'       + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+BEST_INDIVIDUAL_GP_ENSEMBLE = 'gp-ens-part-best-'      + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 BEST_INDIVIDUAL_2CLASSES    = 'partial-best-2classes-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 
 SAVE_INCORRECT_EVALUATIONS  = False
@@ -75,7 +75,7 @@ use_svm_neutral 	  		= False
 use_url_to_neutral	  		= False
 use_date_to_neutral         = False
 use_url_and_date_to_neutral = False
-use_emoticon_analysis 		= False
+use_emoticon_analysis 		= True
 use_only_emoticons          = False
 use_only_gp 	      		= False
 use_only_svm		  		= False
@@ -182,10 +182,10 @@ neutral_range_constraint = False
 
 generations_unchanged_reached_msg = False
 
-FILE_RESULTS             = 'sandbox/results/test_results-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+FILE_RESULTS             = 'sandbox/results/test_results-'         + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 FILE_RESULTS_2CLASSES    = 'sandbox/results/test_results-2classes' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 
-TRAIN_RESULTS            = 'sandbox/results/train-' + str(TOTAL_MODELS) + 'mod' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+TRAIN_RESULTS            = 'sandbox/results/train-' + str(TOTAL_MODELS) + 'mod'              + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 TRAIN_RESULTS_2CLASSES   = 'sandbox/results/train-' + str(TOTAL_MODELS) + 'models_2classes_' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 
 TRAIN_RESULTS_IMG        = 'sandbox/results/train-' + str(TOTAL_MODELS) + 'mod' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '-eachFitness'
