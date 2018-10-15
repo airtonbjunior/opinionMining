@@ -182,11 +182,14 @@ neutral_range_constraint = False
 
 generations_unchanged_reached_msg = False
 
-FILE_RESULTS             = 'test_results-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
-FILE_RESULTS_2CLASSES    = 'test_results-2classes' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+FILE_RESULTS             = 'sandbox/results/test_results-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+FILE_RESULTS_2CLASSES    = 'sandbox/results/test_results-2classes' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 
-TRAIN_RESULTS            = 'train-' + str(TOTAL_MODELS) + 'mod' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
-TRAIN_RESULTS_2CLASSES   = 'train-' + str(TOTAL_MODELS) + 'models_2classes_' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+TRAIN_RESULTS            = 'sandbox/results/train-' + str(TOTAL_MODELS) + 'mod' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+TRAIN_RESULTS_2CLASSES   = 'sandbox/results/train-' + str(TOTAL_MODELS) + 'models_2classes_' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+
+TRAIN_RESULTS_IMG        = 'sandbox/results/train-' + str(TOTAL_MODELS) + 'mod' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '-eachFitness'
+BEST_RESULTS_IMG         = 'sandbox/results/train-' + str(TOTAL_MODELS) + 'mod' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + 'onlyBests'
 
 tweets_semeval        = []
 tweets_semeval_score  = []
@@ -206,6 +209,9 @@ tweets_sts_score_test = []
 
 tweets_sts_positive = 0
 tweets_sts_negative = 0
+
+all_positive_words = []
+all_negative_words = []
 
 # All are converted into sets because we don't need to keep the order
 dic_positive_words     = []
@@ -262,8 +268,10 @@ best_AG_weights_combination = []
 
 best_fitness = 0
 best_fitness_history  = []
+best_fitness_history_dict = {}
 best_fitness_per_generation_history = []
 all_fitness_history   = []
+best_fitness_per_generation_history_dict  = {}
 
 best_accuracy = 0
 
