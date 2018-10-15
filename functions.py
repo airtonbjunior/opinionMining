@@ -3091,6 +3091,7 @@ def evaluateMessages(base, model, model_ensemble=False):
                 all_classifiers.append(floatToStr_polarity_value(messages_score_MS[index], variables.neutral_inferior_range, variables.neutral_superior_range))
                 #all_classifiers.append(floatToStr_polarity_value(messages_score_LReg[index], variables.neutral_inferior_range, variables.neutral_superior_range))
                 all_classifiers.append(floatToStr_polarity_value(messages_score_S140[index], variables.neutral_inferior_range, variables.neutral_superior_range))
+                all_classifiers.append(floatToStr_polarity_value(messages_score_RFor[index], variables.neutral_inferior_range, variables.neutral_superior_range))
                 all_classifiers.append(floatToStr_polarity_value(TextBlob(message).sentiment.polarity, variables.neutral_inferior_range, variables.neutral_superior_range))
                 all_classifiers.append(floatToStr_polarity_value(float(eval(model_analysis)), variables.neutral_inferior_range, variables.neutral_superior_range))
                 if hasEmoticons(message):
