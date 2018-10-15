@@ -1,0 +1,12 @@
+[best model]: add(sin(mul(sin(SVM3), add(NAIVE1, cos(NAIVE1)))), sub(cos(add(SVM1, add(SVM1, 1.4990420214747053))), sub(mul(neg(NAIVE3), cos(1.84700816414855)), add(sub(cos(add(SVM1, 1.4990420214747053)), sub(mul(sub(NAIVE3, SVM2), cos(sin(sub(add(sin(sub(NAIVE1, SVM1)), add(add(0, add(SVM1, NAIVE1)), sin(SVM2))), sub(mul(neg(NAIVE3), mul(sub(NAIVE3, SVM2), cos(1.84700816414855))), NAIVE3))))), add(NAIVE3, SVM3))), SVM3))))
+[best acc]:   0.6733058862801825
+
+
+sub(safeDiv(sub(neg(cos(mul(sub(sin(mul(add(SVM1, 1.9786153720017947), neg(-2))), add(neg(mul(NAIVE3, NAIVE3)), neg(SVM1))), -2))), mul(sub(sin(mul(add(SVM1, 1.9786153720017947), neg(-2))), add(SVM1, safeDiv(safeDiv(SVM2, sub(sin(mul(neg(mul(NAIVE3, NAIVE3)), neg(-2))), add(neg(mul(NAIVE3, NAIVE3)), safeDiv(safeDiv(SVM2, NAIVE1), safeDiv(NAIVE1, NAIVE1))))), safeDiv(NAIVE1, SVM3)))), -2)), safeDiv(mul(NAIVE3, NAIVE3), neg(-2))), cos(sub(mul(cos(1), sin(NAIVE2)), sub(cos(1), neg(-2)))))
+
+sub(safeDiv(sub(sub(SVM3, 0), mul(sub(sin(mul(add(SVM1, 1.9786153720017947), neg(-2))), add(neg(mul(NAIVE3, NAIVE3)), safeDiv(safeDiv(SVM2, sub(sin(mul(neg(mul(NAIVE3, NAIVE3)), neg(-2))), add(neg(mul(NAIVE3, NAIVE3)), safeDiv(safeDiv(SVM2, NAIVE1), safeDiv(NAIVE1, NAIVE1))))), safeDiv(NAIVE1, SVM3)))), -2)), safeDiv(mul(NAIVE3, NAIVE3), neg(-2))), cos(sub(mul(mul(NAIVE1, mul(add(-0.7083473166495553, -1.4732497725511893), safeDiv(SVM2, -2))), sin(NAIVE2)), sub(cos(NAIVE3), safeDiv(NAIVE1, NAIVE3)))))
+[best f1_P_N]: 0.8286598148423042
+
+
+sub(NAIVE3, safeDiv(cos(mul(SVM1, mul(SVM3, NAIVE2))), mul(NAIVE3, sub(SVM1, neg(cos(1))))))
+[best f1_P_N]:   0.8392172298251988
