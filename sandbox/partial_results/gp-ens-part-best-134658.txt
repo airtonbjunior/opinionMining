@@ -1,0 +1,5 @@
+sub(mul(sub(neg(-1), add(sub(neg(1), safeDiv(1.083005807594001, NAIVE2)), cos(0.8682470665022488))), add(neg(mul(SVM1, safeDiv(2, NAIVE1))), safeDiv(sub(-0.988323988385559, neg(neg(SVM1))), mul(NAIVE1, sub(SVM1, sub(-1.443485043224304, SVM3)))))), sub(SVM1, SVM3))
+
+# Generation -> 13
+# f1_pos_neg -> 0.8392172298251988
+# Folds -> True

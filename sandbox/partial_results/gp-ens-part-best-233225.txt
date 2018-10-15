@@ -1,0 +1,5 @@
+sub(neg(safeDiv(sin(-2), sin(sin(add(add(SVM3, safeDiv(SVM1, -1.9463535393855738)), sin(neg(mul(0, safeDiv(add(SVM3, RFOR1), NAIVE3))))))))), sin(neg(mul(0, safeDiv(SVM2, mul(safeDiv(neg(NAIVE3), sin(neg(mul(sin(sin(add(add(SVM3, safeDiv(SVM1, -1.9463535393855738)), neg(NAIVE2)))), safeDiv(SVM2, sub(safeDiv(sub(SVM2, SVM2), sin(NAIVE1)), mul(RFOR3, NAIVE2))))))), neg(sin(SVM3))))))))
+
+# Generation -> 12
+# f1_pos_neg -> 0.861697778988963
+# Folds -> True
