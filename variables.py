@@ -85,7 +85,7 @@ use_only_naive_bayes        = False
 use_only_MS_classifier      = False
 use_only_LReg_classifier    = False
 use_only_S140_classifier    = False
-use_only_RForest_classifier = True
+use_only_RForest_classifier = False
 use_all_classifiers         = False
 
 use_gp_ensemble = False # if False, all the models will be executed separated. If True, an ensemble of the models will be executed
