@@ -1301,6 +1301,25 @@ def loadTestTweets_smuk():
                 #    variables.tweets_mukh_negative += 1
 
 
+def getOnlyPOSClass(phrase, pos_class, return_type="array"):
+    start = time.time()
+    print("\n[start getPOSClass]")
+    import nltk
+    from nltk.tokenize import TweetTokenizer
+    
+    tknzr  = TweetTokenizer()
+    tokens = tknzr.tokenize(phrase)
+    tags   = nltk.pos_tag(tokens)
+    words  =  [word for word, pos in tags if (pos == pos_class)]
+
+    end = time.time()
+    print("  [getPOSClasse finished][" + str(format(end - start, '.3g')) + " seconds]\n") 
+
+    if return_type == "phrase":
+        return ' '.join(words).lower()
+    return words
+    
+
 def getPOSTag(message):
     import nltk
     from nltk.tokenize import TweetTokenizer
