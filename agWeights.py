@@ -510,50 +510,5 @@ def loadModel():
 
 if __name__ == "__main__":                
 	#main()
-
-    #getDictionary("test")
-
-	#import lregression
-	#lregression.trainAndPredict()
-	#lregression.saveOnlyLR()
-
-	
-	saveSVMValuesOnFile()
-
-	#import naive 
-	#naive.saveOnlyNaive()
-
-	#naive_classifier = naive.loadNaiveBayesClassifier()
-	#probs = naive_classifier.prob_classify("Today is sunday")
-	#print(str(probs.prob("pos")))
-	#print(str(probs.prob("neg")))
-	#print(str(probs.prob("neu")))
-
-
-    #with open('positivehashtagssaved.txt', 'a') as fsave:
-	#    with open('dictionaries/sentiment140_unigram.txt', 'r') as f:
-	#    	for line in f:
-	#    		if line.split("\t")[0].strip().startswith("#") and float(line.split("\t")[1].strip()) > 0:
-	#    			fsave.write(line.split("\t")[0][1:].strip() + "\n")
-
-    #from textblob import TextBlob
-    #print(str(TextBlob(x).sentiment.polarity))
-
-    #from aylienapiclient import textapi
-    #client = textapi.Client("f60113d3", "c05ff1ac96609b50c4620564d6b99f61")
-
-    #sentiment = client.Sentiment({'text': ';-) please screen or delete this comment .'})
-
-    #print(sentiment["polarity"])
-
-	#getDictionary("train")
-	#loadTrainTweets()
-
-	#chunks = createChunks(variables.tweets_semeval, 10)
-
-	#c1, c2, c3, c4 = [x[0] for x in chunks], [x[1] for x in chunks], [x[2] for x in chunks], [x[3] for x in chunks]
-
-	#print(str(c1) + "\n")
-	#print(str(c2) + "\n")
-	#print(str(c3) + "\n")
-	#print(str(c4) + "\n")
+    
+    print(str(getOnlyPOSClass("I love you he she beautiful doing do does fix country drink desk", "NN", "phrase")))
