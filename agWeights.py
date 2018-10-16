@@ -510,4 +510,5 @@ def loadModel():
 
 if __name__ == "__main__":                
 	#main()
-
+    
+    print(str(getOnlyPOSClass("I love you he she beautiful doing do does fix country drink desk", "NN", "phrase")))
