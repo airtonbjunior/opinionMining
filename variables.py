@@ -141,6 +141,8 @@ dic_mpqa_loaded         = False
 
 dic_loaded_total = 0
 
+use_original_dic_values = True
+
 # Balance the train tweets
 MAX_POSITIVES_TWEETS = 1500
 MAX_NEGATIVES_TWEETS = 1500
@@ -157,7 +159,7 @@ MUTATE_EPHEMERAL = 0.85
 GENERATIONS      = 100
 AG_GENERATIONS   = 50
 
-POPULATION       = 150
+POPULATION       = 160
 AG_POPULATION    = 100
 
 cicles_unchanged = 0

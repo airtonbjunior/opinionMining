@@ -46,8 +46,8 @@ pset.addPrimitive(protectedDiv, [float,float], float)
 #pset.addPrimitive(invertSignal, [float], float)
 #pset.addPrimitive(math.pow, [float, float], float)
 
-pset.addPrimitive(positiveHashtags, [str], float)
-pset.addPrimitive(negativeHashtags, [str], float)
+pset.addPrimitive(positiveHashtags,  [str], float)
+pset.addPrimitive(negativeHashtags,  [str], float)
 pset.addPrimitive(positiveEmoticons, [str], float)
 pset.addPrimitive(negativeEmoticons, [str], float)
 
@@ -59,33 +59,33 @@ pset.addPrimitive(negativeEmoticons, [str], float)
 #pset.addPrimitive(passInt, [int], int)
 pset.addPrimitive(polaritySumAVGUsingWeights, [str, float, float, float, float, float, float, float, float, float, float, float], float)
 #pset.addPrimitive(polaritySumAVGUsingWeights, [str, int, int, int, int, int, int, int], float)
-pset.addPrimitive(hashtagPolaritySum, [str], float)
-pset.addPrimitive(emoticonsPolaritySum, [str], float)
+pset.addPrimitive(hashtagPolaritySum,    [str], float)
+pset.addPrimitive(emoticonsPolaritySum,  [str], float)
 pset.addPrimitive(positiveWordsQuantity, [str], float)
 pset.addPrimitive(negativeWordsQuantity, [str], float)
-pset.addPrimitive(phraseLength, [str], float)
-pset.addPrimitive(wordCount, [str], float)
+pset.addPrimitive(phraseLength,          [str], float)
+pset.addPrimitive(wordCount,             [str], float)
 
-pset.addPrimitive(hasHashtag, [str], bool)
+pset.addPrimitive(hasHashtag,   [str], bool)
 pset.addPrimitive(hasEmoticons, [str], bool)
-pset.addPrimitive(hasURLs, [str], bool)
-pset.addPrimitive(hasDates, [str], bool)
+pset.addPrimitive(hasURLs,      [str], bool)
+pset.addPrimitive(hasDates,     [str], bool)
 
 pset.addPrimitive(if_then_else, [bool, float, float], float)
 
 #pset.addPrimitive(stemmingText, [str], str)
-pset.addPrimitive(removeStopWords, [str], str)
-pset.addPrimitive(removeLinks, [str], str)
+pset.addPrimitive(removeStopWords,      [str], str)
+pset.addPrimitive(removeLinks,          [str], str)
 #pset.addPrimitive(removeEllipsis, [str], str)
 pset.addPrimitive(removeAllPonctuation, [str], str)
 pset.addPrimitive(replaceNegatingWords, [str], str)
-pset.addPrimitive(replaceBoosterWords, [str], str)
-pset.addPrimitive(boostUpperCase, [str], str)
+pset.addPrimitive(replaceBoosterWords,  [str], str)
+pset.addPrimitive(boostUpperCase,       [str], str)
 
 #pset.addPrimitive(dictionaryWeights, [float, float, float, float, float, float, float], None)
 pset.addPrimitive(neutralRange, [float, float], float)
 
-pset.addTerminal(True, bool)
+pset.addTerminal(True,  bool)
 pset.addTerminal(False, bool)
 
 #pset.addTerminal(-2.0, float)
@@ -98,7 +98,7 @@ pset.addTerminal(0.0, float)
 #pset.addTerminal(1.5, float)
 #pset.addTerminal(2.0, float)
 
-pset.addEphemeralConstant("rand", lambda: random.uniform(0, 2), float)
+pset.addEphemeralConstant("rand",  lambda: random.uniform(0, 2), float)
 pset.addEphemeralConstant("rand2", lambda: random.uniform(-2, 2), float)
 #pset.addEphemeralConstant("randInt", lambda: random.randint(0, 3), int)
 
@@ -111,7 +111,7 @@ creator.create("Individual", gp.PrimitiveTree, fitness=creator.FitnessMax)
 
 toolbox = base.Toolbox()
 
-toolbox.register("expr", gp.genHalfAndHalf, pset=pset, min_=1, max_=1)
+toolbox.register("expr", gp.genHalfAndHalf, pset=pset, min_=1, max_=2)
 toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.expr)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("compile", gp.compile, pset=pset)
@@ -810,7 +810,7 @@ toolbox.register("mutate", gp.mutUniform, expr=toolbox.expr_mut, pset=pset)
 toolbox.register("mutateEphemeral", gp.mutEphemeral)
 
 
-toolbox.decorate("mate", gp.staticLimit(key=operator.attrgetter("height"), max_value=5))
+toolbox.decorate("mate",   gp.staticLimit(key=operator.attrgetter("height"), max_value=5))
 toolbox.decorate("mutate", gp.staticLimit(key=operator.attrgetter("height"), max_value=5))
 
 
