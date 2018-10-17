@@ -230,6 +230,8 @@ class TwitterHybridClassifier(object):
                         sentiment = ('negative','ML')
                     else:
                         sentiment = ('neutral','ML')
+            elif var.model_classifier == "naive":
+                sentiment = ""
 
             predictions.append(sentiment)
 
@@ -237,7 +239,12 @@ class TwitterHybridClassifier(object):
         with open(str(var.model_classifier) + '_test_results.txt', 'a') as fr:
             ii = 0
             for pred in line_save:
-                fr.write(pred + '\t' + str(var.rf_predicts[ii])[2:-2] + '\n')
+                if (var.model_classifier) == "randomForest":
+                    fr.write(pred + '\t' + str(var.rf_predicts[ii])[2:-2]  + '\n')
+                elif (var.model_classifier) == "svm":
+                    fr.write(pred + '\t' + str(var.svm_predicts[ii][2:-2]) + '\n')
+                elif (var.model_classifier) == "naive":
+                    fr.write(pred + '\t' + str(var.naive_predicts[ii][2:-2]) + '\n')
                 ii += 1
 
         return predictions

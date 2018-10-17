@@ -56,7 +56,9 @@ train_path = '../../datasets/train/twitter-train-cleansed-B.txt'
 #dev_path   = 'Data/Semeval/DevSet/twitter-dev-gold-B.tsv'
 dev_path   = '../../datasets/train/twitter-train-cleansed-B.txt'
 #test_path  = 'Data/Semeval/TestSet/2014/SemEval2014-task9-test-B-input.txt'
+
 test_path  = '../../datasets/test/test-b-original-complete.txt'
+#test_path  = '../../datasets/train/twitter-train-cleansed-B.txt'
 
 # TestSet from 2013
 #test_path  = 'Data/Semeval/TestSet/2013/twitter-test-GOLD-B.tsv'

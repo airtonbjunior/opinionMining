@@ -24,6 +24,8 @@ from nltk import trigrams
 # Import classifier libraries
 from sklearn.svm import LinearSVC
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.naive_bayes import GaussianNB
+
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.preprocessing import LabelEncoder
 
@@ -49,6 +51,8 @@ class MachineLearningClassifier(object):
             self.classifier = LinearSVC(C=0.005)
         elif var.model_classifier == "randomForest":
             self.classifier = RandomForestClassifier()
+        elif var.model_classifier == "naive":
+            self.classifier = GaussianNB()
         self.train(trainset)
 
     # Extract features for ML process
@@ -152,7 +156,10 @@ class MachineLearningClassifier(object):
         data = self.vectorizer.fit_transform(features_list)
         target = self.encoder.fit_transform([label for tweet_tokens,label in tweets])
         print('Builing the model')
-        self.classifier.fit(data, target)
+        if(var.model_classifier) == "naive":
+            self.classifier.fit(data.toarray(), target)
+        else:
+            self.classifier.fit(data, target)
 
 
 
@@ -170,18 +177,20 @@ class MachineLearningClassifier(object):
         if var.model_classifier == "svm":
             probs = self.classifier.decision_function(data)
             classes = self.encoder.classes_
+            var.svm_predicts.append(classes[self.classifier.predict(data)])
+
             return {classes.item(i): probs.item(i) for i in range(len(classes))}         
         elif var.model_classifier == "randomForest":
             probs = self.classifier.predict_proba(data)
             classes = self.encoder.classes_
-
-            #print(str(classes))
-            #print(self.classifier.predict(data))
-            #print(str(classes[self.classifier.predict(data)]))
-
             var.rf_predicts.append(classes[self.classifier.predict(data)])
 
-            #input("Press enter to continue")
+            return {classes.item(i): probs.item(i) for i in range(len(classes))}
+
+        elif var.model_classifier == "naive":
+            probs = self.classifier.predict_proba(data.toarray())
+            classes = self.encoder.classes_
+            var.naive_predicts.append(classes[self.classifier.predict(data.toarray())])
 
             return {classes.item(i): probs.item(i) for i in range(len(classes))}
 
