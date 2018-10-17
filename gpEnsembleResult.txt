@@ -10,3 +10,15 @@ sub(safeDiv(sub(sub(SVM3, 0), mul(sub(sin(mul(add(SVM1, 1.9786153720017947), neg
 
 sub(NAIVE3, safeDiv(cos(mul(SVM1, mul(SVM3, NAIVE2))), mul(NAIVE3, sub(SVM1, neg(cos(1))))))
 [best f1_P_N]:   0.8392172298251988
+
+
+
+[best model ]: safeDiv(add(safeDiv(add(0, safeDiv(NAIVE1, sub(neg(neg(-2)), neg(cos(sin(SVM2)))))), -0.6729775461871736), safeDiv(add(NAIVE2, add(1.6586285319358236, RFOR1)), neg(NAIVE3))), sin(mul(neg(-2), safeDiv(1.7862219926220981, NAIVE2))))
+[best f1_P_N]:   0.5876732537395362
+
+
+
+
+# Already using the train files instead of test
+[best model ]: safeDiv(add(safeDiv(add(0, safeDiv(NAIVE1, sub(neg(neg(-2)), neg(cos(sin(SVM2)))))), -0.6729775461871736), safeDiv(add(NAIVE2, add(1.6586285319358236, RFOR1)), neg(NAIVE3))), sin(mul(neg(-2), safeDiv(1.7862219926220981, NAIVE2))))
+[best f1_P_N]:   0.5876732537395362
