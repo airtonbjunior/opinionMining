@@ -188,6 +188,7 @@ FILE_RESULTS             = 'sandbox/results/test_results-'         + str(datetim
 FILE_RESULTS_2CLASSES    = 'sandbox/results/test_results-2classes' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 
 TRAIN_RESULTS            = 'sandbox/results/train-' + str(TOTAL_MODELS) + 'mod'              + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+TRAIN_RESULTS_GP_ENS     = 'sandbox/results/train-gp-ensemble-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 TRAIN_RESULTS_2CLASSES   = 'sandbox/results/train-' + str(TOTAL_MODELS) + 'models_2classes_' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 
 TRAIN_RESULTS_IMG        = 'sandbox/results/train-' + str(TOTAL_MODELS) + 'mod' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '-eachFitness'
