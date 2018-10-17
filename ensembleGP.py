@@ -392,7 +392,7 @@ def loadClassifierProbs(file_path, classifier=""):
 	v1, v2, v3 = [], [], []
 	result = []
 	offset = 0
-	if classifier == "naive": # change the naive file to remove this
+	if classifier == "naive-test": # change the naive file to remove this
 		offset += 1
 	
 	with open(file_path, 'r') as f:
@@ -448,9 +448,9 @@ def loadValues(file_path, module, base="none"):
 
 def testModel_ensembleGP(model, base="default"):
 	global test_values
-	global svm_probs
-	global naive_probs
-	global rforest_probs
+	global svm_probs_test
+	global naive_probs_test
+	global rforest_probs_test
 
 	is_positive, is_negative, is_neutral = 0, 0, 0
 	true_positive, true_negative, true_neutral, false_positive, false_negative, false_neutral  = 0, 0, 0, 0, 0, 0
@@ -469,15 +469,15 @@ def testModel_ensembleGP(model, base="default"):
 
 	for i in indexes:
 		model = original_model
-		model = model.replace("(SVM1", "(" + str(svm_probs[0][i])).replace("SVM1)", str(svm_probs[0][i]) + ")")
-		model = model.replace("(SVM2", "(" + str(svm_probs[1][i])).replace("SVM2)", str(svm_probs[1][i]) + ")")
-		model = model.replace("(SVM3", "(" + str(svm_probs[2][i])).replace("SVM3)", str(svm_probs[2][i]) + ")")
-		model = model.replace("(NAIVE1", "(" + str(naive_probs[0][i])).replace("NAIVE1)", str(naive_probs[0][i]) + ")")
-		model = model.replace("(NAIVE2", "(" + str(naive_probs[1][i])).replace("NAIVE2)", str(naive_probs[1][i]) + ")")
-		model = model.replace("(NAIVE3", "(" + str(naive_probs[2][i])).replace("NAIVE3)", str(naive_probs[2][i]) + ")")
-		model = model.replace("(RFOR1", "(" + str(rforest_probs[0][i])).replace("RFOR1)", str(rforest_probs[0][i]) + ")")
-		model = model.replace("(RFOR2", "(" + str(rforest_probs[1][i])).replace("RFOR2)", str(rforest_probs[1][i]) + ")")
-		model = model.replace("(RFOR3", "(" + str(rforest_probs[2][i])).replace("RFOR3)", str(rforest_probs[2][i]) + ")")
+		model = model.replace("(SVM1", "(" + str(svm_probs_test[0][i])).replace("SVM1)", str(svm_probs_test[0][i]) + ")")
+		model = model.replace("(SVM2", "(" + str(svm_probs_test[1][i])).replace("SVM2)", str(svm_probs_test[1][i]) + ")")
+		model = model.replace("(SVM3", "(" + str(svm_probs_test[2][i])).replace("SVM3)", str(svm_probs_test[2][i]) + ")")
+		model = model.replace("(NAIVE1", "(" + str(naive_probs_test[0][i])).replace("NAIVE1)", str(naive_probs_test[0][i]) + ")")
+		model = model.replace("(NAIVE2", "(" + str(naive_probs_test[1][i])).replace("NAIVE2)", str(naive_probs_test[1][i]) + ")")
+		model = model.replace("(NAIVE3", "(" + str(naive_probs_test[2][i])).replace("NAIVE3)", str(naive_probs_test[2][i]) + ")")
+		model = model.replace("(RFOR1", "(" + str(rforest_probs_test[0][i])).replace("RFOR1)", str(rforest_probs_test[0][i]) + ")")
+		model = model.replace("(RFOR2", "(" + str(rforest_probs_test[1][i])).replace("RFOR2)", str(rforest_probs_test[1][i]) + ")")
+		model = model.replace("(RFOR3", "(" + str(rforest_probs_test[2][i])).replace("RFOR3)", str(rforest_probs_test[2][i]) + ")")
 
 		result = float(eval(model))
 
@@ -577,9 +577,18 @@ def testModel_ensembleGP(model, base="default"):
 # Global vars
 train_values  = loadValues('datasets/train/twitter-train-cleansed-B.txt', 'train')
 test_values   = loadValues('datasets/test/SemEval2014_SVM_Naive_MS_Lreg_S140.txt', 'test')
-svm_probs     = loadClassifierProbs('datasets/test/SVM_test_results.txt', 'svm')
-naive_probs   = loadClassifierProbs('datasets/test/Naive_test_results.txt', 'naive')
-rforest_probs = loadClassifierProbs('datasets/test/RandomForest_test_results.txt', 'rforest')
+
+#######################################################
+# TO-DO: get the train values instead the test values #
+#######################################################
+
+svm_probs_test     = loadClassifierProbs('datasets/test/SVM_test_results.txt', 'svm')
+naive_probs_test   = loadClassifierProbs('datasets/test/Naive_test_results.txt', 'naive-test')
+rforest_probs_test = loadClassifierProbs('datasets/test/RandomForest_test_results.txt', 'rforest')
+
+svm_probs     = loadClassifierProbs('datasets/train/svm_train_results.txt', 'svm')
+naive_probs   = loadClassifierProbs('datasets/train/naive_train_results.txt', 'naive')
+rforest_probs = loadClassifierProbs('datasets/train/randomForest_train_results.txt', 'rforest')
 
 population = 200
 
@@ -606,6 +615,10 @@ def main():
 	#print("[best acc]:   " + str(best_acc) + "\n")
 	print("[best f1_P_N]:   " + str(best_f1_pos_neg) + "\n")
 	# print log
+
+	with open(variables.TRAIN_RESULTS_GP_ENS, 'a') as f:
+		f.write(str(hof[0]) + "\n")
+
 	return pop, log, hof
 
 if __name__ == "__main__":
@@ -614,6 +627,9 @@ if __name__ == "__main__":
 
 	#m = "sub(safeDiv(sub(sub(SVM3, 0), mul(sub(sin(mul(add(SVM1, 1.9786153720017947), neg(-2))), add(neg(mul(NAIVE3, NAIVE3)), safeDiv(safeDiv(SVM2, sub(sin(mul(neg(mul(NAIVE3, NAIVE3)), neg(-2))), add(neg(mul(NAIVE3, NAIVE3)), safeDiv(safeDiv(SVM2, NAIVE1), safeDiv(NAIVE1, NAIVE1))))), safeDiv(NAIVE1, SVM3)))), -2)), safeDiv(mul(NAIVE3, NAIVE3), neg(-2))), cos(sub(mul(mul(NAIVE1, mul(add(-0.7083473166495553, -1.4732497725511893), safeDiv(SVM2, -2))), sin(NAIVE2)), sub(cos(NAIVE3), safeDiv(NAIVE1, NAIVE3)))))"
 	#m = "sub(safeDiv(sub(neg(cos(mul(sub(sin(mul(add(SVM1, 1.9786153720017947), neg(-2))), add(neg(mul(NAIVE3, NAIVE3)), neg(SVM1))), -2))), mul(sub(sin(mul(add(SVM1, 1.9786153720017947), neg(-2))), add(SVM1, safeDiv(safeDiv(SVM2, sub(sin(mul(neg(mul(NAIVE3, NAIVE3)), neg(-2))), add(neg(mul(NAIVE3, NAIVE3)), safeDiv(safeDiv(SVM2, NAIVE1), safeDiv(NAIVE1, NAIVE1))))), safeDiv(NAIVE1, SVM3)))), -2)), safeDiv(mul(NAIVE3, NAIVE3), neg(-2))), cos(sub(mul(cos(1), sin(NAIVE2)), sub(cos(1), neg(-2)))))"
+	#m = "sub(NAIVE3, safeDiv(cos(mul(SVM1, mul(SVM3, NAIVE2))), mul(NAIVE3, sub(SVM1, neg(cos(1))))))"
+	
+	#m = "safeDiv(add(safeDiv(add(0, safeDiv(NAIVE1, sub(neg(neg(-2)), neg(cos(sin(SVM2)))))), -0.6729775461871736), safeDiv(add(NAIVE2, add(1.6586285319358236, RFOR1)), neg(NAIVE3))), sin(mul(neg(-2), safeDiv(1.7862219926220981, NAIVE2))))"
 	#m = "sub(NAIVE3, safeDiv(cos(mul(SVM1, mul(SVM3, NAIVE2))), mul(NAIVE3, sub(SVM1, neg(cos(1))))))"
 	#testModel_ensembleGP(m, "Twitter2013")
 	#testModel_ensembleGP(m, "Twitter2014")
