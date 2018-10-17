@@ -996,6 +996,28 @@ def loadNaiveBayesClassifier():
     return classifier
 
 
+def saveNaiveBayesValues():
+    start = time.time()
+    print("\n[saving naive bayes values]")
+
+    classifier = loadNaiveBayesClassifier()
+
+    pos_prob, neg_prob, neu_prob = 0, 0, 0
+
+    with open('naive_train_values.txt', 'a') as f_w:
+        with open(variables.SEMEVAL_TRAIN_FILE, 'r') as inF:
+            for line in inF:
+                pos_prob = classifier.prob_classify(line.split("\t")[3].strip()).prob("pos")
+                neg_prob = classifier.prob_classify(line.split("\t")[3].strip()).prob("neg")
+                neu_prob = classifier.prob_classify(line.split("\t")[3].strip()).prob("neu")
+
+                f_w.write(str(pos_prob) + '\t' + str(neg_prob) + '\t' + str(neu_prob) + '\n')
+
+
+    end = time.time()
+    print("  [values included][" + str(format(end - start, '.3g')) + " seconds]\n")
+
+
 def includeNaiveBayesValuesOnTestFile():
     start = time.time()
     print("\n[including NaiveBayes values on test file]")
