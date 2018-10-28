@@ -727,10 +727,11 @@ def loadTestTweets():
     test_words = []
 
     # Load results from each classifier
-    LReg_results    = getResultsClassifier("datasets/test/LReg_test_results.txt")
+    LReg_results    = getResultsClassifier("datasets/test/lreg_test_results.txt")
     Naive_results   = getResultsClassifier("datasets/test/Naive_test_results.txt") # class <tab> pos_prob <tab> neg_prob <tab> neu_prob
     SVM_results     = getResultsClassifier("datasets/test/SVM_test_results.txt")   # confirm the values pattern
     RForest_results = getResultsClassifier("datasets/test/RandomForest_test_results.txt")   # confirm the values pattern
+    SGD_results     = getResultsClassifier("datasets/test/sgd_test_results.txt")
 
     with open(variables.SEMEVAL_TEST_FILE, 'r') as inF:
         index_results = 0
@@ -738,7 +739,7 @@ def loadTestTweets():
             if tweets_loaded < variables.MAX_ANALYSIS_TWEETS:
                 tweet_parsed = line.split("\t")
 
-                svm_class, rforest_class, naive_class, MS_class, LReg_class, S140_class = 0, 0, 0, 0, 0, 0
+                svm_class, rforest_class, naive_class, MS_class, LReg_class, S140_class, SGD_class = 0, 0, 0, 0, 0, 0, 0
 
                 try:
                     #svm_class    = normalize_svm_polarity(tweet_parsed[3].strip())
@@ -750,7 +751,7 @@ def loadTestTweets():
                     LReg_class    = normalize_naive_polarity(LReg_results[index_results].strip()) # the same pattern of naive classifier ('positive', 'negative' and 'neutral')
                     S140_class    = normalize_naive_polarity(tweet_parsed[7].strip())             # the same pattern of naive classifier ('positive', 'negative' and 'neutral')
                     rforest_class = normalize_naive_polarity(RForest_results[index_results].split('\t')[3].strip())
-
+                    SGD_class     = normalize_naive_polarity(SGD_results[index_results].split('\t')[3].strip())
                     #print(str(rforest_class))
 
                     index_results += 1
@@ -770,6 +771,7 @@ def loadTestTweets():
                     variables.all_polarities_in_file_order_LReg.append(LReg_class)
                     variables.all_polarities_in_file_order_S140.append(S140_class)
                     variables.all_polarities_in_file_order_RFor.append(rforest_class)
+                    variables.all_polarities_in_file_order_SGD.append(SGD_class)
 
                     if tweet_parsed[1] == "Twitter2013":
 
@@ -793,6 +795,7 @@ def loadTestTweets():
                         variables.tweets_2013_score_LReg.append(LReg_class)
                         variables.tweets_2013_score_S140.append(S140_class)
                         variables.tweets_2013_score_RFor.append(rforest_class)
+                        variables.tweets_2013_score_SGD.append(SGD_class)
 
                     elif tweet_parsed[1] == "Twitter2014":
                         variables.tweets_2014.append(tweet_parsed[2].replace('right now', 'rightnow'))
@@ -815,6 +818,7 @@ def loadTestTweets():
                         variables.tweets_2014_score_LReg.append(LReg_class)
                         variables.tweets_2014_score_S140.append(S140_class)
                         variables.tweets_2014_score_RFor.append(rforest_class)
+                        variables.tweets_2014_score_SGD.append(SGD_class)
 
                     elif tweet_parsed[1] == "SMS2013":
                         variables.sms_2013.append(tweet_parsed[2].replace('right now', 'rightnow'))
@@ -837,6 +841,7 @@ def loadTestTweets():
                         variables.sms_2013_score_LReg.append(LReg_class)
                         variables.sms_2013_score_S140.append(S140_class)
                         variables.sms_2013_score_RFor.append(rforest_class)
+                        variables.sms_2013_score_SGD.append(SGD_class)
                     
                     elif tweet_parsed[1] == "LiveJournal2014":
                         variables.tweets_liveJournal2014.append(tweet_parsed[2].replace('right now', 'rightnow'))
@@ -859,6 +864,7 @@ def loadTestTweets():
                         variables.tweets_liveJournal2014_score_LReg.append(LReg_class)
                         variables.tweets_liveJournal2014_score_S140.append(S140_class)
                         variables.tweets_liveJournal2014_score_RFor.append(rforest_class)
+                        variables.tweets_liveJournal2014_score_SGD.append(SGD_class)
 
                     elif tweet_parsed[1] == "Twitter2014Sarcasm":
                         variables.tweets_2014_sarcasm.append(tweet_parsed[2].replace('right now', 'rightnow'))
@@ -881,6 +887,7 @@ def loadTestTweets():
                         variables.tweets_2014_sarcasm_score_LReg.append(LReg_class)
                         variables.tweets_2014_sarcasm_score_S140.append(S140_class)
                         variables.tweets_2014_sarcasm_score_RFor.append(rforest_class)
+                        variables.tweets_2014_sarcasm_score_SGD.append(SGD_class)
                     
                     tweets_loaded += 1                          
                 
@@ -2917,6 +2924,8 @@ def floatToStr_polarity_value(numerical_polarity_value, neutral_inferior_range, 
         return "neutral"
 
 
+draw = 0
+
 def get_best_evaluation(classifiers_evaluations, type="majority"):
     negatives, neutrals, positives = 0, 0, 0
 
@@ -2945,14 +2954,16 @@ def get_best_evaluation(classifiers_evaluations, type="majority"):
     elif neutrals > positives and neutrals > negatives:
         return "neutral"
     else: # there is no majority polarity
-        if positives > neutrals or positives == neutrals:
+        #print("[DRAW] Positives: " + str(positives) + ", negatives: " + str(negatives) + ", neutrals: " + str(neutrals))
+        return "DRAW"
+        #if positives > neutrals or positives == neutrals:
             #print(str(v).strip() + " Positives: " + str(positives) + ", negatives: " + str(negatives) + ", neutrals: " + str(neutrals) + " I'll return positive")
             #print("Positives: " + str(positives) + ", negatives: " + str(negatives) + ", neutrals: " + str(neutrals) + " I'll return positive")
-            return "positive"
-        elif negatives > neutrals or negatives == neutrals:
+        #    return "DRAW"
+        #elif negatives > neutrals or negatives == neutrals:
             #print(str(v).strip() + " Positives: " + str(positives) + ", negatives: " + str(negatives) + ", neutrals: " + str(neutrals) + " I'll return negative")
             #print("Positives: " + str(positives) + ", negatives: " + str(negatives) + ", neutrals: " + str(neutrals) + " I'll return negative")
-            return "negative"
+        #    return "DRAW"
 
 
 #from aylienapiclient import textapi
@@ -3022,6 +3033,7 @@ def evaluateMessages(base, model, model_ensemble=False):
     messages_score_LReg  = []
     messages_score_S140  = []
     messages_score_RFor  = []
+    messages_score_SGD   = []
     messages_positive, messages_negative, messages_neutral = 0, 0, 0
     
     total_positive = variables.tweets_2013_positive + variables.tweets_2014_positive + variables.tweets_liveJournal2014_positive + variables.tweets_2014_sarcasm_positive + variables.sms_2013_positive
@@ -3042,6 +3054,7 @@ def evaluateMessages(base, model, model_ensemble=False):
         messages_score_LReg  = variables.tweets_2013_score_LReg
         messages_score_S140  = variables.tweets_2013_score_S140
         messages_score_RFor  = variables.tweets_2013_score_RFor
+        messages_score_SGD   = variables.tweets_2013_score_SGD
         messages_positive    = variables.tweets_2013_positive
         messages_negative    = variables.tweets_2013_negative
         messages_neutral     = variables.tweets_2013_neutral
@@ -3054,6 +3067,7 @@ def evaluateMessages(base, model, model_ensemble=False):
         messages_score_LReg  = variables.tweets_2014_score_LReg
         messages_score_S140  = variables.tweets_2014_score_S140
         messages_score_RFor  = variables.tweets_2014_score_RFor
+        messages_score_SGD   = variables.tweets_2014_score_SGD
         messages_positive    = variables.tweets_2014_positive
         messages_negative    = variables.tweets_2014_negative
         messages_neutral     = variables.tweets_2014_neutral
@@ -3066,6 +3080,7 @@ def evaluateMessages(base, model, model_ensemble=False):
         messages_score_LReg  = variables.tweets_liveJournal2014_score_LReg
         messages_score_S140  = variables.tweets_liveJournal2014_score_S140
         messages_score_RFor  = variables.tweets_liveJournal2014_score_RFor
+        messages_score_SGD   = variables.tweets_liveJournal2014_score_SGD
         messages_positive    = variables.tweets_liveJournal2014_positive
         messages_negative    = variables.tweets_liveJournal2014_negative
         messages_neutral     = variables.tweets_liveJournal2014_neutral
@@ -3078,6 +3093,7 @@ def evaluateMessages(base, model, model_ensemble=False):
         messages_score_LReg  = variables.tweets_2014_sarcasm_score_LReg
         messages_score_S140  = variables.tweets_2014_sarcasm_score_S140
         messages_score_RFor  = variables.tweets_2014_sarcasm_score_RFor
+        messages_score_SGD   = variables.tweets_2014_sarcasm_score_SGD
         messages_positive    = variables.tweets_2014_sarcasm_positive
         messages_negative    = variables.tweets_2014_sarcasm_negative
         messages_neutral     = variables.tweets_2014_sarcasm_neutral
@@ -3090,6 +3106,7 @@ def evaluateMessages(base, model, model_ensemble=False):
         messages_score_LReg  = variables.sms_2013_score_LReg
         messages_score_S140  = variables.sms_2013_score_S140
         messages_score_RFor  = variables.sms_2013_score_RFor
+        messages_score_SGD   = variables.sms_2013_score_SGD
         messages_positive    = variables.sms_2013_positive
         messages_negative    = variables.sms_2013_negative
         messages_neutral     = variables.sms_2013_neutral        
@@ -3102,6 +3119,7 @@ def evaluateMessages(base, model, model_ensemble=False):
         messages_score_LReg  = variables.all_polarities_in_file_order_LReg
         messages_score_S140  = variables.all_polarities_in_file_order_S140
         messages_score_RFor  = variables.all_polarities_in_file_order_RFor
+        messages_score_SGD   = variables.all_polarities_in_file_order_SGD
         #messages = variables.tweets_2013 + variables.tweets_2014 + variables.tweets_liveJournal2014 + variables.sms_2013 + variables.tweets_2014_sarcasm
         #messages_score = variables.tweets_2013_score + variables.tweets_2014_score + variables.tweets_liveJournal2014_score + variables.sms_2013_score + variables.tweets_2014_sarcasm_score
         messages_positive    = variables.tweets_2013_positive + variables.tweets_2014_positive + variables.tweets_liveJournal2014_positive + variables.tweets_2014_sarcasm_positive + variables.sms_2013_positive
@@ -3194,16 +3212,20 @@ def evaluateMessages(base, model, model_ensemble=False):
             elif(variables.use_only_LReg_classifier):
                 result = messages_score_LReg[index]
 
+            elif(variables.use_only_SGD_classifier):
+                result = messages_score_SGD[index]
+
             # Use all classifiers - get the majority
             elif(variables.use_all_classifiers):
                 all_classifiers = []
                 all_classifiers.append(floatToStr_polarity_value(messages_score_svm[index], variables.neutral_inferior_range, variables.neutral_superior_range))
                 all_classifiers.append(floatToStr_polarity_value(messages_score_naive[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-                all_classifiers.append(floatToStr_polarity_value(messages_score_MS[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-                #all_classifiers.append(floatToStr_polarity_value(messages_score_LReg[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-                all_classifiers.append(floatToStr_polarity_value(messages_score_S140[index], variables.neutral_inferior_range, variables.neutral_superior_range))
+                #all_classifiers.append(floatToStr_polarity_value(messages_score_MS[index], variables.neutral_inferior_range, variables.neutral_superior_range))
+                all_classifiers.append(floatToStr_polarity_value(messages_score_LReg[index], variables.neutral_inferior_range, variables.neutral_superior_range))
+                #all_classifiers.append(floatToStr_polarity_value(messages_score_S140[index], variables.neutral_inferior_range, variables.neutral_superior_range))
                 all_classifiers.append(floatToStr_polarity_value(messages_score_RFor[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-                all_classifiers.append(floatToStr_polarity_value(TextBlob(message).sentiment.polarity, variables.neutral_inferior_range, variables.neutral_superior_range))
+                #all_classifiers.append(floatToStr_polarity_value(TextBlob(message).sentiment.polarity, variables.neutral_inferior_range, variables.neutral_superior_range))
+                all_classifiers.append(floatToStr_polarity_value(messages_score_SGD[index], variables.neutral_inferior_range, variables.neutral_superior_range))
                 all_classifiers.append(floatToStr_polarity_value(float(eval(model_analysis)), variables.neutral_inferior_range, variables.neutral_superior_range))
                 if hasEmoticons(message):
                     all_classifiers.append(floatToStr_polarity_value(emoticonsPolaritySum(message), variables.neutral_inferior_range, variables.neutral_superior_range))
@@ -3218,7 +3240,14 @@ def evaluateMessages(base, model, model_ensemble=False):
                     result = variables.neutral_inferior_range - 1
                 elif r == "neutral":
                     result = random.uniform(variables.neutral_inferior_range, variables.neutral_superior_range)
-
+                elif r == "DRAW":
+                    result = float(eval(model_analysis))
+                    #result = messages_score_LReg[index]
+                    #result = messages_score_svm[index]
+                    #result = messages_score_naive[index]
+                    #result = messages_score_RFor[index]
+                    #result = messages_score_SGD[index]
+                    #result = random.uniform(variables.neutral_inferior_range, variables.neutral_superior_range)
 
             # GP only
             else:
@@ -3247,6 +3276,9 @@ def evaluateMessages(base, model, model_ensemble=False):
                     #print("[evaluate using only GP in normal mode (no ensemble)")
                     result = float(eval(model_analysis))
 
+                    if result <= variables.neutral_superior_range and result >= variables.neutral_inferior_range:
+                        result = messages_score_svm[index]
+                    
                     #testing the svm on the bases that it's the best
                     #if base == "tweets2014" or base == "sms":
                     #    result = messages_score_svm[index]
@@ -3449,17 +3481,18 @@ def evaluateMessages(base, model, model_ensemble=False):
             if base == "all":
                 if not model_ensemble:
                     f.write("\n# [weights]\n")
-                    f.write("# w1: " + str(set(variables.w1))  + "\n")
-                    f.write("# w2: " + str(set(variables.w2))  + "\n")
-                    f.write("# w3: " + str(set(variables.w3))  + "\n")
-                    f.write("# w4: " + str(set(variables.w4))  + "\n")
-                    f.write("# w5: " + str(set(variables.w5))  + "\n")
-                    f.write("# w6: " + str(set(variables.w6))  + "\n")
-                    f.write("# w7: " + str(set(variables.w7))  + "\n")
-                    f.write("# w8: " + str(set(variables.w8))  + "\n")
-                    f.write("# w9: " + str(set(variables.w9))  + "\n")
-                    f.write("# w10: " + str(set(variables.w10)) + "\n")
-                    f.write("# w11: " + str(set(variables.w11)) + "\n\n")
+                    if (float(len(variables.w1)) > 0):
+                        f.write("# _w1\tall values:\t" + str(set(variables.w1))  + "\tmean:\t" + str(sum(variables.w1) / float(len(variables.w1))) + "\n")
+                        f.write("# _w2\tall values:\t" + str(set(variables.w2))  + "\tmean:\t" + str(sum(variables.w2) / float(len(variables.w2))) + "\n")
+                        f.write("# _w3\tall values:\t" + str(set(variables.w3))  + "\tmean:\t" + str(sum(variables.w3) / float(len(variables.w3))) + "\n")
+                        f.write("# _w4\tall values:\t" + str(set(variables.w4))  + "\tmean:\t" + str(sum(variables.w4) / float(len(variables.w4))) + "\n")
+                        f.write("# _w5\tall values:\t" + str(set(variables.w5))  + "\tmean:\t" + str(sum(variables.w5) / float(len(variables.w5))) + "\n")
+                        f.write("# _w6\tall values:\t" + str(set(variables.w6))  + "\tmean:\t" + str(sum(variables.w6) / float(len(variables.w6))) + "\n")
+                        f.write("# _w7\tall values:\t" + str(set(variables.w7))  + "\tmean:\t" + str(sum(variables.w7) / float(len(variables.w7))) + "\n")
+                        f.write("# _w8\tall values:\t" + str(set(variables.w8))  + "\tmean:\t" + str(sum(variables.w8) / float(len(variables.w8))) + "\n")
+                        f.write("# _w9\tall values:\t" + str(set(variables.w9))  + "\tmean:\t " + str(sum(variables.w9) / float(len(variables.w9))) + "\n")
+                        f.write("# _w10\tall values:\t" + str(set(variables.w10)) + "\tmean:\t" + str(sum(variables.w10) / float(len(variables.w10))) + "\n")
+                        f.write("# _w11\tall values:\t" + str(set(variables.w11)) + "\tmean:\t" + str(sum(variables.w11) / float(len(variables.w11))) + "\n\n")
 
                     f.write("# [neutral ranges]\n")
                     f.write("# " + str(set(variables.neutral_values)) + "\n\n")
@@ -3506,10 +3539,24 @@ def resultsAnalysis():
     sarcasm_list = []
     allB_list    = []
 
+    all_w1_means = []
+    all_w2_means = []
+    all_w3_means = []
+    all_w4_means = []
+    all_w5_means = []
+    all_w6_means = []
+    all_w7_means = []
+    all_w8_means = []
+    all_w9_means = []
+    all_w10_means = []
+    all_w11_means = []
+
     with open(variables.FILE_RESULTS, 'r') as f:
         for line in f:
+            w_index = 0
             if line.startswith("["):
                 models += 1
+            
             elif len(line) > 1 and not line.startswith("#"):
                 base = line.split("\t")[0]
                 value = float(line.split("\t")[1])
@@ -3525,6 +3572,35 @@ def resultsAnalysis():
                     sarcasm_list.append(value)                     
                 elif base == "all":
                     allB_list.append(value)
+            
+            elif len(line) > 1 and line.startswith("# _w") and variables.save_dic_means_on_result_file:
+                if (float(line.split('\t')[4].strip()) > variables.limit_dictionary_weight):
+                    mean = variables.limit_dictionary_weight
+                else:
+                    mean = float(line.split('\t')[4].strip())
+
+                if line.startswith("# _w1\t"):
+                    all_w1_means.append(mean)
+                if line.startswith("# _w2\t"):
+                    all_w2_means.append(mean) 
+                if line.startswith("# _w3\t"):
+                    all_w3_means.append(mean)                                   
+                if line.startswith("# _w4\t"):
+                    all_w4_means.append(mean)
+                if line.startswith("# _w5\t"):
+                    all_w5_means.append(mean)
+                if line.startswith("# _w6\t"):
+                    all_w6_means.append(mean)
+                if line.startswith("# _w7\t"):
+                    all_w7_means.append(mean)
+                if line.startswith("# _w8\t"):
+                    all_w8_means.append(mean)
+                if line.startswith("# _w9\t"):
+                    all_w9_means.append(mean)
+                if line.startswith("# _w10\t"):
+                    all_w10_means.append(mean)
+                if line.startswith("# _w11\t"):
+                    all_w11_means.append(mean)                                                       
 
     with open(variables.FILE_RESULTS, 'a') as f:
         if models > 0:
@@ -3559,6 +3635,44 @@ def resultsAnalysis():
             f.write("\nStandard Deviation Live Journal\t" + str(calcStdDeviation(calcVariance(liveJ_list, models))))
             f.write("\nStandard Deviation Sarcasm\t" + str(calcStdDeviation(calcVariance(sarcasm_list, models))))
             f.write("\nStandard Deviation All\t" + str(calcStdDeviation(calcVariance(allB_list, models))))
+
+            if variables.save_dic_means_on_result_file:
+                if variables.save_all_dic_values_on_result_file:
+                    f.write("\n\nAll dictionaries weights values")
+                    f.write("\nw1 values\t" + str(all_w1_means))           
+                    f.write("\nw2 values\t" + str(all_w2_means))
+                    f.write("\nw3 values\t" + str(all_w3_means))
+                    f.write("\nw4 values\t" + str(all_w4_means))
+                    f.write("\nw5 values\t" + str(all_w5_means))
+                    f.write("\nw6 values\t" + str(all_w6_means))
+                    f.write("\nw7 values\t" + str(all_w7_means))                
+                    f.write("\nw8 values\t" + str(all_w8_means))                
+                    f.write("\nw9 values\t" + str(all_w9_means))                                
+                    f.write("\nw10 values\t" + str(all_w10_means))                            
+                    f.write("\nw11 values\t" + str(all_w11_means))
+                f.write("\n\nAll dictionaries weights means")
+                
+                f.write("\nw1 mean\t" + str(round(sum(all_w1_means) / float(len(all_w1_means)), 4)))
+                f.write("\nw2 mean\t" + str(round(sum(all_w2_means) / float(len(all_w2_means)), 4)))
+                f.write("\nw3 mean\t" + str(round(sum(all_w3_means) / float(len(all_w3_means)), 4)))
+                f.write("\nw4 mean\t" + str(round(sum(all_w4_means) / float(len(all_w4_means)), 4)))
+                f.write("\nw5 mean\t" + str(round(sum(all_w5_means) / float(len(all_w5_means)), 4)))
+                f.write("\nw6 mean\t" + str(round(sum(all_w6_means) / float(len(all_w6_means)), 4)))
+                f.write("\nw7 mean\t" + str(round(sum(all_w7_means) / float(len(all_w7_means)), 4)))
+                f.write("\nw8 mean\t" + str(round(sum(all_w8_means) / float(len(all_w8_means)), 4)))
+                f.write("\nw9 mean\t" + str(round(sum(all_w9_means) / float(len(all_w9_means)), 4)))
+                f.write("\nw10 mean\t" + str(round(sum(all_w10_means) / float(len(all_w10_means)), 4)))
+                f.write("\nw11 mean\t" + str(round(sum(all_w11_means) / float(len(all_w11_means)), 4)))
+                #f.write("\nw2 mean\t" + str(sum(all_w2_means) / float(len(all_w2_means))))
+                #f.write("\nw3 mean\t" + str(sum(all_w3_means) / float(len(all_w3_means))))
+                #f.write("\nw4 mean\t" + str(sum(all_w4_means) / float(len(all_w4_means))))
+                #f.write("\nw5 mean\t" + str(sum(all_w5_means) / float(len(all_w5_means))))
+                #f.write("\nw6 mean\t" + str(sum(all_w6_means) / float(len(all_w6_means))))
+                #f.write("\nw7 mean\t" + str(sum(all_w7_means) / float(len(all_w7_means))))
+                #f.write("\nw8 mean\t" + str(sum(all_w8_means) / float(len(all_w8_means))))
+                #f.write("\nw9 mean\t" + str(sum(all_w9_means) / float(len(all_w9_means))))
+                #f.write("\nw10 mean\t" + str(sum(all_w10_means) / float(len(all_w10_means))))
+                #f.write("\nw11 mean\t" + str(sum(all_w11_means) / float(len(all_w11_means))))
 
     databases = ["tweets2013","tweets2014","sms","livejournal","sarcasm"]
 
