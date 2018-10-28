@@ -25,6 +25,8 @@ from nltk import trigrams
 from sklearn.svm import LinearSVC
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.naive_bayes import GaussianNB
+from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import SGDClassifier
 
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.preprocessing import LabelEncoder
@@ -53,6 +55,10 @@ class MachineLearningClassifier(object):
             self.classifier = RandomForestClassifier()
         elif var.model_classifier == "naive":
             self.classifier = GaussianNB()
+        elif var.model_classifier == "lreg":
+            self.classifier = LogisticRegression()
+        elif var.model_classifier == "sgd":
+            self.classifier = SGDClassifier(penalty='elasticnet', alpha=0.001, l1_ratio=0.85, n_iter=1000)
         self.train(trainset)
 
     # Extract features for ML process
@@ -194,13 +200,36 @@ class MachineLearningClassifier(object):
 
             return {classes.item(i): probs.item(i) for i in range(len(classes))}
 
+        elif var.model_classifier == "lreg":
+            probs = self.classifier.predict_proba(data)
+            classes = self.encoder.classes_
+            a = classes[self.classifier.predict(data)]
+            var.lreg_predicts.append(a)
+            print(str(a))
+
+            return {classes.item(i): probs.item(i) for i in range(len(classes))}
+
+        elif var.model_classifier == "sgd":
+            probs = self.classifier.decision_function(data)
+            classes = self.encoder.classes_
+            a = classes[self.classifier.predict(data)]
+            var.sgd_predicts.append(a)
+            print(str(a))
+
+            return {classes.item(i): probs.item(i) for i in range(len(classes))}
 
     # return the probability of classification into one of the three classes
     #def decision_function(self, tweet_tokens):
     def predict_proba(self, tweet_tokens):
         data = self.vectorizer.transform(self.extract_features(tweet_tokens))
         #probs = self.classifier.decision_function(data)
-        probs = self.classifier.predict_proba(data)
+        probs   = self.classifier.predict_proba(data)
+
+#        if(var.model_classifier == "naive"):
+            #a = self.classifier.predict(data)
+            #var.naive_raw_predict.append(a)
+            #print(str(a))
+
         classes = self.encoder.classes_
         return {classes.item(i): probs.item(i) for i in range(len(classes))}
 
