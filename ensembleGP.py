@@ -385,6 +385,26 @@ toolbox.decorate("mate", gp.staticLimit(key=operator.attrgetter("height"), max_v
 toolbox.decorate("mutate", gp.staticLimit(key=operator.attrgetter("height"), max_value=17))
 
 
+def loadClassifierPredictions(file_path, classifier=""):
+	start = time.time()
+	print("[loading classifier predictions][" + classifier + "]")
+
+	predictions = []
+	offset = 0
+	if classifier == "naive-test": # change the naive file to remove this
+		offset += 1
+	
+	with open(file_path, 'r') as f:
+		for line in f:
+			if not line.startswith("#"):
+				predictions.append(float(line.split('\t')[4 + offset].strip()))
+	
+	
+	end = time.time()
+	print("  [classifier predictions loaded][" + str(format(end - start, '.3g')) + " seconds]\n")
+	
+	return predictions
+
 def loadClassifierProbs(file_path, classifier=""):
 	start = time.time()
 	print("[loading classifier probs][" + classifier + "]")
@@ -589,6 +609,11 @@ rforest_probs_test = loadClassifierProbs('datasets/test/RandomForest_test_result
 svm_probs     = loadClassifierProbs('datasets/train/svm_train_results.txt', 'svm')
 naive_probs   = loadClassifierProbs('datasets/train/naive_train_results.txt', 'naive')
 rforest_probs = loadClassifierProbs('datasets/train/randomForest_train_results.txt', 'rforest')
+
+svm_predictions     = loadClassifiersPredictions('datasets/train/svm_train_results.txt', 'svm')
+naive_predictions   = loadClassifiersPredictions('datasets/train/naive_train_results.txt', 'naive')
+rforest_predictions = loadClassifiersPredictions('datasets/train/randomForest_train_results.txt', 'rforest')
+lreg_predictions    = loadClassifiersPredictions('datasets/train/lreg_train_results.txt', 'lreg')
 
 population = 200
 
