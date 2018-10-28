@@ -158,6 +158,8 @@ class TwitterHybridClassifier(object):
 
         line_save = []
 
+        my_index = 0
+
         # iterate over the tweet_tokens
         for index, tweet_tokens in enumerate(tweet_tokens_list):
 
@@ -231,9 +233,29 @@ class TwitterHybridClassifier(object):
                     else:
                         sentiment = ('neutral','ML')
             elif var.model_classifier == "naive":
+                #sentiment = var.naive_raw_predict[my_index]
+                #print(str(sentiment))
                 sentiment = ""
 
+            elif var.model_classifier == "lreg":
+                if positive_conf > negative_conf and positive_conf > neutral_conf:
+                    sentiment = ('positive','ML')
+                elif negative_conf > positive_conf and negative_conf > neutral_conf:
+                    sentiment = ('negative','ML')
+                elif neutral_conf > positive_conf and neutral_conf > negative_conf:
+                    sentiment = ('neutral','ML')
+
+
+            elif var.model_classifier == "sgd":
+                if positive_conf > negative_conf and positive_conf > neutral_conf:
+                    sentiment = ('positive','ML')
+                elif negative_conf > positive_conf and negative_conf > neutral_conf:
+                    sentiment = ('negative','ML')
+                elif neutral_conf > positive_conf and neutral_conf > negative_conf:
+                    sentiment = ('neutral','ML')
+
             predictions.append(sentiment)
+            my_index += 1
 
         print('Saving the predictions values of ' + str(var.model_classifier) + ' on file ' + str(var.model_classifier) + '_test_results.txt')
         with open(str(var.model_classifier) + '_test_results.txt', 'a') as fr:
@@ -245,6 +267,10 @@ class TwitterHybridClassifier(object):
                     fr.write(pred + '\t' + str(var.svm_predicts[ii][2:-2]) + '\n')
                 elif (var.model_classifier) == "naive":
                     fr.write(pred + '\t' + str(var.naive_predicts[ii][2:-2]) + '\n')
+                elif (var.model_classifier) == "lreg":
+                    fr.write(pred + '\t' + str(var.lreg_predicts[ii]) + '\n')
+                elif (var.model_classifier) == "sgd":
+                    fr.write(pred + '\t' + str(var.sgd_predicts[ii]) + '\n')                    
                 ii += 1
 
         return predictions
