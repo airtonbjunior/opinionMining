@@ -26,6 +26,14 @@ from sendMail import *
 start = time.time()
 print("[starting ensembleGP module]\n")
 
+
+# See this note to create the functions
+#In particular, the functions chosen to better combine the classifiers composing the ensemble 
+#are non-trainable functions and are listed in the following: average, weighted average, multiplication, 
+#maximum and median. They can be applied to a different number of classifiers, i.e. each function is 
+#replicated with a different arity, typically from 2 to 5. 
+
+
 def safeDiv(left, right):
 	try:
 		return left / right
