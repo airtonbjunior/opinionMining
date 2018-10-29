@@ -3230,6 +3230,7 @@ def evaluateMessages(base, model, model_ensemble=False):
 			elif(variables.use_only_SGD_classifier):
 				result = messages_score_SGD[index]
 
+
 			# Use all classifiers - get the majority
 			elif(variables.use_all_classifiers):
 				all_classifiers = []
@@ -3278,13 +3279,21 @@ def evaluateMessages(base, model, model_ensemble=False):
 						elif r == "neutral":
 							result = random.uniform(variables.neutral_inferior_range, variables.neutral_superior_range)      
 						elif r[:4] == "DRAW":
-							result = float(eval(model_analysis))
-							if floatToStr_polarity_value(float(eval(model_analysis)), variables.neutral_inferior_range, variables.neutral_superior_range) == r.split("_")[1].strip():
-								result = messages_score_SGD[index]   
+							if base == "sms":
+								result = messages_score_SGD[index]
+								if floatToStr_polarity_value(messages_score_SGD[index], variables.neutral_inferior_range, variables.neutral_superior_range) == r.split("_")[1].strip():
+									result = float(eval(model_analysis))
+							else:
+								result = float(eval(model_analysis))
+								if floatToStr_polarity_value(float(eval(model_analysis)), variables.neutral_inferior_range, variables.neutral_superior_range) == r.split("_")[1].strip():
+									result = messages_score_SGD[index]   
 					else:
 						result = float(eval(model_analysis))
 						if floatToStr_polarity_value(float(eval(model_analysis)), variables.neutral_inferior_range, variables.neutral_superior_range) == r.split("_")[1].strip():
 							result = messages_score_SGD[index]
+
+				#if base == "sarcasm":
+				#	result = float(eval(model_analysis))
 
 			# GP only
 			else:
