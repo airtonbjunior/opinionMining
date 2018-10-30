@@ -33,6 +33,15 @@ print("[starting ensembleGP module]\n")
 #maximum and median. They can be applied to a different number of classifiers, i.e. each function is 
 #replicated with a different arity, typically from 2 to 5. 
 
+def convertResult(string_result):
+	if getPosMax(string_result) == 0:
+		return variables.superior_range_gp_ensemble + 1
+	elif getPosMax(string_result) == 1:
+		return variables.inferior_range_gp_ensemble - 1
+	elif getPosMax(string_result) == 2:
+		return random.uniform(variables.inferior_range_gp_ensemble, variables.superior_range_gp_ensemble)
+	else:
+		return variables.superior_range_gp_ensemble + 1 ### change this
 
 def safeDiv(left, right):
 	try:
@@ -43,67 +52,217 @@ def safeDiv(left, right):
 def neg(value):
 	return -value
 
-def add3(v1, v2, v3):
-	return v1 + v2 + v3
+def getSum(c1, c2):
+	c1p = float(c1.split('\t')[0])
+	c1n = float(c1.split('\t')[1])
+	c1u = float(c1.split('\t')[2])
 
-def add4(v1, v2, v3, v4):
-	return v1 + v2 + v3 + v4
+	c2p = float(c2.split('\t')[0])
+	c2n = float(c2.split('\t')[1])
+	c2u = float(c2.split('\t')[2])
 
-def add5(v1, v2, v3, v4, v5):
-	return v1 + v2 + v3 + v4 + v5
+	return str(auxSum(c1p, c2p)) + "\t" + str(auxSum(c1n, c2n)) + "\t" + str(auxSum(c1u, c2u))
 
-def add6(v1, v2, v3, v4, v5, v6):
-	return v1 + v2 + v3 + v4 + v5 + v6	
+def getSum3(c1, c2, c3):
+	c1p = float(c1.split('\t')[0])
+	c1n = float(c1.split('\t')[1])
+	c1u = float(c1.split('\t')[2])
 
-def mul3(v1, v2, v3):
-	return v1 * v2 * v3 
+	c2p = float(c2.split('\t')[0])
+	c2n = float(c2.split('\t')[1])
+	c2u = float(c2.split('\t')[2])
 
-def mul4(v1, v2, v3, v4):
-	return v1 * v2 * v3 * v4
+	c3p = float(c3.split('\t')[0])
+	c3n = float(c3.split('\t')[1])
+	c3u = float(c3.split('\t')[2])	
 
-def mul5(v1, v2, v3, v4, v5):
-	return v1 * v2 * v3	* v4* v5
+	return str(auxSum(c1p, c2p, c3p)) + "\t" + str(auxSum(c1n, c2n, c3n)) + "\t" + str(auxSum(c1u, c2u, c3u))	
 
-def mul6(v1, v2, v3, v4, v5, v6):
-	return v1 * v2 * v3	* v4* v5 * v6
 
-pset = gp.PrimitiveSet("MAIN", 9)
-pset.addPrimitive(operator.add, 2)
-#pset.addPrimitive(add3, 3)
-#pset.addPrimitive(add4, 4)
-#pset.addPrimitive(add5, 5)
-#pset.addPrimitive(add6, 6)
-pset.addPrimitive(operator.sub, 2)
-pset.addPrimitive(operator.mul, 2)
-#pset.addPrimitive(mul3, 3)
-#pset.addPrimitive(mul4, 4)
-#pset.addPrimitive(mul5, 5)
-#pset.addPrimitive(mul6, 6)
-pset.addPrimitive(safeDiv, 2)
-pset.addPrimitive(operator.neg, 1)
-pset.addPrimitive(math.cos, 1)
-pset.addPrimitive(math.sin, 1)
+def getMax(c1, c2):
+	c1p = float(c1.split('\t')[0])
+	c1n = float(c1.split('\t')[1])
+	c1u = float(c1.split('\t')[2])
+
+	c2p = float(c2.split('\t')[0])
+	c2n = float(c2.split('\t')[1])
+	c2u = float(c2.split('\t')[2])
+
+	return str(max(c1p, c2p)) + "\t" + str(max(c1n, c2n)) + "\t" + str(max(c1u, c2u))
+
+
+def getMin(c1, c2):
+	c1p = float(c1.split('\t')[0])
+	c1n = float(c1.split('\t')[1])
+	c1u = float(c1.split('\t')[2])
+
+	c2p = float(c2.split('\t')[0])
+	c2n = float(c2.split('\t')[1])
+	c2u = float(c2.split('\t')[2])
+
+	return str(min(c1p, c2p)) + "\t" + str(min(c1n, c2n)) + "\t" + str(min(c1u, c2u))
+
+def getMax3(c1, c2, c3):
+	c1p = float(c1.split('\t')[0])
+	c1n = float(c1.split('\t')[1])
+	c1u = float(c1.split('\t')[2])
+
+	c2p = float(c2.split('\t')[0])
+	c2n = float(c2.split('\t')[1])
+	c2u = float(c2.split('\t')[2])
+
+	c3p = float(c3.split('\t')[0])
+	c3n = float(c3.split('\t')[1])
+	c3u = float(c3.split('\t')[2])	
+
+	return str(max(c1p, c2p, c3p)) + "\t" + str(max(c1n, c2n, c3n)) + "\t" + str(max(c1u, c2u, c3u))
+
+def getMin3(c1, c2, c3):
+	c1p = float(c1.split('\t')[0])
+	c1n = float(c1.split('\t')[1])
+	c1u = float(c1.split('\t')[2])
+
+	c2p = float(c2.split('\t')[0])
+	c2n = float(c2.split('\t')[1])
+	c2u = float(c2.split('\t')[2])
+
+	c3p = float(c3.split('\t')[0])
+	c3n = float(c3.split('\t')[1])
+	c3u = float(c3.split('\t')[2])	
+
+	return str(min(c1p, c2p, c3p)) + "\t" + str(min(c1n, c2n, c3n)) + "\t" + str(min(c1u, c2u, c3u))
+
+
+def getMajority3(c1, c2, c3):
+	vp, vn, vu = 0, 0, 0
+	p = getPosMax(c1)
+	if p == 0:
+		vp += 1
+	elif p == 1:
+		vn += 1
+	elif p == 2:
+		vu += 1
+
+	p = getPosMax(c2)
+	if p == 0:
+		vp += 1
+	elif p == 1:
+		vn += 1
+	elif p == 2:
+		vu += 1
+
+	p = getPosMax(c3)
+	if p == 0:
+		vp += 1
+	elif p == 1:
+		vn += 1
+	elif p == 2:
+		vu += 1		
+
+	if vp > vn and vp > vu:
+		return "1	0	0"
+	elif vn > vp and vn > vu:
+		return "0	1	0"
+	elif vu > vp and vu > vn:
+		return "0	0	1"
+	else:
+		return "0	0	0"
+
+
+
+def getMajority(c1, c2):
+	vp, vn, vu = 0, 0, 0
+	p = getPosMax(c1)
+	if p == 0:
+		vp += 1
+	elif p == 1:
+		vn += 1
+	elif p == 2:
+		vu += 1
+
+	p = getPosMax(c2)
+	if p == 0:
+		vp += 1
+	elif p == 1:
+		vn += 1
+	elif p == 2:
+		vu += 1
+
+	if vp > vn and vp > vu:
+		return "1	0	0"
+	elif vn > vp and vn > vu:
+		return "0	1	0"
+	elif vu > vp and vu > vn:
+		return "0	0	1"
+	else:
+		return "0	0	0"
+
+
+def getPosMax(c):
+	if float(c.split('\t')[0]) > float(c.split('\t')[1]) and float(c.split('\t')[0]) > float(c.split('\t')[2]):
+		return 0
+	elif float(c.split('\t')[1]) > float(c.split('\t')[0]) and float(c.split('\t')[1]) > float(c.split('\t')[2]):
+		return 1
+	elif float(c.split('\t')[2]) > float(c.split('\t')[0]) and float(c.split('\t')[2]) > float(c.split('\t')[1]):
+		return 2
+	else:
+		return -1
+
+
+#def auxSum(a, b, c):
+#	return a + b + c
+
+def auxSum(a, b, c=0, d=0):
+	return a + b + c + d
+
+#pset = gp.PrimitiveSet("MAIN", 6) # one for each classify
+#pset = gp.PrimitiveSet("MAIN", 5) # one for each classify
+
+pset = gp.PrimitiveSetTyped("MAIN", [str, str, str, str, str], str)
+
+pset.addPrimitive(getMajority3, [str, str, str], str)
+pset.addPrimitive(getMajority,  [str, str], str)
+pset.addPrimitive(getMax,  [str, str], str)
+pset.addPrimitive(getMax3, [str, str, str], str)
+pset.addPrimitive(getMin,  [str, str], str)
+pset.addPrimitive(getMin3, [str, str, str], str)
+pset.addPrimitive(getSum,  [str, str], str)
+pset.addPrimitive(getSum3, [str, str, str], str)
+#pset.addPrimitive(operator.add, 2)
+#pset.addPrimitive(operator.sub, 2)
+#pset.addPrimitive(operator.mul, 2)
+#pset.addPrimitive(safeDiv, 2)
+#pset.addPrimitive(operator.neg, 1)
+#pset.addPrimitive(math.cos, 1)
+#pset.addPrimitive(math.sin, 1)
 #pset.addPrimitive(math.log10, 1)
 #pset.addPrimitive(math.log2, 1)
-pset.addEphemeralConstant("randInt", lambda: random.randint(-2,2))
-pset.addEphemeralConstant("randFloat", lambda: random.uniform(-2,2))
+#pset.addEphemeralConstant("randInt", lambda: random.randint(-2,2))
+#pset.addEphemeralConstant("randFloat", lambda: random.uniform(-3,3))
 
-pset.renameArguments(ARG0='SVM1')
-pset.renameArguments(ARG1='SVM2')
-pset.renameArguments(ARG2='SVM3')
-pset.renameArguments(ARG3='NAIVE1')
-pset.renameArguments(ARG4='NAIVE2')
-pset.renameArguments(ARG5='NAIVE3')
-pset.renameArguments(ARG6='RFOR1')
-pset.renameArguments(ARG7='RFOR2')
-pset.renameArguments(ARG8='RFOR3')
+
+pset.renameArguments(ARG0='RFOR')
+pset.renameArguments(ARG1='SVM')
+pset.renameArguments(ARG2='NB')
+pset.renameArguments(ARG3='RL')
+pset.renameArguments(ARG4='SGD')
+#pset.renameArguments(ARG5='GP')
+#pset.renameArguments(ARG0='SVM1')
+#pset.renameArguments(ARG1='SVM2')
+#pset.renameArguments(ARG2='SVM3')
+#pset.renameArguments(ARG3='NAIVE1')
+#pset.renameArguments(ARG4='NAIVE2')
+#pset.renameArguments(ARG5='NAIVE3')
+#pset.renameArguments(ARG6='RFOR1')
+#pset.renameArguments(ARG7='RFOR2')
+#pset.renameArguments(ARG8='RFOR3')
 
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 creator.create("Individual", gp.PrimitiveTree, fitness=creator.FitnessMax)
 
 toolbox = base.Toolbox()
 
-toolbox.register("expr", gp.genHalfAndHalf, pset=pset, min_=4, max_=6)
+toolbox.register("expr", gp.genHalfAndHalf, pset=pset, min_=1, max_=2)
 toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.expr)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("compile", gp.compile, pset=pset)
@@ -148,8 +307,8 @@ def evalEnsemble_folds(individual):
 		for i in fold:
 			try:
 				func        = toolbox.compile(expr=individual)
-				func_result = float(func(svm_probs[0][i], svm_probs[1][i], svm_probs[2][i], naive_probs[0][i], naive_probs[1][i], naive_probs[2][i], rforest_probs[0][i], rforest_probs[1][i], rforest_probs[2][i]))
-
+				#func_result = float(func(svm_probs[0][i], svm_probs[1][i], svm_probs[2][i], naive_probs[0][i], naive_probs[1][i], naive_probs[2][i], rforest_probs[0][i], rforest_probs[1][i], rforest_probs[2][i]))
+				func_result = float(func(rforest_probs[i], svm_probs[i], naive_probs[i], lreg_probs[i], sgd_probs[i])) #, gp_probs[i]))
 				if func_result >= variables.superior_range_gp_ensemble:
 					if test_values[i]   == 1:
 						is_positive     += 1
@@ -283,10 +442,16 @@ def evalEnsemble(individual):
 		print("\n[new generation][start generation " + str(generation_count) + "]\n")
 		new_generation = True
 
+	print(str(individual))
 	for i in range(len(test_values)):
 		try:
 			func        = toolbox.compile(expr=individual)
-			func_result = float(func(svm_probs[0][i], svm_probs[1][i], svm_probs[2][i], naive_probs[0][i], naive_probs[1][i], naive_probs[2][i], rforest_probs[0][i], rforest_probs[1][i], rforest_probs[2][i]))
+			#func_result = float(func(svm_probs[0][i], svm_probs[1][i], svm_probs[2][i], naive_probs[0][i], naive_probs[1][i], naive_probs[2][i], rforest_probs[0][i], rforest_probs[1][i], rforest_probs[2][i]))
+			#func_result = float(func(rforest_probs[i], svm_probs[i], naive_probs[i], lreg_probs[i], sgd_probs[i], gp_probs[i]))
+			func_result = convertResult(func(str(rforest_probs[i]), str(svm_probs[i]), str(naive_probs[i]), str(lreg_probs[i]), str(sgd_probs[i]))) #, gp_probs[i]))
+			#print(func_result)
+			#print("AAAA\n\n\n\n\n")
+
 
 			# see how normalize this to consider a range of pos, neg and neu values
 			if func_result >= variables.superior_range_gp_ensemble:
@@ -389,8 +554,8 @@ toolbox.register("select", tools.selTournament, tournsize=3)
 toolbox.register("mate", gp.cxOnePoint)
 toolbox.register("expr_mut", gp.genFull, min_=0, max_=2)
 toolbox.register("mutate", gp.mutUniform, expr=toolbox.expr_mut, pset=pset)
-toolbox.decorate("mate", gp.staticLimit(key=operator.attrgetter("height"), max_value=17))
-toolbox.decorate("mutate", gp.staticLimit(key=operator.attrgetter("height"), max_value=17))
+toolbox.decorate("mate", gp.staticLimit(key=operator.attrgetter("height"), max_value=6))
+toolbox.decorate("mutate", gp.staticLimit(key=operator.attrgetter("height"), max_value=6))
 
 
 def loadClassifierPredictions(file_path, classifier=""):
@@ -412,6 +577,26 @@ def loadClassifierPredictions(file_path, classifier=""):
 	print("  [classifier predictions loaded][" + str(format(end - start, '.3g')) + " seconds]\n")
 	
 	return predictions
+
+
+def loadClassifierProbStr(file_path, classifier):
+	start = time.time()
+	print("[loading classifier probs string][" + classifier + "]")
+
+	result = []
+	offset = 0
+	if classifier == "naive-test": # change the naive file to remove this
+		offset += 1
+	
+	with open(file_path, 'r') as f:
+		for line in f:
+			if not line.startswith("#"):
+				result.append(line.split('\t')[0 + offset].strip() + "\t" + line.split('\t')[1 + offset].strip() + "\t" + line.split('\t')[2 + offset].strip())
+		
+	return result	
+	end = time.time()
+	print("  [classifier probs string loaded][" + str(format(end - start, '.3g')) + " seconds]\n")
+
 
 def loadClassifierProbs(file_path, classifier=""):
 	start = time.time()
@@ -497,17 +682,27 @@ def testModel_ensembleGP(model, base="default"):
 
 	for i in indexes:
 		model = original_model
-		model = model.replace("(SVM1", "(" + str(svm_probs_test[0][i])).replace("SVM1)", str(svm_probs_test[0][i]) + ")")
-		model = model.replace("(SVM2", "(" + str(svm_probs_test[1][i])).replace("SVM2)", str(svm_probs_test[1][i]) + ")")
-		model = model.replace("(SVM3", "(" + str(svm_probs_test[2][i])).replace("SVM3)", str(svm_probs_test[2][i]) + ")")
-		model = model.replace("(NAIVE1", "(" + str(naive_probs_test[0][i])).replace("NAIVE1)", str(naive_probs_test[0][i]) + ")")
-		model = model.replace("(NAIVE2", "(" + str(naive_probs_test[1][i])).replace("NAIVE2)", str(naive_probs_test[1][i]) + ")")
-		model = model.replace("(NAIVE3", "(" + str(naive_probs_test[2][i])).replace("NAIVE3)", str(naive_probs_test[2][i]) + ")")
-		model = model.replace("(RFOR1", "(" + str(rforest_probs_test[0][i])).replace("RFOR1)", str(rforest_probs_test[0][i]) + ")")
-		model = model.replace("(RFOR2", "(" + str(rforest_probs_test[1][i])).replace("RFOR2)", str(rforest_probs_test[1][i]) + ")")
-		model = model.replace("(RFOR3", "(" + str(rforest_probs_test[2][i])).replace("RFOR3)", str(rforest_probs_test[2][i]) + ")")
+		model = model.replace("(RFOR", "('"  + str(rforest_probs[i]) + "'").replace("RFOR)", "'" + str(rforest_probs[i]) + "')").replace("RFOR,", "'" + str(rforest_probs[i]) + "',")
+		model = model.replace("(SVM",  "('"  + str(svm_probs[i])     + "'").replace("SVM)",  "'" + str(svm_probs[i])     + "')").replace("SVM,",  "'" + str(svm_probs[i])     + "',")	
+		model = model.replace("(NB",   "('"  + str(naive_probs[i])   + "'").replace("NB)",   "'" + str(naive_probs[i])   + "')").replace("NB,",   "'" + str(naive_probs[i])   + "',")
+		model = model.replace("(RL",   "('"  + str(lreg_probs[i])    + "'").replace("RL)",   "'" + str(lreg_probs[i])    + "')").replace("RL,", "'" + str(lreg_probs[i])    + "',")
+		model = model.replace("(SGD",  "('"  + str(sgd_probs[i])     + "'").replace("SGD)",  "'" + str(sgd_probs[i])     + "')").replace("SGD,",  "'" + str(sgd_probs[i])     + "',")
+		#model = model.replace("(GP", "("   + str(gp_probs[i])).replace("GP)",        str(gp_probs[i]) + ")")	
 
-		result = float(eval(model))
+		#model = model.replace("(SVM1", "(" + str(svm_probs_test[0][i])).replace("SVM1)", str(svm_probs_test[0][i]) + ")")
+		#model = model.replace("(SVM2", "(" + str(svm_probs_test[1][i])).replace("SVM2)", str(svm_probs_test[1][i]) + ")")
+		#model = model.replace("(SVM3", "(" + str(svm_probs_test[2][i])).replace("SVM3)", str(svm_probs_test[2][i]) + ")")
+		#model = model.replace("(NAIVE1", "(" + str(naive_probs_test[0][i])).replace("NAIVE1)", str(naive_probs_test[0][i]) + ")")
+		#model = model.replace("(NAIVE2", "(" + str(naive_probs_test[1][i])).replace("NAIVE2)", str(naive_probs_test[1][i]) + ")")
+		#model = model.replace("(NAIVE3", "(" + str(naive_probs_test[2][i])).replace("NAIVE3)", str(naive_probs_test[2][i]) + ")")
+		#model = model.replace("(RFOR1", "(" + str(rforest_probs_test[0][i])).replace("RFOR1)", str(rforest_probs_test[0][i]) + ")")
+		#model = model.replace("(RFOR2", "(" + str(rforest_probs_test[1][i])).replace("RFOR2)", str(rforest_probs_test[1][i]) + ")")
+		#model = model.replace("(RFOR3", "(" + str(rforest_probs_test[2][i])).replace("RFOR3)", str(rforest_probs_test[2][i]) + ")")
+
+		result = float(convertResult(eval(model)))
+		print(model + "\n")
+		print(str(result))
+		print(str(test_values[i]) + "\n")
 
 		if result >= variables.superior_range_gp_ensemble:
 			if test_values[i]   == 1:
@@ -605,23 +800,32 @@ def testModel_ensembleGP(model, base="default"):
 # Global vars
 train_values  = loadValues('datasets/train/twitter-train-cleansed-B.txt', 'train')
 test_values   = loadValues('datasets/test/SemEval2014_SVM_Naive_MS_Lreg_S140.txt', 'test')
+test_values   = loadValues('datasets/train/twitter-train-cleansed-B.txt', 'train')
 
 #######################################################
 # TO-DO: get the train values instead the test values #
 #######################################################
 
-svm_probs_test     = loadClassifierProbs('datasets/test/SVM_test_results.txt', 'svm')
-naive_probs_test   = loadClassifierProbs('datasets/test/Naive_test_results.txt', 'naive-test')
-rforest_probs_test = loadClassifierProbs('datasets/test/RandomForest_test_results.txt', 'rforest')
+#svm_probs_test     = loadClassifierProbs('datasets/test/SVM_test_results.txt', 'svm')
+#naive_probs_test   = loadClassifierProbs('datasets/test/Naive_test_results.txt', 'naive-test')
+#rforest_probs_test = loadClassifierProbs('datasets/test/RandomForest_test_results.txt', 'rforest')
 
-svm_probs     = loadClassifierProbs('datasets/train/svm_train_results.txt', 'svm')
-naive_probs   = loadClassifierProbs('datasets/train/naive_train_results.txt', 'naive')
-rforest_probs = loadClassifierProbs('datasets/train/randomForest_train_results.txt', 'rforest')
+#svm_probs     = loadClassifierProbs('datasets/train/svm_train_results.txt', 'svm')
+#naive_probs   = loadClassifierProbs('datasets/train/naive_train_results.txt', 'naive')
+#rforest_probs = loadClassifierProbs('datasets/train/randomForest_train_results.txt', 'rforest')
+#lreg_probs    = loadClassifierProbs('datasets/train/lreg_train_results.txt', 'lreg')
 
-svm_predictions     = loadClassifiersPredictions('datasets/train/svm_train_results.txt', 'svm')
-naive_predictions   = loadClassifiersPredictions('datasets/train/naive_train_results.txt', 'naive')
-rforest_predictions = loadClassifiersPredictions('datasets/train/randomForest_train_results.txt', 'rforest')
-lreg_predictions    = loadClassifiersPredictions('datasets/train/lreg_train_results.txt', 'lreg')
+svm_probs     = loadClassifierProbStr('datasets/train/svm_train_results.txt', 'svm')
+naive_probs   = loadClassifierProbStr('datasets/train/naive_train_results.txt', 'naive')
+rforest_probs = loadClassifierProbStr('datasets/train/randomForest_train_results.txt', 'rforest')
+lreg_probs    = loadClassifierProbStr('datasets/train/lreg_train_results.txt', 'lreg')
+sgd_probs     = loadClassifierProbStr('datasets/train/sgd_train_results.txt', 'sgd')
+#gp_probs      = loadClassifierProbStr('datasets/train/gp_train_results.txt', 'gp')
+
+#svm_predictions     = loadClassifiersPredictions('datasets/train/svm_train_results.txt', 'svm')
+#naive_predictions   = loadClassifiersPredictions('datasets/train/naive_train_results.txt', 'naive')
+#rforest_predictions = loadClassifiersPredictions('datasets/train/randomForest_train_results.txt', 'rforest')
+#lreg_predictions    = loadClassifiersPredictions('datasets/train/lreg_train_results.txt', 'lreg')
 
 population = 200
 
@@ -632,6 +836,107 @@ best_acc        = 0
 best_f1_pos_neg = 0
 best_model      = ""
 
+
+def myVarAnd(population, toolbox, cxpb, mutpb):
+    #print("YAY, I'm in myVarAnd")
+
+    offspring = [toolbox.clone(ind) for ind in population]
+
+    # Apply crossover and mutation on the offspring
+    for i in range(1, len(offspring), 2):
+        if random.random() < cxpb:
+            offspring[i - 1], offspring[i] = toolbox.mate(offspring[i - 1],
+                                                          offspring[i])
+            del offspring[i - 1].fitness.values, offspring[i].fitness.values
+
+    for i in range(len(offspring)):
+        if random.random() < mutpb:
+            #print("MUTATE NORMAL")
+            offspring[i], = toolbox.mutate(offspring[i])
+            del offspring[i].fitness.values
+    
+    for i in range(len(offspring)):
+        if random.random() < variables.MUTATE_EPHEMERAL:
+            #print("MUTATE EPHEMERAL")
+            offspring[i], = toolbox.mutateEphemeral(offspring[i], "all")
+            del offspring[i].fitness.values
+    
+    # my mutation (only for w or other real values)
+    #for i in range(len(offspring)):
+    #    if random.random() < variables.MUTATION_W:
+    #        offspring[i], = mutateW(offspring[i])
+    #        del offspring[i].fitness.values
+
+    return offspring
+
+
+def myEaSimple(population, toolbox, cxpb, mutpb, ngen, stats=None,
+             halloffame=None, verbose=__debug__):
+
+    logbook = tools.Logbook()
+    logbook.header = ['gen', 'nevals'] + (stats.fields if stats else [])
+
+    # Evaluate the individuals with an invalid fitness
+    invalid_ind = [ind for ind in population if not ind.fitness.valid]
+    fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
+    for ind, fit in zip(invalid_ind, fitnesses):
+        ind.fitness.values = fit
+
+    if halloffame is not None:
+        halloffame.update(population)
+
+    record = stats.compile(population) if stats else {}
+    logbook.record(gen=0, nevals=len(invalid_ind), **record)
+    if verbose:
+        print(logbook.stream)
+
+    # Begin the generational process
+    for gen in range(1, ngen + 1):
+        # Select the next generation individuals
+        offspring = toolbox.select(population, len(population))
+
+        offspringOriginal = offspring
+
+        # Vary the pool of individuals
+        offspring = myVarAnd(offspring, toolbox, cxpb, mutpb)
+
+        #if random.random() < variables.MUTATION_W:
+        #    print("####################\n")
+        #    print("My W's Mutation HERE")
+        #    print("####################\n")
+
+
+        #for index, item in enumerate(offspring): 
+        #    if (offspringOriginal[index] != offspring[index]):
+        #        print("DEFAULT MUTATION!!!!!")
+        #        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n")
+        #        print("offspring original   -> " + str(offspringOriginal[index]) + "\n")
+        #        print("offspring modificado -> " + str(offspring[index]) + "\n")
+        #        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n")
+
+
+        # Evaluate the individuals with an invalid fitness
+        invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
+        fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
+        for ind, fit in zip(invalid_ind, fitnesses):
+            ind.fitness.values = fit
+
+        # Update the hall of fame with the generated individuals
+        if halloffame is not None:
+            halloffame.update(offspring)
+
+        # Replace the current population by the offspring
+        population[:] = offspring
+
+        # Append the current generation statistics to the logbook
+        record = stats.compile(population) if stats else {}
+        logbook.record(gen=gen, nevals=len(invalid_ind), **record)
+        if verbose:
+            print(logbook.stream)
+
+    return population, logbook
+
+
 def main():
 	random.seed()
 	global population
@@ -641,7 +946,7 @@ def main():
 	pop = toolbox.population(n=population)
 	hof = tools.HallOfFame(2)
 
-	pop, log = algorithms.eaSimple(pop, toolbox, 0.5, 0.1, 20, stats=False,
+	pop, log = myEaSimple(pop, toolbox, 0.5, 0.1, 20, stats=False,
 								   halloffame=hof, verbose=False)
 	
 	print("\n\n[best model ]: " + str(hof[0]))
@@ -656,14 +961,19 @@ def main():
 
 if __name__ == "__main__":
 	main()
+
+	#print("0.8	0.1	0.1", "0.9	0.1	0.0", "0.2	0.4	0.4")
+	#print(getMax3("0.8	0.1	0.1", "0.9	0.1	0.0", "0.2	0.4	0.4"))
+	#print(getMin3("0.8	0.1	0.1", "0.9	0.1	0.0", "0.2	0.4	0.4"))
+	#print(getSum3("0.8	0.1	0.1", "0.9	0.1	0.0", "0.2	0.4	0.4"))
+	#print(getMajority3("0.8	0.1	0.1", "0.1	0.8	0.1", "0.2	0.3	0.5"))
+	#print(getMajority("0.8	0.1	0.1", "0.1	0.8	0.1"))
+
 	#print(str(loadBaseIndexes('datasets/test/SemEval2014_SVM_Naive_MS_Lreg_S140.txt', 'Twitter2014')))
 
-	#m = "sub(safeDiv(sub(sub(SVM3, 0), mul(sub(sin(mul(add(SVM1, 1.9786153720017947), neg(-2))), add(neg(mul(NAIVE3, NAIVE3)), safeDiv(safeDiv(SVM2, sub(sin(mul(neg(mul(NAIVE3, NAIVE3)), neg(-2))), add(neg(mul(NAIVE3, NAIVE3)), safeDiv(safeDiv(SVM2, NAIVE1), safeDiv(NAIVE1, NAIVE1))))), safeDiv(NAIVE1, SVM3)))), -2)), safeDiv(mul(NAIVE3, NAIVE3), neg(-2))), cos(sub(mul(mul(NAIVE1, mul(add(-0.7083473166495553, -1.4732497725511893), safeDiv(SVM2, -2))), sin(NAIVE2)), sub(cos(NAIVE3), safeDiv(NAIVE1, NAIVE3)))))"
-	#m = "sub(safeDiv(sub(neg(cos(mul(sub(sin(mul(add(SVM1, 1.9786153720017947), neg(-2))), add(neg(mul(NAIVE3, NAIVE3)), neg(SVM1))), -2))), mul(sub(sin(mul(add(SVM1, 1.9786153720017947), neg(-2))), add(SVM1, safeDiv(safeDiv(SVM2, sub(sin(mul(neg(mul(NAIVE3, NAIVE3)), neg(-2))), add(neg(mul(NAIVE3, NAIVE3)), safeDiv(safeDiv(SVM2, NAIVE1), safeDiv(NAIVE1, NAIVE1))))), safeDiv(NAIVE1, SVM3)))), -2)), safeDiv(mul(NAIVE3, NAIVE3), neg(-2))), cos(sub(mul(cos(1), sin(NAIVE2)), sub(cos(1), neg(-2)))))"
-	#m = "sub(NAIVE3, safeDiv(cos(mul(SVM1, mul(SVM3, NAIVE2))), mul(NAIVE3, sub(SVM1, neg(cos(1))))))"
+	#m = "getMajority3(getMajority3(SVM, SGD, RL), NB, RFOR)"
+	#testModel_ensembleGP(m, "Twitter2013")
 	
-	#m = "safeDiv(add(safeDiv(add(0, safeDiv(NAIVE1, sub(neg(neg(-2)), neg(cos(sin(SVM2)))))), -0.6729775461871736), safeDiv(add(NAIVE2, add(1.6586285319358236, RFOR1)), neg(NAIVE3))), sin(mul(neg(-2), safeDiv(1.7862219926220981, NAIVE2))))"
-	#m = "sub(NAIVE3, safeDiv(cos(mul(SVM1, mul(SVM3, NAIVE2))), mul(NAIVE3, sub(SVM1, neg(cos(1))))))"
 	#testModel_ensembleGP(m, "Twitter2013")
 	#testModel_ensembleGP(m, "Twitter2014")
 	#testModel_ensembleGP(m, "Twitter2014Sarcasm")
