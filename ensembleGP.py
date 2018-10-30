@@ -800,7 +800,7 @@ def testModel_ensembleGP(model, base="default"):
 # Global vars
 train_values  = loadValues('datasets/train/twitter-train-cleansed-B.txt', 'train')
 test_values   = loadValues('datasets/test/SemEval2014_SVM_Naive_MS_Lreg_S140.txt', 'test')
-test_values   = loadValues('datasets/train/twitter-train-cleansed-B.txt', 'train')
+#test_values   = loadValues('datasets/train/twitter-train-cleansed-B.txt', 'train')
 
 #######################################################
 # TO-DO: get the train values instead the test values #
@@ -860,12 +860,6 @@ def myVarAnd(population, toolbox, cxpb, mutpb):
             #print("MUTATE EPHEMERAL")
             offspring[i], = toolbox.mutateEphemeral(offspring[i], "all")
             del offspring[i].fitness.values
-    
-    # my mutation (only for w or other real values)
-    #for i in range(len(offspring)):
-    #    if random.random() < variables.MUTATION_W:
-    #        offspring[i], = mutateW(offspring[i])
-    #        del offspring[i].fitness.values
 
     return offspring
 
@@ -900,21 +894,6 @@ def myEaSimple(population, toolbox, cxpb, mutpb, ngen, stats=None,
         # Vary the pool of individuals
         offspring = myVarAnd(offspring, toolbox, cxpb, mutpb)
 
-        #if random.random() < variables.MUTATION_W:
-        #    print("####################\n")
-        #    print("My W's Mutation HERE")
-        #    print("####################\n")
-
-
-        #for index, item in enumerate(offspring): 
-        #    if (offspringOriginal[index] != offspring[index]):
-        #        print("DEFAULT MUTATION!!!!!")
-        #        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n")
-        #        print("offspring original   -> " + str(offspringOriginal[index]) + "\n")
-        #        print("offspring modificado -> " + str(offspring[index]) + "\n")
-        #        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n")
-
-
         # Evaluate the individuals with an invalid fitness
         invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
         fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
@@ -946,7 +925,7 @@ def main():
 	pop = toolbox.population(n=population)
 	hof = tools.HallOfFame(2)
 
-	pop, log = myEaSimple(pop, toolbox, 0.5, 0.1, 20, stats=False,
+	pop, log = algorithms.eaSimple(pop, toolbox, 0.5, 0.1, 20, stats=False,
 								   halloffame=hof, verbose=False)
 	
 	print("\n\n[best model ]: " + str(hof[0]))
