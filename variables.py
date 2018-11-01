@@ -63,13 +63,19 @@ INVERT_SARCASM = False
 # According Penn Treebank Project
 USE_POS_CLASSES = ['VB', 'VBD', 'JJ', 'JJR', 'JJS', 'RB', 'RBR', 'RBS', 'NN'] # use NN? I don't know
 
-model_results   = []
+save_only_best_individual = False
+
+model_results        = []
+model_results_others = []
 
 all_train_words = []
 all_test_words  = []
 
 train_using_folds = False
-train_using_folds_gp_ensemble = True
+train_using_folds_gp_ensemble = False
+
+train_using_bagging = True
+train_file_size     = 9684
 
 use_svm_neutral 	  		= False
 use_url_to_neutral	  		= False
@@ -86,12 +92,12 @@ use_only_MS_classifier      = False
 use_only_LReg_classifier    = False
 use_only_S140_classifier    = False
 use_only_RForest_classifier = False
-use_only_SGD_classifier     = True
+use_only_SGD_classifier     = False
 use_all_classifiers         = False
 
 using_gp_default = False
 
-use_gp_ensemble = False # if False, all the models will be executed separated. If True, an ensemble of the models will be executed
+use_gp_ensemble  = True # if False, all the models will be executed separated. If True, an ensemble of the models will be executed
 
 neutral_inferior_range = 0
 neutral_superior_range = 0
@@ -150,6 +156,7 @@ use_original_dic_values = True
 MAX_POSITIVES_TWEETS = 1500
 MAX_NEGATIVES_TWEETS = 1500
 MAX_NEUTRAL_TWEETS   = 1500
+MAX_ANALYSIS_TWEETS  = 5000
 
 # GP/GA Parameters
 CROSSOVER        = 0.9
@@ -159,10 +166,10 @@ MUTATION         = 0.1
 AG_MUTATION      = 0.3
 MUTATE_EPHEMERAL = 0.85
 
-GENERATIONS      = 300
+GENERATIONS      = 5
 AG_GENERATIONS   = 50
 
-POPULATION       = 50
+POPULATION       = 20
 AG_POPULATION    = 100
 
 cicles_unchanged = 0
@@ -391,8 +398,6 @@ all_polarities_in_file_order_LReg  = []
 all_polarities_in_file_order_S140  = []
 all_polarities_in_file_order_RFor  = []
 all_polarities_in_file_order_SGD   = []
-
-MAX_ANALYSIS_TWEETS = 100000
 
 false_neutral_log  = 0
 false_negative_log = 0
