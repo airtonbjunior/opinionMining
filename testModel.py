@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
     with open(file_path, 'r') as inF:
         for line in inF:
-            if not line.startswith("[") and line not in ('\n', '\r\n') and not line.startswith("#"):
+            if not line.startswith("[") and line not in ('\n', '\r\n') and not line.startswith("#") and len(line.strip()) != 0:
                 functions_to_evaluate.append(str(line))
 
 
