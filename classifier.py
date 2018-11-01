@@ -63,8 +63,8 @@ pset.addPrimitive(hashtagPolaritySum,    [str], float)
 pset.addPrimitive(emoticonsPolaritySum,  [str], float)
 pset.addPrimitive(positiveWordsQuantity, [str], float)
 pset.addPrimitive(negativeWordsQuantity, [str], float)
-pset.addPrimitive(phraseLength,          [str], float)
-pset.addPrimitive(wordCount,             [str], float)
+#pset.addPrimitive(phraseLength,          [str], float)
+#pset.addPrimitive(wordCount,             [str], float)
 
 pset.addPrimitive(hasHashtag,   [str], bool)
 pset.addPrimitive(hasEmoticons, [str], bool)
@@ -111,7 +111,7 @@ creator.create("Individual", gp.PrimitiveTree, fitness=creator.FitnessMax)
 
 toolbox = base.Toolbox()
 
-toolbox.register("expr", gp.genHalfAndHalf, pset=pset, min_=1, max_=2)
+toolbox.register("expr", gp.genHalfAndHalf, pset=pset, min_=2, max_=4)
 toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.expr)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("compile", gp.compile, pset=pset)
@@ -921,7 +921,7 @@ def main():
     random.seed()
 
     pop = toolbox.population(n=variables.POPULATION)
-    hof = tools.HallOfFame(3)
+    hof = tools.HallOfFame(4)
 
     # Parameters
         # population (list of individuals)
@@ -993,6 +993,12 @@ def main():
     print("[main function ended][" + str(format(end - start, '.3g')) + " seconds]\n")
     
     variables.model_results.append(hof[0])
+    
+    if not variables.save_only_best_individual:
+        #variables.model_results_others.append(hof[0])
+        variables.model_results_others.append(hof[1])
+        variables.model_results_others.append(hof[2])
+        variables.model_results_others.append(hof[3])
 
     return pop, log, hof
 
@@ -1008,6 +1014,10 @@ if __name__ == "__main__":
     loadTrainTweets()
     #loadTrainTweets_STS()
 
+    #if variables.save_only_best_individual:
+    #    models_per_generation = 1
+    #else:
+    #    models_per_generation = 4
 
     parameters = str(variables.CROSSOVER) + " crossover, " + str(variables.MUTATION) + " mutation, " + str(variables.POPULATION) + " population, " + str(variables.GENERATIONS) + " generation"
 
@@ -1019,6 +1029,13 @@ if __name__ == "__main__":
         
         with open(variables.TRAIN_RESULTS, 'a') as f:
             f.write(str(variables.model_results[len(variables.model_results) - 1]) + "\n")
+            
+            if not variables.save_only_best_individual:
+                for m in variables.model_results_others:
+                    f.write(str(m) + "\n")
+                f.write("\n")
+
+        variables.model_results_others = []
 
         mail_content = "Parameters: " + parameters + "\n\n" + str(variables.model_results[len(variables.model_results) - 1]) + "\n"
         mail_content += "\n\nTotal tweets: " + str(variables.positive_tweets + variables.negative_tweets + variables.neutral_tweets) + " [" + str(variables.positive_tweets) + " positives, " + str(variables.negative_tweets) + " negatives and " + str(variables.neutral_tweets) + " neutrals]\n"
