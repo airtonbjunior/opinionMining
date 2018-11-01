@@ -23,32 +23,6 @@ from validate_email import validate_email
 import variables
 
 
-#def loadDictionary(dictionary, file_path, word_index, polarity_index):
-	#startDic = time.time()
-	#print("  [loading " + str(dictionary) + "]")
-	
-	#posWords, negWords = [], []
-
-	#with open(variables.DICTIONARY_POSITIVE_WORDS, 'r') as inF:
-	#    variables.dic_liu_loaded = True
-	#    variables.dic_loaded_total += 1
-	#    for line in inF:
-	#        line = line.lower().strip()
-
-	#        posWords.
-
-	#        if module == "train":# and line in variables.all_train_words:
-	#            variables.dic_positive_words.append(line)
-			#elif module == "test" and line in variables.all_test_words:
-	#        elif module == "test":# and line in variables.all_test_words:
-	#            variables.dic_positive_words.append(line)
-	
-	#if variables.log_loads:
-	#    print("    [" + str(len(variables.dic_positive_words) + len(variables.dic_negative_words)) + " words loaded]")
-	#    print("    [" + str(len(variables.dic_positive_words)) + " positive and " + str(len(variables.dic_negative_words)) + " negative]")
-	#    print("      [liu dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]\n")
-
-
 # Load the dictionaries
 def getDictionary(module):
 	start = time.time()
@@ -479,67 +453,63 @@ def loadTrainTweets():
 	start = time.time()
 	print("\n[loading train tweets]")
 
-	#positive_words = []
-	#negative_words = []
-	#neutral_words  = []
-	#train_words    = []
+	tweets_loaded    = 0
+	all_train_tweets = [] 
 
-	tweets_loaded = 0
+	choosed_messages = []
 
 	with open(variables.SEMEVAL_TRAIN_FILE, 'r') as inF:
 		for line in inF:
-			if tweets_loaded < variables.MAX_ANALYSIS_TWEETS:
-				tweet_parsed = line.split("\t")
-				try:
-					if(tweet_parsed[2] != "neutral"):
-						if(tweet_parsed[2] == "positive"):
-							if(variables.positive_tweets < variables.MAX_POSITIVES_TWEETS):
-								variables.positive_tweets += 1
-								variables.tweets_semeval.append(tweet_parsed[3])
-								variables.tweets_semeval_score.append(1)
-								#for w in tweet_parsed[3].split():
-								#    if removeAllPonctuation(w).strip().lower() not in positive_words:
-								#        positive_words.append(removeAllPonctuation(w).strip().lower())
-								tweets_loaded += 1
-						else:
-							if(variables.negative_tweets < variables.MAX_NEGATIVES_TWEETS):
-								variables.negative_tweets += 1
-								variables.tweets_semeval.append(tweet_parsed[3])
-								variables.tweets_semeval_score.append(-1)
-								#for w in tweet_parsed[3].split():
-								#    if removeAllPonctuation(w).strip().lower() not in negative_words:
-								#        negative_words.append(removeAllPonctuation(w).strip().lower())
-								tweets_loaded += 1
-					else:
-						if(variables.neutral_tweets < variables.MAX_NEUTRAL_TWEETS):
-							variables.tweets_semeval.append(tweet_parsed[3])
-							variables.tweets_semeval_score.append(0)
-							variables.neutral_tweets += 1
-							#for w in tweet_parsed[3].split():
-							#    if removeAllPonctuation(w).strip().lower() not in neutral_words:
-							#        neutral_words.append(removeAllPonctuation(w).strip().lower())                            
-							tweets_loaded += 1
-				except:
-					print("exception")
-					continue
+			all_train_tweets.append(line)
 
-	#train_words = positive_words + negative_words + neutral_words
 	
-	# save words on file
-	#with open("words_train.txt", 'w') as f:
-	#    for word in train_words:
-	#        if len(word) > 0:
-	#            f.write(str(word) + "\n")
-	#with open("negative_words_train.txt", 'w') as f:
-	#    for word in negative_words:
-	#        f.write(str(word).lower().strip() + ",")
-	#with open("neutral_words_train.txt", 'w') as f:
-	#    for word in neutral_words:
-	#        f.write(str(word).lower().strip() + ",")
-	# save words on file        
+	for ind in all_train_tweets:
+		
+		if tweets_loaded < variables.MAX_ANALYSIS_TWEETS:
+			if variables.train_using_bagging:
+				random.seed()
+				i = random.randint(0, variables.train_file_size - 1)
+				tweet_parsed = all_train_tweets[i].split("\t")
+				
+			else:
+				tweet_parsed = ind.split("\t")
+			
+			try:
+				if(tweet_parsed[2] != "neutral"):
+					if(tweet_parsed[2] == "positive"):
+						#if(variables.positive_tweets < variables.MAX_POSITIVES_TWEETS):
+						variables.positive_tweets += 1
+						variables.tweets_semeval.append(tweet_parsed[3])
+						variables.tweets_semeval_score.append(1)
+						tweets_loaded += 1
+						if variables.train_using_bagging:
+							choosed_messages.append(i)
+					else:
+						#if(variables.negative_tweets < variables.MAX_NEGATIVES_TWEETS):
+						variables.negative_tweets += 1
+						variables.tweets_semeval.append(tweet_parsed[3])
+						variables.tweets_semeval_score.append(-1)
+						tweets_loaded += 1
+						if variables.train_using_bagging:
+							choosed_messages.append(i)
+				else:
+					#if(variables.neutral_tweets < variables.MAX_NEUTRAL_TWEETS):
+					variables.tweets_semeval.append(tweet_parsed[3])
+					variables.tweets_semeval_score.append(0)
+					variables.neutral_tweets += 1                         
+					tweets_loaded += 1
+					if variables.train_using_bagging:
+						choosed_messages.append(i)
+			except:
+				print("exception")
+				continue
 	
+	if variables.train_using_bagging:
+		print("[using bagging to train][" + str(round((len(set(choosed_messages)) * 100) / tweets_loaded, 2)) + "% of messages loaded][" + str(tweets_loaded) + " total messages][" + str(len(set(choosed_messages))) + " choosed messages]")
+		print("[" + str(variables.positive_tweets) + " positives][" + str(variables.negative_tweets) + " negatives][" + str(variables.neutral_tweets) + " neutrals]")
 	end = time.time()
-	print("  [train tweets loaded (" + str(tweets_loaded) + " tweets)][" + str(format(end - start, '.3g')) + " seconds]\n")
+	print("   [train tweets loaded (" + str(tweets_loaded) + " tweets)][" + str(format(end - start, '.3g')) + " seconds]\n")
+	#input("Press enter to continue...")
 
 
 def createChunks(message_list, n_chunks):
@@ -728,7 +698,8 @@ def loadTestTweets():
 
 	# Load results from each classifier
 	LReg_results    = getResultsClassifier("datasets/test/lreg_test_results.txt")
-	Naive_results   = getResultsClassifier("datasets/test/Naive_test_results.txt") # class <tab> pos_prob <tab> neg_prob <tab> neu_prob
+	#Naive_results   = getResultsClassifier("datasets/test/Naive_test_results.txt") # class <tab> pos_prob <tab> neg_prob <tab> neu_prob
+	Naive_results   = getResultsClassifier("datasets/test/Naive_test_results_probs.txt") # class <tab> pos_prob <tab> neg_prob <tab> neu_prob
 	SVM_results     = getResultsClassifier("datasets/test/SVM_test_results.txt")   # confirm the values pattern
 	RForest_results = getResultsClassifier("datasets/test/RandomForest_test_results.txt")   # confirm the values pattern
 	SGD_results     = getResultsClassifier("datasets/test/sgd_test_results.txt")
@@ -3241,12 +3212,12 @@ def evaluateMessages(base, model, model_ensemble=False):
 				all_classifiers.append(floatToStr_polarity_value(messages_score_SGD[index], variables.neutral_inferior_range, variables.neutral_superior_range))
 				all_classifiers.append(floatToStr_polarity_value(float(eval(model_analysis)), variables.neutral_inferior_range, variables.neutral_superior_range))
 				#all_classifiers.append(floatToStr_polarity_value(messages_score_MS[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-				#all_classifiers.append(floatToStr_polarity_value(messages_score_S140[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-				#all_classifiers.append(floatToStr_polarity_value(TextBlob(message).sentiment.polarity, variables.neutral_inferior_range, variables.neutral_superior_range))
+				all_classifiers.append(floatToStr_polarity_value(messages_score_S140[index], variables.neutral_inferior_range, variables.neutral_superior_range))
+				all_classifiers.append(floatToStr_polarity_value(TextBlob(message).sentiment.polarity, variables.neutral_inferior_range, variables.neutral_superior_range))
 				if hasEmoticons(message):
 					all_classifiers.append(floatToStr_polarity_value(emoticonsPolaritySum(message), variables.neutral_inferior_range, variables.neutral_superior_range))
 				if hasHashtag(message):
-				    all_classifiers.append(floatToStr_polarity_value(hashtagPolaritySum(message), variables.neutral_inferior_range, variables.neutral_superior_range))
+					all_classifiers.append(floatToStr_polarity_value(hashtagPolaritySum(message), variables.neutral_inferior_range, variables.neutral_superior_range))
 
 				r = get_best_evaluation(all_classifiers)            
 
@@ -3269,7 +3240,7 @@ def evaluateMessages(base, model, model_ensemble=False):
 						if hasEmoticons(message):
 							all_classifiers.append(floatToStr_polarity_value(emoticonsPolaritySum(message), variables.neutral_inferior_range, variables.neutral_superior_range))
 						if hasHashtag(message):
-						    all_classifiers.append(floatToStr_polarity_value(hashtagPolaritySum(message), variables.neutral_inferior_range, variables.neutral_superior_range))
+							all_classifiers.append(floatToStr_polarity_value(hashtagPolaritySum(message), variables.neutral_inferior_range, variables.neutral_superior_range))
 
 						r = get_best_evaluation(all_classifiers)      
 						if r == "positive":
@@ -3317,6 +3288,9 @@ def evaluateMessages(base, model, model_ensemble=False):
 						result = variables.neutral_inferior_range - 1
 					elif ensemble_result == "neutral":
 						result = random.uniform(variables.neutral_inferior_range, variables.neutral_superior_range)
+					elif ensemble_result[:4] == "DRAW":
+						print(ensemble_result)
+						result = messages_score_svm[index]
 
 				else:
 					#print("[evaluate using only GP in normal mode (no ensemble)")
