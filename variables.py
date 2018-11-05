@@ -72,7 +72,7 @@ all_train_words = []
 all_test_words  = []
 
 train_using_folds = False
-train_using_folds_gp_ensemble = False
+train_using_folds_gp_ensemble = True
 
 train_using_bagging = True
 train_file_size     = 9684
@@ -97,7 +97,7 @@ use_all_classifiers         = False
 
 using_gp_default = False
 
-use_gp_ensemble  = True # if False, all the models will be executed separated. If True, an ensemble of the models will be executed
+use_gp_ensemble  = False # if False, all the models will be executed separated. If True, an ensemble of the models will be executed
 
 neutral_inferior_range = 0
 neutral_superior_range = 0
@@ -150,13 +150,14 @@ dic_mpqa_loaded         = False
 
 dic_loaded_total = 0
 
-use_original_dic_values = True
+use_original_dic_values = False
 
 # Balance the train tweets
 MAX_POSITIVES_TWEETS = 1500
 MAX_NEGATIVES_TWEETS = 1500
 MAX_NEUTRAL_TWEETS   = 1500
 MAX_ANALYSIS_TWEETS  = 5000
+MAX_ANALYSIS_TWEETS_TEST = 10000
 
 # GP/GA Parameters
 CROSSOVER        = 0.9

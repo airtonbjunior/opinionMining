@@ -707,7 +707,7 @@ def loadTestTweets():
 	with open(variables.SEMEVAL_TEST_FILE, 'r') as inF:
 		index_results = 0
 		for line in inF:
-			if tweets_loaded < variables.MAX_ANALYSIS_TWEETS:
+			if tweets_loaded < variables.MAX_ANALYSIS_TWEETS_TEST:
 				tweet_parsed = line.split("\t")
 
 				svm_class, rforest_class, naive_class, MS_class, LReg_class, S140_class, SGD_class = 0, 0, 0, 0, 0, 0, 0
