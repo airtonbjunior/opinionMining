@@ -71,6 +71,13 @@ model_results_others = []
 all_train_words = []
 all_test_words  = []
 
+t2k13_outputs = []
+t2k14_outputs = []
+sms_outputs   = []
+lj_outputs    = []
+sar_outputs   = []
+all_model_outputs = []
+
 train_using_folds = False
 train_using_folds_gp_ensemble = True
 
@@ -156,7 +163,7 @@ use_original_dic_values = False
 MAX_POSITIVES_TWEETS = 1500
 MAX_NEGATIVES_TWEETS = 1500
 MAX_NEUTRAL_TWEETS   = 1500
-MAX_ANALYSIS_TWEETS  = 5000
+MAX_ANALYSIS_TWEETS  = 5500
 MAX_ANALYSIS_TWEETS_TEST = 10000
 
 # GP/GA Parameters
@@ -167,10 +174,10 @@ MUTATION         = 0.1
 AG_MUTATION      = 0.3
 MUTATE_EPHEMERAL = 0.85
 
-GENERATIONS      = 5
+GENERATIONS      = 55
 AG_GENERATIONS   = 50
 
-POPULATION       = 20
+POPULATION       = 260
 AG_POPULATION    = 100
 
 cicles_unchanged = 0
@@ -178,7 +185,7 @@ generations_unchanged     = 0
 max_unchanged_generations = 250
 max_unchanged_cicles      = 9999999999
 
-TOTAL_MODELS = 2
+TOTAL_MODELS = 3
 
 # Constraints
 root_constraint = False
