@@ -1270,6 +1270,26 @@ def saveAylienPredictionsOnTestFile():
 
 
 
+def getNeutralRangesFromTestFile():
+	import tkinter as tk
+	from tkinter import filedialog
+
+	root = tk.Tk()
+	root.withdraw()
+
+	file_path = filedialog.askopenfilename()
+
+	next_line = False
+
+	with open(file_path, 'r') as f:
+		for line in f:
+			if line.startswith("# [neutral ranges]"):
+				next_line = True
+				continue
+			if next_line:
+				print(line)
+				next_line = False
+
 # STS dataset
 def loadTestTweets_STS():
 	start = time.time()
@@ -3584,10 +3604,11 @@ def evaluateMessages(base, model, model_ensemble=False):
 					plt.ylim(-6, 6)
 
 
-					plt.ion()
-					plt.show()
+					#plt.ion()
+					#plt.show()
 
-					input("Press enter to continue")
+					#input("Press enter to continue")
+
 				f.write("# ---------//---------\n\n")
 
 '''
