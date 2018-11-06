@@ -3043,6 +3043,8 @@ def evaluateMessages(base, model, model_ensemble=False):
 		messages_positive    = variables.tweets_2013_positive
 		messages_negative    = variables.tweets_2013_negative
 		messages_neutral     = variables.tweets_2013_neutral
+
+		variables.t2k13_outputs = []
 	elif base == "tweets2014":
 		messages             = variables.tweets_2014
 		messages_score       = variables.tweets_2014_score
@@ -3056,6 +3058,8 @@ def evaluateMessages(base, model, model_ensemble=False):
 		messages_positive    = variables.tweets_2014_positive
 		messages_negative    = variables.tweets_2014_negative
 		messages_neutral     = variables.tweets_2014_neutral
+
+		variables.t2k14_outputs = []
 	elif base == "livejournal":
 		messages             = variables.tweets_liveJournal2014
 		messages_score       = variables.tweets_liveJournal2014_score
@@ -3069,6 +3073,8 @@ def evaluateMessages(base, model, model_ensemble=False):
 		messages_positive    = variables.tweets_liveJournal2014_positive
 		messages_negative    = variables.tweets_liveJournal2014_negative
 		messages_neutral     = variables.tweets_liveJournal2014_neutral
+
+		variables.lj_outputs = []
 	elif base == "sarcasm":
 		messages             = variables.tweets_2014_sarcasm
 		messages_score       = variables.tweets_2014_sarcasm_score
@@ -3082,6 +3088,8 @@ def evaluateMessages(base, model, model_ensemble=False):
 		messages_positive    = variables.tweets_2014_sarcasm_positive
 		messages_negative    = variables.tweets_2014_sarcasm_negative
 		messages_neutral     = variables.tweets_2014_sarcasm_neutral
+
+		variables.sar_outputs = []
 	elif base == "sms":
 		messages             = variables.sms_2013
 		messages_score       = variables.sms_2013_score
@@ -3095,6 +3103,8 @@ def evaluateMessages(base, model, model_ensemble=False):
 		messages_positive    = variables.sms_2013_positive
 		messages_negative    = variables.sms_2013_negative
 		messages_neutral     = variables.sms_2013_neutral        
+
+		variables.sms_outputs = []
 	elif base == "all":
 		messages             = variables.all_messages_in_file_order
 		messages_score       = variables.all_polarities_in_file_order
@@ -3116,6 +3126,8 @@ def evaluateMessages(base, model, model_ensemble=False):
 		with open(variables.INCORRECT_EVALUATIONS, 'a') as f_incorrect:
 			if base == "tweets2013": # only one header on file
 				f_incorrect.write("[gold]\t[prediction]\t[neutral range]\t[base]\t[message]\n\n")
+
+	variables.all_model_outputs = []
 
 	for index, item in enumerate(messages): 
 		message = str(messages[index]).strip().replace("'", "")
@@ -3295,6 +3307,19 @@ def evaluateMessages(base, model, model_ensemble=False):
 				else:
 					#print("[evaluate using only GP in normal mode (no ensemble)")
 					result = float(eval(model_analysis))
+
+					if base == "tweets2013":
+						variables.t2k13_outputs.append(result)
+					elif base == "tweets2014":
+						variables.t2k14_outputs.append(result)
+					elif base == "sms":
+						variables.sms_outputs.append(result)
+					elif base == "livejournal":
+						variables.lj_outputs.append(result)
+					elif base == "sarcasm":
+						variables.sar_outputs.append(result)
+
+					variables.all_model_outputs.append(result)
 
 					if result <= variables.neutral_superior_range and result >= variables.neutral_inferior_range:
 						result = messages_score_svm[index]
@@ -3523,6 +3548,46 @@ def evaluateMessages(base, model, model_ensemble=False):
 				f.write("# Pred_Pos  |  " + '{message: <{width}}'.format(message=str(true_positive), width=8) + "  |  " + '{message: <{width}}'.format(message=str(goldNeg_classPos), width=8) + "  |  " + '{message: <{width}}'.format(message=str(goldNeu_classPos), width=8) + "  |\n")
 				f.write("# Pred_Neg  |  " + '{message: <{width}}'.format(message=str(goldPos_classNeg), width=8) + "  |  " + '{message: <{width}}'.format(message=str(true_negative), width=8) + "  |  " + '{message: <{width}}'.format(message=str(goldNeu_classNeg), width=8) + "  |\n")
 				f.write("# Pred_Neu  |  " + '{message: <{width}}'.format(message=str(goldPos_classNeu), width=8) + "  |  " + '{message: <{width}}'.format(message=str(goldNeg_classNeu), width=8) + "  |  " + '{message: <{width}}'.format(message=str(true_neutral), width=8)  + "  |\n\n")
+				
+				if not model_ensemble:
+					f.write("# [all outputs] (" + str(len(variables.all_model_outputs)) + " outputs)\n")
+					f.write("# [Tweets2013] "  + str(variables.t2k13_outputs) + "\n\n")
+					f.write("# [Tweets2014] "  + str(variables.t2k14_outputs) + "\n\n")
+					f.write("# [SMS] "         + str(variables.sms_outputs)   + "\n\n")
+					f.write("# [LiveJournal] " + str(variables.lj_outputs)    + "\n\n")
+					f.write("# [Sarcasm] "     + str(variables.sar_outputs)   + "\n\n")
+					#f.write("# " + str(variables.all_model_outputs) + "\n")
+					
+					import seaborn as sns
+					import matplotlib.pyplot as plt
+
+					#plt.interactive(True)
+
+
+					sns.set(style="whitegrid")
+					tips = sns.load_dataset("tips")
+					#ax = sns.boxplot(x=tips["total_bill"])
+
+					all_outs = []
+
+					#labels = ['Twitter2013', 'Twitter2014', 'Sarcasm', 'SMS', 'LiveJournal', 'Todas']
+
+					all_outs.append(variables.t2k13_outputs)
+					all_outs.append(variables.t2k14_outputs)
+					all_outs.append(variables.sar_outputs)
+					all_outs.append(variables.sms_outputs)
+					all_outs.append(variables.lj_outputs)
+					all_outs.append(variables.all_model_outputs)
+
+					ax = sns.boxplot(data=all_outs, orient="v", palette="Set2", showmeans=True)
+					
+					plt.ylim(-6, 6)
+
+
+					plt.ion()
+					plt.show()
+
+					input("Press enter to continue")
 				f.write("# ---------//---------\n\n")
 
 '''
