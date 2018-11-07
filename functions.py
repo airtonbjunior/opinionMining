@@ -1274,6 +1274,9 @@ def getNeutralRangesFromTestFile():
 	import tkinter as tk
 	from tkinter import filedialog
 
+	inferior = []
+	superior = []
+
 	root = tk.Tk()
 	root.withdraw()
 
@@ -1287,8 +1290,124 @@ def getNeutralRangesFromTestFile():
 				next_line = True
 				continue
 			if next_line:
-				print(line)
+				for i in line[4:-2].replace("'", "").split("],"):
+					a = i.strip().replace("[", "").replace("]", "").split(", ")
+					#print("len: " + str(len(a)))
+					#print("neg " + a[0] + " pos " + a[1])
+					inferior.append(a[0])
+					superior.append(a[1])
+
+					#print("\n")	
+				#print("--\n")
 				next_line = False
+
+	import seaborn as sns
+	import matplotlib.pyplot as plt
+
+	sns.set(style="whitegrid")
+	all_outs = []
+
+	#labels = ['Twitter2013', 'Twitter2014', 'Sarcasm', 'SMS', 'LiveJournal', 'Todas']
+
+	all_outs.append(inferior)
+	all_outs.append(superior)
+
+	ax = sns.boxplot(data=all_outs, orient="v", palette="pastel", showmeans=True)
+	#ax = sns.boxplot(data=all_outs, orient="v", showmeans=True)
+	
+	#plt.ylim(-6, 6)
+
+
+	plt.ion()
+	plt.show()
+
+	print("avg inferior: " + str(sum(list(map(float, inferior))) / len(inferior)))
+	print("avg superior: " + str(sum(list(map(float, superior))) / len(superior)))
+	
+	print("min inferior: " + str(min(list(map(float, inferior)))))
+	print("min superior: " + str(min(list(map(float, superior)))))
+
+	print("max inferior: " + str(max(list(map(float, inferior)))))
+	print("max superior: " + str(max(list(map(float, superior)))))
+
+	input("press to continue")
+
+
+def getWeightsMeanFromTestFile():
+	import tkinter as tk
+	from tkinter import filedialog
+
+	means = []
+
+	root = tk.Tk()
+	root.withdraw()
+
+	file_path = filedialog.askopenfilename()
+
+	#next_line = False
+
+	with open(file_path, 'r') as f:
+		for line in f:
+			if line.startswith("w") and line.split(" ")[1].startswith("values"):
+				line_means = line.split("\t")[1][1:-2].split(", ")
+				means.append(list(map(float, line_means)))
+				#print(line.split("\t")[1][1:-2])
+				#print(str(line.split("\t")[1][1:-2].split(", ")))
+
+
+			#if next_line:
+			#	for i in line[4:-2].replace("'", "").split("],"):
+			#		a = i.strip().replace("[", "").replace("]", "").split(", ")
+					#print("len: " + str(len(a)))
+					#print("neg " + a[0] + " pos " + a[1])
+			#		inferior.append(a[0])
+			#		superior.append(a[1])
+
+					#print("\n")	
+				#print("--\n")
+			#	next_line = False
+
+	#geral_means = []
+	#for i in means:
+	#	m = sum(i) / len(i)
+	#	geral_means.append(m)  
+
+	import seaborn as sns
+	import matplotlib.pyplot as plt
+
+	sns.set(style="whitegrid")
+	all_outs = []
+
+	#labels = ['Twitter2013', 'Twitter2014', 'Sarcasm', 'SMS', 'LiveJournal', 'Todas']
+
+	#all_outs.append(inferior)
+	#all_outs.append(superior)
+
+	#ax = sns.boxplot(data=geral_means, orient="v", showmeans=True, color=".90")
+	#ax = sns.catplot(jitter=False, data=means);
+	#ax = sns.catplot(palette="ch:.25", data=geral_means);
+
+	ax = sns.swarmplot(data=means, orient="v", color=".25", jitter=False)
+
+	#ax = sns.relplot(data=means, orient="v", palette="pastel")
+	#ax = sns.boxplot(data=all_outs, orient="v", showmeans=True)
+	
+	plt.ylim(0, 2)
+
+
+	plt.ion()
+	plt.show()
+
+	#print("avg inferior: " + str(sum(list(map(float, inferior))) / len(inferior)))
+	#print("avg superior: " + str(sum(list(map(float, superior))) / len(superior)))
+	
+	#print("min inferior: " + str(min(list(map(float, inferior)))))
+	#print("min superior: " + str(min(list(map(float, superior)))))
+
+	#print("max inferior: " + str(max(list(map(float, inferior)))))
+	#print("max superior: " + str(max(list(map(float, superior)))))
+
+	input("press to continue")
 
 # STS dataset
 def loadTestTweets_STS():
