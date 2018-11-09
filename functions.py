@@ -687,6 +687,7 @@ def getResultsClassifier(file_name):
 
 	return results
 
+
 # Load the test tweets from Semeval 2014 task 9
 def loadTestTweets():
 	start = time.time()
@@ -704,25 +705,32 @@ def loadTestTweets():
 	RForest_results = getResultsClassifier("datasets/test/RandomForest_test_results.txt")   # confirm the values pattern
 	SGD_results     = getResultsClassifier("datasets/test/sgd_test_results.txt")
 
+	ESumNoPG_results = []
+	with open("ensemble_no_pg_results_PRODUCT.txt", "r") as ff:
+		for i in ff:
+			ESumNoPG_results.append(i)
+
+
 	with open(variables.SEMEVAL_TEST_FILE, 'r') as inF:
 		index_results = 0
 		for line in inF:
 			if tweets_loaded < variables.MAX_ANALYSIS_TWEETS_TEST:
 				tweet_parsed = line.split("\t")
 
-				svm_class, rforest_class, naive_class, MS_class, LReg_class, S140_class, SGD_class = 0, 0, 0, 0, 0, 0, 0
+				svm_class, rforest_class, naive_class, MS_class, LReg_class, S140_class, SGD_class, ESumNoPG_class = 0, 0, 0, 0, 0, 0, 0, 0
 
 				try:
-					#svm_class    = normalize_svm_polarity(tweet_parsed[3].strip())
-					svm_class     = normalize_svm_polarity(SVM_results[index_results].strip())
-					#naive_class  = normalize_naive_polarity(tweet_parsed[4].strip())
-					naive_class   = normalize_naive_polarity(Naive_results[index_results].split("\t")[0].strip()) # index 0 contains the class - on 1, 2 and 3 we have the probs of each class
-					MS_class      = normalize_MS_polarity(str(tweet_parsed[5].strip()))
-					#LReg_class   = normalize_naive_polarity(tweet_parsed[6].strip())             # the same pattern of naive classifier ('positive', 'negative' and 'neutral')
-					LReg_class    = normalize_naive_polarity(LReg_results[index_results].strip()) # the same pattern of naive classifier ('positive', 'negative' and 'neutral')
-					S140_class    = normalize_naive_polarity(tweet_parsed[7].strip())             # the same pattern of naive classifier ('positive', 'negative' and 'neutral')
-					rforest_class = normalize_naive_polarity(RForest_results[index_results].split('\t')[3].strip())
-					SGD_class     = normalize_naive_polarity(SGD_results[index_results].split('\t')[3].strip())
+					#svm_class     = normalize_svm_polarity(tweet_parsed[3].strip())
+					svm_class      = normalize_svm_polarity(SVM_results[index_results].strip())
+					#naive_class   = normalize_naive_polarity(tweet_parsed[4].strip())
+					naive_class    = normalize_naive_polarity(Naive_results[index_results].split("\t")[0].strip()) # index 0 contains the class - on 1, 2 and 3 we have the probs of each class
+					MS_class       = normalize_MS_polarity(str(tweet_parsed[5].strip()))
+					#LReg_class    = normalize_naive_polarity(tweet_parsed[6].strip())             # the same pattern of naive classifier ('positive', 'negative' and 'neutral')
+					LReg_class     = normalize_naive_polarity(LReg_results[index_results].strip()) # the same pattern of naive classifier ('positive', 'negative' and 'neutral')
+					S140_class     = normalize_naive_polarity(tweet_parsed[7].strip())             # the same pattern of naive classifier ('positive', 'negative' and 'neutral')
+					rforest_class  = normalize_naive_polarity(RForest_results[index_results].split('\t')[3].strip())
+					SGD_class      = normalize_naive_polarity(SGD_results[index_results].split('\t')[3].strip())
+					ESumNoPG_class = normalize_naive_polarity(ESumNoPG_results[index_results].strip())
 					#print(str(rforest_class))
 
 					index_results += 1
@@ -743,6 +751,8 @@ def loadTestTweets():
 					variables.all_polarities_in_file_order_S140.append(S140_class)
 					variables.all_polarities_in_file_order_RFor.append(rforest_class)
 					variables.all_polarities_in_file_order_SGD.append(SGD_class)
+					variables.all_polarities_in_file_order_ESumNoPG.append(ESumNoPG_class)
+
 
 					if tweet_parsed[1] == "Twitter2013":
 
@@ -767,6 +777,7 @@ def loadTestTweets():
 						variables.tweets_2013_score_S140.append(S140_class)
 						variables.tweets_2013_score_RFor.append(rforest_class)
 						variables.tweets_2013_score_SGD.append(SGD_class)
+						variables.tweets_2013_score_ESumNoPG.append(ESumNoPG_class)
 
 					elif tweet_parsed[1] == "Twitter2014":
 						variables.tweets_2014.append(tweet_parsed[2].replace('right now', 'rightnow'))
@@ -790,6 +801,7 @@ def loadTestTweets():
 						variables.tweets_2014_score_S140.append(S140_class)
 						variables.tweets_2014_score_RFor.append(rforest_class)
 						variables.tweets_2014_score_SGD.append(SGD_class)
+						variables.tweets_2014_score_ESumNoPG.append(ESumNoPG_class)
 
 					elif tweet_parsed[1] == "SMS2013":
 						variables.sms_2013.append(tweet_parsed[2].replace('right now', 'rightnow'))
@@ -813,6 +825,7 @@ def loadTestTweets():
 						variables.sms_2013_score_S140.append(S140_class)
 						variables.sms_2013_score_RFor.append(rforest_class)
 						variables.sms_2013_score_SGD.append(SGD_class)
+						variables.sms_2013_score_ESumNoPG.append(ESumNoPG_class)
 					
 					elif tweet_parsed[1] == "LiveJournal2014":
 						variables.tweets_liveJournal2014.append(tweet_parsed[2].replace('right now', 'rightnow'))
@@ -836,6 +849,7 @@ def loadTestTweets():
 						variables.tweets_liveJournal2014_score_S140.append(S140_class)
 						variables.tweets_liveJournal2014_score_RFor.append(rforest_class)
 						variables.tweets_liveJournal2014_score_SGD.append(SGD_class)
+						variables.tweets_liveJournal2014_score_ESumNoPG.append(ESumNoPG_class)
 
 					elif tweet_parsed[1] == "Twitter2014Sarcasm":
 						variables.tweets_2014_sarcasm.append(tweet_parsed[2].replace('right now', 'rightnow'))
@@ -859,6 +873,7 @@ def loadTestTweets():
 						variables.tweets_2014_sarcasm_score_S140.append(S140_class)
 						variables.tweets_2014_sarcasm_score_RFor.append(rforest_class)
 						variables.tweets_2014_sarcasm_score_SGD.append(SGD_class)
+						variables.tweets_2014_sarcasm_score_ESumNoPG.append(ESumNoPG_class)
 					
 					tweets_loaded += 1                          
 				
@@ -3179,6 +3194,7 @@ def evaluateMessages(base, model, model_ensemble=False):
 		messages_score_S140  = variables.tweets_2013_score_S140
 		messages_score_RFor  = variables.tweets_2013_score_RFor
 		messages_score_SGD   = variables.tweets_2013_score_SGD
+		messages_score_ESumNoPG = variables.tweets_2013_score_ESumNoPG
 		messages_positive    = variables.tweets_2013_positive
 		messages_negative    = variables.tweets_2013_negative
 		messages_neutral     = variables.tweets_2013_neutral
@@ -3194,6 +3210,7 @@ def evaluateMessages(base, model, model_ensemble=False):
 		messages_score_S140  = variables.tweets_2014_score_S140
 		messages_score_RFor  = variables.tweets_2014_score_RFor
 		messages_score_SGD   = variables.tweets_2014_score_SGD
+		messages_score_ESumNoPG = variables.tweets_2014_score_ESumNoPG
 		messages_positive    = variables.tweets_2014_positive
 		messages_negative    = variables.tweets_2014_negative
 		messages_neutral     = variables.tweets_2014_neutral
@@ -3209,6 +3226,7 @@ def evaluateMessages(base, model, model_ensemble=False):
 		messages_score_S140  = variables.tweets_liveJournal2014_score_S140
 		messages_score_RFor  = variables.tweets_liveJournal2014_score_RFor
 		messages_score_SGD   = variables.tweets_liveJournal2014_score_SGD
+		messages_score_ESumNoPG = variables.tweets_liveJournal2014_score_ESumNoPG
 		messages_positive    = variables.tweets_liveJournal2014_positive
 		messages_negative    = variables.tweets_liveJournal2014_negative
 		messages_neutral     = variables.tweets_liveJournal2014_neutral
@@ -3224,6 +3242,7 @@ def evaluateMessages(base, model, model_ensemble=False):
 		messages_score_S140  = variables.tweets_2014_sarcasm_score_S140
 		messages_score_RFor  = variables.tweets_2014_sarcasm_score_RFor
 		messages_score_SGD   = variables.tweets_2014_sarcasm_score_SGD
+		messages_score_ESumNoPG = variables.tweets_2014_sarcasm_score_ESumNoPG
 		messages_positive    = variables.tweets_2014_sarcasm_positive
 		messages_negative    = variables.tweets_2014_sarcasm_negative
 		messages_neutral     = variables.tweets_2014_sarcasm_neutral
@@ -3239,6 +3258,7 @@ def evaluateMessages(base, model, model_ensemble=False):
 		messages_score_S140  = variables.sms_2013_score_S140
 		messages_score_RFor  = variables.sms_2013_score_RFor
 		messages_score_SGD   = variables.sms_2013_score_SGD
+		messages_score_ESumNoPG = variables.sms_2013_score_ESumNoPG
 		messages_positive    = variables.sms_2013_positive
 		messages_negative    = variables.sms_2013_negative
 		messages_neutral     = variables.sms_2013_neutral        
@@ -3254,6 +3274,7 @@ def evaluateMessages(base, model, model_ensemble=False):
 		messages_score_S140  = variables.all_polarities_in_file_order_S140
 		messages_score_RFor  = variables.all_polarities_in_file_order_RFor
 		messages_score_SGD   = variables.all_polarities_in_file_order_SGD
+		messages_score_ESumNoPG = variables.all_polarities_in_file_order_ESumNoPG
 		#messages = variables.tweets_2013 + variables.tweets_2014 + variables.tweets_liveJournal2014 + variables.sms_2013 + variables.tweets_2014_sarcasm
 		#messages_score = variables.tweets_2013_score + variables.tweets_2014_score + variables.tweets_liveJournal2014_score + variables.sms_2013_score + variables.tweets_2014_sarcasm_score
 		messages_positive    = variables.tweets_2013_positive + variables.tweets_2014_positive + variables.tweets_liveJournal2014_positive + variables.tweets_2014_sarcasm_positive + variables.sms_2013_positive
@@ -3272,7 +3293,6 @@ def evaluateMessages(base, model, model_ensemble=False):
 		message = str(messages[index]).strip().replace("'", "")
 		message = message.replace("\\u2018", "").replace("\\u2019", "").replace("\\u002c", "")        
 		message = "'" + message + "'"
-
 
 		# check if the analysis will use an ensemble of all models
 		if model_ensemble:
@@ -3352,23 +3372,41 @@ def evaluateMessages(base, model, model_ensemble=False):
 			elif(variables.use_only_SGD_classifier):
 				result = messages_score_SGD[index]
 
+			elif(variables.use_all_classifiers_nopg_sum):
+				result = messages_score_ESumNoPG[index]
 
 			# Use all classifiers - get the majority
 			elif(variables.use_all_classifiers):
 				all_classifiers = []
-				all_classifiers.append(floatToStr_polarity_value(messages_score_svm[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-				all_classifiers.append(floatToStr_polarity_value(messages_score_naive[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-				all_classifiers.append(floatToStr_polarity_value(messages_score_LReg[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-				all_classifiers.append(floatToStr_polarity_value(messages_score_RFor[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-				all_classifiers.append(floatToStr_polarity_value(messages_score_SGD[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-				all_classifiers.append(floatToStr_polarity_value(float(eval(model_analysis)), variables.neutral_inferior_range, variables.neutral_superior_range))
-				#all_classifiers.append(floatToStr_polarity_value(messages_score_MS[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-				all_classifiers.append(floatToStr_polarity_value(messages_score_S140[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-				all_classifiers.append(floatToStr_polarity_value(TextBlob(message).sentiment.polarity, variables.neutral_inferior_range, variables.neutral_superior_range))
-				if hasEmoticons(message):
-					all_classifiers.append(floatToStr_polarity_value(emoticonsPolaritySum(message), variables.neutral_inferior_range, variables.neutral_superior_range))
-				if hasHashtag(message):
-					all_classifiers.append(floatToStr_polarity_value(hashtagPolaritySum(message), variables.neutral_inferior_range, variables.neutral_superior_range))
+				
+				if base == "livejournal":
+					all_classifiers.append(floatToStr_polarity_value(messages_score_svm[index],   variables.neutral_inferior_range, variables.neutral_superior_range))
+					#all_classifiers.append(floatToStr_polarity_value(messages_score_naive[index], variables.neutral_inferior_range, variables.neutral_superior_range))
+					all_classifiers.append(floatToStr_polarity_value(messages_score_LReg[index], variables.neutral_inferior_range, variables.neutral_superior_range))
+					#all_classifiers.append(floatToStr_polarity_value(messages_score_RFor[index],  variables.neutral_inferior_range, variables.neutral_superior_range))
+					all_classifiers.append(floatToStr_polarity_value(messages_score_SGD[index],   variables.neutral_inferior_range, variables.neutral_superior_range))
+					all_classifiers.append(floatToStr_polarity_value(float(eval(model_analysis)), variables.neutral_inferior_range, variables.neutral_superior_range))
+					#all_classifiers.append(floatToStr_polarity_value(messages_score_MS[index], variables.neutral_inferior_range, variables.neutral_superior_range))
+					#all_classifiers.append(floatToStr_polarity_value(messages_score_S140[index], variables.neutral_inferior_range, variables.neutral_superior_range))
+					#all_classifiers.append(floatToStr_polarity_value(TextBlob(message).sentiment.polarity, variables.neutral_inferior_range, variables.neutral_superior_range))
+					if hasEmoticons(message):
+						all_classifiers.append(floatToStr_polarity_value(emoticonsPolaritySum(message), variables.neutral_inferior_range, variables.neutral_superior_range))
+					if hasHashtag(message):
+						all_classifiers.append(floatToStr_polarity_value(hashtagPolaritySum(message), variables.neutral_inferior_range, variables.neutral_superior_range))
+				else:
+					all_classifiers.append(floatToStr_polarity_value(messages_score_svm[index],   variables.neutral_inferior_range, variables.neutral_superior_range))
+					#all_classifiers.append(floatToStr_polarity_value(messages_score_naive[index], variables.neutral_inferior_range, variables.neutral_superior_range))
+					all_classifiers.append(floatToStr_polarity_value(messages_score_LReg[index], variables.neutral_inferior_range, variables.neutral_superior_range))
+					all_classifiers.append(floatToStr_polarity_value(messages_score_RFor[index],  variables.neutral_inferior_range, variables.neutral_superior_range))
+					all_classifiers.append(floatToStr_polarity_value(messages_score_SGD[index],   variables.neutral_inferior_range, variables.neutral_superior_range))
+					all_classifiers.append(floatToStr_polarity_value(float(eval(model_analysis)), variables.neutral_inferior_range, variables.neutral_superior_range))
+					#all_classifiers.append(floatToStr_polarity_value(messages_score_MS[index], variables.neutral_inferior_range, variables.neutral_superior_range))
+					#all_classifiers.append(floatToStr_polarity_value(messages_score_S140[index], variables.neutral_inferior_range, variables.neutral_superior_range))
+					#all_classifiers.append(floatToStr_polarity_value(TextBlob(message).sentiment.polarity, variables.neutral_inferior_range, variables.neutral_superior_range))
+					if hasEmoticons(message):
+						all_classifiers.append(floatToStr_polarity_value(emoticonsPolaritySum(message), variables.neutral_inferior_range, variables.neutral_superior_range))
+					if hasHashtag(message):
+						all_classifiers.append(floatToStr_polarity_value(hashtagPolaritySum(message), variables.neutral_inferior_range, variables.neutral_superior_range))
 
 				r = get_best_evaluation(all_classifiers)            
 
@@ -3409,10 +3447,12 @@ def evaluateMessages(base, model, model_ensemble=False):
 								result = float(eval(model_analysis))
 								if floatToStr_polarity_value(float(eval(model_analysis)), variables.neutral_inferior_range, variables.neutral_superior_range) == r.split("_")[1].strip():
 									result = messages_score_SGD[index]   
+									#result = messages_score_svm[index]   
 					else:
 						result = float(eval(model_analysis))
 						if floatToStr_polarity_value(float(eval(model_analysis)), variables.neutral_inferior_range, variables.neutral_superior_range) == r.split("_")[1].strip():
 							result = messages_score_SGD[index]
+							#result = messages_score_svm[index]
 
 				#if base == "sarcasm":
 				#	result = float(eval(model_analysis))

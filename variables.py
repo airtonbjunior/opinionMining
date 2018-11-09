@@ -102,6 +102,8 @@ use_only_RForest_classifier = False
 use_only_SGD_classifier     = False
 use_all_classifiers         = False
 
+use_all_classifiers_nopg_sum = True
+
 using_gp_default = False
 
 use_gp_ensemble  = False # if False, all the models will be executed separated. If True, an ensemble of the models will be executed
@@ -157,7 +159,7 @@ dic_mpqa_loaded         = False
 
 dic_loaded_total = 0
 
-use_original_dic_values = False
+use_original_dic_values = True
 
 # Balance the train tweets
 MAX_POSITIVES_TWEETS = 1500
@@ -341,6 +343,7 @@ tweets_2013_score_LReg  = []
 tweets_2013_score_S140  = []
 tweets_2013_score_RFor  = []
 tweets_2013_score_SGD   = []
+tweets_2013_score_ESumNoPG = []
 tweets_2013_positive    = 0
 tweets_2013_negative    = 0
 tweets_2013_neutral     = 0
@@ -354,6 +357,7 @@ tweets_2014_score_LReg  = []
 tweets_2014_score_S140  = []
 tweets_2014_score_RFor  = []
 tweets_2014_score_SGD   = []
+tweets_2014_score_ESumNoPG = []
 tweets_2014_positive    = 0
 tweets_2014_negative    = 0
 tweets_2014_neutral     = 0
@@ -367,6 +371,7 @@ tweets_liveJournal2014_score_LReg  = []
 tweets_liveJournal2014_score_S140  = []
 tweets_liveJournal2014_score_RFor  = []
 tweets_liveJournal2014_score_SGD   = []
+tweets_liveJournal2014_score_ESumNoPG = []
 tweets_liveJournal2014_positive    = 0
 tweets_liveJournal2014_negative    = 0
 tweets_liveJournal2014_neutral     = 0
@@ -380,6 +385,7 @@ tweets_2014_sarcasm_score_LReg  = []
 tweets_2014_sarcasm_score_S140  = []
 tweets_2014_sarcasm_score_RFor  = []
 tweets_2014_sarcasm_score_SGD   = []
+tweets_2014_sarcasm_score_ESumNoPG = []
 tweets_2014_sarcasm_positive    = 0
 tweets_2014_sarcasm_negative    = 0
 tweets_2014_sarcasm_neutral     = 0
@@ -393,6 +399,7 @@ sms_2013_score_LReg  = []
 sms_2013_score_S140  = []
 sms_2013_score_RFor  = []
 sms_2013_score_SGD   = []
+sms_2013_score_ESumNoPG = []
 sms_2013_positive    = 0
 sms_2013_negative    = 0
 sms_2013_neutral     = 0
@@ -406,6 +413,7 @@ all_polarities_in_file_order_LReg  = []
 all_polarities_in_file_order_S140  = []
 all_polarities_in_file_order_RFor  = []
 all_polarities_in_file_order_SGD   = []
+all_polarities_in_file_order_ESumNoPG = []
 
 false_neutral_log  = 0
 false_negative_log = 0
