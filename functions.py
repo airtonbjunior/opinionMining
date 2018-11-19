@@ -21,7 +21,43 @@ from datetime import datetime
 from validate_email import validate_email
 
 import variables
+from loadFunctions import *
 
+####################
+# PRE-LOAD FUNCTIONS
+####################
+
+
+def loadDictionaries():
+	"""Load the dictionaries words/polarities
+
+	The dic_words dictionary (defined in variables.py) will be populated using the follow format: 
+	
+		dic_words['dictionary_name']['positive']['word'] = polarity
+		dic_words['dictionary_name']['negative']['word'] = polarity
+
+		Example:
+			
+			Dictionary Sentiwordnet (word<tab>polarity)
+				able	0.125
+
+				dic_words['sentiwordnet']['positive']['able'] = 0.125
+	"""
+	start = time.time()
+	print("\n[loading dictionaries]")
+
+	# Sentiwordnet
+	if(variables.use_dic_sentiwordnet):		
+		variables.dic_sentiwordnet_loaded   = True
+		variables.dic_words["sentiwordnet"]["positive"], variables.dic_words["sentiwordnet"]["negative"] = loadDictionaryValues("sentiwordnet", variables.DICTIONARY_SENTIWORDNET_FOLDER)
+	
+	# Effect
+	if(variables.use_dic_effect):
+		variables.dic_effect_loaded   = True
+		variables.dic_words["effect"]["positive"], variables.dic_words["effect"]["negative"] = loadDictionaryValues("effect", variables.DICTIONARY_EFFECT_FOLDER)
+
+	print(str(variables.dic_words))
+	print("[all dictionaries (" + str(variables.dic_loaded_total) + ") loaded][" + str(format(time.time() - start, '.3g')) + " seconds]\n")
 
 # Load the dictionaries
 def getDictionary(module):
