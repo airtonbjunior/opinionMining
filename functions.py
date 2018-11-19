@@ -23,41 +23,68 @@ from validate_email import validate_email
 import variables
 from loadFunctions import *
 
-####################
-# PRE-LOAD FUNCTIONS
-####################
+def checkBoosterAndInverter(message, index):
+	"""Check for booster and inverter words
 
+		Args:
+			message (str): message to be evaluated
+			index   (int): index of word on message
 
-def loadDictionaries():
-	"""Load the dictionaries words/polarities
+		Return:
+			booster_inverter (bool): true if the message contains booster and inverter words, false otherwise
+			invert (bool): tr
+			booster (bool)
 
-	The dic_words dictionary (defined in variables.py) will be populated using the follow format: 
-	
-		dic_words['dictionary_name']['positive']['word'] = polarity
-		dic_words['dictionary_name']['negative']['word'] = polarity
-
-		Example:
-			
-			Dictionary Sentiwordnet (word<tab>polarity)
-				able	0.125
-
-				dic_words['sentiwordnet']['positive']['able'] = 0.125
 	"""
-	start = time.time()
-	print("\n[loading dictionaries]")
+	words = message.strip().split()
 
-	# Sentiwordnet
-	if(variables.use_dic_sentiwordnet):		
-		variables.dic_sentiwordnet_loaded   = True
-		variables.dic_words["sentiwordnet"]["positive"], variables.dic_words["sentiwordnet"]["negative"] = loadDictionaryValues("sentiwordnet", variables.DICTIONARY_SENTIWORDNET_FOLDER)
-	
-	# Effect
-	if(variables.use_dic_effect):
-		variables.dic_effect_loaded   = True
-		variables.dic_words["effect"]["positive"], variables.dic_words["effect"]["negative"] = loadDictionaryValues("effect", variables.DICTIONARY_EFFECT_FOLDER)
+	for word in words:
+		
+		if index > 0 and words[index-1] == "insidenoteboosterword" and (words[index-2] == "insidenoteinverterword" or words[index-3] == "insidenoteinverterword"):
+			
+			booster_inverter = True
+		elif index > 0 and words[index-1] == "insidenoteinverterword":
+			
+			invert = True
+		elif (index > 0 and words[index-1] == "insidenoteboosterword") or (index < len(words) - 1 and words[index+1] == "insidenoteboosterword" and (words[index-1] != "insidenoteboosterword" or index == 0)):
+		
+			booster = True
+		
+		elif (index > 0 and words[index-1] == "insidenoteboosteruppercase") or (index < len(words) - 1 and words[index+1] == "insidenoteboosteruppercase" and (words[index-1] != "insidenoteboosteruppercase" or index == 0)):
+			
+			booster = True 
 
-	print(str(variables.dic_words))
-	print("[all dictionaries (" + str(variables.dic_loaded_total) + ") loaded][" + str(format(time.time() - start, '.3g')) + " seconds]\n")
+	return booster_inverter, invert, booster  
+
+
+def polSumAVGWeights(message, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0, w11=0):
+	"""Calc the weighted polarity sum of the message
+
+		Args:
+			message   (str)  : message to be evaluated
+			w1 .. w11 (float): weights for the i dictionary 
+
+		The dictionary sequence is: ["liu", "sentiwordnet", "afinn", "vader", "slang", "effect", "semeval2015", "nrc", "gi", "s140", "mpqa"]
+
+	"""
+	total_sum    = 0
+	dic_quantity = 0
+	invert, booster, booster_inverter = False, False, False
+
+	booster_inverter, invert, booster = checkBoosterAndInverter(message)
+   	
+	ws = [w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11]
+	wi = 0
+
+	print(str(ws))
+
+	""" for each word of the message """
+	for word in message.strip().split():
+		for dic in variables.dictionaries:
+			if variables.use_dic[dic] and variables.dic_loaded[dic] and ws[wi] != 0:
+				print("entering dictionary " + dic)
+			wi += 1
+
 
 # Load the dictionaries
 def getDictionary(module):
