@@ -40,6 +40,23 @@ DICTIONARY_GENERAL_INQUIRER   = 'dictionaries/general-inquirer.txt'
 DICTIONARY_S140               = 'dictionaries/sentiment140_unigram.txt'
 DICTIONARY_MPQA               = 'dictionaries/mpqa.txt'
 
+FILE_PATH = {}
+FILE_PATH['train'] = 'datasets/train/train_messages.txt'
+FILE_PATH['test']  = 'datasets/test/test_messages.txt'
+
+DIC_PATH = {}
+DIC_PATH["liu"]          = 'dictionaries/LIU/'
+DIC_PATH["sentiwordnet"] = 'dictionaries/Sentiwordnet/'
+DIC_PATH["afinn"]        = 'dictionaries/AFINN/'
+DIC_PATH["vader"]        = 'dictionaries/Vader/'
+DIC_PATH["slang"]        = 'dictionaries/Slang/'
+DIC_PATH["effect"]       = 'dictionaries/Effect/'
+DIC_PATH["semeval2015"]  = 'dictionaries/Semeval2015/'
+DIC_PATH["nrc"]          = 'dictionaries/NRC/'
+DIC_PATH["gi"]           = 'dictionaries/GeneralInquirer/'
+DIC_PATH["s140"]         = 'dictionaries/Sentiment140/'
+DIC_PATH["mpqa"]         = 'dictionaries/MPQA/'
+
 USE_SPELLCHECKED_WORDS      = False # set True if want to use the spellchecked words
 USE_ONLY_POS_WORDS          = False
 
@@ -133,7 +150,22 @@ neutral_values = []
 calling_by_test_file = False
 calling_by_ag_file   = False
 
+dictionaries = ["liu", "sentiwordnet", "afinn", "vader", "slang", "effect", "semeval2015", "nrc", "gi", "s140", "mpqa"]
+
 # True: load the dictionary
+use_dic = {}
+use_dic["liu"]          = True
+use_dic["sentiwordnet"] = True
+use_dic["afinn"]        = True
+use_dic["vader"]        = True
+use_dic["slang"]        = True
+use_dic["effect"]       = True
+use_dic["semeval2015"]  = True
+use_dic["nrc"]          = True
+use_dic["gi"]           = True
+use_dic["s140"]         = True
+use_dic["mpqa"]         = True
+
 use_dic_liu          = False
 use_dic_sentiwordnet = True
 use_dic_affin        = False
@@ -147,6 +179,19 @@ use_dic_s140         = False
 use_dic_mpqa         = False
 
 # Check if the dictionary was loaded
+dic_loaded = {}
+dic_loaded["liu"]          = False
+dic_loaded["sentiwordnet"] = False
+dic_loaded["afinn"]        = False
+dic_loaded["vader"]        = False
+dic_loaded["slang"]        = False
+dic_loaded["effect"]       = False
+dic_loaded["semeval2015"]  = False
+dic_loaded["nrc"]          = False
+dic_loaded["gi"]           = False
+dic_loaded["s140"]         = False
+dic_loaded["mpqa"]         = False
+
 dic_liu_loaded 			= False
 dic_sentiwordnet_loaded = False
 dic_affin_loaded		= False
@@ -215,6 +260,10 @@ TRAIN_RESULTS_2CLASSES   = 'sandbox/results/train-' + str(TOTAL_MODELS) + 'model
 
 TRAIN_RESULTS_IMG        = 'sandbox/results/train-' + str(TOTAL_MODELS) + 'mod' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '-eachFitness'
 BEST_RESULTS_IMG         = 'sandbox/results/train-' + str(TOTAL_MODELS) + 'mod' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + 'onlyBests'
+
+messages = {}
+messages['train'], messages['test'] = [], []
+
 
 tweets_semeval        = []
 tweets_semeval_score  = []
