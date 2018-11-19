@@ -27,12 +27,14 @@ DICTIONARY_POSITIVE_EMOTICONS = 'dictionaries/positive-emoticons.txt'
 DICTIONARY_NEGATIVE_EMOTICONS = 'dictionaries/negative-emoticons.txt'
 DICTIONARY_NEGATING_WORDS     = 'dictionaries/negating-word-list.txt'
 DICTIONARY_BOOSTER_WORDS      = 'dictionaries/boosterWords.txt'
-DICTIONARY_SENTIWORDNET       = 'dictionaries/SentiWordNet_3.0.0_20130122.txt'
+DICTIONARY_SENTIWORDNET        = 'dictionaries/SentiWordNet_3.0.0_20130122.txt'
+DICTIONARY_SENTIWORDNET_FOLDER = 'dictionaries/Sentiwordnet/'
 DICTIONARY_AFFIN              = 'dictionaries/affin.txt'
 DICTIONARY_SLANG              = 'dictionaries/slangSD.txt'
 DICTIONARY_VADER              = 'dictionaries/vaderLexicon.txt'
 DICTIONARY_SEMEVAL2015        = 'dictionaries/SemEval2015-English-Twitter-Lexicon.txt'
 DICTIONARY_EFFECT             = 'dictionaries/EffectWordNet.tff'
+DICTIONARY_EFFECT_FOLDER      = 'dictionaries/Effect/'
 DICTIONARY_NRC                = 'dictionaries/nrc_words.txt'
 DICTIONARY_GENERAL_INQUIRER   = 'dictionaries/general-inquirer.txt'
 DICTIONARY_S140               = 'dictionaries/sentiment140_unigram.txt'
@@ -132,17 +134,17 @@ calling_by_test_file = False
 calling_by_ag_file   = False
 
 # True: load the dictionary
-use_dic_liu          = True
+use_dic_liu          = False
 use_dic_sentiwordnet = True
-use_dic_affin        = True
-use_dic_vader        = True
-use_dic_slang        = True
+use_dic_affin        = False
+use_dic_vader        = False
+use_dic_slang        = False
 use_dic_effect       = True
-use_dic_semeval2015  = True
-use_dic_nrc			 = True
-use_dic_gi           = True
-use_dic_s140         = True
-use_dic_mpqa         = True
+use_dic_semeval2015  = False
+use_dic_nrc			 = False
+use_dic_gi           = False
+use_dic_s140         = False
+use_dic_mpqa         = False
 
 # Check if the dictionary was loaded
 dic_liu_loaded 			= False
@@ -247,6 +249,8 @@ dic_negation_words     = []
 dic_booster_words      = []
 
 # Using python dictionary to improve the search performance
+dic_words = {}
+
 dic_positive_semeval2015  = {}
 dic_negative_semeval2015  = {}
 
