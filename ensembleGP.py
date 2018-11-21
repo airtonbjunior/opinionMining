@@ -268,6 +268,8 @@ toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("compile", gp.compile, pset=pset)
 
 
+
+#### THIS FUNCTION DOESN'T WORK PROPERLY YET - DO NOT USE!!!!
 def evalEnsemble_folds(individual):
 	start = time.time()
 	global test_values
@@ -827,7 +829,7 @@ sgd_probs     = loadClassifierProbStr('datasets/train/sgd_train_results.txt', 's
 #rforest_predictions = loadClassifiersPredictions('datasets/train/randomForest_train_results.txt', 'rforest')
 #lreg_predictions    = loadClassifiersPredictions('datasets/train/lreg_train_results.txt', 'lreg')
 
-population = 200
+population = 1000
 
 iterate_count    = 1
 generation_count = 1
@@ -925,7 +927,7 @@ def main():
 	pop = toolbox.population(n=population)
 	hof = tools.HallOfFame(2)
 
-	pop, log = algorithms.eaSimple(pop, toolbox, 0.5, 0.1, 20, stats=False,
+	pop, log = algorithms.eaSimple(pop, toolbox, 0.5, 0.1, 51, stats=False,
 								   halloffame=hof, verbose=False)
 	
 	print("\n\n[best model ]: " + str(hof[0]))
