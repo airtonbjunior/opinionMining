@@ -40,6 +40,8 @@ DICTIONARY_GENERAL_INQUIRER   = 'dictionaries/general-inquirer.txt'
 DICTIONARY_S140               = 'dictionaries/sentiment140_unigram.txt'
 DICTIONARY_MPQA               = 'dictionaries/mpqa.txt'
 
+
+
 FILE_PATH = {}
 FILE_PATH['train'] = 'datasets/train/train_messages.txt'
 FILE_PATH['test']  = 'datasets/test/test_messages.txt'
@@ -98,7 +100,7 @@ sar_outputs   = []
 all_model_outputs = []
 
 train_using_folds = False
-train_using_folds_gp_ensemble = True
+train_using_folds_gp_ensemble = False # This needs to be False for while
 
 train_using_bagging = True
 train_file_size     = 9684
@@ -387,6 +389,8 @@ tweets_mukh_positive = 0
 tweets_mukh_negative = 0
 
 # Test databases - SemEval 2014 (twitter2013, twitter2014, sms, livejournal, sarcasm)
+
+
 tweets_2013             = []
 tweets_2013_score       = []
 tweets_2013_score_svm   = []
