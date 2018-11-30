@@ -33,6 +33,13 @@ print("[starting ensembleGP module]\n")
 #maximum and median. They can be applied to a different number of classifiers, i.e. each function is 
 #replicated with a different arity, typically from 2 to 5. 
 
+"""
+	Aux functions
+"""
+def splitClasses(string_probs):
+	return float(string_probs.split('\t')[0]), float(string_probs.split('\t')[1]), float(string_probs.split('\t')[2])
+
+
 def convertResult(string_result):
 	if getPosMax(string_result) == 0:
 		return variables.superior_range_gp_ensemble + 1
@@ -43,6 +50,28 @@ def convertResult(string_result):
 	else:
 		return variables.superior_range_gp_ensemble + 1 ### change this
 
+
+def auxSum(a, b, c=0, d=0):
+	return a + b + c + d
+
+
+def getPosMax(c):
+	if float(c.split('\t')[0]) > float(c.split('\t')[1]) and float(c.split('\t')[0]) > float(c.split('\t')[2]):
+		return 0
+	elif float(c.split('\t')[1]) > float(c.split('\t')[0]) and float(c.split('\t')[1]) > float(c.split('\t')[2]):
+		return 1
+	elif float(c.split('\t')[2]) > float(c.split('\t')[0]) and float(c.split('\t')[2]) > float(c.split('\t')[1]):
+		return 2
+	else:
+		return -1
+
+"""
+	GP functions
+"""
+
+"""
+	Math functions
+"""
 def safeDiv(left, right):
 	try:
 		return left / right
@@ -52,90 +81,58 @@ def safeDiv(left, right):
 def neg(value):
 	return -value
 
-def getSum(c1, c2):
-	c1p = float(c1.split('\t')[0])
-	c1n = float(c1.split('\t')[1])
-	c1u = float(c1.split('\t')[2])
 
-	c2p = float(c2.split('\t')[0])
-	c2n = float(c2.split('\t')[1])
-	c2u = float(c2.split('\t')[2])
+"""
+	Sum functions
+"""
+def getSum(c1, c2):
+	c1p, c1n, c1u = splitClasses(c1)
+	c2p, c2n, c2u = splitClasses(c2)
 
 	return str(auxSum(c1p, c2p)) + "\t" + str(auxSum(c1n, c2n)) + "\t" + str(auxSum(c1u, c2u))
 
 def getSum3(c1, c2, c3):
-	c1p = float(c1.split('\t')[0])
-	c1n = float(c1.split('\t')[1])
-	c1u = float(c1.split('\t')[2])
-
-	c2p = float(c2.split('\t')[0])
-	c2n = float(c2.split('\t')[1])
-	c2u = float(c2.split('\t')[2])
-
-	c3p = float(c3.split('\t')[0])
-	c3n = float(c3.split('\t')[1])
-	c3u = float(c3.split('\t')[2])	
+	c1p, c1n, c1u = splitClasses(c1)
+	c2p, c2n, c2u = splitClasses(c2)
+	c3p, c3n, c3u = splitClasses(c3)
 
 	return str(auxSum(c1p, c2p, c3p)) + "\t" + str(auxSum(c1n, c2n, c3n)) + "\t" + str(auxSum(c1u, c2u, c3u))	
 
 
+"""
+	Max/Min functions
+"""
 def getMax(c1, c2):
-	c1p = float(c1.split('\t')[0])
-	c1n = float(c1.split('\t')[1])
-	c1u = float(c1.split('\t')[2])
-
-	c2p = float(c2.split('\t')[0])
-	c2n = float(c2.split('\t')[1])
-	c2u = float(c2.split('\t')[2])
+	c1p, c1n, c1u = splitClasses(c1)
+	c2p, c2n, c2u = splitClasses(c2)
 
 	return str(max(c1p, c2p)) + "\t" + str(max(c1n, c2n)) + "\t" + str(max(c1u, c2u))
 
 
 def getMin(c1, c2):
-	c1p = float(c1.split('\t')[0])
-	c1n = float(c1.split('\t')[1])
-	c1u = float(c1.split('\t')[2])
-
-	c2p = float(c2.split('\t')[0])
-	c2n = float(c2.split('\t')[1])
-	c2u = float(c2.split('\t')[2])
+	c1p, c1n, c1u = splitClasses(c1)
+	c2p, c2n, c2u = splitClasses(c2)
 
 	return str(min(c1p, c2p)) + "\t" + str(min(c1n, c2n)) + "\t" + str(min(c1u, c2u))
 
 def getMax3(c1, c2, c3):
-	c1p = float(c1.split('\t')[0])
-	c1n = float(c1.split('\t')[1])
-	c1u = float(c1.split('\t')[2])
-
-	c2p = float(c2.split('\t')[0])
-	c2n = float(c2.split('\t')[1])
-	c2u = float(c2.split('\t')[2])
-
-	c3p = float(c3.split('\t')[0])
-	c3n = float(c3.split('\t')[1])
-	c3u = float(c3.split('\t')[2])	
+	c1p, c1n, c1u = splitClasses(c1)
+	c2p, c2n, c2u = splitClasses(c2)
+	c3p, c3n, c3u = splitClasses(c3)
 
 	return str(max(c1p, c2p, c3p)) + "\t" + str(max(c1n, c2n, c3n)) + "\t" + str(max(c1u, c2u, c3u))
 
 def getMin3(c1, c2, c3):
-	c1p = float(c1.split('\t')[0])
-	c1n = float(c1.split('\t')[1])
-	c1u = float(c1.split('\t')[2])
-
-	c2p = float(c2.split('\t')[0])
-	c2n = float(c2.split('\t')[1])
-	c2u = float(c2.split('\t')[2])
-
-	c3p = float(c3.split('\t')[0])
-	c3n = float(c3.split('\t')[1])
-	c3u = float(c3.split('\t')[2])	
+	c1p, c1n, c1u = splitClasses(c1)
+	c2p, c2n, c2u = splitClasses(c2)
+	c3p, c3n, c3u = splitClasses(c3)
 
 	return str(min(c1p, c2p, c3p)) + "\t" + str(min(c1n, c2n, c3n)) + "\t" + str(min(c1u, c2u, c3u))
 
 
 def getMajority3(c1, c2, c3):
 	vp, vn, vu = 0, 0, 0
-	p = getPosMax(c1)
+	p = getPosMax(c1) # instead of this, get the class label, it's more easy. Load the classes too
 	if p == 0:
 		vp += 1
 	elif p == 1:
@@ -197,23 +194,6 @@ def getMajority(c1, c2):
 	else:
 		return "0	0	0"
 
-
-def getPosMax(c):
-	if float(c.split('\t')[0]) > float(c.split('\t')[1]) and float(c.split('\t')[0]) > float(c.split('\t')[2]):
-		return 0
-	elif float(c.split('\t')[1]) > float(c.split('\t')[0]) and float(c.split('\t')[1]) > float(c.split('\t')[2]):
-		return 1
-	elif float(c.split('\t')[2]) > float(c.split('\t')[0]) and float(c.split('\t')[2]) > float(c.split('\t')[1]):
-		return 2
-	else:
-		return -1
-
-
-#def auxSum(a, b, c):
-#	return a + b + c
-
-def auxSum(a, b, c=0, d=0):
-	return a + b + c + d
 
 #pset = gp.PrimitiveSet("MAIN", 6) # one for each classify
 #pset = gp.PrimitiveSet("MAIN", 5) # one for each classify
@@ -411,7 +391,7 @@ def evalEnsemble_folds(individual):
 
 def evalEnsemble(individual):
 	start = time.time()
-	func = toolbox.compile(expr=individual)
+	func  = toolbox.compile(expr=individual)
 	
 	#global train_values
 	global test_values
@@ -444,53 +424,48 @@ def evalEnsemble(individual):
 		print("\n[new generation][start generation " + str(generation_count) + "]\n")
 		new_generation = True
 
-	print(str(individual))
 	for i in range(len(test_values)):
 		try:
 			func        = toolbox.compile(expr=individual)
-			#func_result = float(func(svm_probs[0][i], svm_probs[1][i], svm_probs[2][i], naive_probs[0][i], naive_probs[1][i], naive_probs[2][i], rforest_probs[0][i], rforest_probs[1][i], rforest_probs[2][i]))
 			#func_result = float(func(rforest_probs[i], svm_probs[i], naive_probs[i], lreg_probs[i], sgd_probs[i], gp_probs[i]))
 			func_result = convertResult(func(str(rforest_probs[i]), str(svm_probs[i]), str(naive_probs[i]), str(lreg_probs[i]), str(sgd_probs[i]))) #, gp_probs[i]))
-			#print(func_result)
-			#print("AAAA\n\n\n\n\n")
-
 
 			# see how normalize this to consider a range of pos, neg and neu values
 			if func_result >= variables.superior_range_gp_ensemble:
 				if test_values[i]   == 1:
-					is_positive     += 1
-					correct         += 1
+					is_positive    += 1
+					correct        += 1
 					true_positive   += 1
 				elif test_values[i] == -1:
-					is_negative     += 1
-					false_negative  += 1
+					is_negative    += 1
+					false_negative += 1
 				elif test_values[i] == 0:
-					is_neutral      += 1
-					false_neutral   += 1
+					is_neutral     += 1
+					false_neutral  += 1
 
 			elif func_result <= variables.inferior_range_gp_ensemble:
 				if test_values[i]   == -1:
-					is_negative     += 1
-					correct         += 1
-					true_negative   += 1
+					is_negative    += 1
+					correct        += 1
+					true_negative  += 1
 				elif test_values[i] == 1:
-					is_positive     += 1
-					false_positive  += 1
+					is_positive    += 1
+					false_positive += 1
 				elif test_values[i] == 0:
-					is_neutral      += 1
-					false_neutral   += 0 
+					is_neutral     += 1
+					false_neutral  += 1 
 
 			elif (func_result > variables.inferior_range_gp_ensemble and func_result < variables.superior_range_gp_ensemble):
 				if test_values[i]   == 0:
-					is_neutral      += 1
-					true_neutral    += 1
+					is_neutral     += 1
+					true_neutral   += 1
 					correct         += 1
 				elif test_values[i] == 1:
-					is_positive     += 1
-					false_positive  += 1
+					is_positive    += 1
+					false_positive += 1
 				elif test_values[i] == -1:
-					is_negative     += 1
-					false_negative  += 1
+					is_negative    += 1
+					false_negative += 1
 			#print("func_result[" + str(i) + "] " + str(func_result))
 
 		except Exception as e: 
@@ -672,7 +647,7 @@ def testModel_ensembleGP(model, base="default"):
 	precision_positive, precision_negative, precision_neutral, precision_avg                   = 0, 0, 0, 0
 	recall_positive, recall_negative, recall_neutral, recall_avg                               = 0, 0, 0, 0
 	f1_positive, f1_negative, f1_neutral, f1_avg, f1_pos_neg_avg                               = 0, 0, 0, 0, 0
-	goldP_predN, goldP_predU, goldN_predP, goldN_predU, goldU_predP,goldU_predN                = 0, 0, 0, 0, 0, 0
+	goldP_predN, goldP_predU, goldN_predP, goldN_predU, goldU_predP, goldU_predN               = 0, 0, 0, 0, 0, 0
 	correct = 0
 
 	original_model = model
@@ -731,7 +706,7 @@ def testModel_ensembleGP(model, base="default"):
 				goldP_predN     += 1
 			elif test_values[i] == 0:
 				is_neutral      += 1
-				false_neutral   += 0
+				false_neutral   += 1
 				goldU_predN     += 1
 
 		elif (result > variables.inferior_range_gp_ensemble and result < variables.superior_range_gp_ensemble):
@@ -953,6 +928,8 @@ if __name__ == "__main__":
 	#print(str(loadBaseIndexes('datasets/test/SemEval2014_SVM_Naive_MS_Lreg_S140.txt', 'Twitter2014')))
 
 	#m = "getMajority3(getMajority3(SVM, SGD, RL), NB, RFOR)"
+	#m = "getMin3(getMajority3(RFOR, RFOR, RFOR), getMajority(SVM, getMin(getMin(getMajority(getMin3(SVM, NB, SGD), getSum3(SVM, NB, SGD)), getSum3(RFOR, SGD, getMin(NB, SGD))), getSum3(getMajority3(getMax3(RFOR, SVM, RFOR), getSum(SGD, SVM), getSum(RL, SGD)), SGD, SGD))), getMajority(getMax(RL, RL), NB))"
+	#m = "getMax3(getMajority3(RFOR, RFOR, RFOR), getMajority(SVM, getMin(getMin(getMajority(getMin3(SVM, NB, SGD), getSum3(SVM, NB, SGD)), getSum3(RFOR, SGD, getMin(NB, SGD))), getSum3(getMajority3(getMax3(RFOR, SVM, RFOR), getSum(SGD, SVM), getSum(RL, SGD)), SGD, SGD))), getMajority(getMax(RL, RL), NB))"
 	#testModel_ensembleGP(m, "Twitter2013")
 	
 	#testModel_ensembleGP(m, "Twitter2013")
