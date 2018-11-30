@@ -132,8 +132,8 @@ use_gp_ensemble  = False # if False, all the models will be executed separated. 
 neutral_inferior_range = 0
 neutral_superior_range = 0
 
-inferior_range_gp_ensemble = -1
-superior_range_gp_ensemble = 1
+inferior_range_gp_ensemble = 0
+superior_range_gp_ensemble = 0
 
 liu_weight       	= 1
 sentiwordnet_weight = 1
