@@ -41,17 +41,15 @@ def checkBoosterAndInverter(message, index):
 	for word in words:
 		
 		if index > 0 and words[index-1] == "insidenoteboosterword" and (words[index-2] == "insidenoteinverterword" or words[index-3] == "insidenoteinverterword"):
-			
 			booster_inverter = True
-		elif index > 0 and words[index-1] == "insidenoteinverterword":
-			
-			invert = True
-		elif (index > 0 and words[index-1] == "insidenoteboosterword") or (index < len(words) - 1 and words[index+1] == "insidenoteboosterword" and (words[index-1] != "insidenoteboosterword" or index == 0)):
 		
+		elif index > 0 and words[index-1] == "insidenoteinverterword":
+			invert = True
+		
+		elif (index > 0 and words[index-1] == "insidenoteboosterword") or (index < len(words) - 1 and words[index+1] == "insidenoteboosterword" and (words[index-1] != "insidenoteboosterword" or index == 0)):
 			booster = True
 		
-		elif (index > 0 and words[index-1] == "insidenoteboosteruppercase") or (index < len(words) - 1 and words[index+1] == "insidenoteboosteruppercase" and (words[index-1] != "insidenoteboosteruppercase" or index == 0)):
-			
+		elif (index > 0 and words[index-1] == "insidenoteboosteruppercase") or (index < len(words) - 1 and words[index+1] == "insidenoteboosteruppercase" and (words[index-1] != "insidenoteboosteruppercase" or index == 0)):	
 			booster = True 
 
 	return booster_inverter, invert, booster  
@@ -71,19 +69,22 @@ def polSumAVGWeights(message, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0, w11=0):
 	dic_quantity = 0
 	invert, booster, booster_inverter = False, False, False
 
-	booster_inverter, invert, booster = checkBoosterAndInverter(message)
+	#booster_inverter, invert, booster = checkBoosterAndInverter(message)
    	
-	ws = [w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11]
+	ws = [w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11] # list of weights (parameters)
 	wi = 0
 
 	print(str(ws))
 
-	""" for each word of the message """
+	# for each word of the message
 	for word in message.strip().split():
 		for dic in variables.dictionaries:
 			if variables.use_dic[dic] and variables.dic_loaded[dic] and ws[wi] != 0:
-				print("entering dictionary " + dic)
+
+				[print("word " + word + " is on dic " + dic + " positive with value " + variables.dic_words[dic.lower()]["positive"][w]) for w in variables.dic_words[dic.lower()]["positive"] if word == w]
+
 			wi += 1
+		wi = 0
 
 
 # Load the dictionaries
