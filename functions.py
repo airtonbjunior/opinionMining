@@ -65,26 +65,44 @@ def polSumAVGWeights(message, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0, w11=0):
 		The dictionary sequence is: ["liu", "sentiwordnet", "afinn", "vader", "slang", "effect", "semeval2015", "nrc", "gi", "s140", "mpqa"]
 
 	"""
-	total_sum    = 0
-	dic_quantity = 0
-	invert, booster, booster_inverter = False, False, False
+	total_sum, accumulated, dic_quantity = 0, 0, 0
+	invert, booster, booster_inverter    = False, False, False
 
 	#booster_inverter, invert, booster = checkBoosterAndInverter(message)
    	
 	ws = [w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11] # list of weights (parameters)
 	wi = 0
+	w_sum = 0
 
-	print(str(ws))
+	#print(str(ws))
 
-	# for each word of the message
 	for word in message.strip().split():
 		for dic in variables.dictionaries:
 			if variables.use_dic[dic] and variables.dic_loaded[dic] and ws[wi] != 0:
 
-				[print("word " + word + " is on dic " + dic + " positive with value " + variables.dic_words[dic.lower()]["positive"][w]) for w in variables.dic_words[dic.lower()]["positive"] if word == w]
+				[print("word " + word + " on " + dic + " with value " + variables.dic_words[dic.lower()]["positive"][w] + " [new]") for w in variables.dic_words[dic.lower()]["positive"] if word == w]
+				#print("word " + word + " on mpqa with the value " + str(variables.dic_negative_mpqa[word]))
+
+				p = [float(variables.dic_words[dic.lower()]["positive"][w]) * float(ws[wi]) for w in variables.dic_words[dic.lower()]["positive"] if word == w]
+				n = [float(variables.dic_words[dic.lower()]["negative"][w]) * float(ws[wi]) for w in variables.dic_words[dic.lower()]["negative"] if word == w]
+
+				# splitted for didact reasons - I'll improve this later
+				if len(p) > 0:
+					accumulated += p[0]
+
+				if len(n) > 0:
+					accumulated += n[0]
+
+			if len(p) > 0 or len(n) > 0:
+				w_sum += ws[wi]
 
 			wi += 1
-		wi = 0
+		
+		total_sum += accumulated
+		wi, accumulated = 0, 0
+
+	print(str(w_sum))
+	return round(total_sum / w_sum, 4) # weighted avg
 
 
 # Load the dictionaries
@@ -2387,7 +2405,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 				else: 
 					total_sum += 1 * w1
 
-				#print("find word " + word + " on liu positive")
+				print("find word " + word + " on liu positive")
 				dic_quantity += 1
 				total_weight += w1
 
@@ -2401,7 +2419,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 				else:
 					total_sum -= 1 * w1
 
-				#print("find word " + word + " on liu negative")
+				print("find word " + word + " on liu negative")
 				dic_quantity += 1
 				total_weight += w1
 
@@ -2409,7 +2427,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 		if(variables.use_dic_sentiwordnet and variables.dic_sentiwordnet_loaded and w2 != 0):
 			if word in variables.dic_positive_sentiwordnet:
 				
-				#print("word " + word + " on sentiwordnet with the value " + str(variables.dic_positive_sentiwordnet[word]))
+				print("word " + word + " on sentiwordnet with the value " + str(variables.dic_positive_sentiwordnet[word]))
 
 				if invert:
 					total_sum -= variables.dic_positive_sentiwordnet[word] * w2
@@ -2428,7 +2446,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 				total_weight += w2
 			elif word in variables.dic_negative_sentiwordnet:
 				
-				#print("word " + word + " on sentiwordnet with the value " + str(variables.dic_negative_sentiwordnet[word]))
+				print("word " + word + " on sentiwordnet with the value " + str(variables.dic_negative_sentiwordnet[word]))
 
 				if invert:
 					total_sum -= variables.dic_negative_sentiwordnet[word] * w2
@@ -2450,7 +2468,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 		if(variables.use_dic_affin and variables.dic_affin_loaded and w3 != 0):
 			if word in variables.dic_positive_affin:
 				
-				#print("word " + word + " on affin with the value " + str(variables.dic_positive_affin[word]))
+				print("word " + word + " on affin with the value " + str(variables.dic_positive_affin[word]))
 				
 				if invert:
 					total_sum -= variables.dic_positive_affin[word] * w3
@@ -2469,7 +2487,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 				total_weight += w3
 			elif word in variables.dic_negative_affin:
 				
-				#print("word " + word + " on affin with the value " + str(variables.dic_negative_affin[word]))
+				print("word " + word + " on affin with the value " + str(variables.dic_negative_affin[word]))
 
 				if invert:
 					total_sum -= variables.dic_negative_affin[word] * w3
@@ -2491,7 +2509,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 		if(variables.use_dic_vader and variables.dic_vader_loaded and w4 != 0):
 			if word in variables.dic_positive_vader:
 
-				#print("word " + word + " on vader with the value " + str(variables.dic_positive_vader[word]))
+				print("word " + word + " on vader with the value " + str(variables.dic_positive_vader[word]))
 
 				if invert:
 					total_sum -= variables.dic_positive_vader[word] * w4
@@ -2510,7 +2528,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 				total_weight += w4
 			elif word in variables.dic_negative_vader:
 				
-				#print("word " + word + " on vader with the value " + str(variables.dic_negative_vader[word]))
+				print("word " + word + " on vader with the value " + str(variables.dic_negative_vader[word]))
 
 				if invert:
 					total_sum -= variables.dic_negative_vader[word] * w4
@@ -2532,7 +2550,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 		if(variables.use_dic_slang and variables.dic_slang_loaded and w5 != 0):
 			if word in variables.dic_positive_slang:
 				
-				#print("word " + word + " on slang with the value " + str(variables.dic_positive_slang[word]))
+				print("word " + word + " on slang with the value " + str(variables.dic_positive_slang[word]))
 				
 				if invert:
 					total_sum -= variables.dic_positive_slang[word] * w5
@@ -2551,7 +2569,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 				total_weight += w5
 			elif word in variables.dic_negative_slang:
 
-				#print("word " + word + " on slang with the value " + str(variables.dic_negative_slang[word]))
+				print("word " + word + " on slang with the value " + str(variables.dic_negative_slang[word]))
 				
 				if invert:
 					total_sum -= variables.dic_negative_slang[word] * w5
@@ -2572,7 +2590,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 		if(variables.use_dic_effect and variables.dic_effect_loaded and w6 != 0):
 			if word in variables.dic_positive_effect:
 				
-				#print("word " + word + " on effect with the value " + str(variables.dic_positive_effect[word]))
+				print("word " + word + " on effect with the value " + str(variables.dic_positive_effect[word]))
 
 				if invert:
 					total_sum -= variables.dic_positive_effect[word] * w6
@@ -2591,7 +2609,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 				total_weight += w6
 			elif word in variables.dic_negative_effect:
 				
-				#print("word " + word + " on effect with the value " + str(variables.dic_negative_effect[word]))
+				print("word " + word + " on effect with the value " + str(variables.dic_negative_effect[word]))
 
 				if invert:
 					total_sum -= variables.dic_negative_effect[word] * w6
@@ -2613,7 +2631,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 		if(variables.use_dic_semeval2015 and variables.dic_semeval2015_loaded and w7 != 0):
 			if word in variables.dic_positive_semeval2015:
 				
-				#print("word " + word + " on semeval2015 with the value " + str(variables.dic_positive_semeval2015[word]))
+				print("word " + word + " on semeval2015 with the value " + str(variables.dic_positive_semeval2015[word]))
 
 				if invert:
 					total_sum -= variables.dic_positive_semeval2015[word] * w7
@@ -2633,7 +2651,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 
 			elif word in variables.dic_negative_semeval2015:
 
-				#print("word " + word + " on semeval2015 with the value " + str(variables.dic_negative_semeval2015[word]))
+				print("word " + word + " on semeval2015 with the value " + str(variables.dic_negative_semeval2015[word]))
 
 				if invert:
 					total_sum -= variables.dic_negative_semeval2015[word] * w7
@@ -2655,7 +2673,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 		if(variables.use_dic_nrc and variables.dic_nrc_loaded and w8 != 0):
 			if word in variables.dic_positive_nrc:
 				
-				#print("word " + word + " on nrc with the value " + str(variables.dic_positive_nrc[word]))
+				print("word " + word + " on nrc with the value " + str(variables.dic_positive_nrc[word]))
 
 				if invert:
 					total_sum -= variables.dic_positive_nrc[word] * w8
@@ -2675,7 +2693,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 
 			elif word in variables.dic_negative_nrc:
 
-				#print("word " + word + " on nrc with the value " + str(variables.dic_negative_nrc[word]))
+				print("word " + word + " on nrc with the value " + str(variables.dic_negative_nrc[word]))
 
 				if invert:
 					total_sum -= variables.dic_negative_nrc[word] * w8
@@ -2693,7 +2711,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 		if(variables.use_dic_gi and variables.dic_gi_loaded and w9!= 0):
 			if word in variables.dic_positive_gi:
 				
-				#print("word " + word + " on gi with the value " + str(variables.dic_positive_gi[word]))
+				print("word " + word + " on gi with the value " + str(variables.dic_positive_gi[word]))
 
 				if invert:
 					total_sum -= variables.dic_positive_gi[word] * w9
@@ -2709,7 +2727,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 
 			elif word in variables.dic_negative_gi:
 
-				#print("word " + word + " on gi with the value " + str(variables.dic_negative_gi[word]))
+				print("word " + word + " on gi with the value " + str(variables.dic_negative_gi[word]))
 
 				if invert:
 					total_sum -= variables.dic_negative_gi[word] * w9
@@ -2727,7 +2745,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 		if(variables.use_dic_s140 and variables.dic_s140_loaded and w10!= 0):
 			if word in variables.dic_positive_s140:
 				
-				#print("word " + word + " on s140 with the value " + str(variables.dic_positive_s140[word]))
+				print("word " + word + " on s140 with the value " + str(variables.dic_positive_s140[word]))
 
 				if invert:
 					total_sum -= variables.dic_positive_s140[word] * w10
@@ -2743,7 +2761,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 
 			elif word in variables.dic_negative_s140:
 
-				#print("word " + word + " on s140 with the value " + str(variables.dic_negative_s140[word]))
+				print("word " + word + " on s140 with the value " + str(variables.dic_negative_s140[word]))
 
 				if invert:
 					total_sum -= variables.dic_negative_s140[word] * w10
@@ -2761,7 +2779,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 		if(variables.use_dic_s140 and variables.dic_mpqa_loaded and w11!= 0):
 			if word in variables.dic_positive_mpqa:
 				
-				#print("word " + word + " on mpqa with the value " + str(variables.dic_positive_mpqa[word]))
+				print("word " + word + " on mpqa with the value " + str(variables.dic_positive_mpqa[word]))
 
 				if invert:
 					total_sum -= variables.dic_positive_mpqa[word] * w11
@@ -2777,7 +2795,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 
 			elif word in variables.dic_negative_mpqa:
 
-				#print("word " + word + " on mpqa with the value " + str(variables.dic_negative_mpqa[word]))
+				print("word " + word + " on mpqa with the value " + str(variables.dic_negative_mpqa[word]))
 
 				if invert:
 					total_sum -= variables.dic_negative_mpqa[word] * w11
