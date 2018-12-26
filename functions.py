@@ -23,36 +23,91 @@ from validate_email import validate_email
 import variables
 from loadFunctions import *
 
-def checkBoosterAndInverter(message, index):
-	"""Check for booster and inverter words
+
+def boostWords(message):
+	""" Check and replace the uppercase words of the message. This can be used on polSum functions to increase the polarity
 
 		Args:
 			message (str): message to be evaluated
-			index   (int): index of word on message
+
+		TO-DO: check if the message was already boosted before
+
+	"""
+	for booster in variables.dic_words["booster"]:
+		message = message.replace(booster, "insidenoteboosterword")
+	
+	return message
+
+
+def boostUpper(message):
+	""" Check and replace the uppercase words of the message. This can be used on polSum functions to increase the polarity
+
+		Args:
+			message (str): message to be evaluated
+
+	"""
+	uppers = [word for word in message.split() if word.isupper()]
+
+	for upper in uppers:
+		message = message.replace(upper, "insidenoteboosteruppercase " + upper)
+
+	return message
+
+
+def checkBoosterAndInverter(message, index, polarity):
+	"""Check for booster and inverter words
+
+		Args:
+			message  (str): message to be evaluatedmessage
+			index    (int): index of word on message
+			polarity (float): polarity of the word
 
 		Return:
-			booster_inverter (bool): true if the message contains booster and inverter words, false otherwise
-			invert (bool): tr
-			booster (bool)
+			polarity updated
 
 	"""
 	words = message.strip().split()
 
 	for word in words:
+		if index > 0 and words[index-1]    == "insidenoteboosterword" and (words[index-2] == "insidenoteinverterword" or words[index-3] == "insidenoteinverterword"):
+			return variables.BOOSTER_FACTOR * (polarity * -1)
 		
-		if index > 0 and words[index-1] == "insidenoteboosterword" and (words[index-2] == "insidenoteinverterword" or words[index-3] == "insidenoteinverterword"):
-			booster_inverter = True
-		
-		elif index > 0 and words[index-1] == "insidenoteinverterword":
-			invert = True
+		elif index > 0 and words[index-1]  == "insidenoteinverterword":
+			return polarity * -1
 		
 		elif (index > 0 and words[index-1] == "insidenoteboosterword") or (index < len(words) - 1 and words[index+1] == "insidenoteboosterword" and (words[index-1] != "insidenoteboosterword" or index == 0)):
-			booster = True
-		
-		elif (index > 0 and words[index-1] == "insidenoteboosteruppercase") or (index < len(words) - 1 and words[index+1] == "insidenoteboosteruppercase" and (words[index-1] != "insidenoteboosteruppercase" or index == 0)):	
-			booster = True 
+			return polarity * variables.BOOSTER_FACTOR
 
-	return booster_inverter, invert, booster  
+		elif (index > 0 and words[index-1] == "insidenoteboosteruppercase") or (index < len(words) - 1 and words[index+1] == "insidenoteboosteruppercase" and (words[index-1] != "insidenoteboosteruppercase" or index == 0)):	
+			return polarity * variables.BOOSTER_FACTOR
+
+		else:
+			return polarity
+
+
+def polSum(message):
+	"""Calc the polarity sum of the message
+
+		Args:
+			message (str)  : message to be evaluated
+
+	"""
+	total_sum = 0
+
+	for word in message.strip().split():
+		for dic in variables.DICTIONARIES:
+			if variables.use_dic[dic] and variables.dic_loaded[dic]:
+				
+				p = [float(variables.dic_words[dic.lower()]["positive"][w]) for w in variables.dic_words[dic.lower()]["positive"] if word == w]
+				n = [float(variables.dic_words[dic.lower()]["negative"][w]) for w in variables.dic_words[dic.lower()]["negative"] if word == w]
+
+				if len(p) > 0:
+					total_sum += float(p[0])
+
+				if len(n) > 0:
+					total_sum += float(n[0])
+
+	return total_sum
 
 
 def polSumAVGWeights(message, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0, w11=0):
@@ -65,22 +120,19 @@ def polSumAVGWeights(message, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0, w11=0):
 		The dictionary sequence is: ["liu", "sentiwordnet", "afinn", "vader", "slang", "effect", "semeval2015", "nrc", "gi", "s140", "mpqa"]
 
 	"""
-	total_sum, accumulated, dic_quantity = 0, 0, 0
-	invert, booster, booster_inverter    = False, False, False
-
-	#booster_inverter, invert, booster = checkBoosterAndInverter(message)
+	total_sum, accumulated_p, accumulated_n, dic_quantity, index = 0, 0, 0, 0, 0
    	
 	ws = [w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11] # list of weights (parameters)
-	wi = 0
-	w_sum = 0
+	wi, w_sum_p, w_sum_n = 0, 0, 0
 
 	#print(str(ws))
 
 	for word in message.strip().split():
-		for dic in variables.dictionaries:
+		for dic in variables.DICTIONARIES:
 			if variables.use_dic[dic] and variables.dic_loaded[dic] and ws[wi] != 0:
 
-				[print("word " + word + " on " + dic + " with value " + variables.dic_words[dic.lower()]["positive"][w] + " [new]") for w in variables.dic_words[dic.lower()]["positive"] if word == w]
+				[print("word " + word + " on " + dic + " with value " + variables.dic_words[dic.lower()]["positive"][w] + " [new]") for w in variables.dic_words[dic.lower()]["positive"] if word.strip() == w]
+				[print("word " + word + " on " + dic + " with value " + variables.dic_words[dic.lower()]["negative"][w] + " [new]") for w in variables.dic_words[dic.lower()]["negative"] if word.strip() == w]
 				#print("word " + word + " on mpqa with the value " + str(variables.dic_negative_mpqa[word]))
 
 				p = [float(variables.dic_words[dic.lower()]["positive"][w]) * float(ws[wi]) for w in variables.dic_words[dic.lower()]["positive"] if word == w]
@@ -88,21 +140,27 @@ def polSumAVGWeights(message, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0, w11=0):
 
 				# splitted for didact reasons - I'll improve this later
 				if len(p) > 0:
-					accumulated += p[0]
+					accumulated_p += p[0]
+					w_sum_p += ws[wi]
 
 				if len(n) > 0:
-					accumulated += n[0]
-
-			if len(p) > 0 or len(n) > 0:
-				w_sum += ws[wi]
+					accumulated_n += n[0]
+					w_sum_n += ws[wi]
 
 			wi += 1
 		
-		total_sum += accumulated
-		wi, accumulated = 0, 0
+		if w_sum_p > 0:
+			total_sum += checkBoosterAndInverter(message, index, accumulated_p) / w_sum_p
+		
+		if w_sum_n > 0:
+			total_sum += checkBoosterAndInverter(message, index, accumulated_n) / w_sum_n
 
-	print(str(w_sum))
-	return round(total_sum / w_sum, 4) # weighted avg
+		print("total_sum -> " + str(total_sum))
+
+		wi, accumulated_p, accumulated_n, w_sum_p, w_sum_n = 0, 0, 0, 0, 0
+		index += 1
+
+	return total_sum
 
 
 # Load the dictionaries
