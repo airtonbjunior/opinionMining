@@ -40,13 +40,17 @@ DICTIONARY_GENERAL_INQUIRER   = 'dictionaries/general-inquirer.txt'
 DICTIONARY_S140               = 'dictionaries/sentiment140_unigram.txt'
 DICTIONARY_MPQA               = 'dictionaries/mpqa.txt'
 
-
-
 FILE_PATH = {}
 FILE_PATH['train'] = 'datasets/train/train_messages.txt'
 FILE_PATH['test']  = 'datasets/test/test_messages.txt'
 
+
 DIC_PATH = {}
+DIC_PATH["booster"]      = 'dictionaries/Special/Booster/'
+DIC_PATH["negating"]     = 'dictionaries/Special/Negating/'
+DIC_PATH["emoticon"]     = 'dictionaries/Special/Emoticon/'
+DIC_PATH["hashtag"]      = 'dictionaries/Special/Hashtag/'
+
 DIC_PATH["liu"]          = 'dictionaries/LIU/'
 DIC_PATH["sentiwordnet"] = 'dictionaries/Sentiwordnet/'
 DIC_PATH["afinn"]        = 'dictionaries/AFINN/'
@@ -58,6 +62,8 @@ DIC_PATH["nrc"]          = 'dictionaries/NRC/'
 DIC_PATH["gi"]           = 'dictionaries/GeneralInquirer/'
 DIC_PATH["s140"]         = 'dictionaries/Sentiment140/'
 DIC_PATH["mpqa"]         = 'dictionaries/MPQA/'
+
+BOOSTER_FACTOR = 2
 
 USE_SPELLCHECKED_WORDS      = False # set True if want to use the spellchecked words
 USE_ONLY_POS_WORDS          = False
@@ -152,7 +158,9 @@ neutral_values = []
 calling_by_test_file = False
 calling_by_ag_file   = False
 
-dictionaries = ["liu", "sentiwordnet", "afinn", "vader", "slang", "effect", "semeval2015", "nrc", "gi", "s140", "mpqa"]
+DICTIONARIES           = ["liu", "sentiwordnet", "afinn", "vader", "slang", "effect", "semeval2015", "nrc", "gi", "s140", "mpqa"]
+SPECIAL_DICTIONARIES   = ["emoticon", "hashtag"] # always loaded
+CLASSLESS_DICTIONARIES = ["booster", "negating"] # always loaded
 
 # True: load the dictionary
 use_dic = {}
@@ -168,17 +176,17 @@ use_dic["gi"]           = True
 use_dic["s140"]         = True
 use_dic["mpqa"]         = True
 
-use_dic_liu          = False
+use_dic_liu          = True
 use_dic_sentiwordnet = True
-use_dic_affin        = False
-use_dic_vader        = False
-use_dic_slang        = False
+use_dic_affin        = True
+use_dic_vader        = True
+use_dic_slang        = True
 use_dic_effect       = True
-use_dic_semeval2015  = False
-use_dic_nrc			 = False
-use_dic_gi           = False
-use_dic_s140         = False
-use_dic_mpqa         = False
+use_dic_semeval2015  = True
+use_dic_nrc			 = True
+use_dic_gi           = True
+use_dic_s140         = True
+use_dic_mpqa         = True
 
 # Check if the dictionary was loaded
 dic_loaded = {}
