@@ -24,8 +24,24 @@ import variables
 from loadFunctions import *
 
 
+def negateWords(message):
+	""" Check and replace the inverter words of the message. This can be used on polSum functions to increase the polarity
+
+		Args:
+			message (str): message to be evaluated
+
+		TO-DO: check if the message was already inverted before
+
+	"""	
+	for negate in variables.dic_words["negating"]:
+		message = re.sub(r'\b%s\b' % re.escape(negate), "insidenoteinverterword", message)
+		#message = message.replace(negate, "insidenoteinverterword")
+	
+	return message
+
+
 def boostWords(message):
-	""" Check and replace the uppercase words of the message. This can be used on polSum functions to increase the polarity
+	""" Check and replace the boost words of the message. This can be used on polSum functions to increase the polarity
 
 		Args:
 			message (str): message to be evaluated
