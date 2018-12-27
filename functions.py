@@ -33,9 +33,11 @@ def negateWords(message):
 		TO-DO: check if the message was already inverted before
 
 	"""	
+	if "insidenoteinverterword" in message:
+		return message
+
 	for negate in variables.dic_words["negating"]:
 		message = re.sub(r'\b%s\b' % re.escape(negate), "insidenoteinverterword", message)
-		#message = message.replace(negate, "insidenoteinverterword")
 	
 	return message
 
@@ -49,6 +51,9 @@ def boostWords(message):
 		TO-DO: check if the message was already boosted before
 
 	"""
+	if "insidenoteboosterword" in message:
+		return message
+
 	for booster in variables.dic_words["booster"]:
 		message = message.replace(booster, "insidenoteboosterword")
 	
@@ -62,6 +67,9 @@ def boostUpper(message):
 			message (str): message to be evaluated
 
 	"""
+	if "insidenoteboosteruppercase" in message:
+		return message
+		
 	uppers = [word for word in message.split() if word.isupper()]
 
 	for upper in uppers:
