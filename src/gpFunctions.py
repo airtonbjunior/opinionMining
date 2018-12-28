@@ -11,8 +11,94 @@ gpFunctions.py
 
 """
 import re
-
 import variables
+
+
+"""
+	Aux functions
+"""
+def getURLs(phrase):
+	#improve this Regular Expression to get www.something.com and others
+	return re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', phrase)
+
+
+"""
+	Math functions (numeric -> numeric)
+"""
+def add(left, right):
+	return left + right
+
+def sub(left, right):
+	return left - right
+
+def mul(left, right):
+	return left * right
+
+def exp(par):
+	return math.exp(par)
+
+def cos(par):
+	return math.cos(par)
+
+def sin(par):
+	return math.sin(par)
+
+def protectedDiv(left, right):
+	try:
+		return left / right
+	except:
+		return 1
+
+def protectedLog(value):
+	try:
+		return math.log10(value)
+	except:
+		return 1    
+
+def protectedSqrt(value):
+	try:
+		return math.sqrt(value)
+	except:
+		return 1  
+
+def invertSignal(val):
+	return -val
+
+
+"""
+	Verification functions (string -> numeric)
+"""
+def hasHashtag(message):
+	for word in message.strip().split():
+		if word[0] == "#":
+			return True
+
+	return False
+
+
+#def hasEmails(message):
+#	for word in message.strip().split():
+#		if validate_email(word):
+#			return True
+#
+#	return False
+
+
+def hasURLs(phrase):
+	if len(getURLs(phrase)) > 0:
+		return True
+	return False
+
+
+"""
+	String properties functions (string -> numeric)
+"""
+def messageLength(message):
+	return len(message.strip())
+
+def wordCount(message):
+	return len(message.split())
+
 
 def negateWords(message):
 	""" Check and replace the inverter words of the message. This can be used on polSum functions to increase the polarity
