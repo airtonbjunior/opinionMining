@@ -1545,59 +1545,6 @@ def saveTweetsbyClass(tweet_class, origin_file, destin_file):
 
 
 #Aux functions
-def add(left, right):
-	return left + right
-
-def sub(left, right):
-	return left - right
-
-def mul(left, right):
-	return left * right
-
-def addI(left, right):
-	return left + right
-
-def subI(left, right):
-	return left - right
-
-def mulI(left, right):
-	return left * right
-
-def exp(par):
-	return math.exp(par)
-
-def cos(par):
-	return math.cos(par)
-
-def sin(par):
-	return math.sin(par)
-
-def passInt(num):
-	return num
-
-# Protected Div (check division by zero)
-def protectedDiv(left, right):
-	try:
-		return left / right
-	except:
-		return 1
-
-# Log
-def protectedLog(value):
-	try:
-		return math.log10(value)
-	except:
-		return 1    
-
-# Sqrt
-def protectedSqrt(value):
-	try:
-		return math.sqrt(value)
-	except:
-		return 1  
-
-def invertSignal(val):
-	return -val
 
 def is_float_try(str):
 	try:
@@ -1627,14 +1574,6 @@ def positiveWordsQuantity(phrase):
 			positive_words += 1
 	
 	return positive_words    
-
-
-def phraseLength(phrase):
-	return len(phrase.strip())
-
-
-def wordCount(phrase):
-	return len(phrase.split())
 
 
 # Sequence:
@@ -2903,9 +2842,7 @@ def hasDates(phrase):
 	return False
 	#print(x + " - " + str(x.lower() in variables.all_dates) + " " + str(len(re.findall('^[12][0-9]{3}$', x))) + " " + str(len(re.findall('^([01]\d|2[0-3]):?([0-5]\d)$', x))))
 
-# Check if has hashtags on phrase
-def hasHashtag(phrase):
-	return True if "#" in phrase else False
+
 
 
 # Check if has emoticons on phrase
@@ -2973,25 +2910,6 @@ def lemmingText(phrase):
 
 ## NOTE: I'm copying the phrase[str] variable for didact reasons in this functions
 ##       Same for variable named phrase_return
-def getURLs(phrase):
-	#improve this Regular Expression to get www.something.com and others
-	return re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', phrase)
-
-
-def hasEmails(phrase):
-	words = phrase.split()
-	for word in words:
-		if validate_email(word):
-			return True
-
-	return False
-
-
-def hasURLs(phrase):
-	if len(getURLs(phrase)) > 0:
-		return True
-	return False
-
 
 def removeLinks(phrase):
 	phrase_copy = phrase
