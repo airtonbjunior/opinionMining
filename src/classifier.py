@@ -64,7 +64,7 @@ pset.addPrimitive(hashtagPolaritySum,    [str], float)
 pset.addPrimitive(emoticonsPolaritySum,  [str], float)
 pset.addPrimitive(positiveWordsQuantity, [str], float)
 pset.addPrimitive(negativeWordsQuantity, [str], float)
-#pset.addPrimitive(phraseLength,          [str], float)
+#pset.addPrimitive(messageLength,          [str], float)
 #pset.addPrimitive(wordCount,             [str], float)
 
 pset.addPrimitive(hasHashtag,   [str], bool)
