@@ -96,8 +96,34 @@ def hasURLs(phrase):
 def messageLength(message):
 	return len(message.strip())
 
+
 def wordCount(message):
 	return len(message.split())
+
+
+def posHashtagCount(message):
+	"""
+		TO-DO: I'm only checking on 'hashtag' dictionary. Maybe it would be intersting search in all dictionaries
+	"""
+	pos = [word for word in message.split() if word in variables.dic_words["hashtag"]["positive"]]
+	return len(pos)
+
+
+
+def negHashtagCount(message):
+	"""
+		TO-DO: I'm only checking on 'hashtag' dictionary. Maybe it would be intersting search in all dictionaries
+	"""
+	neg = [word for word in message.split() if word in variables.dic_words["hashtag"]["positive"]]
+	return len(neg)
+
+
+def posEmoticonCount(message):
+	return 0
+
+
+def negEmoticonCount(message):
+	return 0
 
 
 def negateWords(message):
