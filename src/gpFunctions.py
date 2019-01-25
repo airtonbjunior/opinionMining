@@ -105,17 +105,20 @@ def posHashtagCount(message):
 	"""
 		TO-DO: I'm only checking on 'hashtag' dictionary. Maybe it would be intersting search in all dictionaries
 	"""
-	pos = [word for word in message.split() if word in variables.dic_words["hashtag"]["positive"]]
-	return len(pos)
+	if not hasHashtag(message):
+		return 0
 
+	return len([word for word in message.strip().split() if word[1:] in variables.dic_words["hashtag"]["positive"] and word.startswith("#")])
 
 
 def negHashtagCount(message):
 	"""
 		TO-DO: I'm only checking on 'hashtag' dictionary. Maybe it would be intersting search in all dictionaries
 	"""
-	neg = [word for word in message.split() if word in variables.dic_words["hashtag"]["positive"]]
-	return len(neg)
+	if not hasHashtag(message):
+		return 0
+
+	return len([word for word in message.strip().split() if word[1:] in variables.dic_words["hashtag"]["negative"] and word.startswith("#")])
 
 
 def posEmoticonCount(message):
