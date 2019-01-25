@@ -36,16 +36,6 @@ pset.addPrimitive(operator.add, [float,float], float)
 pset.addPrimitive(operator.sub, [float,float], float)
 pset.addPrimitive(operator.mul, [float,float], float)
 pset.addPrimitive(protectedDiv, [float,float], float)
-#pset.addPrimitive(addI, [int,int], int)
-#pset.addPrimitive(subI, [int,int], int)
-#pset.addPrimitive(mulI, [int,int], int)
-#pset.addPrimitive(math.exp, [float], float)
-#pset.addPrimitive(math.cos, [float], float)
-#pset.addPrimitive(math.sin, [float], float)
-#pset.addPrimitive(protectedSqrt, [float], float)
-#pset.addPrimitive(protectedLog, [float], float)
-#pset.addPrimitive(invertSignal, [float], float)
-#pset.addPrimitive(math.pow, [float, float], float)
 
 pset.addPrimitive(positiveHashtags,  [str], float)
 pset.addPrimitive(negativeHashtags,  [str], float)
@@ -59,7 +49,6 @@ pset.addPrimitive(negativeEmoticons, [str], float)
 
 #pset.addPrimitive(passInt, [int], int)
 pset.addPrimitive(polaritySumAVGUsingWeights, [str, float, float, float, float, float, float, float, float, float, float, float], float)
-#pset.addPrimitive(polaritySumAVGUsingWeights, [str, int, int, int, int, int, int, int], float)
 pset.addPrimitive(hashtagPolaritySum,    [str], float)
 pset.addPrimitive(emoticonsPolaritySum,  [str], float)
 pset.addPrimitive(positiveWordsQuantity, [str], float)
@@ -922,7 +911,7 @@ def main():
     random.seed()
 
     pop = toolbox.population(n=variables.POPULATION)
-    hof = tools.HallOfFame(4)
+    hof = tools.HallOfFame(variables.HOF)
 
     # Parameters
         # population (list of individuals)
@@ -937,7 +926,7 @@ def main():
                                    halloffame=hof, verbose=False)
 
 
-    #logs
+    # Logs
     print("\n")
     print("## Results ##\n")
     print("[total tweets]: " + str(variables.positive_tweets + variables.negative_tweets + variables.neutral_tweets) + " [" + str(variables.positive_tweets) + " positives, " + str(variables.negative_tweets) + " negatives and " + str(variables.neutral_tweets) + " neutrals]\n")
@@ -1041,56 +1030,19 @@ if __name__ == "__main__":
 
 
         # Restart the variables
-        iterate_count = 1
-        generation_count = 1
-        best_of_generation = 0
-
-        variables.fitness_positive = 0
-        variables.fitness_negative = 0
-        variables.fitness_neutral  = 0
-
-        variables.cicles_unchanged = 0
-        variables.generations_unchanged = 0
+        iterate_count, generation_count = 1
+        best_of_generation              = 0
+        variables.fitness_positive, variables.fitness_negative, variables.fitness_neutral = 0
+        variables.cicles_unchanged, variables.generations_unchanged = 0, 0
         variables.generations_unchanged_reached_msg = False
-        
         variables.best_fitness = 0
-        variables.best_fitness_history  = []
-        variables.best_fitness_per_generation_history = []
-        variables.all_fitness_history   = []
-
+        variables.best_fitness_history, variables.best_fitness_per_generation_history, variables.all_fitness_history = [], [], []
         variables.best_accuracy = 0
-
-        variables.best_precision_positive = 0
-        variables.best_precision_negative = 0
-        variables.best_precision_neutral  = 0
-        variables.best_precision_avg      = 0
-
-        variables.best_recall_positive = 0
-        variables.best_recall_negative = 0
-        variables.best_recall_neutral  = 0
-        variables.best_recall_avg      = 0
-
-        variables.best_f1_positive = 0
-        variables.best_f1_negative = 0
-        variables.best_f1_neutral  = 0
-        variables.best_f1_avg      = 0
-        variables.best_f1_positive_negative_avg = 0
-
-        variables.best_precision_avg_function = ""
-        variables.best_recall_avg_function    = ""
-        variables.best_f1_avg_function        = ""
-
+        variables.best_precision_positive, variables.best_precision_negative, variables.best_precision_neutral, variables.best_precision_avg              = 0, 0, 0, 0
+        variables.best_recall_positive, variables.best_recall_negative,variables.best_recall_neutral, variables.best_recall_avg                           = 0, 0, 0, 0
+        variables.best_f1_positive, variables.best_f1_negative, variables.best_f1_neutral, variables.best_f1_avg, variables.best_f1_positive_negative_avg = 0, 0, 0, 0, 0
+        variables.best_precision_avg_function, variables.best_recall_avg_function, variables.best_f1_avg_function = "", "", ""
         variables.best_fitness_history_dict = {}
-
-    #print(len(variables.all_fitness_history))
-    #print(variables.all_fitness_history)
-    
-    # remove the 0's values to plot
-    #plt.plot(list(filter(lambda a: a != 0, variables.all_fitness_history)))    
-
-    #plt.plot(variables.best_fitness_per_generation_history)
-    #plt.ylabel('f1')
-    #plt.show()
 
 end = time.time()
 print("Script ends after " + str(format(end - start, '.3g')) + " seconds")
