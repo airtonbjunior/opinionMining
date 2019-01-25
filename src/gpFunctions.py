@@ -123,6 +123,7 @@ def negHashtagCount(message):
 
 def posEmoticonCount(message):
 	"""
+		Return the # of positive emoticons
 	"""
 	count = 0
 	for word in message.strip().split():
@@ -133,6 +134,7 @@ def posEmoticonCount(message):
 
 def negEmoticonCount(message):
 	"""
+		Return the # of negative emoticons
 	"""
 	count = 0
 	for word in message.strip().split():
@@ -157,6 +159,24 @@ def negateWords(message):
 		message = re.sub(r'\b%s\b' % re.escape(negate), "insidenoteinverterword", message)
 	
 	return message
+
+
+"""
+	Manipulation functions (string -> string)
+"""
+def removeStopWords(message):
+	return ' '.join([word for word in message.strip().split() if word not in variables.STOP_WORDS])
+
+
+def removeURLs(message):
+	return re.sub(r'http\S+', '', message, flags=re.MULTILINE).strip()
+
+
+def if_then_else(arg, output_true, output_false):
+	if arg: 
+		return output_true
+	else: 
+		return output_false
 
 
 def boostWords(message):
