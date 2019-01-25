@@ -122,11 +122,23 @@ def negHashtagCount(message):
 
 
 def posEmoticonCount(message):
-	return 0
+	"""
+	"""
+	count = 0
+	for word in message.strip().split():
+		count = count + 1 if word in variables.dic_words["emoticon"]["positive"] else count
+	
+	return count
 
 
 def negEmoticonCount(message):
-	return 0
+	"""
+	"""
+	count = 0
+	for word in message.strip().split():
+		count = count + 1 if word in variables.dic_words["emoticon"]["negative"] else count
+	
+	return count
 
 
 def negateWords(message):
