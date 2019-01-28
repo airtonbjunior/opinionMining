@@ -31,10 +31,17 @@ def loadDictionaries():
 	start = time.time()
 	print("\n[loading dictionaries]")
 
+	# Saving all pos/neg messages on unique array - I'll use this in some gp functions
+	variables.dic_words["all"] = {}
+	variables.dic_words["all"]["positive"], variables.dic_words["all"]["negative"] = {}, {}
+
 	for dic in (variables.DICTIONARIES + variables.SPECIAL_DICTIONARIES):
 		if dic in variables.SPECIAL_DICTIONARIES or variables.use_dic[dic]:
 			variables.dic_loaded[dic] = True
 			variables.dic_words[dic]["positive"], variables.dic_words[dic]["negative"] = loadDictionaryValues(dic, variables.DIC_PATH[dic])
+
+			variables.dic_words["all"]["positive"].update(variables.dic_words[dic]["positive"])
+			variables.dic_words["all"]["negative"].update(variables.dic_words[dic]["negative"])
 
 	for dic in variables.CLASSLESS_DICTIONARIES:
 		variables.dic_words[dic] = loadClasslessDictionaries(dic, variables.DIC_PATH[dic])
