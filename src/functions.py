@@ -2858,9 +2858,9 @@ def hasEmoticons(phrase):
 
 # logic operators
 # Define a new if-then-else function
-def if_then_else(input_, output1, output2):
-	if input_: return output1
-	else: return output2
+#def if_then_else(input_, output1, output2):
+#	if input_: return output1
+#	else: return output2
 
 
 def removeStopWords(phrase):
@@ -2868,7 +2868,7 @@ def removeStopWords(phrase):
 	return_phrase = ""
 
 	for word in words:
-		if word not in variables.stop_words:
+		if word not in variables.STOP_WORDS:
 			return_phrase += word + " "               
 
 	return return_phrase

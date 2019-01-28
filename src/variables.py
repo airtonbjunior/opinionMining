@@ -248,6 +248,8 @@ max_unchanged_cicles      = 9999999999
 
 TOTAL_MODELS = 3
 
+HOF = 4
+
 # Constraints
 root_constraint = False
 root_function = "polaritySumAVGUsingWeights"
@@ -523,8 +525,8 @@ limit_dictionary_weight = 3
 
 save_file_results = True
 
-stop_words = set([x.lower() for x in stopwords.words('english')])
-stop_words.remove("won")
+STOP_WORDS = set([x.lower() for x in stopwords.words('english')])
+STOP_WORDS.remove("won")
 
 week_dates  = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 month_dates = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december', 'jan', 'feb', 'mar', 'apr', 'may', 'june', 'july', 'aug', 'sept', 'oct', 'nov', 'dec']
