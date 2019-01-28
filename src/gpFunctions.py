@@ -339,10 +339,6 @@ def polSumAVGWeights(message, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0, w11=0):
 		for dic in variables.DICTIONARIES:
 			if variables.use_dic[dic] and variables.dic_loaded[dic] and ws[wi] != 0:
 
-				[print("word " + word + " on " + dic + " with value " + variables.dic_words[dic.lower()]["positive"][w] + " [new]") for w in variables.dic_words[dic.lower()]["positive"] if word.strip() == w]
-				[print("word " + word + " on " + dic + " with value " + variables.dic_words[dic.lower()]["negative"][w] + " [new]") for w in variables.dic_words[dic.lower()]["negative"] if word.strip() == w]
-				#print("word " + word + " on mpqa with the value " + str(variables.dic_negative_mpqa[word]))
-
 				p = [float(variables.dic_words[dic.lower()]["positive"][w]) * float(ws[wi]) for w in variables.dic_words[dic.lower()]["positive"] if word == w]
 				n = [float(variables.dic_words[dic.lower()]["negative"][w]) * float(ws[wi]) for w in variables.dic_words[dic.lower()]["negative"] if word == w]
 

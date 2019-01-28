@@ -8,13 +8,8 @@ from datetime import datetime
 
 PREFIX_PATH = "../"
 
-# Paths
 SEMEVAL_TRAIN_FILE             = PREFIX_PATH + 'datasets/train/twitter-train-cleansed-B.txt'
 SEMEVAL_TRAIN_FILE_SPELLCHECK  = PREFIX_PATH + 'datasets/train/twitter-train-cleansed-B_spell.txt'
-#SEMEVAL_TEST_FILE             = PREFIX_PATH + 'datasets/test/SemEval2014-task9-test-B-all-tweets_withSVMValues.txt'
-#SEMEVAL_TEST_FILE             = PREFIX_PATH + 'datasets/test/SemEval2014_SVM_Naive.txt'
-#SEMEVAL_TEST_FILE             = PREFIX_PATH + 'datasets/test/SemEval2014_SVM_Naive_MS.txt'
-#SEMEVAL_TEST_FILE             = PREFIX_PATH + 'datasets/test/SemEval2014_SVM_Naive_MS_Lreg.txt'
 SEMEVAL_TEST_FILE              = PREFIX_PATH + 'datasets/test/SemEval2014_SVM_Naive_MS_Lreg_S140.txt'
 SEMEVAL_TEST_FILE_SPELLCHECK   = PREFIX_PATH + 'datasets/test/SemEval2014-task9-test-B-all-tweets_withSVMValues_spell.txt'
 SEMEVAL_TEST_FILE_ONLY_POS     = PREFIX_PATH + 'datasets/test/SemEval2014-task9-test-B-tweets-only-some-POS-classes.txt'
@@ -45,7 +40,6 @@ DICTIONARY_MPQA                = PREFIX_PATH + 'dictionaries/mpqa.txt'
 FILE_PATH = {}
 FILE_PATH['train'] = PREFIX_PATH + 'datasets/train/train_messages.txt'
 FILE_PATH['test']  = PREFIX_PATH + 'datasets/test/test_messages.txt'
-
 
 DIC_PATH = {}
 DIC_PATH["booster"]      = PREFIX_PATH + 'dictionaries/Special/Booster/'
@@ -230,14 +224,11 @@ MAX_ANALYSIS_TWEETS_TEST = 10000
 # GP/GA Parameters
 CROSSOVER        = 0.9
 AG_CROSSOVER     = 0.9
-
 MUTATION         = 0.1
 AG_MUTATION      = 0.3
 MUTATE_EPHEMERAL = 0.85
-
 GENERATIONS      = 55
 AG_GENERATIONS   = 50
-
 POPULATION       = 260
 AG_POPULATION    = 100
 
@@ -247,7 +238,6 @@ max_unchanged_generations = 250
 max_unchanged_cicles      = 9999999999
 
 TOTAL_MODELS = 3
-
 HOF = 4
 
 # Constraints
@@ -277,7 +267,6 @@ BEST_RESULTS_IMG         = PREFIX_PATH + 'sandbox/results/train-' + str(TOTAL_MO
 
 messages = {}
 messages['train'], messages['test'] = [], []
-
 
 tweets_semeval        = []
 tweets_semeval_score  = []
@@ -316,31 +305,22 @@ dic_words = {}
 
 dic_positive_semeval2015  = {}
 dic_negative_semeval2015  = {}
-
 dic_positive_slang        = {}
 dic_negative_slang        = {}
-
 dic_positive_affin        = {}
 dic_negative_affin        = {}
-
 dic_positive_sentiwordnet = {}
 dic_negative_sentiwordnet = {}
-
 dic_positive_effect       = {}
 dic_negative_effect       = {}
-
 dic_positive_vader        = {}
 dic_negative_vader        = {}
-
 dic_positive_nrc          = {}
 dic_negative_nrc          = {}
-
 dic_positive_gi           = {}
 dic_negative_gi           = {}
-
 dic_positive_s140         = {}
 dic_negative_s140         = {}
-
 dic_positive_mpqa         = {}
 dic_negative_mpqa         = {}
 
