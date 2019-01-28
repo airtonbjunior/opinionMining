@@ -9,6 +9,8 @@ Computer Science Master's Degree
 gpFunctions.py
 	Functions used by the Genetic Programming Algorithm
 
+	This functions will be called on classifier.py by the DEAP primitives
+
 """
 import re
 import variables
@@ -140,6 +142,28 @@ def negEmoticonCount(message):
 	for word in message.strip().split():
 		count = count + 1 if word in variables.dic_words["emoticon"]["negative"] else count
 	
+	return count
+
+
+def posWordCount(message):
+	"""
+		Return the # of positive words
+	"""
+	count = 0
+	for word in message.strip().split():
+		if word in variables.dic_words["all"]["positive"]:
+			count += 1
+	return count
+
+
+def negWordCount(message):
+	"""
+		Return the # of negative words
+	"""
+	count = 0
+	for word in message.strip().split():
+		if word in variables.dic_words["all"]["negative"]:
+			count += 1
 	return count
 
 
