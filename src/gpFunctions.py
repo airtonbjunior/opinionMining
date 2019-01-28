@@ -19,9 +19,9 @@ import variables
 """
 	Aux functions
 """
-def getURLs(phrase):
+def getURLs(message):
 	#improve this Regular Expression to get www.something.com and others
-	return re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', phrase)
+	return re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', message)
 
 
 """
@@ -332,8 +332,6 @@ def polSumAVGWeights(message, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0, w11=0):
    	
 	ws = [w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11] # list of weights (parameters)
 	wi, w_sum_p, w_sum_n = 0, 0, 0
-
-	#print(str(ws))
 
 	for word in message.strip().split():
 		for dic in variables.DICTIONARIES:
