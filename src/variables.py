@@ -8,7 +8,8 @@ from datetime import datetime
 
 PREFIX_PATH = "../"
 
-SEMEVAL_TRAIN_FILE             = PREFIX_PATH + 'datasets/train/twitter-train-cleansed-B.txt'
+SEMEVAL_TRAIN_FILE             = PREFIX_PATH + 'datasets/train/train_messages.txt'
+SEMEVAL_TRAIN_FILE_ORIGINAL    = PREFIX_PATH + 'datasets/train/twitter-train-cleansed-B.txt'
 SEMEVAL_TRAIN_FILE_SPELLCHECK  = PREFIX_PATH + 'datasets/train/twitter-train-cleansed-B_spell.txt'
 SEMEVAL_TEST_FILE              = PREFIX_PATH + 'datasets/test/SemEval2014_SVM_Naive_MS_Lreg_S140.txt'
 SEMEVAL_TEST_FILE_SPELLCHECK   = PREFIX_PATH + 'datasets/test/SemEval2014-task9-test-B-all-tweets_withSVMValues_spell.txt'
@@ -46,7 +47,6 @@ DIC_PATH["booster"]      = PREFIX_PATH + 'dictionaries/Special/Booster/'
 DIC_PATH["negating"]     = PREFIX_PATH + 'dictionaries/Special/Negating/'
 DIC_PATH["emoticon"]     = PREFIX_PATH + 'dictionaries/Special/Emoticon/'
 DIC_PATH["hashtag"]      = PREFIX_PATH + 'dictionaries/Special/Hashtag/'
-
 DIC_PATH["liu"]          = PREFIX_PATH + 'dictionaries/LIU/'
 DIC_PATH["sentiwordnet"] = PREFIX_PATH + 'dictionaries/Sentiwordnet/'
 DIC_PATH["afinn"]        = PREFIX_PATH + 'dictionaries/AFINN/'
@@ -68,7 +68,6 @@ TRAIN_WORDS 		        = PREFIX_PATH + 'datasets/train/words_train/words_train.tx
 TRAIN_WORDS_SPELLCHECK      = PREFIX_PATH + 'datasets/train/words_train/words_train_spell.txt'
 TRAIN_WORDS_POS_TAGGED      = PREFIX_PATH + 'datasets/train/words_train/words_train_spell_pos-tagged.txt'
 TRAIN_WORDS_POS_TAGGED_W    = PREFIX_PATH + 'datasets/train/words_train/words_train_spell_pos-tagged_w.txt' # tagged words but without the tags, only words
-
 TEST_WORDS                  = PREFIX_PATH + 'datasets/test/words_test.txt'
 TEST_WORDS_SPELLCHECK       = PREFIX_PATH + 'datasets/test/words_test_spell.txt'
 TEST_WORDS_POS_TAGGED_W     = PREFIX_PATH + 'datasets/test/words_test_spell_pos-tagged_W.txt' # tagged words but without the tags, only words
@@ -172,18 +171,6 @@ use_dic["gi"]           = True
 use_dic["s140"]         = True
 use_dic["mpqa"]         = True
 
-use_dic_liu          = True
-use_dic_sentiwordnet = True
-use_dic_affin        = True
-use_dic_vader        = True
-use_dic_slang        = True
-use_dic_effect       = True
-use_dic_semeval2015  = True
-use_dic_nrc			 = True
-use_dic_gi           = True
-use_dic_s140         = True
-use_dic_mpqa         = True
-
 # Check if the dictionary was loaded
 dic_loaded = {}
 dic_loaded["liu"]          = False
@@ -198,26 +185,13 @@ dic_loaded["gi"]           = False
 dic_loaded["s140"]         = False
 dic_loaded["mpqa"]         = False
 
-dic_liu_loaded 			= False
-dic_sentiwordnet_loaded = False
-dic_affin_loaded		= False
-dic_vader_loaded		= False
-dic_slang_loaded		= False
-dic_effect_loaded		= False
-dic_semeval2015_loaded	= False
-dic_nrc_loaded	        = False
-dic_gi_loaded	        = False
-dic_s140_loaded         = False
-dic_mpqa_loaded         = False
-
 dic_loaded_total = 0
-
 use_original_dic_values = True
 
 # Balance the train tweets
-MAX_POSITIVES_TWEETS = 1500
-MAX_NEGATIVES_TWEETS = 1500
-MAX_NEUTRAL_TWEETS   = 1500
+MAX_POSITIVE_MESSAGE = 1500
+MAX_NEGATIVE_MESSAGE = 1500
+MAX_NEUTRAL_MESSAGE  = 1500
 MAX_ANALYSIS_TWEETS  = 5500
 MAX_ANALYSIS_TWEETS_TEST = 10000
 
@@ -325,9 +299,9 @@ dic_positive_mpqa         = {}
 dic_negative_mpqa         = {}
 
 # Counters
-positive_tweets = 0
-negative_tweets = 0
-neutral_tweets  = 0
+POSITIVE_MESSAGES = 0
+NEGATIVE_MESSAGES = 0
+NEUTRAL_MESSAGES  = 0
 
 fitness_positive = 0
 fitness_negative = 0
