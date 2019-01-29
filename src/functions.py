@@ -478,26 +478,26 @@ def loadTrainTweets():
 			try:
 				if(tweet_parsed[2] != "neutral"):
 					if(tweet_parsed[2] == "positive"):
-						#if(variables.positive_tweets < variables.MAX_POSITIVES_TWEETS):
-						variables.positive_tweets += 1
+						#if(variables.POSITIVE_MESSAGES < variables.MAX_POSITIVE_MESSAGE):
+						variables.POSITIVE_MESSAGES += 1
 						variables.tweets_semeval.append(tweet_parsed[3])
 						variables.tweets_semeval_score.append(1)
 						tweets_loaded += 1
 						if variables.train_using_bagging:
 							choosed_messages.append(i)
 					else:
-						#if(variables.negative_tweets < variables.MAX_NEGATIVES_TWEETS):
-						variables.negative_tweets += 1
+						#if(variables.POSITIVE_MESSAGES < variables.MAX_NEGATIVE_MESSAGE):
+						variables.POSITIVE_MESSAGES += 1
 						variables.tweets_semeval.append(tweet_parsed[3])
 						variables.tweets_semeval_score.append(-1)
 						tweets_loaded += 1
 						if variables.train_using_bagging:
 							choosed_messages.append(i)
 				else:
-					#if(variables.neutral_tweets < variables.MAX_NEUTRAL_TWEETS):
+					#if(variables.NEUTRAL_MESSAGES < variables.MAX_NEUTRAL_MESSAGES):
 					variables.tweets_semeval.append(tweet_parsed[3])
 					variables.tweets_semeval_score.append(0)
-					variables.neutral_tweets += 1                         
+					variables.NEUTRAL_MESSAGES += 1                         
 					tweets_loaded += 1
 					if variables.train_using_bagging:
 						choosed_messages.append(i)
@@ -507,7 +507,7 @@ def loadTrainTweets():
 	
 	if variables.train_using_bagging:
 		print("[using bagging to train][" + str(round((len(set(choosed_messages)) * 100) / tweets_loaded, 2)) + "% of messages loaded][" + str(tweets_loaded) + " total messages][" + str(len(set(choosed_messages))) + " choosed messages]")
-		print("[" + str(variables.positive_tweets) + " positives][" + str(variables.negative_tweets) + " negatives][" + str(variables.neutral_tweets) + " neutrals]")
+		print("[" + str(variables.POSITIVE_MESSAGES) + " positives][" + str(variables.POSITIVE_MESSAGES) + " negatives][" + str(variables.NEUTRAL_MESSAGES) + " neutrals]")
 	end = time.time()
 	print("   [train tweets loaded (" + str(tweets_loaded) + " tweets)][" + str(format(end - start, '.3g')) + " seconds]\n")
 	#input("Press enter to continue...")
@@ -911,14 +911,14 @@ def loadTrainTweets_STS():
 				tweet_parsed = line.split("\t")
 				try:
 					if(tweet_parsed[0] == "positive"):
-						if(variables.positive_tweets < variables.MAX_POSITIVES_TWEETS):
-							variables.positive_tweets += 1         
+						if(variables.POSITIVE_MESSAGES < variables.MAX_POSITIVE_MESSAGE):
+							variables.POSITIVE_MESSAGES += 1         
 							variables.tweets_sts.append(tweet_parsed[2])                   
 							variables.tweets_sts_score.append(1)
 							tweets_loaded += 1
 					else:
-						if(variables.negative_tweets < variables.MAX_NEGATIVES_TWEETS):
-							variables.negative_tweets += 1
+						if(variables.POSITIVE_MESSAGES < variables.MAX_NEGATIVE_MESSAGE):
+							variables.POSITIVE_MESSAGES += 1
 							variables.tweets_sts.append(tweet_parsed[2])
 							variables.tweets_sts_score.append(-1)
 							tweets_loaded += 1
@@ -942,20 +942,20 @@ def createTextBlobTrainFile():
 				try:
 					if(tweet_parsed[2] != "neutral"):
 						if(tweet_parsed[2] == "positive"):
-							#if(variables.positive_tweets < variables.MAX_POSITIVES_TWEETS):
-							if(variables.positive_tweets < 1000):
+							#if(variables.POSITIVE_MESSAGES < variables.MAX_POSITIVE_MESSAGE):
+							if(variables.POSITIVE_MESSAGES < 1000):
 								f_w.write('{"text": "' + str(tweet_parsed[3].strip().replace('"', '')) + '", "label": "pos"},\n')
-								variables.positive_tweets += 1
+								variables.POSITIVE_MESSAGES += 1
 						else:
-							#if(variables.negative_tweets < variables.MAX_NEGATIVES_TWEETS):
-							if(variables.negative_tweets < 1000):
+							#if(variables.POSITIVE_MESSAGES < variables.MAX_NEGATIVE_MESSAGE):
+							if(variables.POSITIVE_MESSAGES < 1000):
 								f_w.write('{"text": "' + str(tweet_parsed[3].strip().replace('"', '')) + '", "label": "neg"},\n')
-								variables.negative_tweets += 1
+								variables.POSITIVE_MESSAGES += 1
 					else:
-						#if(variables.neutral_tweets < variables.MAX_NEUTRAL_TWEETS):
-						if(variables.neutral_tweets < 1000):
+						#if(variables.NEUTRAL_MESSAGES < variables.MAX_NEUTRAL_MESSAGES):
+						if(variables.NEUTRAL_MESSAGES < 1000):
 							f_w.write('{"text": "' + str(tweet_parsed[3].strip().replace('"', '')) + '", "label": "neu"},\n')
-							variables.neutral_tweets += 1
+							variables.NEUTRAL_MESSAGES += 1
 				except:
 					print("exception")
 					continue    
