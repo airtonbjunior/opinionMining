@@ -20,8 +20,9 @@ from deap import gp
 
 import matplotlib.pyplot as plt
 import variables
-from functions import *
+#from functions import *
 from gpFunctions import *
+from loadFunctions import *
 from sendMail import *
 
 evaluation_acumulated_time = 0
@@ -34,58 +35,57 @@ pset.addPrimitive(operator.add, [float,float], float)
 pset.addPrimitive(operator.sub, [float,float], float)
 pset.addPrimitive(operator.mul, [float,float], float)
 pset.addPrimitive(protectedDiv, [float,float], float)
-pset.addPrimitive(positiveHashtags,  [str], float)
-pset.addPrimitive(negativeHashtags,  [str], float)
-pset.addPrimitive(positiveEmoticons, [str], float)
-pset.addPrimitive(negativeEmoticons, [str], float)
-pset.addPrimitive(polaritySumAVGUsingWeights, [str, float, float, float, float, float, float, float, float, float, float, float], float)
-pset.addPrimitive(hashtagPolaritySum,    [str], float)
-pset.addPrimitive(emoticonsPolaritySum,  [str], float)
-pset.addPrimitive(positiveWordsQuantity, [str], float)
-pset.addPrimitive(negativeWordsQuantity, [str], float)
+pset.addPrimitive(posHashtagCount,  [str], float)
+pset.addPrimitive(negHashtagCount,  [str], float)
+pset.addPrimitive(posEmoticonCount, [str], float)
+pset.addPrimitive(negEmoticonCount, [str], float)
+pset.addPrimitive(polSumAVGWeights, [str, float, float, float, float, float, float, float, float, float, float, float], float)
+pset.addPrimitive(hashtagPolSum,    [str], float)
+#pset.addPrimitive(emoticonsPolaritySum,  [str], float)
+pset.addPrimitive(posWordCount, [str], float)
+pset.addPrimitive(negWordCount, [str], float)
 pset.addPrimitive(hasHashtag,   [str], bool)
-pset.addPrimitive(hasEmoticons, [str], bool)
-pset.addPrimitive(hasURLs,      [str], bool)
-pset.addPrimitive(hasDates,     [str], bool)
+pset.addPrimitive(hasEmoticon,  [str], bool)
+pset.addPrimitive(hasURL,       [str], bool)
+pset.addPrimitive(hasEmail,     [str], bool)
 pset.addPrimitive(if_then_else, [bool, float, float], float)
 pset.addPrimitive(removeStopWords,      [str], str)
-pset.addPrimitive(removeLinks,          [str], str)
 pset.addPrimitive(removeAllPonctuation, [str], str)
-pset.addPrimitive(replaceNegatingWords, [str], str)
-pset.addPrimitive(replaceBoosterWords,  [str], str)
-pset.addPrimitive(boostUpperCase,       [str], str)
+pset.addPrimitive(negateWords, [str], str)
+pset.addPrimitive(boostWords,  [str], str)
+pset.addPrimitive(boostUpper,  [str], str)
 pset.addPrimitive(neutralRange, [float, float], float)
-#pset.addPrimitive(messageLength, [str], float)
-#pset.addPrimitive(wordCount, [str], float)
+pset.addPrimitive(messageLength,[str], float)
+pset.addPrimitive(wordCount,    [str], float)
+pset.addPrimitive(removeLinks,  [str], str)
+#pset.addPrimitive(hasDate,     [str], bool)
 #pset.addPrimitive(removeEllipsis, [str], str)
 #pset.addPrimitive(stemmingText, [str], str)
 
 pset.addTerminal(True,  bool)
 pset.addTerminal(False, bool)
-pset.addTerminal(0.0, float)
-
-pset.addEphemeralConstant("rand",  lambda: random.uniform(0, 2), float)
+pset.addTerminal(0.0,   float)
+pset.addEphemeralConstant("rand",  lambda: random.uniform(0,  2), float)
 pset.addEphemeralConstant("rand2", lambda: random.uniform(-2, 2), float)
-
 pset.renameArguments(ARG0='x')
 
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 creator.create("Individual", gp.PrimitiveTree, fitness=creator.FitnessMax)
 
 toolbox = base.Toolbox()
-
 toolbox.register("expr", gp.genHalfAndHalf, pset=pset, min_=2, max_=6)
 toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.expr)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("compile", gp.compile, pset=pset)
 
-iterate_count, generation_count = 1, 1
-best_of_generation = 0
+iterate_count, generation_count, best_of_generation = 1, 1, 0
 
 
-def evalSymbRegTweetsFromSemeval(individual):
+def evalMessages(individual):
     """
         GP evaluation function
+            The individual is evaluated using all messages
+            The fitness is the F1-measure of the positive/negative messages
 
         Args:
             individual: individual to be evaluated
@@ -99,10 +99,7 @@ def evalSymbRegTweetsFromSemeval(individual):
     global best_of_generation
     new_generation = False
 
-    # test
-    variables.neutral_inferior_range = 0
-    variables.neutral_superior_range = 0
-    # test
+    variables.neutral_inferior_range, variables.neutral_superior_range = 0, 0
 
     # Check max unchanged generations
     if variables.generations_unchanged >= variables.max_unchanged_generations:
@@ -128,10 +125,10 @@ def evalSymbRegTweetsFromSemeval(individual):
     fitnessReturn = 0
 
     is_positive, is_negative, is_neutral = 0, 0, 0
-    true_positive, true_negative, true_neutral, false_positive, false_negative, false_neutral  = 0, 0, 0, 0, 0, 0
-    precision_positive, precision_negative, precision_neutral, precision_avg                   = 0, 0, 0, 0
-    recall_positive, recall_negative, recall_neutral, recall_avg                               = 0, 0, 0, 0
-    f1_positive, f1_negative, f1_neutral, f1_avg, f1_positive_negative_avg                     = 0, 0, 0, 0, 0
+    true_positive, true_negative, true_neutral, false_positive, false_negative, false_neutral = 0, 0, 0, 0, 0, 0
+    precision_positive, precision_negative, precision_neutral, precision_avg                  = 0, 0, 0, 0
+    recall_positive, recall_negative, recall_neutral, recall_avg                              = 0, 0, 0, 0
+    f1_positive, f1_negative, f1_neutral, f1_avg, f1_positive_negative_avg                    = 0, 0, 0, 0, 0
     accuracy   = 0
     func_value = 0
 
@@ -141,13 +138,11 @@ def evalSymbRegTweetsFromSemeval(individual):
     # Transform the tree expression in a callable function
     func = toolbox.compile(expr=individual)
 
-    # to work using another databases
-    TWEETS_TO_EVALUATE       = variables.tweets_semeval
-    TWEETS_SCORE_TO_EVALUATE = variables.tweets_semeval_score
-    
+    MESSAGES_TO_EVALUATE = variables.messages['train']
+
     # Main loop - iterate through the messages
-    for index, item in enumerate(TWEETS_TO_EVALUATE):
-        
+    for index, item in enumerate(MESSAGES_TO_EVALUATE):
+    
         # CONSTRAINTS
         # Constraint 1: massive function - more than massive_functions_max
         if (str(individual).count(variables.massive_function) > variables.massive_functions_max) and variables.massive_functions_constraint:
@@ -185,7 +180,6 @@ def evalSymbRegTweetsFromSemeval(individual):
             if fitness_decreased:
                 double_decreased = True            
             fitness_decreased = True
-        
         # END CONSTRAINTS
 
         # Check cicle limit
@@ -195,12 +189,12 @@ def evalSymbRegTweetsFromSemeval(individual):
 
         # Log each new cicle
         if index == 0 and variables.log_all_metrics_each_cicle:
-            print("\n[New cicle]: " + str(len(TWEETS_TO_EVALUATE)) + " phrases to evaluate [" + str(variables.positive_tweets) + " positives, " + str(variables.negative_tweets) + " negatives and " + str(variables.neutral_tweets) + " neutrals]")
+            print("\n[New cicle]: " + str(len(MESSAGES_TO_EVALUATE)) + " phrases to evaluate [" + str(variables.POSITIVE_MESSAGES) + " positives, " + str(variables.NEGATIVE_MESSAGES) + " negatives and " + str(variables.NEUTRAL_MESSAGES) + " neutrals]")
 
         try:
-            func_value = float(func(TWEETS_TO_EVALUATE[index]))
-            
-            if float(TWEETS_SCORE_TO_EVALUATE[index]) > 0:
+            func_value = float(func(MESSAGES_TO_EVALUATE[index]['message']))
+
+            if MESSAGES_TO_EVALUATE[index]['num_label'] > 0:
                 if  func_value > variables.neutral_superior_range:
                     correct_evaluations += 1 
                     is_positive   += 1
@@ -211,7 +205,7 @@ def evalSymbRegTweetsFromSemeval(individual):
                     elif func_value < variables.neutral_inferior_range:
                         false_negative += 1
 
-            elif float(TWEETS_SCORE_TO_EVALUATE[index]) < 0:
+            elif MESSAGES_TO_EVALUATE[index]['num_label'] < 0:
                 if func_value < variables.neutral_inferior_range:
                     correct_evaluations += 1 
                     is_negative   += 1
@@ -222,7 +216,7 @@ def evalSymbRegTweetsFromSemeval(individual):
                     elif func_value > variables.neutral_superior_range:
                         false_positive += 1
 
-            elif float(TWEETS_SCORE_TO_EVALUATE[index]) == 0:
+            elif MESSAGES_TO_EVALUATE[index]['num_label'] == 0:
                 if func_value >= variables.neutral_inferior_range and func_value <= variables.neutral_superior_range:
                     correct_evaluations += 1 
                     is_neutral   += 1
@@ -239,16 +233,14 @@ def evalSymbRegTweetsFromSemeval(individual):
 
         # LOGS
         if variables.log_all_messages:
-            print("[phrase]: " + TWEETS_TO_EVALUATE[index])
-            print("[value]: " + str(TWEETS_SCORE_TO_EVALUATE[index]))
+            print("[phrase]: "    + MESSAGES_TO_EVALUATE[index]['message'])
+            print("[value]: "     + str(MESSAGES_TO_EVALUATE[index]['label']))
             print("[calculated]:" + func_value)
-
 
     if true_positive + false_positive + true_negative + false_negative > 0:
         accuracy = (true_positive + true_negative + true_neutral) / (true_positive + false_positive + true_negative + false_negative + true_neutral + false_neutral)
-
-    if accuracy > variables.best_accuracy:
-        variables.best_accuracy = accuracy 
+        if accuracy > variables.best_accuracy:
+            variables.best_accuracy = accuracy 
 
     # Begin PRECISION
     if true_positive + false_positive > 0:
@@ -270,19 +262,19 @@ def evalSymbRegTweetsFromSemeval(individual):
     # End PRECISION
 
     # Begin RECALL
-    if variables.positive_tweets > 0:
-        recall_positive = true_positive / variables.positive_tweets
+    if variables.POSITIVE_MESSAGES > 0:
+        recall_positive = true_positive / variables.POSITIVE_MESSAGES
         if recall_positive > variables.best_recall_positive:
             variables.best_recall_positive = recall_positive
 
 
-    if variables.negative_tweets > 0:
-        recall_negative = true_negative / variables.negative_tweets
+    if variables.NEGATIVE_MESSAGES > 0:
+        recall_negative = true_negative / variables.NEGATIVE_MESSAGES
         if recall_negative > variables.best_recall_negative:
             variables.best_recall_negative = recall_negative
 
-    if variables.neutral_tweets > 0:
-        recall_neutral = true_neutral / variables.neutral_tweets
+    if variables.NEUTRAL_MESSAGES > 0:
+        recall_neutral = true_neutral / variables.NEUTRAL_MESSAGES
         if recall_neutral > variables.best_recall_neutral:
             variables.best_recall_neutral = recall_neutral
     # End RECALL
@@ -325,14 +317,14 @@ def evalSymbRegTweetsFromSemeval(individual):
     if f1_positive_negative_avg > variables.best_f1_positive_negative_avg:
         variables.best_f1_positive_negative_avg = f1_positive_negative_avg
 
-    # The metric that represent the fitness
+    # FITNESS
     fitnessReturn = f1_positive_negative_avg
     if fitness_decreased:
         fitnessReturn -= fitnessReturn * variables.root_decreased_value # 80% of the original value
     if double_decreased:
         fitnessReturn -= fitnessReturn * variables.root_decreased_value # Again
 
-
+    # Saving the best fitness
     if variables.best_fitness < fitnessReturn:
         if variables.best_fitness != 0:
             # save partial best individual (in case we need stop evolution)
@@ -355,7 +347,6 @@ def evalSymbRegTweetsFromSemeval(individual):
         best_of_generation = fitnessReturn
 
     variables.all_fitness_history.append(fitnessReturn)
-
 
     # LOGS   
     if variables.log_parcial_results and not breaked:# and not variables.calling_by_ag_file: 
@@ -381,8 +372,7 @@ def evalSymbRegTweetsFromSemeval(individual):
         if variables.log_times:
             print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
         
-        print("-----------------------------")
-        print("\n")   
+        print("-----------------------------\n")
     # LOGS
 
     evaluation_acumulated_time += time.time() - start
@@ -509,7 +499,7 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
             # Log each new cicle
             if first:
                 if variables.log_all_metrics_each_cicle:
-                    print("\n[New cicle]: " + str(len(TWEETS_TO_EVALUATE)) + " phrases to evaluate [" + str(variables.positive_tweets) + " positives, " + str(variables.negative_tweets) + " negatives and " + str(variables.neutral_tweets) + " neutrals]")
+                    print("\n[New cicle]: " + str(len(TWEETS_TO_EVALUATE)) + " phrases to evaluate [" + str(variables.POSITIVE_MESSAGES) + " positives, " + str(variables.NEGATIVE_MESSAGES) + " negatives and " + str(variables.NEUTRAL_MESSAGES) + " neutrals]")
                     first = False
 
             try:
@@ -726,7 +716,7 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
 if variables.train_using_folds:
     toolbox.register("evaluate", evalSymbRegTweetsFromSemeval_folds)
 else:
-    toolbox.register("evaluate", evalSymbRegTweetsFromSemeval)
+    toolbox.register("evaluate", evalMessages)
 
 toolbox.register("select", tools.selTournament, tournsize=2)
 toolbox.register("mate", gp.cxOnePoint)
@@ -837,7 +827,7 @@ def main():
 
     # LOGS
     print("\n## Results ##\n")
-    print("[total tweets]: " + str(variables.positive_tweets + variables.negative_tweets + variables.neutral_tweets) + " [" + str(variables.positive_tweets) + " positives, " + str(variables.negative_tweets) + " negatives and " + str(variables.neutral_tweets) + " neutrals]\n")
+    print("[total tweets]: " + str(variables.POSITIVE_MESSAGES + variables.NEGATIVE_MESSAGES + variables.NEUTRAL_MESSAGES) + " [" + str(variables.POSITIVE_MESSAGES) + " positives, " + str(variables.NEGATIVE_MESSAGES) + " negatives and " + str(variables.NEUTRAL_MESSAGES) + " neutrals]\n")
     print("[best fitness (F1 avg (+/-)]: " + str(variables.best_fitness) + " [" + str(variables.fitness_positive + variables.fitness_negative + variables.fitness_neutral) + " correct evaluations] ["+ str(variables.fitness_positive) + " positives, " + str(variables.fitness_negative) + " negatives and " + str(variables.fitness_neutral) + " neutrals]\n")
     print("[function]: " + str(hof[0]) + "\n")
     print("[best accuracy]: " + str(variables.best_accuracy) + "\n")
@@ -883,8 +873,8 @@ def main():
 if __name__ == "__main__":
     print("[starting classifier module]")
 
-    getDictionary("train")
-    loadTrainTweets()
+    loadDictionaries()
+    loadTrainMessages(100)
 
     parameters = str(variables.CROSSOVER) + " crossover, " + str(variables.MUTATION) + " mutation, " + str(variables.POPULATION) + " population, " + str(variables.GENERATIONS) + " generation"
 
@@ -907,7 +897,7 @@ if __name__ == "__main__":
         variables.model_results_others = []
 
         mail_content = "Parameters: " + parameters + "\n\n" + str(variables.model_results[len(variables.model_results) - 1]) + "\n"
-        mail_content += "\n\nTotal tweets: " + str(variables.positive_tweets + variables.negative_tweets + variables.neutral_tweets) + " [" + str(variables.positive_tweets) + " positives, " + str(variables.negative_tweets) + " negatives and " + str(variables.neutral_tweets) + " neutrals]\n"
+        mail_content += "\n\nTotal tweets: " + str(variables.POSITIVE_MESSAGES + variables.NEGATIVE_MESSAGES + variables.NEUTRAL_MESSAGES) + " [" + str(variables.POSITIVE_MESSAGES) + " positives, " + str(variables.NEGATIVE_MESSAGES) + " negatives and " + str(variables.NEUTRAL_MESSAGES) + " neutrals]\n"
         mail_content += "Fitness (F1 pos and neg): " + str(variables.best_fitness) + " [" + str(variables.fitness_positive + variables.fitness_negative + variables.fitness_neutral) + " correct evaluations] ["+ str(variables.fitness_positive) + " positives, " + str(variables.fitness_negative) + " negatives and " + str(variables.fitness_neutral) + " neutrals]\n"
         mail_content += "\nFitness evolution: " + str(variables.best_fitness_history_dict) + "\n"
 
