@@ -349,18 +349,17 @@ def evalMessages(individual):
     variables.all_fitness_history.append(fitnessReturn)
 
     # LOGS   
-    if variables.log_parcial_results and not breaked:# and not variables.calling_by_ag_file: 
+    if variables.log_parcial_results and not breaked:
         if variables.log_all_metrics_each_cicle:
             print("[correct evaluations] " + str(correct_evaluations))
-            print('{message: <{width}}'.format(message="[accuracy] ", width=18) + " -> " + str(round(accuracy, 3)))
-            print('{message: <{width}}'.format(message="[precision] ", width=18) + " -> " + "[positive]: " + '{message: <{width}}'.format(message=str(round(precision_positive, 3)), width=6) + " " + "[negative]: " + '{message: <{width}}'.format(message=str(round(precision_negative, 3)), width=6) + " " + "[neutral]: " + '{message: <{width}}'.format(message=str(round(precision_neutral, 3)), width=6) + " " + "[avg]: " + '{message: <{width}}'.format(message=str(round(precision_avg, 3)), width=6))
-            print('{message: <{width}}'.format(message="[recall] ", width=18) + " -> " + "[positive]: " + '{message: <{width}}'.format(message=str(round(recall_positive, 3)), width=6) + " " + "[negative]: " + '{message: <{width}}'.format(message=str(round(recall_negative, 3)), width=6) + " " + "[neutral]: " + '{message: <{width}}'.format(message=str(round(recall_neutral, 3)), width=6) + " " + "[avg]: " + '{message: <{width}}'.format(message=str(round(recall_avg, 3)), width=6))
-            print('{message: <{width}}'.format(message="[f1] ", width=18) + " -> " + "[positive]: " + '{message: <{width}}'.format(message=str(round(f1_positive, 3)), width=6) + " " + "[negative]: " + '{message: <{width}}'.format(message=str(round(f1_negative, 3)), width=6) + " " + "[neutral]: " + '{message: <{width}}'.format(message=str(round(f1_neutral, 3)), width=6) + " " + "[avg]: " + '{message: <{width}}'.format(message=str(round(f1_avg, 3)), width=6))
+            print('{message: <{width}}'.format(message="[accuracy] ",   width=18) + " -> " + str(round(accuracy, 3)))
+            print('{message: <{width}}'.format(message="[precision] ",  width=18) + " -> " + "[positive]: " + '{message: <{width}}'.format(message=str(round(precision_positive, 3)), width=6) + " " + "[negative]: " + '{message: <{width}}'.format(message=str(round(precision_negative, 3)), width=6) + " " + "[neutral]: " + '{message: <{width}}'.format(message=str(round(precision_neutral, 3)), width=6) + " " + "[avg]: " + '{message: <{width}}'.format(message=str(round(precision_avg, 3)), width=6))
+            print('{message: <{width}}'.format(message="[recall] ",     width=18) + " -> " + "[positive]: " + '{message: <{width}}'.format(message=str(round(recall_positive, 3)), width=6) + " " + "[negative]: " + '{message: <{width}}'.format(message=str(round(recall_negative, 3)), width=6) + " " + "[neutral]: " + '{message: <{width}}'.format(message=str(round(recall_neutral, 3)), width=6) + " " + "[avg]: " + '{message: <{width}}'.format(message=str(round(recall_avg, 3)), width=6))
+            print('{message: <{width}}'.format(message="[f1] ",         width=18) + " -> " + "[positive]: " + '{message: <{width}}'.format(message=str(round(f1_positive, 3)), width=6) + " " + "[negative]: " + '{message: <{width}}'.format(message=str(round(f1_negative, 3)), width=6) + " " + "[neutral]: " + '{message: <{width}}'.format(message=str(round(f1_neutral, 3)), width=6) + " " + "[avg]: " + '{message: <{width}}'.format(message=str(round(f1_avg, 3)), width=6))
             print('{message: <{width}}'.format(message="[f1 SemEval] ", width=18) + " -> " + str(round(f1_positive_negative_avg, 3)))
         
-        print('{message: <{width}}'.format(message="[fitness] ", width=18) + " -> " + str(round(fitnessReturn, 5)) + " ****")
-        print('{message: <{width}}'.format(message="[best fitness] ", width=18) + " -> " + str(round(variables.best_fitness, 5)))
-        
+        print('{message: <{width}}'.format(message="[fitness] "     ,    width=18) + " -> " + str(round(fitnessReturn, 5)) + " ****")
+        print('{message: <{width}}'.format(message="[best fitness] ",    width=18) + " -> " + str(round(variables.best_fitness, 5)))
         print('{message: <{width}}'.format(message="[confusion matrix]", width=18) + " -> " + "[true_positive]: " + str(true_positive) + " " + "[false_positive]: " + str(false_positive) + " " + "[true_negative]: " + str(true_negative) + " " + "[false_negative]: " + str(false_negative) + " " + "[true_neutral]: " + str(true_neutral) + " " + "[false_neutral]: " + str(false_neutral) + "\n")
 
         if variables.log_all_metrics_each_cicle:
@@ -411,13 +410,12 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
     correct_evaluations = 0
 
     fitnessReturn = 0
-
     accuracy = 0
     is_positive, is_negative, is_neutral = 0, 0, 0
-    true_positive, true_negative, true_neutral, false_positive, false_negative, false_neutral  = 0, 0, 0, 0, 0, 0
-    precision_positive, precision_negative, precision_neutral, precision_avg                   = 0, 0, 0, 0
-    recall_positive, recall_negative, recall_neutral, recall_avg                               = 0, 0, 0, 0
-    f1_positive, f1_negative, f1_neutral, f1_avg, f1_positive_negative_avg                     = 0, 0, 0, 0, 0
+    true_positive, true_negative, true_neutral, false_positive, false_negative, false_neutral = 0, 0, 0, 0, 0, 0
+    precision_positive, precision_negative, precision_neutral, precision_avg                  = 0, 0, 0, 0
+    recall_positive, recall_negative, recall_neutral, recall_avg                              = 0, 0, 0, 0
+    f1_positive, f1_negative, f1_neutral, f1_avg, f1_positive_negative_avg                    = 0, 0, 0, 0, 0
     func_value = 0
 
     # Constraint controls 
@@ -438,10 +436,10 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
     for fold in chunks:
         correct_evaluations, fitnessReturn, accuracy = 0, 0, 0
         is_positive, is_negative, is_neutral         = 0, 0, 0
-        true_positive, true_negative, true_neutral, false_positive, false_negative, false_neutral  = 0, 0, 0, 0, 0, 0
-        precision_positive, precision_negative, precision_neutral, precision_avg                   = 0, 0, 0, 0
-        recall_positive, recall_negative, recall_neutral, recall_avg                               = 0, 0, 0, 0
-        f1_positive, f1_negative, f1_neutral, f1_avg, f1_positive_negative_avg                     = 0, 0, 0, 0, 0
+        true_positive, true_negative, true_neutral, false_positive, false_negative, false_neutral = 0, 0, 0, 0, 0, 0
+        precision_positive, precision_negative, precision_neutral, precision_avg                  = 0, 0, 0, 0
+        recall_positive, recall_negative, recall_neutral, recall_avg                              = 0, 0, 0, 0
+        f1_positive, f1_negative, f1_neutral, f1_avg, f1_positive_negative_avg                    = 0, 0, 0, 0, 0
         first = True
         # Constraint controls 
         breaked, fitness_decreased, double_decreased = False, False, False
