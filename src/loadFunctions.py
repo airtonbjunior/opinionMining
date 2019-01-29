@@ -83,6 +83,15 @@ def loadMessages(module, file_path, limit=0):
 	return msgs_all
 
 
+def loadTrainMessages(limit=0):
+	""" Load the train messages
+	
+		Limit is the max messages to load
+
+	"""
+	variables.messages['train'] = loadMessages("train", variables.SEMEVAL_TRAIN_FILE, limit)
+
+
 """
 	Aux functions
 """
