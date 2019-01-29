@@ -14,7 +14,8 @@ gpFunctions.py
 """
 import re
 import variables
-
+import string
+from validate_email import validate_email
 
 """
 	Aux functions
@@ -22,7 +23,6 @@ import variables
 def getURLs(message):
 	#improve this Regular Expression to get www.something.com and others
 	return re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', message)
-
 
 """
 	Math functions (numeric -> numeric)
@@ -67,8 +67,20 @@ def invertSignal(val):
 	return -val
 
 
+def neutralRange(inferior, superior):
+	"""
+		TO-DO: change the strategy of this function. See how to handle the constraint and the return value
+	"""
+	if float(inferior) > float(superior):
+		variables.neutral_inferior_range, variables.neutral_superior_range = 0, 0
+	else:
+		variables.neutral_inferior_range = inferior
+		variables.neutral_superior_range = superior
+
+	return 0 # try not be used in other branches of the tree
+
 """
-	Verification functions (string -> numeric)
+	Verification functions (string -> boolean)
 """
 def hasHashtag(message):
 	for word in message.strip().split():
@@ -78,19 +90,30 @@ def hasHashtag(message):
 	return False
 
 
-#def hasEmails(message):
-#	for word in message.strip().split():
-#		if validate_email(word):
-#			return True
-#
-#	return False
+def hasEmail(message):
+	for word in message.strip().split():
+		if validate_email(word):
+			return True
 
-
-def hasURLs(phrase):
-	if len(getURLs(phrase)) > 0:
-		return True
 	return False
 
+
+def hasURL(message):
+	if len(getURLs(message)) > 0:
+		return True
+	
+	return False
+
+
+def hasEmoticon(message):
+	"""
+		TO-DO: detect emoticon inside the words - In this version the detection occurs only on separate tokens (split)
+	"""
+	for word in message.strip().split():
+		if (word.replace("'","") in variables.dic_words["emoticon"]["positive"]) or (word.replace("'","") in variables.dic_words["emoticon"]["negative"]):
+			return True	
+
+	return False
 
 """
 	String properties functions (string -> numeric)
@@ -194,6 +217,14 @@ def removeStopWords(message):
 
 def removeURLs(message):
 	return re.sub(r'http\S+', '', message, flags=re.MULTILINE).strip()
+
+
+def removeLinks(message):
+	return  re.sub(r'http\S+', '', message, flags=re.MULTILINE)
+
+
+def removeAllPonctuation(message):
+	return message.translate(str.maketrans('','',string.punctuation.replace("-", "").replace("#", ""))) # keep hyphens
 
 
 def if_then_else(arg, output_true, output_false):
@@ -327,27 +358,29 @@ def polSumAVGWeights(message, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0, w11=0):
 
 		The dictionary sequence is: ["liu", "sentiwordnet", "afinn", "vader", "slang", "effect", "semeval2015", "nrc", "gi", "s140", "mpqa"]
 
+		TO-DO: test this function - check if the output is correct
 	"""
 	total_sum, accumulated_p, accumulated_n, dic_quantity, index = 0, 0, 0, 0, 0
    	
 	ws = [w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11] # list of weights (parameters)
-	wi, w_sum_p, w_sum_n = 0, 0, 0
+	wi, w_sum_p, w_sum_n, p, n = 0, 0, 0, 0, 0
 
 	for word in message.strip().split():
 		for dic in variables.DICTIONARIES:
 			if variables.use_dic[dic] and variables.dic_loaded[dic] and ws[wi] != 0:
+				
+				if word in variables.dic_words[dic.lower()]["positive"]:
+					p = float(variables.dic_words[dic.lower()]["positive"][word]) * ws[wi]
+				
+				elif word in variables.dic_words[dic.lower()]["negative"]:
+					n = float(variables.dic_words[dic.lower()]["negative"][word]) * ws[wi]
 
-				p = [float(variables.dic_words[dic.lower()]["positive"][w]) * float(ws[wi]) for w in variables.dic_words[dic.lower()]["positive"] if word == w]
-				n = [float(variables.dic_words[dic.lower()]["negative"][w]) * float(ws[wi]) for w in variables.dic_words[dic.lower()]["negative"] if word == w]
+				# splitted for didact reasons
+				accumulated_p += p
+				w_sum_p       += ws[wi]
 
-				# splitted for didact reasons - I'll improve this later
-				if len(p) > 0:
-					accumulated_p += p[0]
-					w_sum_p += ws[wi]
-
-				if len(n) > 0:
-					accumulated_n += n[0]
-					w_sum_n += ws[wi]
+				accumulated_n += n
+				w_sum_n       += ws[wi]
 
 			wi += 1
 		
@@ -356,8 +389,6 @@ def polSumAVGWeights(message, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0, w11=0):
 		
 		if w_sum_n > 0:
 			total_sum += checkBoosterAndInverter(message, index, accumulated_n) / w_sum_n
-
-		print("total_sum -> " + str(total_sum))
 
 		wi, accumulated_p, accumulated_n, w_sum_p, w_sum_n = 0, 0, 0, 0, 0
 		index += 1
