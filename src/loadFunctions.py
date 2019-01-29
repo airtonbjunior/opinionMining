@@ -65,9 +65,18 @@ def loadMessages(module, file_path, limit=0):
 
 	with open(file_path, "r") as f:
 		for line in f:
-			if limit == 0 or (limit != 0 and len(msgs_all) <= limit):
-				msgs['message'] = line.split('\t')[0].strip()
-				msgs['label']   = line.split('\t')[1].strip()
+			if limit == 0 or (limit != 0 and len(msgs_all) < limit):
+				msgs['message']   = line.split('\t')[0].strip()
+				msgs['label']     = line.split('\t')[1].strip()
+				msgs['num_label'] = convertLabelToNum(line.split('\t')[1].strip())
+
+				if msgs['label'] == 'positive':
+					variables.POSITIVE_MESSAGES += 1
+				elif msgs['label'] == 'negative':
+					variables.NEGATIVE_MESSAGES += 1
+				elif msgs['label'] == 'neutral':
+					variables.NEUTRAL_MESSAGES  += 1
+
 				msgs_all.append(msgs)
 				msgs = {}
 
@@ -127,6 +136,16 @@ def loadClasslessDictionaries(dictionary_name, dictionary_path):
 		print("      [" + str(dictionary_name.strip().lower()) + " dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]\n")
 	
 	return words
+
+
+def convertLabelToNum(label):
+	if label == "positive":
+		return 1
+	elif label == "negative":
+		return -1
+	elif label == "neutral":
+		return 0
+
 
 def test():
 	#variables.messages['train'] = loadMessages("train", "datasets/train/train_messages.txt", 10)
