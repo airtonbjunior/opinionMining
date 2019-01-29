@@ -154,12 +154,3 @@ def convertLabelToNum(label):
 		return -1
 	elif label == "neutral":
 		return 0
-
-
-def test():
-	#variables.messages['train'] = loadMessages("train", "datasets/train/train_messages.txt", 10)
-	#variables.messages['test']  = loadMessages("test", "datasets/test/test_messages.txt", 10)
-
-	#print(str(variables.messages))
-
-	loadDictionaries()
