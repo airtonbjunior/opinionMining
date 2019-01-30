@@ -1,0 +1,11 @@
+[PARAMS]: 0.9 crossover, 0.1 mutation, 20 population, 5 generation
+[DICTIONARIES]: 11
+
+positiveWordsQuantity(removeStopWords(removeAllPonctuation(removeStopWords(replaceNegatingWords(x)))))
+----- positiveWordsQuantity(removeStopWords(removeAllPonctuation(replaceNegatingWords(x))))
+----- positiveWordsQuantity(removeStopWords(removeAllPonctuation(replaceNegatingWords(replaceNegatingWords(x)))))
+----- positiveWordsQuantity(replaceNegatingWords(x))
+protectedDiv(sub(sub(-1.716598411433779, -1.7126372117833624), negativeHashtags(x)), negativeWordsQuantity(removeStopWords(x)))
+----- protectedDiv(sub(sub(polaritySumAVGUsingWeights(x, 0.29105221017991934, 0.0, 0.7438943193167411, 1.8558918765042054, 1.2482976211152526, 0.9461805205244351, 0.0, 0.0, 1.2938654928004132, 1.119199831886705, 0.0), 1.1160987872878705), negativeHashtags(x)), negativeHashtags(x))
+----- protectedDiv(sub(sub(polaritySumAVGUsingWeights(x, 0.3304285036143011, 0.0, 1.362029718871709, 0.36630239793812747, 1.548589064173529, -0.3506420057166859, 0.0, 0.0, 0.5774352658080015, 0.766232186618359, 0.0), 0.35032218758851164), negativeHashtags(x)), negativeHashtags(x))
+----- protectedDiv(1.9534540518946601, sub(sub(-0.0520856270587462, -0.07360967120592532), negativeHashtags(x)))

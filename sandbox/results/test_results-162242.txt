@@ -1,0 +1,83 @@
+[Model]	add(polaritySumAVGUsingWeights(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(x))), mul(0.3984181695930693, 0.0), if_then_else(False, 0.0, 0.0), if_then_else(hasEmoticons(x), 0.0, 1.7664760679538363), add(0.0, 0.5510759253800537), mul(add(0.0, 0.0), positiveHashtags(x)), negativeEmoticons(removeAllPonctuation(removeLinks(removeStopWords(x)))), if_then_else(False, 1.4812634995043215, 0.0), add(0.0, 0.0), mul(if_then_else(False, 1.9275561782139727, 0.0), 0.0), 0.0, 0.0), emoticonsPolaritySum(removeStopWords(x)))
+# [results - f1]
+tweets2013	0.6812
+tweets2014	0.66
+sms	0.64
+livejournal	0.7353
+sarcasm	0.491
+all	0.679
+
+# [weights]
+# _w1	all values:	{0.0}	mean:	0.0
+# _w2	all values:	{0.0}	mean:	0.0
+# _w3	all values:	{0.0, 1.7664760679538363}	mean:	1.6718941500220468
+# _w4	all values:	{0.5510759253800537}	mean:	0.5510759253799381
+# _w5	all values:	{0.0}	mean:	0.0
+# _w6	all values:	{0, 1}	mean:	9.459842966606754e-05
+# _w7	all values:	{0.0}	mean:	0.0
+# _w8	all values:	{0.0}	mean:	0.0
+# _w9	all values:	{0.0}	mean:	 0.0
+# _w10	all values:	{0.0}	mean:	0.0
+# _w11	all values:	{0.0}	mean:	0.0
+
+# [neutral ranges]
+# {'[0, 0]'}
+
+# [confusion matrix]
+#           |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+# --------------------------------------------------
+# Pred_Pos  |  2379      |  169       |  600       |
+# Pred_Neg  |  321       |  1104      |  468       |
+# Pred_Neu  |  806       |  268       |  2872      |
+
+# [all outputs] (0 outputs)
+# [Tweets2013] []
+
+# [Tweets2014] []
+
+# [SMS] []
+
+# [LiveJournal] []
+
+# [Sarcasm] []
+
+# ---------//---------
+
+
+
+##Statistics##
+
+1 models evaluated
+11 dictionaries
+
+AVGs
+AVG Tweets2013 F1 SemEval	0.6812
+AVG Tweets2014 F1 SemEval	0.66
+AVG SMS F1 SemEval	0.64
+AVG LiveJournal F1 SemEval	0.7353
+AVG Sarcasm F1 SemEval	0.491
+AVG All F1 SemEval	0.679
+
+Best Values
+Best Tweets2013 F1 value	0.6812
+Best Tweets2014 F1 value	0.66
+Best SMS F1 value	0.64
+Best LiveJournal F1 value	0.7353
+Best Sarcasm F1 value	0.491
+Best All F1 value	0.679
+
+Values by database
+Tweets2013 [0.6812]
+Tweets2014 [0.66]
+SMS [0.64]
+LiveJournal [0.7353]
+Sarcasm [0.491]
+All [0.679]
+
+Standard Deviation
+Standard Deviation Tweets2013	0.0
+Standard Deviation Tweets2014	0.0
+Standard Deviation SMS	0.0
+Standard Deviation Live Journal	0.0
+Standard Deviation Sarcasm	0.0
+Standard Deviation All	0.0

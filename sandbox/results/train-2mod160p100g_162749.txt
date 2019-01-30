@@ -1,0 +1,5 @@
+[PARAMS]: 0.9 crossover, 0.1 mutation, 160 population, 100 generation
+[DICTIONARIES]: 11
+
+polaritySumAVGUsingWeights(removeAllPonctuation(replaceBoosterWords(boostUpperCase(replaceNegatingWords(x)))), 0.3177515576620231, 0.0, 0.6982627326606703, positiveWordsQuantity(replaceNegatingWords(removeLinks(x))), negativeEmoticons(x), emoticonsPolaritySum(boostUpperCase(removeStopWords(x))), 0.0, emoticonsPolaritySum(boostUpperCase(boostUpperCase(replaceNegatingWords(x)))), 0.0, add(0.0, 0.0), 0.0)
+polaritySumAVGUsingWeights(removeAllPonctuation(replaceNegatingWords(x)), 0.0, emoticonsPolaritySum(boostUpperCase(removeLinks(x))), 0.24274775568711826, 0.2760996268930762, 0.0, neutralRange(negativeWordsQuantity(x), 0.0), 0.0, 0.0, 0.0, negativeEmoticons(replaceBoosterWords(x)), 0.0)

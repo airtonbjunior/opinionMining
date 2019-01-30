@@ -1,0 +1,1 @@
+getMajority(NB, getMin(RFOR, getMin(getMin(NB, getMin(getMajority(SGD, SGD), SVM)), getMin(RFOR, RFOR))))

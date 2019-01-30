@@ -1,0 +1,13 @@
+[PARAMS]: 0.9 crossover, 0.1 mutation, 20 population, 5 generation
+[DICTIONARIES]: 11
+
+polaritySumAVGUsingWeights(removeLinks(removeLinks(x)), add(1.5435934520218948, positiveHashtags(x)), positiveWordsQuantity(x), add(0.0, 0.0), negativeWordsQuantity(x), sub(-0.048883422452508984, 0.0), positiveHashtags(x), add(0.0, 1.5656602467398557), positiveHashtags(x), negativeWordsQuantity(x), neutralRange(1.0078733366287458, 0.0), positiveWordsQuantity(x))
+polaritySumAVGUsingWeights(x, add(1.827859426583503, 0.0), positiveWordsQuantity(x), add(0.0, 0.0), negativeWordsQuantity(x), sub(-0.22114391532597422, 0.0), positiveHashtags(x), add(0.0, 0.8527674789524753), positiveHashtags(x), negativeWordsQuantity(x), neutralRange(0.7130576758365903, 0.0), positiveWordsQuantity(x))
+polaritySumAVGUsingWeights(removeAllPonctuation(x), add(1.6119767202876125, 0.0), positiveWordsQuantity(x), add(0.0, 0.0), negativeWordsQuantity(x), sub(0.2001599663731013, 0.0), positiveHashtags(x), add(0.0, 1.662393793296255), positiveHashtags(x), negativeWordsQuantity(x), neutralRange(-0.2076452595819398, 0.0), positiveWordsQuantity(x))
+polaritySumAVGUsingWeights(removeAllPonctuation(x), add(0.5054901324625083, 0.0), positiveWordsQuantity(x), add(0.0, 0.0), negativeWordsQuantity(x), sub(0.09595840834625236, 0.0), positiveHashtags(x), add(0.0, 1.3677770552162458), positiveHashtags(x), negativeWordsQuantity(x), neutralRange(0.49370212955794557, 0.0), positiveWordsQuantity(x))
+
+sub(positiveWordsQuantity(replaceBoosterWords(replaceNegatingWords(replaceNegatingWords(x)))), negativeWordsQuantity(boostUpperCase(x)))
+sub(positiveWordsQuantity(replaceBoosterWords(x)), negativeWordsQuantity(x))
+sub(positiveWordsQuantity(replaceBoosterWords(replaceNegatingWords(x))), negativeWordsQuantity(x))
+sub(positiveWordsQuantity(replaceBoosterWords(replaceNegatingWords(replaceNegatingWords(x)))), negativeWordsQuantity(boostUpperCase(replaceBoosterWords(x))))
+

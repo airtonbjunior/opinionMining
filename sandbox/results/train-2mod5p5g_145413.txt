@@ -1,0 +1,5 @@
+[PARAMS]: 0.9 crossover, 0.1 mutation, 5 population, 5 generation
+[DICTIONARIES]: 11
+
+if_then_else(hasURLs(x), neutralRange(negativeWordsQuantity(removeAllPonctuation(x)), negativeWordsQuantity(replaceNegatingWords(x))), emoticonsPolaritySum(removeLinks(replaceNegatingWords(x))))
+positiveWordsQuantity(removeLinks(removeStopWords(replaceBoosterWords(x))))

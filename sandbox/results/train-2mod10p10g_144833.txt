@@ -1,0 +1,3 @@
+[PARAMS]: 0.9 crossover, 0.1 mutation, 10 population, 10 generation
+[DICTIONARIES]: 11
+

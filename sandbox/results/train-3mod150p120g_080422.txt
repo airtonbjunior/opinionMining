@@ -1,0 +1,8 @@
+[PARAMS]: 0.9 crossover, 0.1 mutation, 150 population, 120 generation
+[DICTIONARIES]: 11
+
+sub(positiveWordsQuantity(replaceNegatingWords(removeAllPonctuation(replaceNegatingWords(removeLinks(x))))), negativeWordsQuantity(removeLinks(removeAllPonctuation(x))))
+sub(positiveWordsQuantity(replaceNegatingWords(removeAllPonctuation(boostUpperCase(replaceNegatingWords(x))))), negativeWordsQuantity(removeLinks(removeAllPonctuation(x))))
+sub(positiveWordsQuantity(replaceNegatingWords(removeAllPonctuation(boostUpperCase(x)))), negativeWordsQuantity(removeLinks(removeAllPonctuation(x))))
+sub(positiveWordsQuantity(replaceNegatingWords(removeAllPonctuation(x))), negativeWordsQuantity(removeStopWords(removeLinks(removeAllPonctuation(x)))))
+

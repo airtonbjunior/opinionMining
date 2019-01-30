@@ -1,0 +1,55 @@
+[Ensemble of 123 models]
+# [results - f1]
+tweets2013	0.6305
+tweets2014	0.6208
+sms	0.5651
+livejournal	0.6937
+sarcasm	0.4658
+all	0.6266
+# [confusion matrix]
+#           |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+# --------------------------------------------------
+# Pred_Pos  |  2804      |  336       |  1511      |
+# Pred_Neg  |  285       |  931       |  534       |
+# Pred_Neu  |  417       |  274       |  1895      |
+
+# ---------//---------
+
+
+
+##Statistics##
+
+1 models evaluated
+11 dictionaries
+
+AVGs
+AVG Tweets2013 F1 SemEval	0.6305
+AVG Tweets2014 F1 SemEval	0.6208
+AVG SMS F1 SemEval	0.5651
+AVG LiveJournal F1 SemEval	0.6937
+AVG Sarcasm F1 SemEval	0.4658
+AVG All F1 SemEval	0.6266
+
+Best Values
+Best Tweets2013 F1 value	0.6305
+Best Tweets2014 F1 value	0.6208
+Best SMS F1 value	0.5651
+Best LiveJournal F1 value	0.6937
+Best Sarcasm F1 value	0.4658
+Best All F1 value	0.6266
+
+Values by database
+Tweets2013 [0.6305]
+Tweets2014 [0.6208]
+SMS [0.5651]
+LiveJournal [0.6937]
+Sarcasm [0.4658]
+All [0.6266]
+
+Standard Deviation
+Standard Deviation Tweets2013	0.0
+Standard Deviation Tweets2014	0.0
+Standard Deviation SMS	0.0
+Standard Deviation Live Journal	0.0
+Standard Deviation Sarcasm	0.0
+Standard Deviation All	0.0

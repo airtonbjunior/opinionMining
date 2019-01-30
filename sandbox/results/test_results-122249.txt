@@ -1,0 +1,248 @@
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(replaceNegatingWords(removeStopWords(replaceBoosterWords(removeAllPonctuation(replaceNegatingWords(x)))))), mul(1.1235244739378232, 0.0), emoticonsPolaritySum(x), 1.5155383812896703, if_then_else(hasURLs(x), 1.2226190782294892, if_then_else(hasURLs(x), emoticonsPolaritySum(x), 0.22040805800639807)), 0.0, 0.0, add(hashtagPolaritySum(x), 0.0), neutralRange(add(0.0, negativeWordsQuantity(x)), negativeWordsQuantity(x)), 0.0)
+
+# [results - f1]
+tweets2013	0.5759
+tweets2014	0.5809
+sms	0.5732
+livejournal	0.6264
+sarcasm	0.4505
+all	0.5852
+
+# [weights]
+# _w1	all values:	{0.0}	mean:	0.0
+# _w2	all values:	{0, 1, 2, 3, 4, -3, -1}	mean:	0.0434636280590413
+# _w3	all values:	{1.5155383812896703}	mean:	1.5155383812891565
+# _w4	all values:	{0.22040805800639807, 1.2226190782294892}	mean:	0.39628527440223626
+# _w5	all values:	{0.0}	mean:	0.0
+# _w6	all values:	{0.0}	mean:	0.0
+# _w7	all values:	{0.0, 1.0, 2.0, 3.0, -2.0, -1.0}	mean:	0.004615606519544209
+# _w8	all values:	{0}	mean:	0.0
+# _w9	all values:	{0.0}	mean:	 0.0
+# _w10	all values:	{0}	mean:	0.0
+# _w11	all values:	{0}	mean:	0.0
+
+# [neutral ranges]
+# {'[5.0, 5]', '[2.0, 2]', '[4.0, 4]', '[0.0, 0]', '[1.0, 1]', '[3.0, 3]'}
+
+# [confusion matrix]
+#           |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+# --------------------------------------------------
+# Pred_Pos  |  1901      |  107       |  398       |
+# Pred_Neg  |  653       |  1205      |  1171      |
+# Pred_Neu  |  952       |  229       |  2371      |
+
+# ---------//---------
+
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(removeStopWords(replaceNegatingWords(removeAllPonctuation(removeLinks(replaceBoosterWords(x)))))), 0.32117718106102777, emoticonsPolaritySum(boostUpperCase(removeLinks(replaceNegatingWords(removeStopWords(replaceNegatingWords(x)))))), 0.11201315362995623, emoticonsPolaritySum(x), 0.0, positiveWordsQuantity(removeLinks(replaceBoosterWords(x))), 0.0, 0.0, if_then_else(hasURLs(removeStopWords(replaceNegatingWords(removeAllPonctuation(removeLinks(replaceBoosterWords(x)))))), 0.6059375558893039, add(0.0, neutralRange(1.3902685786394235, 0.0))))
+
+# [results - f1]
+tweets2013	0.6593
+tweets2014	0.6501
+sms	0.6259
+livejournal	0.7166
+sarcasm	0.4675
+all	0.6618
+
+# [weights]
+# _w1	all values:	{0.32117718106102777}	mean:	0.3211771810610889
+# _w2	all values:	{0, 1, 2, 3, 4, -3, -1}	mean:	0.03162018028222191
+# _w3	all values:	{0.11201315362995623}	mean:	0.11201315362995949
+# _w4	all values:	{0, 1, 2, 3, 4, -3, -1}	mean:	0.04068148567653027
+# _w5	all values:	{0.0}	mean:	0.0
+# _w6	all values:	{0, 1, 2, 3, 4, 5, 6, 7, 9}	mean:	0.4811458775779886
+# _w7	all values:	{0.0}	mean:	0.0
+# _w8	all values:	{0.0}	mean:	0.0
+# _w9	all values:	{0.0}	mean:	 0.0
+# _w10	all values:	{0}	mean:	0.0
+# _w11	all values:	{0}	mean:	0.0
+
+# [neutral ranges]
+# {'[0, 0]'}
+
+# [confusion matrix]
+#           |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+# --------------------------------------------------
+# Pred_Pos  |  2304      |  158       |  506       |
+# Pred_Neg  |  389       |  1134      |  643       |
+# Pred_Neu  |  813       |  249       |  2791      |
+
+# ---------//---------
+
+[Model]	polaritySumAVGUsingWeights(replaceBoosterWords(replaceNegatingWords(removeAllPonctuation(boostUpperCase(replaceBoosterWords(x))))), 0.0, emoticonsPolaritySum(x), 1.1790132499980017, 0.2179466235698666, neutralRange(0.6830171682180339, sub(negativeWordsQuantity(removeLinks(removeLinks(x))), emoticonsPolaritySum(removeAllPonctuation(boostUpperCase(replaceBoosterWords(replaceBoosterWords(x))))))), 0.0, 0.0, 0.0, 0.0)
+
+# [results - f1]
+tweets2013	0.5798
+tweets2014	0.5859
+sms	0.574
+livejournal	0.6352
+sarcasm	0.4496
+all	0.5898
+
+# [weights]
+# _w1	all values:	{0.0}	mean:	0.0
+# _w2	all values:	{0, 1, 2, 3, 4, -3, -1}	mean:	0.04237736030365637
+# _w3	all values:	{1.1790132499980017}	mean:	1.1790132499981865
+# _w4	all values:	{0.2179466235698666}	mean:	0.2179466235698522
+# _w5	all values:	{0}	mean:	0.0
+# _w6	all values:	{0.0}	mean:	0.0
+# _w7	all values:	{0.0}	mean:	0.0
+# _w8	all values:	{0.0}	mean:	0.0
+# _w9	all values:	{0.0}	mean:	 0.0
+# _w10	all values:	{0}	mean:	0.0
+# _w11	all values:	{0}	mean:	0.0
+
+# [neutral ranges]
+# {'[0.6830171682180339, 5]', '[0.6830171682180339, 3]', '[0.6830171682180339, 1]', '[0.6830171682180339, 4]', '[0, 0]', '[0.6830171682180339, 2]'}
+
+# [confusion matrix]
+#           |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+# --------------------------------------------------
+# Pred_Pos  |  1904      |  110       |  398       |
+# Pred_Neg  |  580       |  1196      |  1144      |
+# Pred_Neu  |  1022      |  235       |  2398      |
+
+# ---------//---------
+
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(removeAllPonctuation(replaceNegatingWords(removeAllPonctuation(replaceBoosterWords(x))))))), 0.0, emoticonsPolaritySum(x), negativeWordsQuantity(removeStopWords(removeAllPonctuation(removeAllPonctuation(x)))), 0.2578492407135029, mul(0.0, 1.2052103105461243), 0.0, 0.0, neutralRange(0.9191324664889999, negativeWordsQuantity(removeAllPonctuation(x))), mul(1.9900013367588774, 0.0))
+
+# [results - f1]
+tweets2013	0.5664
+tweets2014	0.5735
+sms	0.5629
+livejournal	0.6301
+sarcasm	0.4267
+all	0.5786
+
+# [weights]
+# _w1	all values:	{0.0}	mean:	0.0
+# _w2	all values:	{0, 1, 2, 3, 4, -3, -1}	mean:	0.04249770608972811
+# _w3	all values:	{0, 1, 2, 3, 4, 5}	mean:	0.2334476264065292
+# _w4	all values:	{0.2578492407135029}	mean:	0.25784924071350135
+# _w5	all values:	{0.0}	mean:	0.0
+# _w6	all values:	{0.0}	mean:	0.0
+# _w7	all values:	{0.0}	mean:	0.0
+# _w8	all values:	{0}	mean:	0.0
+# _w9	all values:	{0.0}	mean:	 0.0
+# _w10	all values:	{0}	mean:	0.0
+# _w11	all values:	{0}	mean:	0.0
+
+# [neutral ranges]
+# {'[0.9191324664889999, 4]', '[0.9191324664889999, 2]', '[0.9191324664889999, 1]', '[0, 0]', '[0.9191324664889999, 3]', '[0.9191324664889999, 5]'}
+
+# [confusion matrix]
+#           |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+# --------------------------------------------------
+# Pred_Pos  |  1841      |  105       |  390       |
+# Pred_Neg  |  615       |  1206      |  1216      |
+# Pred_Neu  |  1050      |  230       |  2334      |
+
+# ---------//---------
+
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(removeAllPonctuation(removeAllPonctuation(replaceNegatingWords(removeStopWords(replaceNegatingWords(replaceNegatingWords(x))))))), neutralRange(0.0, 0.0), 0.0, 1.3113316399583013, 0.5580832687368169, 0.0, 0.0, emoticonsPolaritySum(x), 0.0, 0.0)
+
+# [results - f1]
+tweets2013	0.6734
+tweets2014	0.6657
+sms	0.6326
+livejournal	0.7133
+sarcasm	0.4744
+all	0.6701
+
+# [weights]
+# _w1	all values:	{0}	mean:	0.0
+# _w2	all values:	{0.0}	mean:	0.0
+# _w3	all values:	{1.3113316399583013}	mean:	1.3113316399578605
+# _w4	all values:	{0.5580832687368169}	mean:	0.5580832687368903
+# _w5	all values:	{0.0}	mean:	0.0
+# _w6	all values:	{0.0}	mean:	0.0
+# _w7	all values:	{0, 1, 2, 3, 4, -3, -1}	mean:	0.04021472970427576
+# _w8	all values:	{0.0}	mean:	0.0
+# _w9	all values:	{0.0}	mean:	 0.0
+# _w10	all values:	{0}	mean:	0.0
+# _w11	all values:	{0}	mean:	0.0
+
+# [neutral ranges]
+# {'[0.0, 0.0]'}
+
+# [confusion matrix]
+#           |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+# --------------------------------------------------
+# Pred_Pos  |  2314      |  145       |  501       |
+# Pred_Neg  |  385       |  1147      |  601       |
+# Pred_Neu  |  807       |  249       |  2838      |
+
+# ---------//---------
+
+[Model]	polaritySumAVGUsingWeights(removeAllPonctuation(boostUpperCase(boostUpperCase(replaceBoosterWords(replaceNegatingWords(removeAllPonctuation(x)))))), 0.2516855542097711, emoticonsPolaritySum(removeStopWords(removeLinks(removeStopWords(x)))), if_then_else(True, 1.4109712879545129, neutralRange(0.0, 0.0)), 0.4257108619001142, sub(0.0, emoticonsPolaritySum(replaceBoosterWords(x))), emoticonsPolaritySum(removeAllPonctuation(x)), hashtagPolaritySum(removeLinks(removeStopWords(boostUpperCase(x)))), 0.0, positiveWordsQuantity(x))
+
+# [results - f1]
+tweets2013	0.6701
+tweets2014	0.6636
+sms	0.6273
+livejournal	0.7143
+sarcasm	0.5034
+all	0.6679
+
+# [weights]
+# _w1	all values:	{0.2516855542097711}	mean:	0.25168555420984956
+# _w2	all values:	{0, 1, 2, 3, 4, -3, -1}	mean:	0.04042593290614399
+# _w3	all values:	{1.4109712879545129}	mean:	1.4109712879544563
+# _w4	all values:	{0.4257108619001142}	mean:	0.4257108619002131
+# _w5	all values:	{0.0, 1.0, 3.0, -2.0, -4.0, -3.0, -1.0}	mean:	-0.03175650207312476
+# _w6	all values:	{0, 1, 2}	mean:	0.002638522427440633
+# _w7	all values:	{0, 1, 2, 3, -2, -1}	mean:	0.005182811911044101
+# _w8	all values:	{0.0}	mean:	0.0
+# _w9	all values:	{0, 1, 2, 3, 4, 6}	mean:	 0.34267810026385226
+# _w10	all values:	{0}	mean:	0.0
+# _w11	all values:	{0}	mean:	0.0
+
+# [neutral ranges]
+# {'[0.0, 0.0]'}
+
+# [confusion matrix]
+#           |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+# --------------------------------------------------
+# Pred_Pos  |  2333      |  148       |  534       |
+# Pred_Neg  |  387       |  1158      |  648       |
+# Pred_Neu  |  786       |  235       |  2758      |
+
+# ---------//---------
+
+
+
+##Statistics##
+
+6 models evaluated
+11 dictionaries
+
+AVGs
+AVG Tweets2013 F1 SemEval	0.6208
+AVG Tweets2014 F1 SemEval	0.6199
+AVG SMS F1 SemEval	0.5993
+AVG LiveJournal F1 SemEval	0.6726
+AVG Sarcasm F1 SemEval	0.462
+AVG All F1 SemEval	0.6256
+
+Best Values
+Best Tweets2013 F1 value	0.6734
+Best Tweets2014 F1 value	0.6657
+Best SMS F1 value	0.6326
+Best LiveJournal F1 value	0.7166
+Best Sarcasm F1 value	0.5034
+Best All F1 value	0.6701
+
+Values by database
+Tweets2013 [0.5759, 0.6593, 0.5798, 0.5664, 0.6734, 0.6701]
+Tweets2014 [0.5809, 0.6501, 0.5859, 0.5735, 0.6657, 0.6636]
+SMS [0.5732, 0.6259, 0.574, 0.5629, 0.6326, 0.6273]
+LiveJournal [0.6264, 0.7166, 0.6352, 0.6301, 0.7133, 0.7143]
+Sarcasm [0.4505, 0.4675, 0.4496, 0.4267, 0.4744, 0.5034]
+All [0.5852, 0.6618, 0.5898, 0.5786, 0.6701, 0.6679]
+
+Standard Deviation
+Standard Deviation Tweets2013	0.04714493315534791
+Standard Deviation Tweets2014	0.0403098726534001
+Standard Deviation SMS	0.029571124241206823
+Standard Deviation Live Journal	0.04217190020222789
+Standard Deviation Sarcasm	0.023909789952142088
+Standard Deviation All	0.04123666114299536

@@ -1,0 +1,41 @@
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(removeAllPonctuation(removeAllPonctuation(replaceBoosterWords(replaceNegatingWords(replaceNegatingWords(replaceBoosterWords(x))))))), protectedDiv(negativeEmoticons(removeStopWords(removeAllPonctuation(removeAllPonctuation(x)))), negativeWordsQuantity(replaceNegatingWords(removeLinks(removeStopWords(removeLinks(x)))))), 0.0, mul(positiveEmoticons(removeLinks(x)), protectedDiv(add(0.0, positiveEmoticons(removeStopWords(boostUpperCase(x)))), positiveEmoticons(x))), negativeWordsQuantity(replaceNegatingWords(replaceBoosterWords(x))), negativeEmoticons(removeStopWords(boostUpperCase(removeLinks(x)))), positiveEmoticons(x), add(0.0, positiveEmoticons(removeStopWords(boostUpperCase(x)))), negativeHashtags(replaceNegatingWords(replaceNegatingWords(x))), mul(add(0.0, positiveEmoticons(removeStopWords(removeStopWords(removeLinks(x))))), negativeWordsQuantity(removeLinks(x))), 0.0, negativeEmoticons(removeAllPonctuation(removeAllPonctuation(x))))
+
+# [results - f1]
+tweets2013	0.0
+tweets2014	0.0
+sms	0.0
+livejournal	0.0
+sarcasm	0.0
+all	0.0
+
+# [weights]
+# [neutral ranges]
+# set()
+
+# [confusion matrix]
+#           |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+# --------------------------------------------------
+# Pred_Pos  |  0         |  0         |  0         |
+# Pred_Neg  |  0         |  0         |  0         |
+# Pred_Neu  |  0         |  0         |  0         |
+
+# [all outputs] (0 outputs)
+# [Tweets2013] []
+
+# [Tweets2014] []
+
+# [SMS] []
+
+# [LiveJournal] []
+
+# [Sarcasm] []
+
+# ---------//---------
+
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(removeAllPonctuation(removeAllPonctuation(replaceBoosterWords(replaceNegatingWords(x))))), protectedDiv(negativeEmoticons(removeStopWords(removeAllPonctuation(x))), negativeWordsQuantity(replaceNegatingWords(removeLinks(removeStopWords(removeLinks(x)))))), 0.0, mul(positiveEmoticons(removeLinks(x)), sub(1.0871273567369704, 0.0)), negativeWordsQuantity(replaceNegatingWords(replaceBoosterWords(x))), negativeEmoticons(removeStopWords(boostUpperCase(removeLinks(x)))), positiveEmoticons(removeStopWords(boostUpperCase(x))), add(0.0, positiveEmoticons(removeStopWords(boostUpperCase(x)))), negativeHashtags(replaceNegatingWords(replaceNegatingWords(x))), mul(add(0.0, positiveEmoticons(removeStopWords(boostUpperCase(x)))), negativeWordsQuantity(removeLinks(x))), 0.0, negativeEmoticons(removeAllPonctuation(removeAllPonctuation(replaceBoosterWords(replaceNegatingWords(x))))))
+
+# [results - f1]
+tweets2013	0.0
+tweets2014	0.0
+sms	0.0
+livejournal	0.0

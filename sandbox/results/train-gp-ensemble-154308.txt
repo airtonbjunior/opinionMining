@@ -1,0 +1,1 @@
+getSum3(getMajority3(getMajority3(getMajority(getMax3(NB, NB, NB), getSum3(SGD, SGD, SGD)), getSum(RL, SGD), RL), getSum(RL, getMin3(SVM, SGD, NB)), getMajority(getMajority3(SGD, SVM, getMin3(RL, getSum(RL, SGD), getSum(RL, SGD))), getMajority(getMajority3(getMin(SGD, RL), getSum(RL, NB), getMajority(RL, SGD)), SVM))), getSum(RL, RL), RL)

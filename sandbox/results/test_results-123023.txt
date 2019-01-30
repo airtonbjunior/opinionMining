@@ -1,0 +1,72 @@
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(removeAllPonctuation(removeAllPonctuation(replaceNegatingWords(removeStopWords(replaceNegatingWords(replaceNegatingWords(x))))))), neutralRange(0.0, 0.0), 0.0, 1.3113316399583013, 0.5580832687368169, 0.0, 0.0, emoticonsPolaritySum(x), 0.0, 0.0)
+# [results - f1]
+tweets2013	0.6268
+tweets2014	0.5971
+sms	0.5963
+livejournal	0.701
+sarcasm	0.5327
+all	0.634
+
+# [weights]
+# _w1	all values:	{0}	mean:	0.0
+# _w2	all values:	{0.0}	mean:	0.0
+# _w3	all values:	{1.3113316399583013}	mean:	1.3113316399582198
+# _w4	all values:	{0.5580832687368169}	mean:	0.5580832687368208
+# _w5	all values:	{0.0}	mean:	0.0
+# _w6	all values:	{0.0}	mean:	0.0
+# _w7	all values:	{0, 1, 2, 3, 4, -1}	mean:	0.04325
+# _w8	all values:	{0.0}	mean:	0.0
+# _w9	all values:	{0.0}	mean:	 0.0
+# _w10	all values:	{0}	mean:	0.0
+# _w11	all values:	{0}	mean:	0.0
+
+# [neutral ranges]
+# {'[0.0, 0.0]'}
+
+# [confusion matrix]
+#           |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+# --------------------------------------------------
+# Pred_Pos  |  1239      |  161       |  742       |
+# Pred_Neg  |  136       |  463       |  281       |
+# Pred_Neu  |  151       |  59        |  768       |
+
+# ---------//---------
+
+
+
+##Statistics##
+
+1 models evaluated
+11 dictionaries
+
+AVGs
+AVG Tweets2013 F1 SemEval	0.6268
+AVG Tweets2014 F1 SemEval	0.5971
+AVG SMS F1 SemEval	0.5963
+AVG LiveJournal F1 SemEval	0.701
+AVG Sarcasm F1 SemEval	0.5327
+AVG All F1 SemEval	0.634
+
+Best Values
+Best Tweets2013 F1 value	0.6268
+Best Tweets2014 F1 value	0.5971
+Best SMS F1 value	0.5963
+Best LiveJournal F1 value	0.701
+Best Sarcasm F1 value	0.5327
+Best All F1 value	0.634
+
+Values by database
+Tweets2013 [0.6268]
+Tweets2014 [0.5971]
+SMS [0.5963]
+LiveJournal [0.701]
+Sarcasm [0.5327]
+All [0.634]
+
+Standard Deviation
+Standard Deviation Tweets2013	0.0
+Standard Deviation Tweets2014	0.0
+Standard Deviation SMS	0.0
+Standard Deviation Live Journal	0.0
+Standard Deviation Sarcasm	0.0
+Standard Deviation All	0.0

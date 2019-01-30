@@ -1,0 +1,83 @@
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(removeAllPonctuation(removeAllPonctuation(replaceNegatingWords(removeStopWords(replaceNegatingWords(replaceNegatingWords(x))))))), neutralRange(0.0, 0.0), 0.0, 1.3113316399583013, 0.5580832687368169, 0.0, 0.0, emoticonsPolaritySum(x), 0.0, 0.0)
+# [results - f1]
+tweets2013	0.6681
+tweets2014	0.6611
+sms	0.6371
+livejournal	0.7128
+sarcasm	0.4793
+all	0.6698
+
+# [weights]
+# _w1	all values:	{0}	mean:	0.0
+# _w2	all values:	{0.0}	mean:	0.0
+# _w3	all values:	{1.3113316399583013}	mean:	1.3113316399583055
+# _w4	all values:	{0.5580832687368169}	mean:	0.5580832687367918
+# _w5	all values:	{0.0}	mean:	0.0
+# _w6	all values:	{0.0}	mean:	0.0
+# _w7	all values:	{0, 1, 2, -1}	mean:	0.0166358595194085
+# _w8	all values:	{0.0}	mean:	0.0
+# _w9	all values:	{0.0}	mean:	 0.0
+# _w10	all values:	{0}	mean:	0.0
+# _w11	all values:	{0}	mean:	0.0
+
+# [neutral ranges]
+# {'[0.0, 0.0]'}
+
+# [confusion matrix]
+#           |  Gold_Pos  |  Gold_Neg  |  Gold_Neu  |
+# --------------------------------------------------
+# Pred_Pos  |  2249      |  140       |  458       |
+# Pred_Neg  |  352       |  1108      |  508       |
+# Pred_Neu  |  905       |  293       |  2974      |
+
+# [all outputs] (0 outputs)
+# [Tweets2013] []
+
+# [Tweets2014] []
+
+# [SMS] []
+
+# [LiveJournal] []
+
+# [Sarcasm] []
+
+# ---------//---------
+
+
+
+##Statistics##
+
+1 models evaluated
+11 dictionaries
+
+AVGs
+AVG Tweets2013 F1 SemEval	0.6681
+AVG Tweets2014 F1 SemEval	0.6611
+AVG SMS F1 SemEval	0.6371
+AVG LiveJournal F1 SemEval	0.7128
+AVG Sarcasm F1 SemEval	0.4793
+AVG All F1 SemEval	0.6698
+
+Best Values
+Best Tweets2013 F1 value	0.6681
+Best Tweets2014 F1 value	0.6611
+Best SMS F1 value	0.6371
+Best LiveJournal F1 value	0.7128
+Best Sarcasm F1 value	0.4793
+Best All F1 value	0.6698
+
+Values by database
+Tweets2013 [0.6681]
+Tweets2014 [0.6611]
+SMS [0.6371]
+LiveJournal [0.7128]
+Sarcasm [0.4793]
+All [0.6698]
+
+Standard Deviation
+Standard Deviation Tweets2013	0.0
+Standard Deviation Tweets2014	0.0
+Standard Deviation SMS	0.0
+Standard Deviation Live Journal	0.0
+Standard Deviation Sarcasm	0.0
+Standard Deviation All	0.0

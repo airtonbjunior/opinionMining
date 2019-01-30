@@ -1,0 +1,7 @@
+[Model]	polaritySumAVGUsingWeights(replaceNegatingWords(removeAllPonctuation(removeAllPonctuation(replaceBoosterWords(replaceNegatingWords(replaceNegatingWords(replaceBoosterWords(x))))))), protectedDiv(negativeEmoticons(removeStopWords(removeAllPonctuation(removeAllPonctuation(x)))), negativeWordsQuantity(replaceNegatingWords(removeLinks(removeStopWords(removeLinks(x)))))), 0.0, mul(positiveEmoticons(removeLinks(x)), protectedDiv(add(0.0, positiveEmoticons(removeStopWords(boostUpperCase(x)))), positiveEmoticons(x))), negativeWordsQuantity(replaceNegatingWords(replaceBoosterWords(x))), negativeEmoticons(removeStopWords(boostUpperCase(removeLinks(x)))), positiveEmoticons(x), add(0.0, positiveEmoticons(removeStopWords(boostUpperCase(x)))), negativeHashtags(replaceNegatingWords(replaceNegatingWords(x))), mul(add(0.0, positiveEmoticons(removeStopWords(removeStopWords(removeLinks(x))))), negativeWordsQuantity(removeLinks(x))), 0.0, negativeEmoticons(removeAllPonctuation(removeAllPonctuation(x))))
+
+# [results - f1]
+tweets2013	0.0
+tweets2014	0.0
+sms	0.0
+livejournal	0.0
