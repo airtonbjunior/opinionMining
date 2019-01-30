@@ -1,81 +1,59 @@
-import glob
-import nltk
-import codecs
-from datetime import datetime
+""" 
+<Author> Airton Bordin Junior
+<Email>  airtonbjunior@gmail.com
 
-IMDB_TRAIN_FOLDER_POS   = 'IMDBdataset/train/pos/'
-IMDB_TRAIN_FOLDER_NEG   = 'IMDBdataset/train/neg/'
-IMDB_TRAIN_ALL_MESSAGES = 'IMDBdataset/train/imdbAllMessages.txt'
-
-STS_TRAIN_MESSAGES  	= 'datasets/STSGoldOriginal.csv'
-STS_TRAIN_ALL_MESSAGES  = 'datasets/STS_Gold_All.txt'
+Federal University of Goias (UFG)
+Computer Science Master's Degree
 
 
-SEMEVAL_TRAIN_MESSAGES = 'datasets/train/twitter-train-cleansed-B.txt'
-SEMEVAL_TRAIN_MESSAGES_MODIFIED = 'datasets/train/twitter-train-cleansed-B-POSTagged' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt' 
+auxFunctions.py
+	Aux Functions used by the Genetic Programming Algorithm
 
-counter = 0
+"""
+import variables
 
-def loadOriginalIMDBAndSave():
-	with open(IMDB_TRAIN_ALL_MESSAGES, 'a') as f:
-		files_pos = glob.glob(IMDB_TRAIN_FOLDER_POS + "*.txt")
-		for file in files_pos:
-			counter =+ 1
-			with open(file, 'r') as file_content:
-				for line in file_content:
-					f.write("positive" + '\t' + line.strip())
+def saveBestValues(individual, accuracy, precision, recall, f1):
+    if accuracy > variables.BEST['accuracy']:
+        variables.BEST['accuracy'] = accuracy     
 
-		files_neg = glob.glob(IMDB_TRAIN_FOLDER_NEG + "*.txt")
-		for file in files_neg:
-			counter =+ 1
-			with open(file, 'r') as file_content:
-				for line in file_content:
-					f.write("negative" + '\t' + line.strip())
+    if precision['positive'] > variables.BEST['precision']['positive']:
+        variables.BEST['precision']['positive'] = precision['positive']
 
-	print(counter + " messages saved!")
+    if precision['negative'] > variables.BEST['precision']['negative']:
+        variables.BEST['precision']['negative'] = precision['negative']
+    
+    if precision['neutral'] > variables.BEST['precision']['neutral']:
+        variables.BEST['precision']['neutral'] = precision['neutral']
 
+    if precision['avg'] > variables.BEST['precision']['avg']:
+        variables.BEST['precision']['avg'] = precision['avg']
+        variables.BEST['precision']['avg_function'] = str(individual)        
 
-def loadOriginalSTSAndSave():
-	with open(STS_TRAIN_ALL_MESSAGES, 'w') as f:
-		with open(STS_TRAIN_MESSAGES, 'r') as file_content:
-			for line in file_content:
-				if(line.split(";")[1] == "\"0\""):
-					f.write("negative" + '\t' + "Twitter2013" + '\t' + line.split(";")[2].replace('"', '').strip() + "\t[0  0  0]\n")
-				elif(line.split(";")[1] == "\"4\""):
-					f.write("positive" + '\t' + "Twitter2013" + '\t' + line.split(";")[2].replace('"', '').strip() + "\t[0  0  0]\n")
+    if recall['positive'] > variables.BEST['recall']['positive']:
+        variables.BEST['recall']['positive'] = recall['positive']
 
+    if recall['negative'] > variables.BEST['recall']['negative']:
+        variables.BEST['recall']['negative'] = recall['negative']
 
-def loadOriginalSTSTrainAndSave():
-	#with open('/home/airton/Desktop/training.1600000.processed.noemoticon.EDITED.csv', 'w') as f:
-	with codecs.open('/home/airton/Desktop/training.1600000.processed.noemoticon.EDITED.csv', "w", "latin-1") as f:
-		#with open('/home/airton/Desktop/training.1600000.processed.noemoticon.csv', 'r') as file_content:
-		with codecs.open('/home/airton/Desktop/training.1600000.processed.noemoticon.csv', "r", "latin-1") as file_content:
-			for line in file_content:
-				if(line.split("\",\"")[0] == "\"0"):
-					f.write("negative" + '\t' + "Twitter2013" + '\t' + line.split("\",\"")[5].replace('"', '').strip() + "\t[0  0  0]\n")
-				elif(line.split("\",\"")[0] == "\"4"):
-					f.write("positive" + '\t' + "Twitter2013" + '\t' + line.split("\",\"")[5].replace('"', '').strip() + "\t[0  0  0]\n")
+    if recall['neutral'] > variables.BEST['recall']['neutral']:
+        variables.BEST['recall']['neutral'] = recall['neutral']
 
+    if recall['avg'] > variables.BEST['recall']['avg']:
+        variables.BEST['recall']['avg'] = recall['avg']
+        variables.BEST['recall']['avg_function'] = str(individual)        
 
-def testPosTag():
-	with open(SEMEVAL_TRAIN_MESSAGES, 'r') as f:
-		for line in f:			
-			tweet = nltk.word_tokenize(line.split('\t')[3])
-			print(tweet)
-			tagged_tweets = nltk.pos_tag(tweet)
-			with open(SEMEVAL_TRAIN_MESSAGES_MODIFIED, 'a') as fw:
-				for tagged_tweet in tagged_tweets:
-					fw.write(str(tagged_tweet))
-					fw.write("\n")
+    if f1['positive'] > variables.BEST['f1']['positive']:
+        variables.BEST['f1']['positive'] = f1['positive']
+   
+    if f1['negative'] > variables.BEST['f1']['negative']:
+        variables.BEST['f1']['negative'] = f1['negative']
+   
+    if f1['neutral'] > variables.BEST['f1']['neutral']:
+        variables.BEST['f1']['neutral'] = f1['neutral']         
+    
+    if f1['avg'] > variables.BEST['f1']['avg']:
+        variables.BEST['f1']['avg'] = f1['avg']
+        variables.BEST['f1']['avg_function'] = str(individual)           
 
-			#adjectives = [word for word,pos in tagged_tweet \
-			#	if (pos == 'JJ' or pos == 'JJR' or pos == 'JJS')]
-			
-			#for adjective in adjectives:
-			#	print(adjective)
-			#	print("\n")
-			
-
-if __name__ == "__main__":
-	loadOriginalSTSTrainAndSave()
-	#testPosTag()
+    if f1['avg_pn'] > variables.BEST['f1']['avg_pn']:
+        variables.BEST['f1']['avg_pn'] = f1['avg_pn']
