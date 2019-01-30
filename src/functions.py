@@ -2836,11 +2836,11 @@ def hasDates(phrase):
 	mm = phrase.split()
 	for x in mm:
 		x = x.replace(",", "").replace("(", "").replace(")", "").replace(";", "").replace(":", "").replace("?", "").replace("!", "")
-		if x.lower() in variables.all_dates or len(re.findall('^[12][0-9]{3}$', x)) > 0 or len(re.findall('^([01]\d|2[0-3]):?([0-5]\d)$', x)) > 0:
+		if x.lower() in variables.ALL_DATES or len(re.findall('^[12][0-9]{3}$', x)) > 0 or len(re.findall('^([01]\d|2[0-3]):?([0-5]\d)$', x)) > 0:
 			return True
 
 	return False
-	#print(x + " - " + str(x.lower() in variables.all_dates) + " " + str(len(re.findall('^[12][0-9]{3}$', x))) + " " + str(len(re.findall('^([01]\d|2[0-3]):?([0-5]\d)$', x))))
+	#print(x + " - " + str(x.lower() in variables.ALL_DATES) + " " + str(len(re.findall('^[12][0-9]{3}$', x))) + " " + str(len(re.findall('^([01]\d|2[0-3]):?([0-5]\d)$', x))))
 
 
 
