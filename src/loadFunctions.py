@@ -36,8 +36,8 @@ def loadDictionaries():
 	variables.dic_words["all"]["positive"], variables.dic_words["all"]["negative"] = {}, {}
 
 	for dic in (variables.DICTIONARIES + variables.SPECIAL_DICTIONARIES):
-		if dic in variables.SPECIAL_DICTIONARIES or variables.use_dic[dic]:
-			variables.dic_loaded[dic] = True
+		if dic in variables.SPECIAL_DICTIONARIES or variables.USE_DIC[dic]:
+			variables.DIC_LOADED[dic] = True
 			variables.dic_words[dic]["positive"], variables.dic_words[dic]["negative"] = loadDictionaryValues(dic, variables.DIC_PATH[dic])
 
 			variables.dic_words["all"]["positive"].update(variables.dic_words[dic]["positive"])
@@ -89,7 +89,7 @@ def loadTrainMessages(limit=0):
 		Limit is the max messages to load
 
 	"""
-	variables.messages['train'] = loadMessages("train", variables.SEMEVAL_TRAIN_FILE, limit)
+	variables.messages['train'] = loadMessages("train", variables.DATASET_PATH['train'], limit)
 
 
 """
