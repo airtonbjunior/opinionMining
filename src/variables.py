@@ -1,48 +1,32 @@
-# Airton Bordin Junior
-# airtonbjunior@gmail.com
-# Federal University of Goias (UFG)
-# Computer Science Master's Degree
+""" 
+<Author> Airton Bordin Junior
+<Email>  airtonbjunior@gmail.com
+
+Federal University of Goias (UFG)
+Computer Science Master's Degree
+
+
+variables.py
+	Variables used by the system
+
+"""
 
 from nltk.corpus import stopwords
 from datetime import datetime
 
-PREFIX_PATH = "../"
+SYSTEM_VERSION = "0.3"
 
-SEMEVAL_TRAIN_FILE             = PREFIX_PATH + 'datasets/train/train_messages.txt'
-SEMEVAL_TRAIN_FILE_ORIGINAL    = PREFIX_PATH + 'datasets/train/twitter-train-cleansed-B.txt'
-SEMEVAL_TRAIN_FILE_SPELLCHECK  = PREFIX_PATH + 'datasets/train/twitter-train-cleansed-B_spell.txt'
-SEMEVAL_TEST_FILE              = PREFIX_PATH + 'datasets/test/SemEval2014_SVM_Naive_MS_Lreg_S140.txt'
-SEMEVAL_TEST_FILE_SPELLCHECK   = PREFIX_PATH + 'datasets/test/SemEval2014-task9-test-B-all-tweets_withSVMValues_spell.txt'
-SEMEVAL_TEST_FILE_ONLY_POS     = PREFIX_PATH + 'datasets/test/SemEval2014-task9-test-B-tweets-only-some-POS-classes.txt'
-SEMEVAL_2017_TEST_FILE 	       = PREFIX_PATH + 'datasets/test/SemEval2017-task4-test.subtask-A.english.txt'
-STS_TRAIN_FILE                 = PREFIX_PATH + 'datasets/train/STS/STStrain.1600000.processed.noemoticon.EDITED.csv'
-STS_TEST_FILE                  = PREFIX_PATH + 'datasets/test/STS/STS_Gold_All.txt'
-DICTIONARY_POSITIVE_WORDS      = PREFIX_PATH + 'dictionaries/positive-words.txt'
-DICTIONARY_NEGATIVE_WORDS      = PREFIX_PATH + 'dictionaries/negative-words.txt'
-DICTIONARY_POSITIVE_HASHTAGS   = PREFIX_PATH + 'dictionaries/positive-hashtags.txt'
-DICTIONARY_NEGATIVE_HASHTAGS   = PREFIX_PATH + 'dictionaries/negative-hashtags.txt'
-DICTIONARY_POSITIVE_EMOTICONS  = PREFIX_PATH + 'dictionaries/positive-emoticons.txt'
-DICTIONARY_NEGATIVE_EMOTICONS  = PREFIX_PATH + 'dictionaries/negative-emoticons.txt'
-DICTIONARY_NEGATING_WORDS      = PREFIX_PATH + 'dictionaries/negating-word-list.txt'
-DICTIONARY_BOOSTER_WORDS       = PREFIX_PATH + 'dictionaries/boosterWords.txt'
-DICTIONARY_SENTIWORDNET        = PREFIX_PATH + 'dictionaries/SentiWordNet_3.0.0_20130122.txt'
-DICTIONARY_SENTIWORDNET_FOLDER = PREFIX_PATH + 'dictionaries/Sentiwordnet/'
-DICTIONARY_AFFIN               = PREFIX_PATH + 'dictionaries/affin.txt'
-DICTIONARY_SLANG               = PREFIX_PATH + 'dictionaries/slangSD.txt'
-DICTIONARY_VADER               = PREFIX_PATH + 'dictionaries/vaderLexicon.txt'
-DICTIONARY_SEMEVAL2015         = PREFIX_PATH + 'dictionaries/SemEval2015-English-Twitter-Lexicon.txt'
-DICTIONARY_EFFECT              = PREFIX_PATH + 'dictionaries/EffectWordNet.tff'
-DICTIONARY_EFFECT_FOLDER       = PREFIX_PATH + 'dictionaries/Effect/'
-DICTIONARY_NRC                 = PREFIX_PATH + 'dictionaries/nrc_words.txt'
-DICTIONARY_GENERAL_INQUIRER    = PREFIX_PATH + 'dictionaries/general-inquirer.txt'
-DICTIONARY_S140                = PREFIX_PATH + 'dictionaries/sentiment140_unigram.txt'
-DICTIONARY_MPQA                = PREFIX_PATH + 'dictionaries/mpqa.txt'
 
-FILE_PATH = {}
-FILE_PATH['train'] = PREFIX_PATH + 'datasets/train/train_messages.txt'
-FILE_PATH['test']  = PREFIX_PATH + 'datasets/test/test_messages.txt'
+"""
+	FILE PATHS
+"""
+PREFIX_PATH  = "../"
 
-DIC_PATH = {}
+DATASET_PATH = {}
+DIC_PATH     = {}
+
+DATASET_PATH['train']    = PREFIX_PATH + 'datasets/train/train_messages.txt'
+DATASET_PATH['test']     = PREFIX_PATH + 'datasets/test/test_messages.txt'
 DIC_PATH["booster"]      = PREFIX_PATH + 'dictionaries/Special/Booster/'
 DIC_PATH["negating"]     = PREFIX_PATH + 'dictionaries/Special/Negating/'
 DIC_PATH["emoticon"]     = PREFIX_PATH + 'dictionaries/Special/Emoticon/'
@@ -59,31 +43,58 @@ DIC_PATH["gi"]           = PREFIX_PATH + 'dictionaries/GeneralInquirer/'
 DIC_PATH["s140"]         = PREFIX_PATH + 'dictionaries/Sentiment140/'
 DIC_PATH["mpqa"]         = PREFIX_PATH + 'dictionaries/MPQA/'
 
-BOOSTER_FACTOR = 2
-
-USE_SPELLCHECKED_WORDS      = False # set True if want to use the spellchecked words
-USE_ONLY_POS_WORDS          = False
-
-TRAIN_WORDS 		        = PREFIX_PATH + 'datasets/train/words_train/words_train.txt'
-TRAIN_WORDS_SPELLCHECK      = PREFIX_PATH + 'datasets/train/words_train/words_train_spell.txt'
-TRAIN_WORDS_POS_TAGGED      = PREFIX_PATH + 'datasets/train/words_train/words_train_spell_pos-tagged.txt'
-TRAIN_WORDS_POS_TAGGED_W    = PREFIX_PATH + 'datasets/train/words_train/words_train_spell_pos-tagged_w.txt' # tagged words but without the tags, only words
-TEST_WORDS                  = PREFIX_PATH + 'datasets/test/words_test.txt'
-TEST_WORDS_SPELLCHECK       = PREFIX_PATH + 'datasets/test/words_test_spell.txt'
-TEST_WORDS_POS_TAGGED_W     = PREFIX_PATH + 'datasets/test/words_test_spell_pos-tagged_W.txt' # tagged words but without the tags, only words
+TRAIN_WORDS 		     = PREFIX_PATH + 'datasets/train/words_train/words_train.txt'
+TRAIN_WORDS_SPELLCHECK   = PREFIX_PATH + 'datasets/train/words_train/words_train_spell.txt'
+TRAIN_WORDS_POS_TAGGED   = PREFIX_PATH + 'datasets/train/words_train/words_train_spell_pos-tagged.txt'
+TRAIN_WORDS_POS_TAGGED_W = PREFIX_PATH + 'datasets/train/words_train/words_train_spell_pos-tagged_w.txt' # tagged words but without the tags, only words
+TEST_WORDS               = PREFIX_PATH + 'datasets/test/words_test.txt'
+TEST_WORDS_SPELLCHECK    = PREFIX_PATH + 'datasets/test/words_test_spell.txt'
+TEST_WORDS_POS_TAGGED_W  = PREFIX_PATH + 'datasets/test/words_test_spell_pos-tagged_W.txt' # tagged words but without the tags, only words
 
 BEST_INDIVIDUAL 		    = 'partial-best-'          + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
-BEST_INDIVIDUAL_AG 		    = 'ag-partial-best-'       + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 BEST_INDIVIDUAL_GP_ENSEMBLE = 'gp-ens-part-best-'      + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 BEST_INDIVIDUAL_2CLASSES    = 'partial-best-2classes-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
-
-SAVE_INCORRECT_EVALUATIONS  = False
 INCORRECT_EVALUATIONS       = 'incorrect-evaluations-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 
+"""
+	CONTROL VARS (BOOLEAN)
+"""
+USE_SPELLCHECKED_WORDS     = False # set True if want to use the spellchecked words
+USE_ONLY_POS_WORDS         = False
+SAVE_INCORRECT_EVALUATIONS = False
+
+DICTIONARIES           = ["liu", "sentiwordnet", "afinn", "vader", "slang", "effect", "semeval2015", "nrc", "gi", "s140", "mpqa"]
+SPECIAL_DICTIONARIES   = ["emoticon", "hashtag"] # always loaded
+CLASSLESS_DICTIONARIES = ["booster", "negating"] # always loaded
+
+USE_DIC    = {'liu': True,  'sentiwordnet': True,  'afinn': True,  'vader': True,  'slang': True,  'effect': True,  'semeval2015': True,  'nrc': True,  'gi': True,  's140': True,  'mpqa': True}
+DIC_LOADED = {'liu': False, 'sentiwordnet': False, 'afinn': False, 'vader': False, 'slang': False, 'effect': False, 'semeval2015': False, 'nrc': False, 'gi': False, 's140': False, 'mpqa': False}
+
 INVERT_SARCASM = False
+BOOSTER_FACTOR = 2
+
+BEST    = {'fitness': 0, 'accuracy': 0, 'precision': {}, 'recall': {}, 'f1': {}}
+HISTORY = {'precision': {}, 'recall': {}, 'f1': {}, 'fitness': {}}
+
+BEST['precision']    = {'positive': 0, 'negative': 0, 'neutral': 0, 'avg': 0, 'avg_function': ""}
+BEST['recall']       = {'positive': 0, 'negative': 0, 'neutral': 0, 'avg': 0, 'avg_function': ""}
+BEST['f1']           = {'positive': 0, 'negative': 0, 'neutral': 0, 'avg': 0, 'avg_function': "", 'avg_pn': 0}
+HISTORY['precision'] = {'positive': 0, 'negative': 0, 'neutral': 0, 'avg': 0}
+HISTORY['recall']    = {'positive': 0, 'negative': 0, 'neutral': 0, 'avg': 0}
+HISTORY['f1']        = {'positive': 0, 'negative': 0, 'neutral': 0, 'avg': 0, 'avg_pn': 0}
+HISTORY['fitness']   = {'all': [], 'per_generation': [], 'best': []} 
 
 # According Penn Treebank Project
 USE_POS_CLASSES = ['VB', 'VBD', 'JJ', 'JJR', 'JJS', 'RB', 'RBR', 'RBS', 'NN'] # use NN? I don't know
+
+STOP_WORDS = set([x.lower() for x in stopwords.words('english')])
+STOP_WORDS.remove("won")
+
+WEEK_DATES  = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
+MONTH_DATES = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december', 'jan', 'feb', 'mar', 'apr', 'may', 'june', 'july', 'aug', 'sept', 'oct', 'nov', 'dec']
+OTHER_DATES = ['tomorrow', 'yesterday', 'today']
+
+ALL_DATES = WEEK_DATES + MONTH_DATES + OTHER_DATES
 
 save_only_best_individual = False
 
@@ -153,38 +164,6 @@ neutral_values = []
 calling_by_test_file = False
 calling_by_ag_file   = False
 
-DICTIONARIES           = ["liu", "sentiwordnet", "afinn", "vader", "slang", "effect", "semeval2015", "nrc", "gi", "s140", "mpqa"]
-SPECIAL_DICTIONARIES   = ["emoticon", "hashtag"] # always loaded
-CLASSLESS_DICTIONARIES = ["booster", "negating"] # always loaded
-
-# True: load the dictionary
-use_dic = {}
-use_dic["liu"]          = True
-use_dic["sentiwordnet"] = True
-use_dic["afinn"]        = True
-use_dic["vader"]        = True
-use_dic["slang"]        = True
-use_dic["effect"]       = True
-use_dic["semeval2015"]  = True
-use_dic["nrc"]          = True
-use_dic["gi"]           = True
-use_dic["s140"]         = True
-use_dic["mpqa"]         = True
-
-# Check if the dictionary was loaded
-dic_loaded = {}
-dic_loaded["liu"]          = False
-dic_loaded["sentiwordnet"] = False
-dic_loaded["afinn"]        = False
-dic_loaded["vader"]        = False
-dic_loaded["slang"]        = False
-dic_loaded["effect"]       = False
-dic_loaded["semeval2015"]  = False
-dic_loaded["nrc"]          = False
-dic_loaded["gi"]           = False
-dic_loaded["s140"]         = False
-dic_loaded["mpqa"]         = False
-
 dic_loaded_total = 0
 use_original_dic_values = True
 
@@ -195,52 +174,49 @@ MAX_NEUTRAL_MESSAGE  = 1500
 MAX_ANALYSIS_TWEETS  = 5500
 MAX_ANALYSIS_TWEETS_TEST = 10000
 
-# GP/GA Parameters
+# GP Parameters
 CROSSOVER        = 0.9
-AG_CROSSOVER     = 0.9
 MUTATION         = 0.1
-AG_MUTATION      = 0.3
 MUTATE_EPHEMERAL = 0.85
-GENERATIONS      = 55
-AG_GENERATIONS   = 50
-POPULATION       = 260
-AG_POPULATION    = 100
+GENERATIONS      = 5
+POPULATION       = 5
+TREE_MIN_HEIGHT  = 2
+TREE_MAX_HEIGHT  = 6
+TOTAL_MODELS     = 3
+HOF              = 4 # Hall of fame
 
-cicles_unchanged = 0
-generations_unchanged     = 0
-max_unchanged_generations = 250
+CICLES_UNCHANGED          = 0
+GENERATIONS_UNCHANGED     = 0
+MAX_UNCHANGED_GENERATIONS = 250
 max_unchanged_cicles      = 9999999999
 
-TOTAL_MODELS = 3
-HOF = 4
 
 # Constraints
 root_constraint = False
-root_function = "polaritySumAVGUsingWeights"
+root_function = "polSumAVGWeights"
 #root_function = "polaritySumAVG"
 #root_functions = ["polaritySumAVGUsingWeights", "if_then_else"]
 root_decreased_value = 0.2
 
 massive_functions_constraint = True
-massive_function = "polaritySumAVGUsingWeights"
+massive_function = "polSumAVGWeights"
 massive_functions_max = 1
 
 neutral_range_constraint = False
 
 generations_unchanged_reached_msg = False
 
-FILE_RESULTS             = PREFIX_PATH + 'sandbox/results/test_results-'         + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
-FILE_RESULTS_2CLASSES    = PREFIX_PATH + 'sandbox/results/test_results-2classes' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+FILE_RESULTS           = PREFIX_PATH + 'sandbox/results/test_results-'         + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+FILE_RESULTS_2CLASSES  = PREFIX_PATH + 'sandbox/results/test_results-2classes' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 
-TRAIN_RESULTS            = PREFIX_PATH + 'sandbox/results/train-' + str(TOTAL_MODELS) + 'mod'              + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
-TRAIN_RESULTS_GP_ENS     = PREFIX_PATH + 'sandbox/results/train-gp-ensemble-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
-TRAIN_RESULTS_2CLASSES   = PREFIX_PATH + 'sandbox/results/train-' + str(TOTAL_MODELS) + 'models_2classes_' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+TRAIN_RESULTS          = PREFIX_PATH + 'sandbox/results/train-' + str(TOTAL_MODELS) + 'mod'              + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+TRAIN_RESULTS_GP_ENS   = PREFIX_PATH + 'sandbox/results/train-gp-ensemble-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+TRAIN_RESULTS_2CLASSES = PREFIX_PATH + 'sandbox/results/train-' + str(TOTAL_MODELS) + 'models_2classes_' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 
-TRAIN_RESULTS_IMG        = PREFIX_PATH + 'sandbox/results/train-' + str(TOTAL_MODELS) + 'mod' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '-eachFitness'
-BEST_RESULTS_IMG         = PREFIX_PATH + 'sandbox/results/train-' + str(TOTAL_MODELS) + 'mod' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + 'onlyBests'
+TRAIN_RESULTS_IMG      = PREFIX_PATH + 'sandbox/results/train-' + str(TOTAL_MODELS) + 'mod' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '-eachFitness'
+BEST_RESULTS_IMG       = PREFIX_PATH + 'sandbox/results/train-' + str(TOTAL_MODELS) + 'mod' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + 'onlyBests'
 
-messages = {}
-messages['train'], messages['test'] = [], []
+messages = {'train': [], 'test': []}
 
 tweets_semeval        = []
 tweets_semeval_score  = []
@@ -314,129 +290,8 @@ best_fitness = 0
 best_fitness_history  = []
 best_fitness_history_dict = {}
 best_fitness_per_generation_history = []
-all_fitness_history   = []
+#all_fitness_history   = []
 best_fitness_per_generation_history_dict  = {}
-
-best_accuracy = 0
-
-best_precision_positive = 0
-best_precision_negative = 0
-best_precision_neutral  = 0
-best_precision_avg      = 0
-
-best_recall_positive = 0
-best_recall_negative = 0
-best_recall_neutral  = 0
-best_recall_avg      = 0
-
-best_f1_positive = 0
-best_f1_negative = 0
-best_f1_neutral  = 0
-best_f1_avg      = 0
-best_f1_positive_negative_avg = 0
-
-best_precision_avg_function = ""
-best_recall_avg_function    = ""
-best_f1_avg_function        = ""
-
-precision_positive_history = []
-precision_negative_history = []
-precision_neutral_history  = []
-recall_positive_history    = []
-recall_negative_history    = []
-recall_neutral_history     = []
-f1_positive_history        = []
-f1_negative_history        = []
-f1_neutral_history         = []
-
-tweets_mukh          = []
-tweets_mukh_score    = []
-tweets_mukh_positive = 0
-tweets_mukh_negative = 0
-
-# Test databases - SemEval 2014 (twitter2013, twitter2014, sms, livejournal, sarcasm)
-
-
-tweets_2013             = []
-tweets_2013_score       = []
-tweets_2013_score_svm   = []
-tweets_2013_score_naive = []
-tweets_2013_score_MS    = []
-tweets_2013_score_LReg  = []
-tweets_2013_score_S140  = []
-tweets_2013_score_RFor  = []
-tweets_2013_score_SGD   = []
-tweets_2013_score_ESumNoPG = []
-tweets_2013_positive    = 0
-tweets_2013_negative    = 0
-tweets_2013_neutral     = 0
-
-tweets_2014             = []
-tweets_2014_score       = []
-tweets_2014_score_svm   = []
-tweets_2014_score_naive = []
-tweets_2014_score_MS    = []
-tweets_2014_score_LReg  = []
-tweets_2014_score_S140  = []
-tweets_2014_score_RFor  = []
-tweets_2014_score_SGD   = []
-tweets_2014_score_ESumNoPG = []
-tweets_2014_positive    = 0
-tweets_2014_negative    = 0
-tweets_2014_neutral     = 0
-
-tweets_liveJournal2014             = []
-tweets_liveJournal2014_score       = []
-tweets_liveJournal2014_score_svm   = []
-tweets_liveJournal2014_score_naive = []
-tweets_liveJournal2014_score_MS    = []
-tweets_liveJournal2014_score_LReg  = []
-tweets_liveJournal2014_score_S140  = []
-tweets_liveJournal2014_score_RFor  = []
-tweets_liveJournal2014_score_SGD   = []
-tweets_liveJournal2014_score_ESumNoPG = []
-tweets_liveJournal2014_positive    = 0
-tweets_liveJournal2014_negative    = 0
-tweets_liveJournal2014_neutral     = 0
-
-tweets_2014_sarcasm             = []
-tweets_2014_sarcasm_score       = []
-tweets_2014_sarcasm_score_svm   = []
-tweets_2014_sarcasm_score_naive = []
-tweets_2014_sarcasm_score_MS    = []
-tweets_2014_sarcasm_score_LReg  = []
-tweets_2014_sarcasm_score_S140  = []
-tweets_2014_sarcasm_score_RFor  = []
-tweets_2014_sarcasm_score_SGD   = []
-tweets_2014_sarcasm_score_ESumNoPG = []
-tweets_2014_sarcasm_positive    = 0
-tweets_2014_sarcasm_negative    = 0
-tweets_2014_sarcasm_neutral     = 0
-
-sms_2013             = []
-sms_2013_score       = []
-sms_2013_score_svm   = []
-sms_2013_score_naive = []
-sms_2013_score_MS    = []
-sms_2013_score_LReg  = []
-sms_2013_score_S140  = []
-sms_2013_score_RFor  = []
-sms_2013_score_SGD   = []
-sms_2013_score_ESumNoPG = []
-sms_2013_positive    = 0
-sms_2013_negative    = 0
-sms_2013_neutral     = 0
-
-all_messages_in_file_order         = []
-all_polarities_in_file_order       = []
-all_polarities_in_file_order_svm   = []
-all_polarities_in_file_order_naive = []
-all_polarities_in_file_order_MS    = []
-all_polarities_in_file_order_LReg  = []
-all_polarities_in_file_order_S140  = []
-all_polarities_in_file_order_RFor  = []
-all_polarities_in_file_order_SGD   = []
-all_polarities_in_file_order_ESumNoPG = []
 
 false_neutral_log  = 0
 false_negative_log = 0
@@ -479,11 +334,145 @@ limit_dictionary_weight = 3
 
 save_file_results = True
 
-STOP_WORDS = set([x.lower() for x in stopwords.words('english')])
-STOP_WORDS.remove("won")
+#SEMEVAL_TRAIN_FILE             = PREFIX_PATH + 'datasets/train/train_messages.txt'
+#SEMEVAL_TRAIN_FILE_ORIGINAL    = PREFIX_PATH + 'datasets/train/twitter-train-cleansed-B.txt'
+#SEMEVAL_TRAIN_FILE_SPELLCHECK  = PREFIX_PATH + 'datasets/train/twitter-train-cleansed-B_spell.txt'
+#SEMEVAL_TEST_FILE              = PREFIX_PATH + 'datasets/test/SemEval2014_SVM_Naive_MS_Lreg_S140.txt'
+#SEMEVAL_TEST_FILE_SPELLCHECK   = PREFIX_PATH + 'datasets/test/SemEval2014-task9-test-B-all-tweets_withSVMValues_spell.txt'
+#SEMEVAL_TEST_FILE_ONLY_POS     = PREFIX_PATH + 'datasets/test/SemEval2014-task9-test-B-tweets-only-some-POS-classes.txt'
+#SEMEVAL_2017_TEST_FILE 	       = PREFIX_PATH + 'datasets/test/SemEval2017-task4-test.subtask-A.english.txt'
+#STS_TRAIN_FILE                 = PREFIX_PATH + 'datasets/train/STS/STStrain.1600000.processed.noemoticon.EDITED.csv'
+#STS_TEST_FILE                  = PREFIX_PATH + 'datasets/test/STS/STS_Gold_All.txt'
+#DICTIONARY_POSITIVE_WORDS      = PREFIX_PATH + 'dictionaries/positive-words.txt'
+#DICTIONARY_NEGATIVE_WORDS      = PREFIX_PATH + 'dictionaries/negative-words.txt'
+#DICTIONARY_POSITIVE_HASHTAGS   = PREFIX_PATH + 'dictionaries/positive-hashtags.txt'
+#DICTIONARY_NEGATIVE_HASHTAGS   = PREFIX_PATH + 'dictionaries/negative-hashtags.txt'
+#DICTIONARY_POSITIVE_EMOTICONS  = PREFIX_PATH + 'dictionaries/positive-emoticons.txt'
+#DICTIONARY_NEGATIVE_EMOTICONS  = PREFIX_PATH + 'dictionaries/negative-emoticons.txt'
+#DICTIONARY_NEGATING_WORDS      = PREFIX_PATH + 'dictionaries/negating-word-list.txt'
+#DICTIONARY_BOOSTER_WORDS       = PREFIX_PATH + 'dictionaries/boosterWords.txt'
+#DICTIONARY_SENTIWORDNET        = PREFIX_PATH + 'dictionaries/SentiWordNet_3.0.0_20130122.txt'
+#DICTIONARY_SENTIWORDNET_FOLDER = PREFIX_PATH + 'dictionaries/Sentiwordnet/'
+#DICTIONARY_AFFIN               = PREFIX_PATH + 'dictionaries/affin.txt'
+#DICTIONARY_SLANG               = PREFIX_PATH + 'dictionaries/slangSD.txt'
+#DICTIONARY_VADER               = PREFIX_PATH + 'dictionaries/vaderLexicon.txt'
+#DICTIONARY_SEMEVAL2015         = PREFIX_PATH + 'dictionaries/SemEval2015-English-Twitter-Lexicon.txt'
+#DICTIONARY_EFFECT              = PREFIX_PATH + 'dictionaries/EffectWordNet.tff'
+#DICTIONARY_EFFECT_FOLDER       = PREFIX_PATH + 'dictionaries/Effect/'
+#DICTIONARY_NRC                 = PREFIX_PATH + 'dictionaries/nrc_words.txt'
+#DICTIONARY_GENERAL_INQUIRER    = PREFIX_PATH + 'dictionaries/general-inquirer.txt'
+#DICTIONARY_S140                = PREFIX_PATH + 'dictionaries/sentiment140_unigram.txt'
+#DICTIONARY_MPQA                = PREFIX_PATH + 'dictionaries/mpqa.txt'
 
-week_dates  = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
-month_dates = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december', 'jan', 'feb', 'mar', 'apr', 'may', 'june', 'july', 'aug', 'sept', 'oct', 'nov', 'dec']
-other_dates = ['tomorrow', 'yesterday', 'today']
+#best_accuracy = 0
 
-all_dates = week_dates + month_dates + other_dates
+#best_precision_positive = 0
+#best_precision_negative = 0
+#best_precision_neutral  = 0
+#best_precision_avg      = 0
+
+#best_recall_positive = 0
+#best_recall_negative = 0
+#best_recall_neutral  = 0
+#best_recall_avg      = 0
+
+#best_f1_positive = 0
+#best_f1_negative = 0
+#best_f1_neutral  = 0
+#best_f1_avg      = 0
+#best_f1_positive_negative_avg = 0
+
+#best_precision_avg_function = ""
+#best_recall_avg_function    = ""
+#best_f1_avg_function        = ""
+
+#precision_positive_history = []
+#precision_negative_history = []
+#precision_neutral_history  = []
+#recall_positive_history    = []
+#recall_negative_history    = []
+#recall_neutral_history     = []
+#f1_positive_history        = []
+#f1_negative_history        = []
+#f1_neutral_history         = []
+
+#tweets_2013             = []
+#tweets_2013_score       = []
+#tweets_2013_score_svm   = []
+#tweets_2013_score_naive = []
+#tweets_2013_score_MS    = []
+#tweets_2013_score_LReg  = []
+#tweets_2013_score_S140  = []
+#tweets_2013_score_RFor  = []
+#tweets_2013_score_SGD   = []
+#tweets_2013_score_ESumNoPG = []
+#tweets_2013_positive    = 0
+#tweets_2013_negative    = 0
+#tweets_2013_neutral     = 0
+
+#tweets_2014             = []
+#tweets_2014_score       = []
+#tweets_2014_score_svm   = []
+#tweets_2014_score_naive = []
+#tweets_2014_score_MS    = []
+#tweets_2014_score_LReg  = []
+#tweets_2014_score_S140  = []
+#tweets_2014_score_RFor  = []
+#tweets_2014_score_SGD   = []
+#tweets_2014_score_ESumNoPG = []
+#tweets_2014_positive    = 0
+#tweets_2014_negative    = 0
+#tweets_2014_neutral     = 0
+
+#tweets_liveJournal2014             = []
+#tweets_liveJournal2014_score       = []
+#tweets_liveJournal2014_score_svm   = []
+#tweets_liveJournal2014_score_naive = []
+#tweets_liveJournal2014_score_MS    = []
+#tweets_liveJournal2014_score_LReg  = []
+#tweets_liveJournal2014_score_S140  = []
+#tweets_liveJournal2014_score_RFor  = []
+#tweets_liveJournal2014_score_SGD   = []
+#tweets_liveJournal2014_score_ESumNoPG = []
+#tweets_liveJournal2014_positive    = 0
+#tweets_liveJournal2014_negative    = 0
+#tweets_liveJournal2014_neutral     = 0
+
+#tweets_2014_sarcasm             = []
+#tweets_2014_sarcasm_score       = []
+#tweets_2014_sarcasm_score_svm   = []
+#tweets_2014_sarcasm_score_naive = []
+#tweets_2014_sarcasm_score_MS    = []
+#tweets_2014_sarcasm_score_LReg  = []
+#tweets_2014_sarcasm_score_S140  = []
+#tweets_2014_sarcasm_score_RFor  = []
+#tweets_2014_sarcasm_score_SGD   = []
+#tweets_2014_sarcasm_score_ESumNoPG = []
+#tweets_2014_sarcasm_positive    = 0
+#tweets_2014_sarcasm_negative    = 0
+#tweets_2014_sarcasm_neutral     = 0
+
+#sms_2013             = []
+#sms_2013_score       = []
+#sms_2013_score_svm   = []
+#sms_2013_score_naive = []
+#sms_2013_score_MS    = []
+#sms_2013_score_LReg  = []
+#sms_2013_score_S140  = []
+#sms_2013_score_RFor  = []
+#sms_2013_score_SGD   = []
+#sms_2013_score_ESumNoPG = []
+#sms_2013_positive    = 0
+#sms_2013_negative    = 0
+#sms_2013_neutral     = 0
+
+#all_messages_in_file_order         = []
+#all_polarities_in_file_order       = []
+#all_polarities_in_file_order_svm   = []
+#all_polarities_in_file_order_naive = []
+#all_polarities_in_file_order_MS    = []
+#all_polarities_in_file_order_LReg  = []
+#all_polarities_in_file_order_S140  = []
+#all_polarities_in_file_order_RFor  = []
+#all_polarities_in_file_order_SGD   = []
+#all_polarities_in_file_order_ESumNoPG = []
