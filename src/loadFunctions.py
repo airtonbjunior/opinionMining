@@ -18,33 +18,33 @@ def loadDictionaries():
 
 	The dic_words dictionary (defined in variables.py) will be populated using the follow format: 
 	
-		dic_words['dictionary_name']['positive']['word'] = polarity
-		dic_words['dictionary_name']['negative']['word'] = polarity
+		DIC_WORDS['dictionary_name']['positive']['word'] = polarity
+		DIC_WORDS['dictionary_name']['negative']['word'] = polarity
 
 		Example:
 			
 			Dictionary Sentiwordnet (word<tab>polarity)
 				able	0.125
 
-				dic_words['sentiwordnet']['positive']['able'] = 0.125
+				DIC_WORDS['sentiwordnet']['positive']['able'] = 0.125
 	"""
 	start = time.time()
 	print("\n[loading dictionaries]")
 
 	# Saving all pos/neg messages on unique array - I'll use this in some gp functions
-	variables.dic_words["all"] = {}
-	variables.dic_words["all"]["positive"], variables.dic_words["all"]["negative"] = {}, {}
+	variables.DIC_WORDS["all"] = {}
+	variables.DIC_WORDS["all"]["positive"], variables.DIC_WORDS["all"]["negative"] = {}, {}
 
 	for dic in (variables.DICTIONARIES + variables.SPECIAL_DICTIONARIES):
 		if dic in variables.SPECIAL_DICTIONARIES or variables.USE_DIC[dic]:
 			variables.DIC_LOADED[dic] = True
-			variables.dic_words[dic]["positive"], variables.dic_words[dic]["negative"] = loadDictionaryValues(dic, variables.DIC_PATH[dic])
+			variables.DIC_WORDS[dic]["positive"], variables.DIC_WORDS[dic]["negative"] = loadDictionaryValues(dic, variables.DIC_PATH[dic])
 
-			variables.dic_words["all"]["positive"].update(variables.dic_words[dic]["positive"])
-			variables.dic_words["all"]["negative"].update(variables.dic_words[dic]["negative"])
+			variables.DIC_WORDS["all"]["positive"].update(variables.DIC_WORDS[dic]["positive"])
+			variables.DIC_WORDS["all"]["negative"].update(variables.DIC_WORDS[dic]["negative"])
 
 	for dic in variables.CLASSLESS_DICTIONARIES:
-		variables.dic_words[dic] = loadClasslessDictionaries(dic, variables.DIC_PATH[dic])
+		variables.DIC_WORDS[dic] = loadClasslessDictionaries(dic, variables.DIC_PATH[dic])
 
 	print("[all dictionaries (" + str(variables.dic_loaded_total) + ") loaded][" + str(format(time.time() - start, '.3g')) + " seconds]\n")
 
@@ -89,7 +89,7 @@ def loadTrainMessages(limit=0):
 		Limit is the max messages to load
 
 	"""
-	variables.messages['train'] = loadMessages("train", variables.DATASET_PATH['train'], limit)
+	variables.MESSAGES['train'] = loadMessages("train", variables.DATASET_PATH['train'], limit)
 
 
 """
@@ -113,8 +113,8 @@ def loadDictionaryValues(dictionary_name, dictionary_path):
 	variables.dic_loaded_total += 1
 	pos_words, neg_words = {}, {}
 
-	variables.dic_words[dictionary_name.lower()] = {}
-	variables.dic_words[dictionary_name.lower()]["positive"], variables.dic_words[dictionary_name.lower()]["negative"] = {}, {}
+	variables.DIC_WORDS[dictionary_name.lower()] = {}
+	variables.DIC_WORDS[dictionary_name.lower()]["positive"], variables.DIC_WORDS[dictionary_name.lower()]["negative"] = {}, {}
 
 	with open(dictionary_path + dictionary_name.lower() + "_positive.txt", "r") as f:
 		for line in f:
@@ -124,7 +124,7 @@ def loadDictionaryValues(dictionary_name, dictionary_path):
 		for line in f:
 			neg_words[line.split("\t")[0].strip()] = line.split("\t")[1].strip()
 
-	if variables.log_loads:
+	if variables.LOG['loads']:
 		print("    [" + str(len(pos_words) + len(neg_words)) + " words loaded]")
 		print("    [" + str(len(pos_words)) + " positive and " + str(len(neg_words)) + " negative]")
 		print("      [" + str(dictionary_name.strip().lower()) + " dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]\n")
@@ -140,7 +140,7 @@ def loadClasslessDictionaries(dictionary_name, dictionary_path):
 		for line in f:
 			words.append(line.strip().lower())
 	
-	if variables.log_loads:
+	if variables.LOG['loads']:
 		print("    [" + str(len(words)) + " words]")
 		print("      [" + str(dictionary_name.strip().lower()) + " dictionary loaded][" + str(format(time.time() - startDic, '.3g')) + " seconds]\n")
 	
