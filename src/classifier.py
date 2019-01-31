@@ -14,7 +14,6 @@ References: https://github.com/DEAP/deap/blob/08986fc3848144903048c722564b7b1d92
              https://github.com/DEAP/deap/blob/08986fc3848144903048c722564b7b1d92db33a1/examples/gp/spambase.py
 
 """
-
 import time
 import operator
 import random
@@ -147,7 +146,7 @@ def evalMessages(individual):
     # Transform the tree expression in a callable function
     func = toolbox.compile(expr=individual)
 
-    MESSAGES_TO_EVALUATE = variables.messages['train']
+    MESSAGES_TO_EVALUATE = variables.MESSAGES['train']
 
     # Main loop - iterate through the messages
     for index, item in enumerate(MESSAGES_TO_EVALUATE):
@@ -162,9 +161,9 @@ def evalMessages(individual):
 
         """
         # massive function - more than massive_functions_max
-        if (str(individual).count(variables.massive_function) > variables.massive_functions_max) and (variables.massive_functions_constraint):
-            print("\n[CONSTRAINT][more than " + str(variables.massive_functions_max) + " massive(s) function(s)][bad individual][fitness zero]\n")
-            if variables.log_times:
+        if (str(individual).count(variables.CONSTRAINT['massive']['function']) > variables.CONSTRAINT['massive']['max']) and (variables.CONSTRAINT['massive']['active']):
+            print("\n[CONSTRAINT][more than " + str(variables.CONSTRAINT['massive']['max']) + " massive(s) function(s)][bad individual][fitness zero]\n")
+            if variables.LOG['times']:
                 print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
             print("-----------------------------\n")
             breaked = True
@@ -176,24 +175,23 @@ def evalMessages(individual):
         # neutralRange - more than one neutralRange
         if count_neutral_range > 1:
             print("\n[CONSTRAINT][more than one neutralRange function][bad individual][fitness zero]\n")
-            if variables.log_times:
+            if variables.LOG['times']:
                 print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
             print("-----------------------------\n")
             breaked = True
             break
 
         # neutralRange constraints
-        if(variables.neutral_range_constraint):      
-            # neutralRange - function does not exist in the model
+        if(variables.CONSTRAINT['neutral_range']['active']):
             if count_neutral_range == 0 and index == 0:
-                print("\n[CONSTRAINT][model does not have neutralRange function][fitness decreased in " + str(variables.root_decreased_value * 100) + "%]\n")
+                print("\n[CONSTRAINT][model does not have neutralRange function][fitness decreased in " + str(variables.CONSTRAINT['root']['decrease_rate'] * 100) + "%]\n")
                 if fitness_decreased:
                     double_decreased = True
                 fitness_decreased = True
 
         # root function - functions root_functions (if_then_else hardcoded temporarily)
-        if (not str(individual).startswith(variables.root_function) and not str(individual).startswith("if_then_else")) and variables.root_constraint and index == 0:
-            print("\n[CONSTRAINT][root node is not " + variables.root_function + "][fitness decreased in " + str(variables.root_decreased_value * 100) + "%]\n")
+        if (not str(individual).startswith(variables.CONSTRAINT['root']['function']) and not str(individual).startswith("if_then_else")) and variables.CONSTRAINT['root']['active'] and index == 0:
+            print("\n[CONSTRAINT][root node is not " + variables.CONSTRAINT['root']['function'] + "][fitness decreased in " + str(variables.CONSTRAINT['root']['decrease_rate'] * 100) + "%]\n")
             if fitness_decreased:
                 double_decreased = True            
             fitness_decreased = True
@@ -202,12 +200,12 @@ def evalMessages(individual):
         """
 
         # Check cicle limit
-        if variables.CICLES_UNCHANGED >= variables.max_unchanged_cicles:
+        if variables.CICLES_UNCHANGED >= variables.MAX_UNCHANGED_CICLES:
             breaked = True
             break
 
         # Log each new cicle
-        if index == 0 and variables.log_all_metrics_each_cicle:
+        if index == 0 and variables.LOG['all_each_cicle']:
             print("\n[New cicle]: " + str(len(MESSAGES_TO_EVALUATE)) + " phrases to evaluate [" + str(variables.POSITIVE_MESSAGES) + " positives, " + str(variables.NEGATIVE_MESSAGES) + " negatives and " + str(variables.NEUTRAL_MESSAGES) + " neutrals]")
 
         try:
@@ -251,7 +249,7 @@ def evalMessages(individual):
             continue
 
         # LOGS
-        if variables.log_all_messages:
+        if variables.LOG['all_messages']:
             print("[phrase]: "    + MESSAGES_TO_EVALUATE[index]['message'])
             print("[value]: "     + str(MESSAGES_TO_EVALUATE[index]['label']))
             print("[calculated]:" + func_value)
@@ -303,15 +301,15 @@ def evalMessages(individual):
     # FITNESS
     fitnessReturn = f1['avg_pn']
     if fitness_decreased:
-        fitnessReturn -= fitnessReturn * variables.root_decreased_value # 80% of the original value
+        fitnessReturn -= fitnessReturn * variables.CONSTRAINT['root']['decrease_rate'] # 80% of the original value
     if double_decreased:
-        fitnessReturn -= fitnessReturn * variables.root_decreased_value # Again
+        fitnessReturn -= fitnessReturn * variables.CONSTRAINT['root']['decrease_rate'] # Again
 
     # Saving the best fitness
     if variables.BEST['fitness'] < fitnessReturn:
         if variables.BEST['fitness'] != 0:
             # save partial best individual (in case we need stop evolution)
-            with open('../sandbox/partial_results/' + variables.BEST_INDIVIDUAL, 'w') as f:
+            with open(variables.BEST_INDIVIDUAL, 'w') as f:
                 f.write(str(individual))
                 f.write("\n\n# Generation -> " + str(generation_count))
                 f.write("\n# Neutral Range -> [" + str(variables.neutral_inferior_range) + ", " + str(variables.neutral_superior_range) + "]")
@@ -332,11 +330,11 @@ def evalMessages(individual):
     variables.HISTORY['fitness']['all'].append(fitnessReturn)
 
     # LOGS   
-    if variables.log_parcial_results and not breaked:
-        if variables.log_all_metrics_each_cicle:
+    if variables.LOG['partial_results'] and not breaked:
+        if variables.LOG['all_each_cicle']:
             print("[correct evaluations] " + str(correct_evaluations))
             print('{message: <{width}}'.format(message="[accuracy] ",   width=18) + " -> " + str(round(accuracy, 3)))
-            print('{message: <{width}}'.format(message="[precision] ",  width=18) + " -> " + "[positive]: " + '{message: <{width}}'.format(message=str(round(precision['positive'], 3)), width=6) + " " + "[negative]: " + '{message: <{width}}'.format(message=str(round(precision_negative, 3)), width=6) + " " + "[neutral]: " + '{message: <{width}}'.format(message=str(round(precision_neutral, 3)), width=6) + " " + "[avg]: " + '{message: <{width}}'.format(message=str(round(precision['avg'], 3)), width=6))
+            print('{message: <{width}}'.format(message="[precision] ",  width=18) + " -> " + "[positive]: " + '{message: <{width}}'.format(message=str(round(precision['positive'], 3)), width=6) + " " + "[negative]: " + '{message: <{width}}'.format(message=str(round(precision['negative'], 3)), width=6) + " " + "[neutral]: " + '{message: <{width}}'.format(message=str(round(precision['neutral'], 3)), width=6) + " " + "[avg]: " + '{message: <{width}}'.format(message=str(round(precision['avg'], 3)), width=6))
             print('{message: <{width}}'.format(message="[recall] ",     width=18) + " -> " + "[positive]: " + '{message: <{width}}'.format(message=str(round(recall['positive'], 3)), width=6) + " " + "[negative]: " + '{message: <{width}}'.format(message=str(round(recall['negative'], 3)), width=6) + " " + "[neutral]: " + '{message: <{width}}'.format(message=str(round(recall['neutral'], 3)), width=6) + " " + "[avg]: " + '{message: <{width}}'.format(message=str(round(recall['avg'], 3)), width=6))
             print('{message: <{width}}'.format(message="[f1] ",         width=18) + " -> " + "[positive]: " + '{message: <{width}}'.format(message=str(round(f1['positive'], 3)), width=6) + " " + "[negative]: " + '{message: <{width}}'.format(message=str(round(f1['negative'], 3)), width=6) + " " + "[neutral]: " + '{message: <{width}}'.format(message=str(round(f1['neutral'], 3)), width=6) + " " + "[avg]: " + '{message: <{width}}'.format(message=str(round(f1['avg'], 3)), width=6))
             print('{message: <{width}}'.format(message="[f1 SemEval] ", width=18) + " -> " + str(round(f1['avg_pn'], 3)))
@@ -345,13 +343,13 @@ def evalMessages(individual):
         print('{message: <{width}}'.format(message="[best fitness] ",    width=18) + " -> " + str(round(variables.best_fitness, 5)))
         print('{message: <{width}}'.format(message="[confusion matrix]", width=18) + " -> " + "[true_positive]: " + str(conf_matrix['true_positive']) + " " + "[false_positive]: " + str(conf_matrix['false_positive']) + " " + "[true_negative]: " + str(conf_matrix['true_negative']) + " " + "[false_negative]: " + str(conf_matrix['false_negative']) + " " + "[true_neutral]: " + str(conf_matrix['true_neutral']) + " " + "[false_neutral]: " + str(conf_matrix['false_neutral']) + "\n")
 
-        if variables.log_all_metrics_each_cicle:
+        if variables.LOG['all_each_cicle']:
             print('{message: <{width}}'.format(message="[cicles unmodified]", width=24) + " -> " + str(variables.CICLES_UNCHANGED))
         
         print('{message: <{width}}'.format(message="[generations unmodified]", width=24) + " -> " + str(variables.GENERATIONS_UNCHANGED))
         print("[function]: " + str(individual))
         
-        if variables.log_times:
+        if variables.LOG['times']:
             print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
         
         print("-----------------------------\n")
@@ -431,7 +429,7 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
         # Constraint 1: massive function - more than massive_functions_max
         if (str(individual).count(variables.massive_function) > variables.massive_functions_max) and variables.massive_functions_constraint:
             print("\n[CONSTRAINT][more than " + str(variables.massive_functions_max) + " massive(s) function(s)][bad individual][fitness zero]\n")
-            if variables.log_times:
+            if variables.LOG['times']:
                 print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
             print("-----------------------------")
             print("\n") 
@@ -444,7 +442,7 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
         # Constraint 2: neutralRange - more than one neutralRange
         if count_neutral_range > 1:
             print("\n[CONSTRAINT][more than one neutralRange function][bad individual][fitness zero]\n")
-            if variables.log_times:
+            if variables.LOG['times']:
                 print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
             print("-----------------------------")
             print("\n") 
@@ -456,7 +454,7 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
             # Constraint 4: neutralRange - function does not exist in the model
             if count_neutral_range == 0:
                 if fold_index == 0: #log only on first index
-                    print("\n[CONSTRAINT][model does not have neutralRange function][fitness decreased in " + str(variables.root_decreased_value * 100) + "%]\n")
+                    print("\n[CONSTRAINT][model does not have neutralRange function][fitness decreased in " + str(variables.CONSTRAINT['root']['decrease_rate'] * 100) + "%]\n")
                 if fitness_decreased:
                     double_decreased = True
                 fitness_decreased = True
@@ -465,7 +463,7 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
         #if (not str(individual).startswith(variables.root_function) and not str(individual).startswith("if_then_else")) and variables.root_constraint:# and fold_index == 0:
         if (not str(individual).startswith(variables.root_function)) and variables.root_constraint:# and fold_index == 0:
             if fold_index == 0: #log only on first index
-                print("[CONSTRAINT][root node is not " + variables.root_function + "][fitness decreased in " + str(variables.root_decreased_value * 100) + "%]\n")
+                print("[CONSTRAINT][root node is not " + variables.root_function + "][fitness decreased in " + str(variables.CONSTRAINT['root']['decrease_rate'] * 100) + "%]\n")
             if fitness_decreased:
                 double_decreased = True            
             fitness_decreased = True
@@ -479,7 +477,7 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
             #    print("[individual] " + str(individual))
             # Log each new cicle
             if first:
-                if variables.log_all_metrics_each_cicle:
+                if variables.LOG['all_each_cicle']:
                     print("\n[New cicle]: " + str(len(TWEETS_TO_EVALUATE)) + " phrases to evaluate [" + str(variables.POSITIVE_MESSAGES) + " positives, " + str(variables.NEGATIVE_MESSAGES) + " negatives and " + str(variables.NEUTRAL_MESSAGES) + " neutrals]")
                     first = False
 
@@ -524,7 +522,7 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
                 continue
 
             # LOGS
-            if variables.log_all_messages:
+            if variables.LOG['all_messages']:
                 print("[phrase]: " + TWEETS_TO_EVALUATE[index])
                 print("[value]: " + str(TWEETS_SCORE_TO_EVALUATE[index]))
                 print("[calculated]:" + func_value)
@@ -618,14 +616,14 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
         orig = 0
         if fitness_decreased:
             orig = fitnessReturn
-            fitnessReturn -= fitnessReturn * variables.root_decreased_value # 80% of the original value
+            fitnessReturn -= fitnessReturn * variables.CONSTRAINT['root']['decrease_rate'] # 80% of the original value
             print("  [INDIVIDUAL]  " + str(individual))
             print("     [POS: " + str(is_positive) + "] [NEG: " + str(is_negative) + "] [NEU: " + str(is_neutral) +"]")
             print("       [FITNESS DECREASED] [ORIGINAL: " + str(orig) + "] [DECREASED: " + str(fitnessReturn) + "]")
         orig = 0
         if double_decreased:
             orig = fitnessReturn
-            fitnessReturn -= fitnessReturn * variables.root_decreased_value # Again
+            fitnessReturn -= fitnessReturn * variables.CONSTRAINT['root']['decrease_rate'] # Again
             print("         [FITNESS DOUBLE DECREASED] [ORIGINAL: " + str(orig) + "] [DECREASED: " + str(fitnessReturn) + "]")
 
         fitness_list.append(fitnessReturn)
@@ -640,7 +638,7 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
 
     if variables.best_fitness < fitnessReturn:
         if variables.best_fitness != 0:
-            with open('../sandbox/partial_results/' + variables.BEST_INDIVIDUAL, 'w') as f:
+            with open(variables.BEST_INDIVIDUAL, 'w') as f:
                 f.write(str(individual))
                 f.write("\n\n# Generation -> " + str(generation_count))
                 f.write("\n# Neutral Range -> [" + str(variables.neutral_inferior_range) + ", " + str(variables.neutral_superior_range) + "]")
@@ -663,8 +661,8 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
 
 
     # LOGS
-    if variables.log_parcial_results and not breaked:# and not variables.calling_by_ag_file: 
-        if variables.log_all_metrics_each_cicle:
+    if variables.LOG['partial_results'] and not breaked:# and not variables.calling_by_ag_file: 
+        if variables.LOG['all_each_cicle']:
             print("[correct evaluations] " + str(correct_evaluations))
             print('{message: <{width}}'.format(message="[accuracy] ", width=18)   + " -> " + str(round(accuracy, 3)))
             print('{message: <{width}}'.format(message="[precision] ", width=18)  + " -> " + "[positive]: " + '{message: <{width}}'.format(message=str(round(precision_positive, 3)), width=6) + " " + "[negative]: " + '{message: <{width}}'.format(message=str(round(precision_negative, 3)), width=6) + " " + "[neutral]: " + '{message: <{width}}'.format(message=str(round(precision_neutral, 3)), width=6) + " " + "[avg]: " + '{message: <{width}}'.format(message=str(round(precision_avg, 3)), width=6))
@@ -677,13 +675,13 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
         
         print('{message: <{width}}'.format(message="[confusion matrix]", width=18) + " -> " + "[conf_matrix['true_positive']]: " + str(conf_matrix['true_positive']) + " " + "[conf_matrix['false_positive']]: " + str(conf_matrix['false_positive']) + " " + "[conf_matrix['true_negative']]: " + str(conf_matrix['true_negative']) + " " + "[conf_matrix['false_negative']]: " + str(conf_matrix['false_negative']) + " " + "[conf_matrix['true_neutral']]: " + str(conf_matrix['true_neutral']) + " " + "[conf_matrix['false_neutral']]: " + str(conf_matrix['false_neutral']) + "\n")
 
-        if variables.log_all_metrics_each_cicle:
+        if variables.LOG['all_each_cicle']:
             print('{message: <{width}}'.format(message="[cicles unmodified]", width=24)  + " -> " + str(variables.CICLES_UNCHANGED))
         
         print('{message: <{width}}'.format(message="[generations unmodified]", width=24) + " -> " + str(variables.GENERATIONS_UNCHANGED))
         print("[function]: " + str(individual))
         
-        if variables.log_times:
+        if variables.LOG['times']:
             print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
         
         print("-----------------------------\n")
