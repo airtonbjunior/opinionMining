@@ -110,7 +110,7 @@ def hasEmoticon(message):
 		TO-DO: detect emoticon inside the words - In this version the detection occurs only on separate tokens (split)
 	"""
 	for word in message.strip().split():
-		if (word.replace("'","") in variables.dic_words["emoticon"]["positive"]) or (word.replace("'","") in variables.dic_words["emoticon"]["negative"]):
+		if (word.replace("'","") in variables.DIC_WORDS["emoticon"]["positive"]) or (word.replace("'","") in variables.DIC_WORDS["emoticon"]["negative"]):
 			return True	
 
 	return False
@@ -133,7 +133,7 @@ def posHashtagCount(message):
 	if not hasHashtag(message):
 		return 0
 
-	return len([word for word in message.strip().split() if word[1:] in variables.dic_words["hashtag"]["positive"] and word.startswith("#")])
+	return len([word for word in message.strip().split() if word[1:] in variables.DIC_WORDS["hashtag"]["positive"] and word.startswith("#")])
 
 
 def negHashtagCount(message):
@@ -143,7 +143,7 @@ def negHashtagCount(message):
 	if not hasHashtag(message):
 		return 0
 
-	return len([word for word in message.strip().split() if word[1:] in variables.dic_words["hashtag"]["negative"] and word.startswith("#")])
+	return len([word for word in message.strip().split() if word[1:] in variables.DIC_WORDS["hashtag"]["negative"] and word.startswith("#")])
 
 
 def posEmoticonCount(message):
@@ -152,7 +152,7 @@ def posEmoticonCount(message):
 	"""
 	count = 0
 	for word in message.strip().split():
-		count = count + 1 if word in variables.dic_words["emoticon"]["positive"] else count
+		count = count + 1 if word in variables.DIC_WORDS["emoticon"]["positive"] else count
 	
 	return count
 
@@ -163,7 +163,7 @@ def negEmoticonCount(message):
 	"""
 	count = 0
 	for word in message.strip().split():
-		count = count + 1 if word in variables.dic_words["emoticon"]["negative"] else count
+		count = count + 1 if word in variables.DIC_WORDS["emoticon"]["negative"] else count
 	
 	return count
 
@@ -174,7 +174,7 @@ def posWordCount(message):
 	"""
 	count = 0
 	for word in message.strip().split():
-		if word in variables.dic_words["all"]["positive"]:
+		if word in variables.DIC_WORDS["all"]["positive"]:
 			count += 1
 	return count
 
@@ -185,7 +185,7 @@ def negWordCount(message):
 	"""
 	count = 0
 	for word in message.strip().split():
-		if word in variables.dic_words["all"]["negative"]:
+		if word in variables.DIC_WORDS["all"]["negative"]:
 			count += 1
 	return count
 
@@ -202,7 +202,7 @@ def negateWords(message):
 	if "insidenoteinverterword" in message:
 		return message
 
-	for negate in variables.dic_words["negating"]:
+	for negate in variables.DIC_WORDS["negating"]:
 		message = re.sub(r'\b%s\b' % re.escape(negate), "insidenoteinverterword", message)
 	
 	return message
@@ -246,7 +246,7 @@ def boostWords(message):
 	if "insidenoteboosterword" in message:
 		return message
 
-	for booster in variables.dic_words["booster"]:
+	for booster in variables.DIC_WORDS["booster"]:
 		message = message.replace(booster, "insidenoteboosterword")
 	
 	return message
@@ -313,8 +313,8 @@ def hashtagPolSum(message):
 	"""
 	polSum = 0
 	for word in message.strip().split():
-		p = [float(variables.dic_words["hashtag"]["positive"][w]) for w in variables.dic_words["hashtag"]["positive"] if word == w]
-		n = [float(variables.dic_words["hashtag"]["negative"][w]) for w in variables.dic_words["hashtag"]["negative"] if word == w]
+		p = [float(variables.DIC_WORDS["hashtag"]["positive"][w]) for w in variables.DIC_WORDS["hashtag"]["positive"] if word == w]
+		n = [float(variables.DIC_WORDS["hashtag"]["negative"][w]) for w in variables.DIC_WORDS["hashtag"]["negative"] if word == w]
 
 		polSum += sum(p) + sum(n)
 
@@ -337,8 +337,8 @@ def polSum(message):
 		for dic in variables.DICTIONARIES:
 			if variables.USE_DIC[dic] and variables.DIC_LOADED[dic]:
 				
-				p = [float(variables.dic_words[dic.lower()]["positive"][w]) for w in variables.dic_words[dic.lower()]["positive"] if word == w]
-				n = [float(variables.dic_words[dic.lower()]["negative"][w]) for w in variables.dic_words[dic.lower()]["negative"] if word == w]
+				p = [float(variables.DIC_WORDS[dic.lower()]["positive"][w]) for w in variables.DIC_WORDS[dic.lower()]["positive"] if word == w]
+				n = [float(variables.DIC_WORDS[dic.lower()]["negative"][w]) for w in variables.DIC_WORDS[dic.lower()]["negative"] if word == w]
 
 				if len(p) > 0:
 					total_sum += float(p[0])
@@ -369,11 +369,11 @@ def polSumAVGWeights(message, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0, w11=0):
 		for dic in variables.DICTIONARIES:
 			if variables.USE_DIC[dic] and variables.DIC_LOADED[dic] and ws[wi] != 0:
 				
-				if word in variables.dic_words[dic.lower()]["positive"]:
-					p = float(variables.dic_words[dic.lower()]["positive"][word]) * ws[wi]
+				if word in variables.DIC_WORDS[dic.lower()]["positive"]:
+					p = float(variables.DIC_WORDS[dic.lower()]["positive"][word]) * ws[wi]
 				
-				elif word in variables.dic_words[dic.lower()]["negative"]:
-					n = float(variables.dic_words[dic.lower()]["negative"][word]) * ws[wi]
+				elif word in variables.DIC_WORDS[dic.lower()]["negative"]:
+					n = float(variables.DIC_WORDS[dic.lower()]["negative"][word]) * ws[wi]
 
 				# splitted for didact reasons
 				accumulated_p += p
