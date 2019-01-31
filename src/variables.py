@@ -16,7 +16,6 @@ from datetime import datetime
 
 SYSTEM_VERSION = "0.3"
 
-
 """
 	FILE PATHS
 """
@@ -42,7 +41,6 @@ DIC_PATH["nrc"]          = PREFIX_PATH + 'dictionaries/NRC/'
 DIC_PATH["gi"]           = PREFIX_PATH + 'dictionaries/GeneralInquirer/'
 DIC_PATH["s140"]         = PREFIX_PATH + 'dictionaries/Sentiment140/'
 DIC_PATH["mpqa"]         = PREFIX_PATH + 'dictionaries/MPQA/'
-
 TRAIN_WORDS 		     = PREFIX_PATH + 'datasets/train/words_train/words_train.txt'
 TRAIN_WORDS_SPELLCHECK   = PREFIX_PATH + 'datasets/train/words_train/words_train_spell.txt'
 TRAIN_WORDS_POS_TAGGED   = PREFIX_PATH + 'datasets/train/words_train/words_train_spell_pos-tagged.txt'
@@ -51,10 +49,10 @@ TEST_WORDS               = PREFIX_PATH + 'datasets/test/words_test.txt'
 TEST_WORDS_SPELLCHECK    = PREFIX_PATH + 'datasets/test/words_test_spell.txt'
 TEST_WORDS_POS_TAGGED_W  = PREFIX_PATH + 'datasets/test/words_test_spell_pos-tagged_W.txt' # tagged words but without the tags, only words
 
-BEST_INDIVIDUAL 		    = 'partial-best-'          + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
-BEST_INDIVIDUAL_GP_ENSEMBLE = 'gp-ens-part-best-'      + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
-BEST_INDIVIDUAL_2CLASSES    = 'partial-best-2classes-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
-INCORRECT_EVALUATIONS       = 'incorrect-evaluations-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+BEST_INDIVIDUAL 		    = PREFIX_PATH + 'sandbox/partial_results/partial-best-'          + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+BEST_INDIVIDUAL_GP_ENSEMBLE = PREFIX_PATH + 'sandbox/partial_results/gp-ens-part-best-'      + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+BEST_INDIVIDUAL_2CLASSES    = PREFIX_PATH + 'sandbox/partial_results/partial-best-2classes-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+INCORRECT_EVALUATIONS       = PREFIX_PATH + 'sandbox/partial_results/incorrect-evaluations-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
 
 """
 	CONTROL VARS (BOOLEAN)
@@ -63,16 +61,22 @@ USE_SPELLCHECKED_WORDS     = False # set True if want to use the spellchecked wo
 USE_ONLY_POS_WORDS         = False
 SAVE_INCORRECT_EVALUATIONS = False
 
+LOG = {'times': True, 'all_each_cicle': False, 'all_messages': False, 'partial_results': True, 'loads': True}
+
+"""
+	DICTIONARIES
+"""
 DICTIONARIES           = ["liu", "sentiwordnet", "afinn", "vader", "slang", "effect", "semeval2015", "nrc", "gi", "s140", "mpqa"]
 SPECIAL_DICTIONARIES   = ["emoticon", "hashtag"] # always loaded
 CLASSLESS_DICTIONARIES = ["booster", "negating"] # always loaded
 
+DIC_WORDS  = {}
 USE_DIC    = {'liu': True,  'sentiwordnet': True,  'afinn': True,  'vader': True,  'slang': True,  'effect': True,  'semeval2015': True,  'nrc': True,  'gi': True,  's140': True,  'mpqa': True}
 DIC_LOADED = {'liu': False, 'sentiwordnet': False, 'afinn': False, 'vader': False, 'slang': False, 'effect': False, 'semeval2015': False, 'nrc': False, 'gi': False, 's140': False, 'mpqa': False}
 
-INVERT_SARCASM = False
-BOOSTER_FACTOR = 2
-
+"""
+	BEST AND HISTORY
+"""
 BEST    = {'fitness': 0, 'accuracy': 0, 'precision': {}, 'recall': {}, 'f1': {}}
 HISTORY = {'precision': {}, 'recall': {}, 'f1': {}, 'fitness': {}}
 
@@ -83,6 +87,12 @@ HISTORY['precision'] = {'positive': 0, 'negative': 0, 'neutral': 0, 'avg': 0}
 HISTORY['recall']    = {'positive': 0, 'negative': 0, 'neutral': 0, 'avg': 0}
 HISTORY['f1']        = {'positive': 0, 'negative': 0, 'neutral': 0, 'avg': 0, 'avg_pn': 0}
 HISTORY['fitness']   = {'all': [], 'per_generation': [], 'best': []} 
+
+"""
+	SENTIMENT ANALYSIS MISC
+"""
+INVERT_SARCASM = False
+BOOSTER_FACTOR = 2
 
 # According Penn Treebank Project
 USE_POS_CLASSES = ['VB', 'VBD', 'JJ', 'JJR', 'JJS', 'RB', 'RBR', 'RBS', 'NN'] # use NN? I don't know
@@ -95,6 +105,51 @@ MONTH_DATES = ['january', 'february', 'march', 'april', 'may', 'june', 'july', '
 OTHER_DATES = ['tomorrow', 'yesterday', 'today']
 
 ALL_DATES = WEEK_DATES + MONTH_DATES + OTHER_DATES
+
+"""
+	GP PARAMETERS
+"""
+CROSSOVER        = 0.9
+MUTATION         = 0.1
+MUTATE_EPHEMERAL = 0.85
+GENERATIONS      = 5
+POPULATION       = 5
+TREE_MIN_HEIGHT  = 2
+TREE_MAX_HEIGHT  = 6
+TOTAL_MODELS     = 3
+HOF              = 4 # Hall of fame
+
+CICLES_UNCHANGED          = 0
+GENERATIONS_UNCHANGED     = 0
+MAX_UNCHANGED_GENERATIONS = 250
+MAX_UNCHANGED_CICLES      = 9999999999
+
+"""
+	CONSTRAINTS
+"""
+CONSTRAINT = {'root': {}, 'massive': {}, 'neutral_range': {'active': False}}
+CONSTRAINT['root']    = {'active': True,  'function': 'polSumAVGWeights', 'decrease_rate': 0.2}
+CONSTRAINT['massive'] = {'active': True,  'function': 'polSumAVGWeights', 'decrease_rate': 0.2, 'max': 1}
+
+generations_unchanged_reached_msg = False
+
+"""
+	RESULT FILES PATHS
+"""
+FILE_RESULTS           = PREFIX_PATH + 'sandbox/results/test_results-'         + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+FILE_RESULTS_2CLASSES  = PREFIX_PATH + 'sandbox/results/test_results-2classes' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+
+TRAIN_RESULTS          = PREFIX_PATH + 'sandbox/results/train-' + str(TOTAL_MODELS) + 'mod'              + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+TRAIN_RESULTS_GP_ENS   = PREFIX_PATH + 'sandbox/results/train-gp-ensemble-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+TRAIN_RESULTS_2CLASSES = PREFIX_PATH + 'sandbox/results/train-' + str(TOTAL_MODELS) + 'models_2classes_' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
+
+TRAIN_RESULTS_IMG      = PREFIX_PATH + 'sandbox/results/train-' + str(TOTAL_MODELS) + 'mod' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '-eachFitness'
+BEST_RESULTS_IMG       = PREFIX_PATH + 'sandbox/results/train-' + str(TOTAL_MODELS) + 'mod' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + 'onlyBests'
+
+"""
+	DATASETS (TRAIN AND TEST)
+"""
+MESSAGES = {'train': [], 'test': []}
 
 save_only_best_individual = False
 
@@ -138,7 +193,6 @@ use_all_classifiers         = False
 use_all_classifiers_nopg_sum = True
 
 using_gp_default = False
-
 use_gp_ensemble  = False # if False, all the models will be executed separated. If True, an ensemble of the models will be executed
 
 neutral_inferior_range = 0
@@ -174,50 +228,6 @@ MAX_NEUTRAL_MESSAGE  = 1500
 MAX_ANALYSIS_TWEETS  = 5500
 MAX_ANALYSIS_TWEETS_TEST = 10000
 
-# GP Parameters
-CROSSOVER        = 0.9
-MUTATION         = 0.1
-MUTATE_EPHEMERAL = 0.85
-GENERATIONS      = 5
-POPULATION       = 5
-TREE_MIN_HEIGHT  = 2
-TREE_MAX_HEIGHT  = 6
-TOTAL_MODELS     = 3
-HOF              = 4 # Hall of fame
-
-CICLES_UNCHANGED          = 0
-GENERATIONS_UNCHANGED     = 0
-MAX_UNCHANGED_GENERATIONS = 250
-max_unchanged_cicles      = 9999999999
-
-
-# Constraints
-root_constraint = False
-root_function = "polSumAVGWeights"
-#root_function = "polaritySumAVG"
-#root_functions = ["polaritySumAVGUsingWeights", "if_then_else"]
-root_decreased_value = 0.2
-
-massive_functions_constraint = True
-massive_function = "polSumAVGWeights"
-massive_functions_max = 1
-
-neutral_range_constraint = False
-
-generations_unchanged_reached_msg = False
-
-FILE_RESULTS           = PREFIX_PATH + 'sandbox/results/test_results-'         + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
-FILE_RESULTS_2CLASSES  = PREFIX_PATH + 'sandbox/results/test_results-2classes' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
-
-TRAIN_RESULTS          = PREFIX_PATH + 'sandbox/results/train-' + str(TOTAL_MODELS) + 'mod'              + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
-TRAIN_RESULTS_GP_ENS   = PREFIX_PATH + 'sandbox/results/train-gp-ensemble-' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
-TRAIN_RESULTS_2CLASSES = PREFIX_PATH + 'sandbox/results/train-' + str(TOTAL_MODELS) + 'models_2classes_' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '.txt'
-
-TRAIN_RESULTS_IMG      = PREFIX_PATH + 'sandbox/results/train-' + str(TOTAL_MODELS) + 'mod' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + '-eachFitness'
-BEST_RESULTS_IMG       = PREFIX_PATH + 'sandbox/results/train-' + str(TOTAL_MODELS) + 'mod' + str(POPULATION) + 'p'+ str(GENERATIONS) +'g_' + str(datetime.now())[11:13] + str(datetime.now())[14:16] + str(datetime.now())[17:19] + 'onlyBests'
-
-messages = {'train': [], 'test': []}
-
 tweets_semeval        = []
 tweets_semeval_score  = []
 svm_values_tweets     = []
@@ -250,30 +260,6 @@ dic_negative_emoticons = []
 dic_negation_words     = []
 dic_booster_words      = []
 
-# Using python dictionary to improve the search performance
-dic_words = {}
-
-dic_positive_semeval2015  = {}
-dic_negative_semeval2015  = {}
-dic_positive_slang        = {}
-dic_negative_slang        = {}
-dic_positive_affin        = {}
-dic_negative_affin        = {}
-dic_positive_sentiwordnet = {}
-dic_negative_sentiwordnet = {}
-dic_positive_effect       = {}
-dic_negative_effect       = {}
-dic_positive_vader        = {}
-dic_negative_vader        = {}
-dic_positive_nrc          = {}
-dic_negative_nrc          = {}
-dic_positive_gi           = {}
-dic_negative_gi           = {}
-dic_positive_s140         = {}
-dic_negative_s140         = {}
-dic_positive_mpqa         = {}
-dic_negative_mpqa         = {}
-
 # Counters
 POSITIVE_MESSAGES = 0
 NEGATIVE_MESSAGES = 0
@@ -296,12 +282,6 @@ best_fitness_per_generation_history_dict  = {}
 false_neutral_log  = 0
 false_negative_log = 0
 false_positive_log = 0
-
-log_all_metrics_each_cicle = False
-log_all_messages           = False
-log_parcial_results        = True
-log_times           	   = True
-log_loads                  = True
 
 w1  = []
 w2  = []
@@ -476,3 +456,39 @@ save_file_results = True
 #all_polarities_in_file_order_RFor  = []
 #all_polarities_in_file_order_SGD   = []
 #all_polarities_in_file_order_ESumNoPG = []
+
+
+# Using python dictionary to improve the search performance
+
+#dic_positive_semeval2015  = {}
+#dic_negative_semeval2015  = {}
+#dic_positive_slang        = {}
+#dic_negative_slang        = {}
+#dic_positive_affin        = {}
+#dic_negative_affin        = {}
+#dic_positive_sentiwordnet = {}
+#dic_negative_sentiwordnet = {}
+#dic_positive_effect       = {}
+#dic_negative_effect       = {}
+#dic_positive_vader        = {}
+#dic_negative_vader        = {}
+#dic_positive_nrc          = {}
+#dic_negative_nrc          = {}
+#dic_positive_gi           = {}
+#dic_negative_gi           = {}
+#dic_positive_s140         = {}
+#dic_negative_s140         = {}
+#dic_positive_mpqa         = {}
+#dic_negative_mpqa         = {}
+
+#root_constraint = False
+#root_function = "polSumAVGWeights"
+#root_function = "polaritySumAVG"
+#root_functions = ["polaritySumAVGUsingWeights", "if_then_else"]
+#root_decreased_value = 0.2
+
+#massive_functions_constraint = True
+#massive_function = "polSumAVGWeights"
+#massive_functions_max = 1
+
+#neutral_range_constraint = False
