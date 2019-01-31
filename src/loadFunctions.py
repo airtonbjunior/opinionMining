@@ -46,7 +46,7 @@ def loadDictionaries():
 	for dic in variables.CLASSLESS_DICTIONARIES:
 		variables.DIC_WORDS[dic] = loadClasslessDictionaries(dic, variables.DIC_PATH[dic])
 
-	print("[all dictionaries (" + str(variables.dic_loaded_total) + ") loaded][" + str(format(time.time() - start, '.3g')) + " seconds]\n")
+	print("[all dictionaries (" + str(variables.DIC_LOADED['total']) + ") loaded][" + str(format(time.time() - start, '.3g')) + " seconds]\n")
 
 
 def loadMessages(module, file_path, limit=0):
@@ -58,7 +58,7 @@ def loadMessages(module, file_path, limit=0):
 			limit     (int): limit of messages loaded
 	"""
 	start = time.time()
-	print("\n[loading " + module + " tweets]")
+	print("\n[loading " + module + " messages]")
 
 	msgs = {}
 	msgs_all = []
@@ -80,6 +80,7 @@ def loadMessages(module, file_path, limit=0):
 				msgs_all.append(msgs)
 				msgs = {}
 
+	print("  [" + module + " messages loaded (" + str(len(msgs_all)) + " messages)][" + str(format(time.time() - start, '.3g')) + " seconds]\n")
 	return msgs_all
 
 
@@ -110,7 +111,7 @@ def loadDictionaryValues(dictionary_name, dictionary_path):
 	"""
 	startDic = time.time()
 	print("  [loading " + str(dictionary_name.strip().lower()) + "]")
-	variables.dic_loaded_total += 1
+	variables.DIC_LOADED['total'] += 1
 	pos_words, neg_words = {}, {}
 
 	variables.DIC_WORDS[dictionary_name.lower()] = {}
