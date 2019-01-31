@@ -48,6 +48,8 @@ pset.addPrimitive(posHashtagCount,  [str], float)
 pset.addPrimitive(negHashtagCount,  [str], float)
 pset.addPrimitive(posEmoticonCount, [str], float)
 pset.addPrimitive(negEmoticonCount, [str], float)
+pset.addPrimitive(polSum,           [str], float)
+pset.addPrimitive(polSumAVG,        [str], float)
 pset.addPrimitive(polSumAVGWeights, [str, float, float, float, float, float, float, float, float, float, float, float], float)
 pset.addPrimitive(hashtagPolSum,    [str], float)
 #pset.addPrimitive(emoticonsPolaritySum,  [str], float)
@@ -313,7 +315,7 @@ def evalMessages(individual):
                 f.write(str(individual))
                 f.write("\n\n# Generation -> " + str(generation_count))
                 f.write("\n# Neutral Range -> [" + str(variables.neutral_inferior_range) + ", " + str(variables.neutral_superior_range) + "]")
-            variables.HISTORY['fitness']['best'].append(variables.best_fitness)
+            variables.HISTORY['fitness']['best'].append(variables.BEST['fitness'])
         variables.BEST['fitness'] = fitnessReturn
         variables.fitness_positive = is_positive
         variables.fitness_negative = is_negative
@@ -340,7 +342,7 @@ def evalMessages(individual):
             print('{message: <{width}}'.format(message="[f1 SemEval] ", width=18) + " -> " + str(round(f1['avg_pn'], 3)))
         
         print('{message: <{width}}'.format(message="[fitness] "     ,    width=18) + " -> " + str(round(fitnessReturn, 5)) + " ****")
-        print('{message: <{width}}'.format(message="[best fitness] ",    width=18) + " -> " + str(round(variables.best_fitness, 5)))
+        print('{message: <{width}}'.format(message="[best fitness] ",    width=18) + " -> " + str(round(variables.BEST['fitness'], 5)))
         print('{message: <{width}}'.format(message="[confusion matrix]", width=18) + " -> " + "[true_positive]: " + str(conf_matrix['true_positive']) + " " + "[false_positive]: " + str(conf_matrix['false_positive']) + " " + "[true_negative]: " + str(conf_matrix['true_negative']) + " " + "[false_negative]: " + str(conf_matrix['false_negative']) + " " + "[true_neutral]: " + str(conf_matrix['true_neutral']) + " " + "[false_neutral]: " + str(conf_matrix['false_neutral']) + "\n")
 
         if variables.LOG['all_each_cicle']:
@@ -636,15 +638,15 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
     print("[number of chunks] " + str(len(chunks)))
     print("[avg fitness] "      + str(fitnessReturn) + "\n")
 
-    if variables.best_fitness < fitnessReturn:
-        if variables.best_fitness != 0:
+    if variables.BEST['fitness'] < fitnessReturn:
+        if variables.BEST['fitness'] != 0:
             with open(variables.BEST_INDIVIDUAL, 'w') as f:
                 f.write(str(individual))
                 f.write("\n\n# Generation -> " + str(generation_count))
                 f.write("\n# Neutral Range -> [" + str(variables.neutral_inferior_range) + ", " + str(variables.neutral_superior_range) + "]")
-            variables.HISTORY['fitness']['best'].append(variables.best_fitness)
-        variables.best_fitness = fitnessReturn
-        variables.best_fitness_history_dict[generation_count] = fitnessReturn
+            variables.HISTORY['fitness']['best'].append(variables.BEST['fitness'])
+        variables.BEST['fitness'] = fitnessReturn
+        #variables.best_fitness_history_dict[generation_count] = fitnessReturn
         variables.fitness_positive = is_positive
         variables.fitness_negative = is_negative
         variables.fitness_neutral  = is_neutral
@@ -671,7 +673,7 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
             print('{message: <{width}}'.format(message="[f1 SemEval] ", width=18) + " -> " + str(round(f1['avg_pn'], 3)))
         
         print('{message: <{width}}'.format(message="[fitness] ", width=18) + " -> "      + str(round(fitnessReturn, 5)) + " ****")
-        print('{message: <{width}}'.format(message="[best fitness] ", width=18) + " -> " + str(round(variables.best_fitness, 5)))
+        print('{message: <{width}}'.format(message="[best fitness] ", width=18) + " -> " + str(round(variables.BEST['fitness'], 5)))
         
         print('{message: <{width}}'.format(message="[confusion matrix]", width=18) + " -> " + "[conf_matrix['true_positive']]: " + str(conf_matrix['true_positive']) + " " + "[conf_matrix['false_positive']]: " + str(conf_matrix['false_positive']) + " " + "[conf_matrix['true_negative']]: " + str(conf_matrix['true_negative']) + " " + "[conf_matrix['false_negative']]: " + str(conf_matrix['false_negative']) + " " + "[conf_matrix['true_neutral']]: " + str(conf_matrix['true_neutral']) + " " + "[conf_matrix['false_neutral']]: " + str(conf_matrix['false_neutral']) + "\n")
 
@@ -742,7 +744,7 @@ def main():
     print("[best f1 avg]: "             + str(variables.BEST['f1']['avg']))
     print("[best f1 avg (+/-)]: "       + str(variables.BEST['f1']['avg_pn']))
     print("[best f1 avg function]: "    +     variables.BEST['f1']['avg_function'])
-    print("[best fitness history]: "    + str(variables.best_fitness_history_dict) + "\n\n")
+    print("[best fitness history]: "    + str(variables.HISTORY['fitness']['best']) + "\n\n")
     # LOGS 
 
     # PLOT 
@@ -771,7 +773,7 @@ if __name__ == "__main__":
     print("[opinionMining v" + variables.SYSTEM_VERSION + "][starting classifier module]")
 
     loadDictionaries()
-    loadTrainMessages(50)
+    loadTrainMessages()
 
     parameters = str(variables.CROSSOVER) + " crossover, " + str(variables.MUTATION) + " mutation, " + str(variables.POPULATION) + " population, " + str(variables.GENERATIONS) + " generation"
 
@@ -795,8 +797,8 @@ if __name__ == "__main__":
 
         mail_content = "Parameters: " + parameters + "\n\n" + str(variables.model_results[len(variables.model_results) - 1]) + "\n"
         mail_content += "\n\nTotal tweets: " + str(variables.POSITIVE_MESSAGES + variables.NEGATIVE_MESSAGES + variables.NEUTRAL_MESSAGES) + " [" + str(variables.POSITIVE_MESSAGES) + " positives, " + str(variables.NEGATIVE_MESSAGES) + " negatives and " + str(variables.NEUTRAL_MESSAGES) + " neutrals]\n"
-        mail_content += "Fitness (F1 pos and neg): " + str(variables.best_fitness) + " [" + str(variables.fitness_positive + variables.fitness_negative + variables.fitness_neutral) + " correct evaluations] ["+ str(variables.fitness_positive) + " positives, " + str(variables.fitness_negative) + " negatives and " + str(variables.fitness_neutral) + " neutrals]\n"
-        mail_content += "\nFitness evolution: " + str(variables.best_fitness_history_dict) + "\n"
+        mail_content += "Fitness (F1 pos and neg): " + str(variables.BEST['fitness']) + " [" + str(variables.fitness_positive + variables.fitness_negative + variables.fitness_neutral) + " correct evaluations] ["+ str(variables.fitness_positive) + " positives, " + str(variables.fitness_negative) + " negatives and " + str(variables.fitness_neutral) + " neutrals]\n"
+        mail_content += "\nFitness evolution: " + str(variables.HISTORY['fitness']['best']) + "\n"
 
         try:
             send_mail(i+1, variables.TOTAL_MODELS, variables.POPULATION, variables.GENERATIONS, mail_content)
@@ -816,7 +818,7 @@ if __name__ == "__main__":
         variables.BEST['recall']     = {'positive': 0, 'negative': 0, 'neutral': 0, 'avg': 0, 'avg_function': ""}
         variables.BEST['f1']         = {'positive': 0, 'negative': 0, 'neutral': 0, 'avg': 0, 'avg_function': "", 'avg_pn': 0}
         variables.HISTORY['fitness'] = {'all': [], 'per_generation': [], 'best': []} 
-        variables.best_fitness_history_dict = {}
+        #variables.best_fitness_history_dict = {}
 
 end = time.time()
 print("[SYSTEM ENDS AFTER " + str(format(end - start, '.3g')) + " SECONDS]")
