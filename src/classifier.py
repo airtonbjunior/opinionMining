@@ -14,11 +14,6 @@ References: https://github.com/DEAP/deap/blob/08986fc3848144903048c722564b7b1d92
              https://github.com/DEAP/deap/blob/08986fc3848144903048c722564b7b1d92db33a1/examples/gp/spambase.py
 
 """
-import time
-import operator
-import random
-import sys
-
 from deap import algorithms
 from deap import base
 from deap import creator
@@ -26,7 +21,10 @@ from deap import tools
 from deap import gp
 from datetime import datetime
 
-import matplotlib.pyplot as plt
+import time
+import operator
+import random
+import sys
 import variables
 from gpFunctions import *
 from loadFunctions import *
@@ -331,31 +329,11 @@ def evalMessages(individual):
 
     variables.HISTORY['fitness']['all'].append(fitnessReturn)
 
-    # LOGS   
-    if variables.LOG['partial_results'] and not breaked:
-        if variables.LOG['all_each_cicle']:
-            print("[correct evaluations] " + str(correct_evaluations))
-            print('{message: <{width}}'.format(message="[accuracy] ",   width=18) + " -> " + str(round(accuracy, 3)))
-            print('{message: <{width}}'.format(message="[precision] ",  width=18) + " -> " + "[positive]: " + '{message: <{width}}'.format(message=str(round(precision['positive'], 3)), width=6) + " " + "[negative]: " + '{message: <{width}}'.format(message=str(round(precision['negative'], 3)), width=6) + " " + "[neutral]: " + '{message: <{width}}'.format(message=str(round(precision['neutral'], 3)), width=6) + " " + "[avg]: " + '{message: <{width}}'.format(message=str(round(precision['avg'], 3)), width=6))
-            print('{message: <{width}}'.format(message="[recall] ",     width=18) + " -> " + "[positive]: " + '{message: <{width}}'.format(message=str(round(recall['positive'], 3)), width=6) + " " + "[negative]: " + '{message: <{width}}'.format(message=str(round(recall['negative'], 3)), width=6) + " " + "[neutral]: " + '{message: <{width}}'.format(message=str(round(recall['neutral'], 3)), width=6) + " " + "[avg]: " + '{message: <{width}}'.format(message=str(round(recall['avg'], 3)), width=6))
-            print('{message: <{width}}'.format(message="[f1] ",         width=18) + " -> " + "[positive]: " + '{message: <{width}}'.format(message=str(round(f1['positive'], 3)), width=6) + " " + "[negative]: " + '{message: <{width}}'.format(message=str(round(f1['negative'], 3)), width=6) + " " + "[neutral]: " + '{message: <{width}}'.format(message=str(round(f1['neutral'], 3)), width=6) + " " + "[avg]: " + '{message: <{width}}'.format(message=str(round(f1['avg'], 3)), width=6))
-            print('{message: <{width}}'.format(message="[f1 SemEval] ", width=18) + " -> " + str(round(f1['avg_pn'], 3)))
-        
-        print('{message: <{width}}'.format(message="[fitness] "     ,    width=18) + " -> " + str(round(fitnessReturn, 5)) + " ****")
-        print('{message: <{width}}'.format(message="[best fitness] ",    width=18) + " -> " + str(round(variables.BEST['fitness'], 5)))
-        print('{message: <{width}}'.format(message="[confusion matrix]", width=18) + " -> " + "[true_positive]: " + str(conf_matrix['true_positive']) + " " + "[false_positive]: " + str(conf_matrix['false_positive']) + " " + "[true_negative]: " + str(conf_matrix['true_negative']) + " " + "[false_negative]: " + str(conf_matrix['false_negative']) + " " + "[true_neutral]: " + str(conf_matrix['true_neutral']) + " " + "[false_neutral]: " + str(conf_matrix['false_neutral']) + "\n")
-
-        if variables.LOG['all_each_cicle']:
-            print('{message: <{width}}'.format(message="[cicles unmodified]", width=24) + " -> " + str(variables.CICLES_UNCHANGED))
-        
-        print('{message: <{width}}'.format(message="[generations unmodified]", width=24) + " -> " + str(variables.GENERATIONS_UNCHANGED))
-        print("[function]: " + str(individual))
-        
+    if variables.LOG['partial_results'] and not breaked:        
+        logCicleValues(correct_evaluations, individual, accuracy, precision, recall, f1, fitnessReturn, conf_matrix)
         if variables.LOG['times']:
             print("[cicle ends after " + str(format(time.time() - start, '.3g')) + " seconds]")     
-        
         print("-----------------------------\n")
-    # LOGS
 
     evaluation_acumulated_time += time.time() - start
     
@@ -722,106 +700,52 @@ def main():
     pop, log = myEaSimple(pop, toolbox, variables.CROSSOVER, variables.MUTATION, variables.GENERATIONS, stats=False,
                                    halloffame=hof, verbose=False)
 
+    logFinalResults(hof[0])
+    plotResults()
 
-    # LOGS
-    print("\n## Results ##\n")
-    print("[total tweets]: " + str(variables.POSITIVE_MESSAGES + variables.NEGATIVE_MESSAGES + variables.NEUTRAL_MESSAGES) + " [" + str(variables.POSITIVE_MESSAGES) + " positives, " + str(variables.NEGATIVE_MESSAGES) + " negatives and " + str(variables.NEUTRAL_MESSAGES) + " neutrals]\n")
-    print("[best fitness (F1 avg (+/-)]: " + str(variables.BEST['fitness']) + " [" + str(variables.fitness_positive + variables.fitness_negative + variables.fitness_neutral) + " correct evaluations] ["+ str(variables.fitness_positive) + " positives, " + str(variables.fitness_negative) + " negatives and " + str(variables.fitness_neutral) + " neutrals]\n")
-    print("[function]: " + str(hof[0]) + "\n")
-    print("[best accuracy]: "           + str(variables.BEST['accuracy']) + "\n")
-    print("[best precision positive]: " + str(variables.BEST['precision']['positive']))
-    print("[best precision negative]: " + str(variables.BEST['precision']['negative']))
-    print("[best precision neutral]: "  + str(variables.BEST['precision']['neutral']))    
-    print("[best precision avg]: "      + str(variables.BEST['precision']['avg']))
-    print("[best precision avg function]: " + variables.BEST['precision']['avg_function'] + "\n")    
-    print("[best recall positive]: "    + str(variables.BEST['recall']['positive']))    
-    print("[best recall negative]: "    + str(variables.BEST['recall']['negative']))
-    print("[best recall negative]: "    + str(variables.BEST['recall']['neutral']))
-    print("[best recall avg]: "         + str(variables.BEST['recall']['avg']))
-    print("[best recall avg function]: "+     variables.BEST['recall']['avg_function'] + "\n")
-    print("[best f1 positive]: "        + str(variables.BEST['f1']['positive']))    
-    print("[best f1 negative]: "        + str(variables.BEST['f1']['negative']))
-    print("[best f1 avg]: "             + str(variables.BEST['f1']['avg']))
-    print("[best f1 avg (+/-)]: "       + str(variables.BEST['f1']['avg_pn']))
-    print("[best f1 avg function]: "    +     variables.BEST['f1']['avg_function'])
-    print("[best fitness history]: "    + str(variables.HISTORY['fitness']['best']) + "\n\n")
-    # LOGS 
-
-    # PLOT 
-    X = range(len(variables.HISTORY['fitness']['per_generation']))
-    Y = variables.HISTORY['fitness']['per_generation']
-    plt.plot(X,Y)
-    plt.savefig(variables.TRAIN_RESULTS_IMG + "-all.png", bbox_inches='tight') # all models in one image
-    plt.savefig(variables.TRAIN_RESULTS_IMG + str(datetime.now())[14:16] + str(datetime.now())[17:19] + ".png", bbox_inches='tight') # one image per model
-    # PLOT
-
-    end = time.time()
     print("[evaluation function consumed " + str(format(evaluation_acumulated_time, '.3g')) + " seconds]")
-    print("[main function ended][" + str(format(end - start, '.3g')) + " seconds]\n")
+    print("[main function ended][" + str(format(time.time() - start, '.3g')) + " seconds]\n")
     
-    variables.model_results.append(hof[0])
+    variables.MODEL['bests'].append(hof[0])
     
-    if not variables.save_only_best_individual:
-        variables.model_results_others.append(hof[1])
-        variables.model_results_others.append(hof[2])
-        variables.model_results_others.append(hof[3])
+    if not variables.SAVE['only_best']:
+        for i in range(variables.SAVE['save_n_individuals']):
+            variables.MODEL['others'].append(hof[i+1])
 
     return pop, log, hof
 
 
 if __name__ == "__main__":
     print("[opinionMining v" + variables.SYSTEM_VERSION + "][starting classifier module]")
-
+    parameters = str(variables.CROSSOVER) + " crossover, " + str(variables.MUTATION) + " mutation, " + str(variables.POPULATION) + " population, " + str(variables.GENERATIONS) + " generation"
+    
     loadDictionaries()
     loadTrainMessages()
-
-    parameters = str(variables.CROSSOVER) + " crossover, " + str(variables.MUTATION) + " mutation, " + str(variables.POPULATION) + " population, " + str(variables.GENERATIONS) + " generation"
 
     with open(variables.TRAIN_RESULTS, 'a') as f:
         f.write("[PARAMS]: " + parameters + "\n" + "[DICTIONARIES]: " + str(variables.DIC_LOADED['total']) + "\n\n")
     
-    
-    # Main loop - will call the main function TOTAL_MODEL times
+    # Main loop - will call the main function <TOTAL_MODEL> times
     for i in range(variables.TOTAL_MODELS):
         main()
         
         with open(variables.TRAIN_RESULTS, 'a') as f:
-            f.write(str(variables.model_results[len(variables.model_results) - 1]) + "\n")
+            f.write(str(variables.MODEL['bests'][len(variables.MODEL['bests']) - 1]) + "\n")
             
-            if not variables.save_only_best_individual:
-                for m in variables.model_results_others:
+            if not variables.SAVE['only_best']:
+                for m in variables.MODEL['others']:
                     f.write(str(m) + "\n")
                 f.write("\n")
-
-        variables.model_results_others = []
-
-        mail_content = "Parameters: " + parameters + "\n\n" + str(variables.model_results[len(variables.model_results) - 1]) + "\n"
-        mail_content += "\n\nTotal tweets: " + str(variables.POSITIVE_MESSAGES + variables.NEGATIVE_MESSAGES + variables.NEUTRAL_MESSAGES) + " [" + str(variables.POSITIVE_MESSAGES) + " positives, " + str(variables.NEGATIVE_MESSAGES) + " negatives and " + str(variables.NEUTRAL_MESSAGES) + " neutrals]\n"
-        mail_content += "Fitness (F1 pos and neg): " + str(variables.BEST['fitness']) + " [" + str(variables.fitness_positive + variables.fitness_negative + variables.fitness_neutral) + " correct evaluations] ["+ str(variables.fitness_positive) + " positives, " + str(variables.fitness_negative) + " negatives and " + str(variables.fitness_neutral) + " neutrals]\n"
-        mail_content += "\nFitness evolution: " + str(variables.HISTORY['fitness']['best']) + "\n"
-
         try:
-            send_mail(i+1, variables.TOTAL_MODELS, variables.POPULATION, variables.GENERATIONS, mail_content)
+            send_mail(i+1, variables.TOTAL_MODELS, variables.POPULATION, variables.GENERATIONS, parameters)
         except Exception as e:
             print("[Warning] No internet connection, the email can't be send!")
             print(e)
 
-
-        # Reset the variables
         iterate_count, generation_count, best_of_generation = 1, 1, 0
-        variables.fitness_positive, variables.fitness_negative, variables.fitness_neutral = 0, 0, 0
-        variables.CICLES_UNCHANGED, variables.GENERATIONS_UNCHANGED = 0, 0
-        variables.generations_unchanged_reached_msg = False
+        resetVariables()
 
-        variables.BEST = {'fitness': 0, 'accuracy': 0, 'precision': {}, 'recall': {}, 'f1': {}}
-        variables.BEST['precision']  = {'positive': 0, 'negative': 0, 'neutral': 0, 'avg': 0, 'avg_function': ""}
-        variables.BEST['recall']     = {'positive': 0, 'negative': 0, 'neutral': 0, 'avg': 0, 'avg_function': ""}
-        variables.BEST['f1']         = {'positive': 0, 'negative': 0, 'neutral': 0, 'avg': 0, 'avg_function': "", 'avg_pn': 0}
-        variables.HISTORY['fitness'] = {'all': [], 'per_generation': [], 'best': []} 
-        #variables.best_fitness_history_dict = {}
-
-end = time.time()
-print("[SYSTEM ENDS AFTER " + str(format(end - start, '.3g')) + " SECONDS]")
+print("[SYSTEM ENDS AFTER " + str(format(time.time() - start, '.3g')) + " SECONDS]")
 print("[RESULTS SAVED ON]: " + variables.TRAIN_RESULTS)
 print("\n[CONTACTS]")
 print("  [PROBLEMS/SUGGESTIONS]: airtonbjunior@gmail.com")
