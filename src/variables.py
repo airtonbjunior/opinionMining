@@ -218,7 +218,6 @@ neutral_values = []
 calling_by_test_file = False
 calling_by_ag_file   = False
 
-dic_loaded_total = 0
 use_original_dic_values = True
 
 # Balance the train tweets
@@ -271,13 +270,6 @@ fitness_neutral  = 0
 
 # Save the best values 
 best_AG_weights_combination = []
-
-# = 0
-#best_fitness_history  = []
-#best_fitness_history_dict = {}
-#best_fitness_per_generation_history = []
-#all_fitness_history   = []
-#best_fitness_per_generation_history_dict  = {}
 
 false_neutral_log  = 0
 false_negative_log = 0
