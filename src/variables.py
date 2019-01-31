@@ -72,7 +72,7 @@ CLASSLESS_DICTIONARIES = ["booster", "negating"] # always loaded
 
 DIC_WORDS  = {}
 USE_DIC    = {'liu': True,  'sentiwordnet': True,  'afinn': True,  'vader': True,  'slang': True,  'effect': True,  'semeval2015': True,  'nrc': True,  'gi': True,  's140': True,  'mpqa': True}
-DIC_LOADED = {'liu': False, 'sentiwordnet': False, 'afinn': False, 'vader': False, 'slang': False, 'effect': False, 'semeval2015': False, 'nrc': False, 'gi': False, 's140': False, 'mpqa': False}
+DIC_LOADED = {'liu': False, 'sentiwordnet': False, 'afinn': False, 'vader': False, 'slang': False, 'effect': False, 'semeval2015': False, 'nrc': False, 'gi': False, 's140': False, 'mpqa': False, 'total': 0}
 
 """
 	BEST AND HISTORY
