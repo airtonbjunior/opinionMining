@@ -49,7 +49,7 @@ def loadDictionaries():
 	print("[all dictionaries (" + str(variables.DIC_LOADED['total']) + ") loaded][" + str(format(time.time() - start, '.3g')) + " seconds]\n")
 
 
-def loadMessages(module, file_path, limit=0):
+def loadMessages(module, file_path):
 	"""Load the messages
 
 		Args:
@@ -65,32 +65,40 @@ def loadMessages(module, file_path, limit=0):
 
 	with open(file_path, "r") as f:
 		for line in f:
-			if limit == 0 or (limit != 0 and len(msgs_all) < limit):
+			if (variables.MAX[module]['all'] == 0) or (len(msgs_all) < variables.MAX[module]['all']):
 				msgs['message']   = line.split('\t')[0].strip()
 				msgs['label']     = line.split('\t')[1].strip()
 				msgs['num_label'] = convertLabelToNum(line.split('\t')[1].strip())
 
 				if msgs['label'] == 'positive':
+					if variables.POSITIVE_MESSAGES >= variables.MAX[module]['positive']:
+						continue
 					variables.POSITIVE_MESSAGES += 1
+				
 				elif msgs['label'] == 'negative':
+					if variables.NEGATIVE_MESSAGES >= variables.MAX[module]['negative']:
+						continue
 					variables.NEGATIVE_MESSAGES += 1
+				
 				elif msgs['label'] == 'neutral':
+					if variables.NEUTRAL_MESSAGES >= variables.MAX[module]['neutral']:
+						continue
 					variables.NEUTRAL_MESSAGES  += 1
 
 				msgs_all.append(msgs)
 				msgs = {}
 
-	print("  [" + module + " messages loaded (" + str(len(msgs_all)) + " messages)][" + str(format(time.time() - start, '.3g')) + " seconds]\n")
+	print("  [" + module + " messages loaded (" + str(len(msgs_all)) + " messages)][" + str(variables.POSITIVE_MESSAGES) + " positive, " + str(variables.NEGATIVE_MESSAGES) + " negative and " + str(variables.NEUTRAL_MESSAGES ) + " neutral][" + str(format(time.time() - start, '.3g')) + " seconds]\n")
 	return msgs_all
 
 
-def loadTrainMessages(limit=0):
+def loadTrainMessages():
 	""" Load the train messages
 	
 		Limit is the max messages to load
 
 	"""
-	variables.MESSAGES['train'] = loadMessages("train", variables.DATASET_PATH['train'], limit)
+	variables.MESSAGES['train'] = loadMessages("train", variables.DATASET_PATH['train'])
 
 
 """
