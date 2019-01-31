@@ -778,7 +778,7 @@ if __name__ == "__main__":
     parameters = str(variables.CROSSOVER) + " crossover, " + str(variables.MUTATION) + " mutation, " + str(variables.POPULATION) + " population, " + str(variables.GENERATIONS) + " generation"
 
     with open(variables.TRAIN_RESULTS, 'a') as f:
-        f.write("[PARAMS]: " + parameters + "\n" + "[DICTIONARIES]: " + str(variables.dic_loaded_total) + "\n\n")
+        f.write("[PARAMS]: " + parameters + "\n" + "[DICTIONARIES]: " + str(variables.DIC_LOADED['total']) + "\n\n")
     
     
     # Main loop - will call the main function TOTAL_MODEL times
