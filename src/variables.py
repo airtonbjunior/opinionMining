@@ -59,9 +59,9 @@ INCORRECT_EVALUATIONS       = PREFIX_PATH + 'sandbox/partial_results/incorrect-e
 """
 USE_SPELLCHECKED_WORDS     = False # set True if want to use the spellchecked words
 USE_ONLY_POS_WORDS         = False
-SAVE_INCORRECT_EVALUATIONS = False
 
-LOG = {'times': True, 'all_each_cicle': False, 'all_messages': False, 'partial_results': True, 'loads': True}
+SAVE = {'incorrect_evaluations': False, 'only_best': False, 'dic_means': False, 'all_dic_values': True, 'file_results': True, 'save_n_individuals': 3}
+LOG  = {'times': True, 'all_each_cicle': False, 'all_messages': False, 'partial_results': True, 'loads': True}
 
 """
 	DICTIONARIES
@@ -150,11 +150,19 @@ BEST_RESULTS_IMG       = PREFIX_PATH + 'sandbox/results/train-' + str(TOTAL_MODE
 	DATASETS (TRAIN AND TEST)
 """
 MESSAGES = {'train': [], 'test': []}
+MODEL    = {'bests': [], 'others': []}
 
-save_only_best_individual = False
+# Balance
+MAX = {'train':{}, 'test': {}}
+MAX['train'] = {'positive': 1500, 'negative': 1500, 'neutral': 1500, 'all': 30}
+MAX['test']  = {'positive': 5000, 'negative': 5000, 'neutral': 5000, 'all': 0}
 
-model_results        = []
-model_results_others = []
+
+#MAX_ANALYSIS_TWEETS  = 5500
+#MAX_ANALYSIS_TWEETS_TEST = 10000
+
+neutral_inferior_range = 0
+neutral_superior_range = 0
 
 all_train_words = []
 all_test_words  = []
@@ -195,9 +203,6 @@ use_all_classifiers_nopg_sum = True
 using_gp_default = False
 use_gp_ensemble  = False # if False, all the models will be executed separated. If True, an ensemble of the models will be executed
 
-neutral_inferior_range = 0
-neutral_superior_range = 0
-
 inferior_range_gp_ensemble = 0
 superior_range_gp_ensemble = 0
 
@@ -219,13 +224,6 @@ calling_by_test_file = False
 calling_by_ag_file   = False
 
 use_original_dic_values = True
-
-# Balance the train tweets
-MAX_POSITIVE_MESSAGE = 1500
-MAX_NEGATIVE_MESSAGE = 1500
-MAX_NEUTRAL_MESSAGE  = 1500
-MAX_ANALYSIS_TWEETS  = 5500
-MAX_ANALYSIS_TWEETS_TEST = 10000
 
 tweets_semeval        = []
 tweets_semeval_score  = []
@@ -299,12 +297,8 @@ ag_w9  = 0
 ag_w10 = 0
 ag_w11 = 0
 
-save_dic_means_on_result_file = False
-save_all_dic_values_on_result_file = True
-
 limit_dictionary_weight = 3
 
-save_file_results = True
 
 #SEMEVAL_TRAIN_FILE             = PREFIX_PATH + 'datasets/train/train_messages.txt'
 #SEMEVAL_TRAIN_FILE_ORIGINAL    = PREFIX_PATH + 'datasets/train/twitter-train-cleansed-B.txt'
