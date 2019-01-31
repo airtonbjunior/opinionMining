@@ -311,14 +311,15 @@ def hashtagPolSum(message):
 			hashtag polarity sum
 
 	"""
-	polSum = 0
+	total_sum = 0
 	for word in message.strip().split():
-		p = [float(variables.DIC_WORDS["hashtag"]["positive"][w]) for w in variables.DIC_WORDS["hashtag"]["positive"] if word == w]
-		n = [float(variables.DIC_WORDS["hashtag"]["negative"][w]) for w in variables.DIC_WORDS["hashtag"]["negative"] if word == w]
+		if word in variables.DIC_WORDS["hashtag"]["positive"]:
+			total_sum += float(variables.DIC_WORDS["hashtag"]["positive"][word])
+		
+		elif word in variables.DIC_WORDS["hashtag"]["negative"]:
+			total_sum += float(variables.DIC_WORDS["hashtag"]["negative"][word])
 
-		polSum += sum(p) + sum(n)
-
-	return polSum
+	return total_sum
 
 
 def polSum(message):
@@ -332,21 +333,21 @@ def polSum(message):
 
 	"""
 	total_sum = 0
-
 	for word in message.strip().split():
 		for dic in variables.DICTIONARIES:
 			if variables.USE_DIC[dic] and variables.DIC_LOADED[dic]:
 				
-				p = [float(variables.DIC_WORDS[dic.lower()]["positive"][w]) for w in variables.DIC_WORDS[dic.lower()]["positive"] if word == w]
-				n = [float(variables.DIC_WORDS[dic.lower()]["negative"][w]) for w in variables.DIC_WORDS[dic.lower()]["negative"] if word == w]
-
-				if len(p) > 0:
-					total_sum += float(p[0])
-
-				if len(n) > 0:
-					total_sum += float(n[0])
+				if word in variables.DIC_WORDS[dic.lower()]["positive"]:
+					total_sum += float(variables.DIC_WORDS[dic.lower()]["positive"][word])
+				
+				elif word in variables.DIC_WORDS[dic.lower()]["negative"]:
+					total_sum += float(variables.DIC_WORDS[dic.lower()]["negative"][word])
 
 	return total_sum
+
+
+def polSumAVG(message):
+	return polSumAVGWeights(message, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
 
 
 def polSumAVGWeights(message, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0, w11=0):
