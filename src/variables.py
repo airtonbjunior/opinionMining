@@ -112,8 +112,8 @@ ALL_DATES = WEEK_DATES + MONTH_DATES + OTHER_DATES
 CROSSOVER        = 0.9
 MUTATION         = 0.1
 MUTATE_EPHEMERAL = 0.85
-GENERATIONS      = 5
-POPULATION       = 5
+GENERATIONS      = 15
+POPULATION       = 15
 TREE_MIN_HEIGHT  = 2
 TREE_MAX_HEIGHT  = 6
 TOTAL_MODELS     = 3
@@ -272,12 +272,12 @@ fitness_neutral  = 0
 # Save the best values 
 best_AG_weights_combination = []
 
-best_fitness = 0
-best_fitness_history  = []
-best_fitness_history_dict = {}
-best_fitness_per_generation_history = []
+# = 0
+#best_fitness_history  = []
+#best_fitness_history_dict = {}
+#best_fitness_per_generation_history = []
 #all_fitness_history   = []
-best_fitness_per_generation_history_dict  = {}
+#best_fitness_per_generation_history_dict  = {}
 
 false_neutral_log  = 0
 false_negative_log = 0
