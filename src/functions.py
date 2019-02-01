@@ -1595,11 +1595,11 @@ def neutralRange(inferior, superior):
 
 	if float(inferior) > float(superior):
 		#print("@@FAIL, inferior greater than superior@@")
-		variables.neutral_inferior_range = 0
-		variables.neutral_superior_range = 0
+		variables.NEUTRAL['range']['inferior'] = 0
+		variables.NEUTRAL['range']['superior'] = 0
 	else:
-		variables.neutral_inferior_range = inferior
-		variables.neutral_superior_range = superior
+		variables.NEUTRAL['range']['inferior'] = inferior
+		variables.NEUTRAL['range']['superior'] = superior
 
 
 	return 0 # try not be used in other branches of the tree
@@ -2192,8 +2192,8 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 		#w8 = w[7]
 		#w9 = w[8]
 
-		#variables.neutral_inferior_range = w[9]
-		#variables.neutral_superior_range = w[10]
+		#variables.NEUTRAL['range']['inferior'] = w[9]
+		#variables.NEUTRAL['range']['superior'] = w[10]
 		
 		variables.w1.append(w1)
 		variables.w2.append(w2)
@@ -2207,7 +2207,7 @@ def polaritySumAVGUsingWeights(phrase, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10=0
 		variables.w10.append(w10)
 		variables.w11.append(w11)
 
-		variables.neutral_values.append("[" + str(variables.neutral_inferior_range) + ", " + str(variables.neutral_superior_range) + "]")
+		variables.neutral_values.append("[" + str(variables.NEUTRAL['range']['inferior']) + ", " + str(variables.NEUTRAL['range']['superior']) + "]")
 
 	for word in words:
 		# Check booster and inverter words
@@ -2959,10 +2959,10 @@ def clean_tweet(tweet):
 	return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split())
 
 
-def floatToStr_polarity_value(numerical_polarity_value, neutral_inferior_range, neutral_superior_range):
-	if float(numerical_polarity_value) > float(neutral_superior_range):
+def floatToStr_polarity_value(numerical_polarity_value, NEUTRAL['range']['inferior'], NEUTRAL['range']['superior']):
+	if float(numerical_polarity_value) > float(NEUTRAL['range']['superior']):
 		return "positive"
-	elif float(numerical_polarity_value) < float(neutral_inferior_range):
+	elif float(numerical_polarity_value) < float(NEUTRAL['range']['inferior']):
 		return "negative"
 	else:
 		return "neutral"
@@ -3271,11 +3271,11 @@ def evaluateMessages(base, model, model_ensemble=False):
 			# NaiveBayes only
 			elif(variables.use_only_naive_bayes):
 				if messages_score_naive[index] > 0:
-					result = variables.neutral_superior_range + 1
+					result = variables.NEUTRAL['range']['superior'] + 1
 				elif messages_score_naive[index] < 0:
-					result = variables.neutral_inferior_range - 1
+					result = variables.NEUTRAL['range']['inferior'] - 1
 				elif messages_score_naive[index] == 0:
-					result = random.uniform(variables.neutral_inferior_range, variables.neutral_superior_range)
+					result = random.uniform(variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior'])
 				#result = messages_score_naive[index]
 
 			# MS classifier only
@@ -3299,77 +3299,77 @@ def evaluateMessages(base, model, model_ensemble=False):
 				all_classifiers = []
 				
 				if base == "livejournal":
-					all_classifiers.append(floatToStr_polarity_value(messages_score_svm[index],   variables.neutral_inferior_range, variables.neutral_superior_range))
-					#all_classifiers.append(floatToStr_polarity_value(messages_score_naive[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-					all_classifiers.append(floatToStr_polarity_value(messages_score_LReg[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-					#all_classifiers.append(floatToStr_polarity_value(messages_score_RFor[index],  variables.neutral_inferior_range, variables.neutral_superior_range))
-					all_classifiers.append(floatToStr_polarity_value(messages_score_SGD[index],   variables.neutral_inferior_range, variables.neutral_superior_range))
-					all_classifiers.append(floatToStr_polarity_value(float(eval(model_analysis)), variables.neutral_inferior_range, variables.neutral_superior_range))
-					#all_classifiers.append(floatToStr_polarity_value(messages_score_MS[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-					#all_classifiers.append(floatToStr_polarity_value(messages_score_S140[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-					#all_classifiers.append(floatToStr_polarity_value(TextBlob(message).sentiment.polarity, variables.neutral_inferior_range, variables.neutral_superior_range))
+					all_classifiers.append(floatToStr_polarity_value(messages_score_svm[index],   variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
+					#all_classifiers.append(floatToStr_polarity_value(messages_score_naive[index], variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
+					all_classifiers.append(floatToStr_polarity_value(messages_score_LReg[index], variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
+					#all_classifiers.append(floatToStr_polarity_value(messages_score_RFor[index],  variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
+					all_classifiers.append(floatToStr_polarity_value(messages_score_SGD[index],   variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
+					all_classifiers.append(floatToStr_polarity_value(float(eval(model_analysis)), variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
+					#all_classifiers.append(floatToStr_polarity_value(messages_score_MS[index], variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
+					#all_classifiers.append(floatToStr_polarity_value(messages_score_S140[index], variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
+					#all_classifiers.append(floatToStr_polarity_value(TextBlob(message).sentiment.polarity, variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
 					if hasEmoticons(message):
-						all_classifiers.append(floatToStr_polarity_value(emoticonsPolaritySum(message), variables.neutral_inferior_range, variables.neutral_superior_range))
+						all_classifiers.append(floatToStr_polarity_value(emoticonsPolaritySum(message), variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
 					if hasHashtag(message):
-						all_classifiers.append(floatToStr_polarity_value(hashtagPolaritySum(message), variables.neutral_inferior_range, variables.neutral_superior_range))
+						all_classifiers.append(floatToStr_polarity_value(hashtagPolaritySum(message), variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
 				else:
-					all_classifiers.append(floatToStr_polarity_value(messages_score_svm[index],   variables.neutral_inferior_range, variables.neutral_superior_range))
-					#all_classifiers.append(floatToStr_polarity_value(messages_score_naive[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-					all_classifiers.append(floatToStr_polarity_value(messages_score_LReg[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-					all_classifiers.append(floatToStr_polarity_value(messages_score_RFor[index],  variables.neutral_inferior_range, variables.neutral_superior_range))
-					all_classifiers.append(floatToStr_polarity_value(messages_score_SGD[index],   variables.neutral_inferior_range, variables.neutral_superior_range))
-					all_classifiers.append(floatToStr_polarity_value(float(eval(model_analysis)), variables.neutral_inferior_range, variables.neutral_superior_range))
-					#all_classifiers.append(floatToStr_polarity_value(messages_score_MS[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-					#all_classifiers.append(floatToStr_polarity_value(messages_score_S140[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-					#all_classifiers.append(floatToStr_polarity_value(TextBlob(message).sentiment.polarity, variables.neutral_inferior_range, variables.neutral_superior_range))
+					all_classifiers.append(floatToStr_polarity_value(messages_score_svm[index],   variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
+					#all_classifiers.append(floatToStr_polarity_value(messages_score_naive[index], variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
+					all_classifiers.append(floatToStr_polarity_value(messages_score_LReg[index], variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
+					all_classifiers.append(floatToStr_polarity_value(messages_score_RFor[index],  variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
+					all_classifiers.append(floatToStr_polarity_value(messages_score_SGD[index],   variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
+					all_classifiers.append(floatToStr_polarity_value(float(eval(model_analysis)), variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
+					#all_classifiers.append(floatToStr_polarity_value(messages_score_MS[index], variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
+					#all_classifiers.append(floatToStr_polarity_value(messages_score_S140[index], variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
+					#all_classifiers.append(floatToStr_polarity_value(TextBlob(message).sentiment.polarity, variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
 					if hasEmoticons(message):
-						all_classifiers.append(floatToStr_polarity_value(emoticonsPolaritySum(message), variables.neutral_inferior_range, variables.neutral_superior_range))
+						all_classifiers.append(floatToStr_polarity_value(emoticonsPolaritySum(message), variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
 					if hasHashtag(message):
-						all_classifiers.append(floatToStr_polarity_value(hashtagPolaritySum(message), variables.neutral_inferior_range, variables.neutral_superior_range))
+						all_classifiers.append(floatToStr_polarity_value(hashtagPolaritySum(message), variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
 
 				r = get_best_evaluation(all_classifiers)            
 
 				if r == "positive":
-					result = variables.neutral_superior_range + 1
+					result = variables.NEUTRAL['range']['superior'] + 1
 				elif r == "negative":
-					result = variables.neutral_inferior_range - 1
+					result = variables.NEUTRAL['range']['inferior'] - 1
 				elif r == "neutral":
-					result = random.uniform(variables.neutral_inferior_range, variables.neutral_superior_range)
+					result = random.uniform(variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior'])
 				elif r[:4] == "DRAW":
 					
 					# Equal Draw - classify again without RF
 					if r.split("_")[1] == "all":
 						all_classifiers = []
-						all_classifiers.append(floatToStr_polarity_value(messages_score_svm[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-						all_classifiers.append(floatToStr_polarity_value(messages_score_naive[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-						all_classifiers.append(floatToStr_polarity_value(messages_score_LReg[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-						all_classifiers.append(floatToStr_polarity_value(messages_score_SGD[index], variables.neutral_inferior_range, variables.neutral_superior_range))
-						all_classifiers.append(floatToStr_polarity_value(float(eval(model_analysis)), variables.neutral_inferior_range, variables.neutral_superior_range))
+						all_classifiers.append(floatToStr_polarity_value(messages_score_svm[index], variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
+						all_classifiers.append(floatToStr_polarity_value(messages_score_naive[index], variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
+						all_classifiers.append(floatToStr_polarity_value(messages_score_LReg[index], variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
+						all_classifiers.append(floatToStr_polarity_value(messages_score_SGD[index], variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
+						all_classifiers.append(floatToStr_polarity_value(float(eval(model_analysis)), variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
 						if hasEmoticons(message):
-							all_classifiers.append(floatToStr_polarity_value(emoticonsPolaritySum(message), variables.neutral_inferior_range, variables.neutral_superior_range))
+							all_classifiers.append(floatToStr_polarity_value(emoticonsPolaritySum(message), variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
 						if hasHashtag(message):
-							all_classifiers.append(floatToStr_polarity_value(hashtagPolaritySum(message), variables.neutral_inferior_range, variables.neutral_superior_range))
+							all_classifiers.append(floatToStr_polarity_value(hashtagPolaritySum(message), variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']))
 
 						r = get_best_evaluation(all_classifiers)      
 						if r == "positive":
-							result = variables.neutral_superior_range + 1
+							result = variables.NEUTRAL['range']['superior'] + 1
 						elif r == "negative":
-							result = variables.neutral_inferior_range - 1
+							result = variables.NEUTRAL['range']['inferior'] - 1
 						elif r == "neutral":
-							result = random.uniform(variables.neutral_inferior_range, variables.neutral_superior_range)      
+							result = random.uniform(variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior'])      
 						elif r[:4] == "DRAW":
 							if base == "sms":
 								result = messages_score_SGD[index]
-								if floatToStr_polarity_value(messages_score_SGD[index], variables.neutral_inferior_range, variables.neutral_superior_range) == r.split("_")[1].strip():
+								if floatToStr_polarity_value(messages_score_SGD[index], variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']) == r.split("_")[1].strip():
 									result = float(eval(model_analysis))
 							else:
 								result = float(eval(model_analysis))
-								if floatToStr_polarity_value(float(eval(model_analysis)), variables.neutral_inferior_range, variables.neutral_superior_range) == r.split("_")[1].strip():
+								if floatToStr_polarity_value(float(eval(model_analysis)), variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']) == r.split("_")[1].strip():
 									result = messages_score_SGD[index]   
 									#result = messages_score_svm[index]   
 					else:
 						result = float(eval(model_analysis))
-						if floatToStr_polarity_value(float(eval(model_analysis)), variables.neutral_inferior_range, variables.neutral_superior_range) == r.split("_")[1].strip():
+						if floatToStr_polarity_value(float(eval(model_analysis)), variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior']) == r.split("_")[1].strip():
 							result = messages_score_SGD[index]
 							#result = messages_score_svm[index]
 
@@ -3382,9 +3382,9 @@ def evaluateMessages(base, model, model_ensemble=False):
 					results_models_ensemble = []
 					for m in models_analysis:
 						res = float(eval(m))
-						if res > variables.neutral_superior_range:
+						if res > variables.NEUTRAL['range']['superior']:
 							results_models_ensemble.append("positive")
-						elif res < variables.neutral_inferior_range:
+						elif res < variables.NEUTRAL['range']['inferior']:
 							results_models_ensemble.append("negative")
 						else:
 							results_models_ensemble.append("neutral")
@@ -3393,11 +3393,11 @@ def evaluateMessages(base, model, model_ensemble=False):
 
 					ensemble_result = get_best_evaluation(results_models_ensemble)
 					if ensemble_result == "positive":
-						result = variables.neutral_superior_range + 1
+						result = variables.NEUTRAL['range']['superior'] + 1
 					elif ensemble_result == "negative":
-						result = variables.neutral_inferior_range - 1
+						result = variables.NEUTRAL['range']['inferior'] - 1
 					elif ensemble_result == "neutral":
-						result = random.uniform(variables.neutral_inferior_range, variables.neutral_superior_range)
+						result = random.uniform(variables.NEUTRAL['range']['inferior'], variables.NEUTRAL['range']['superior'])
 					elif ensemble_result[:4] == "DRAW":
 						print(ensemble_result)
 						result = messages_score_svm[index]
@@ -3419,7 +3419,7 @@ def evaluateMessages(base, model, model_ensemble=False):
 
 					variables.all_model_outputs.append(result)
 
-					if result <= variables.neutral_superior_range and result >= variables.neutral_inferior_range:
+					if result <= variables.NEUTRAL['range']['superior'] and result >= variables.NEUTRAL['range']['inferior']:
 						result = messages_score_svm[index]
 					
 					#testing the svm on the bases that it's the best
@@ -3450,19 +3450,19 @@ def evaluateMessages(base, model, model_ensemble=False):
 		if base == "sarcasm" and variables.INVERT_SARCASM and result != 0:
 			result *= -1
 
-		#variables.neutral_superior_range = variables.neutral_superior_range
+		#variables.NEUTRAL['range']['superior'] = variables.NEUTRAL['range']['superior']
 		if messages_score[index] > 0:
-			if result > variables.neutral_superior_range:
+			if result > variables.NEUTRAL['range']['superior']:
 				true_positive += 1
 				if base == "all":
 					goldPos_classPos_value.append(result)
 			else:
-				if result >= variables.neutral_inferior_range and result <= variables.neutral_superior_range:
+				if result >= variables.NEUTRAL['range']['inferior'] and result <= variables.NEUTRAL['range']['superior']:
 					false_neutral += 1
 					goldPos_classNeu += 1
 					if base == "all":
 						goldPos_classNeu_value.append(result)
-				elif result < variables.neutral_inferior_range:
+				elif result < variables.NEUTRAL['range']['inferior']:
 					false_negative += 1
 					goldPos_classNeg += 1
 					if base == "all":
@@ -3470,21 +3470,21 @@ def evaluateMessages(base, model, model_ensemble=False):
 
 				if base != "all" and variables.SAVE_INCORRECT_EVALUATIONS:
 					with open(variables.INCORRECT_EVALUATIONS, 'a') as f_incorrect:
-						f_incorrect.write(str(messages_score[index]) + "\t" + str(result) + "\t[" + str(variables.neutral_inferior_range) + ", " + str(variables.neutral_superior_range) + "]\t" + base + "\t" + message + "\n")
+						f_incorrect.write(str(messages_score[index]) + "\t" + str(result) + "\t[" + str(variables.NEUTRAL['range']['inferior']) + ", " + str(variables.NEUTRAL['range']['superior']) + "]\t" + base + "\t" + message + "\n")
 				
 		elif messages_score[index] < 0:
-			if result < variables.neutral_inferior_range:
+			if result < variables.NEUTRAL['range']['inferior']:
 				true_negative += 1
 				if base == "all":
 					goldNeg_classNeg_value.append(result)
 			else:
 				false_negative_log += 1
-				if result >= variables.neutral_inferior_range and result <= variables.neutral_superior_range:
+				if result >= variables.NEUTRAL['range']['inferior'] and result <= variables.NEUTRAL['range']['superior']:
 					false_neutral += 1
 					goldNeg_classNeu += 1
 					if base == "all":
 						goldNeg_classNeu_value.append(result)
-				elif result > variables.neutral_superior_range:
+				elif result > variables.NEUTRAL['range']['superior']:
 					false_positive += 1
 					goldNeg_classPos += 1
 					if base == "all":
@@ -3492,23 +3492,23 @@ def evaluateMessages(base, model, model_ensemble=False):
 
 				if base != "all" and variables.SAVE_INCORRECT_EVALUATIONS:
 					with open(variables.INCORRECT_EVALUATIONS, 'a') as f_incorrect:
-						f_incorrect.write(str(messages_score[index]) + "\t" + str(result) + "\t[" + str(variables.neutral_inferior_range) + ", " + str(variables.neutral_superior_range) + "]\t" + base + "\t" + message + "\n")
+						f_incorrect.write(str(messages_score[index]) + "\t" + str(result) + "\t[" + str(variables.NEUTRAL['range']['inferior']) + ", " + str(variables.NEUTRAL['range']['superior']) + "]\t" + base + "\t" + message + "\n")
 
 		elif messages_score[index] == 0:
-			if result >= variables.neutral_inferior_range and result <= variables.neutral_superior_range:
+			if result >= variables.NEUTRAL['range']['inferior'] and result <= variables.NEUTRAL['range']['superior']:
 				true_neutral += 1
 				if(neutral_because_url == True):
 					neutral_url_correct_pred += 1
 				if base == "all":
 					goldNeu_classNeu_value.append(result)
 			else:
-				if result < variables.neutral_inferior_range:
+				if result < variables.NEUTRAL['range']['inferior']:
 					false_negative += 1
 					goldNeu_classNeg += 1
 					if base == "all":
 						goldNeu_classNeg_value.append(result)
 
-				elif result > variables.neutral_superior_range:
+				elif result > variables.NEUTRAL['range']['superior']:
 					false_positive += 1
 					goldNeu_classPos += 1
 					if base == "all":
@@ -3516,7 +3516,7 @@ def evaluateMessages(base, model, model_ensemble=False):
 
 				if base != "all" and variables.SAVE_INCORRECT_EVALUATIONS:
 					with open(variables.INCORRECT_EVALUATIONS, 'a') as f_incorrect:
-						f_incorrect.write(str(messages_score[index]) + "\t" + str(result) + "\t[" + str(variables.neutral_inferior_range) + ", " + str(variables.neutral_superior_range) + "]\t" + base + "\t" + message + "\n")
+						f_incorrect.write(str(messages_score[index]) + "\t" + str(result) + "\t[" + str(variables.NEUTRAL['range']['inferior']) + ", " + str(variables.NEUTRAL['range']['superior']) + "]\t" + base + "\t" + message + "\n")
 
 
 	if true_positive + false_positive + true_negative + false_negative > 0:
@@ -3914,8 +3914,8 @@ def evaluateMessages_2classes(model):
 	# test
 
 	# test
-	variables.neutral_inferior_range = 0
-	variables.neutral_superior_range = 0
+	variables.NEUTRAL['range']['inferior'] = 0
+	variables.NEUTRAL['range']['superior'] = 0
 	# test
 
 	# parameters to calc the metrics
@@ -3999,14 +3999,14 @@ def evaluateMessages_2classes(model):
 			continue
 		
 		if messages_score[index] > 0:
-			if result > variables.neutral_superior_range:
+			if result > variables.NEUTRAL['range']['superior']:
 				true_positive += 1
 			else:
 				false_negative += 1
 				goldPos_classNeg += 1
 				
 		elif messages_score[index] < 0:
-			if result < variables.neutral_inferior_range:
+			if result < variables.NEUTRAL['range']['inferior']:
 				true_negative += 1
 			else:
 				false_positive += 1
