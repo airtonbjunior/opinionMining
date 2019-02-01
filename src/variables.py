@@ -57,8 +57,10 @@ INCORRECT_EVALUATIONS       = PREFIX_PATH + 'sandbox/partial_results/incorrect-e
 """
 	CONTROL VARS (BOOLEAN)
 """
-USE_SPELLCHECKED_WORDS     = False # set True if want to use the spellchecked words
-USE_ONLY_POS_WORDS         = False
+USE_SPELLCHECKED_WORDS = False # set True if want to use the spellchecked words
+USE_ONLY_POS_WORDS     = False
+
+USE_TRAIN_FOLDS = False
 
 SAVE = {'incorrect_evaluations': False, 'only_best': False, 'dic_means': False, 'all_dic_values': True, 'file_results': True, 'save_n_individuals': 3}
 LOG  = {'times': True, 'all_each_cicle': False, 'all_messages': False, 'partial_results': True, 'loads': True}
@@ -154,11 +156,14 @@ MODEL    = {'bests': [], 'others': []}
 
 # Balance
 MAX = {'train':{}, 'test': {}}
-MAX['train'] = {'positive': 1500, 'negative': 1500, 'neutral': 1500, 'all': 30}
+MAX['train'] = {'positive': 1500, 'negative': 1500, 'neutral': 1500, 'all': 0}
 MAX['test']  = {'positive': 5000, 'negative': 5000, 'neutral': 5000, 'all': 0}
 
-neutral_inferior_range = 0
-neutral_superior_range = 0
+NEUTRAL = {'range': {'inferior': 0, 'superior': 0}}
+
+
+
+############## REVIEW below ##############
 
 all_train_words = []
 all_test_words  = []
@@ -169,9 +174,6 @@ sms_outputs   = []
 lj_outputs    = []
 sar_outputs   = []
 all_model_outputs = []
-
-train_using_folds = False
-train_using_folds_gp_ensemble = False # This needs to be False for while
 
 train_using_bagging = True
 train_file_size     = 9684
@@ -201,18 +203,6 @@ use_gp_ensemble  = False # if False, all the models will be executed separated. 
 
 inferior_range_gp_ensemble = 0
 superior_range_gp_ensemble = 0
-
-liu_weight       	= 1
-sentiwordnet_weight = 1
-affin_weight        = 1
-vader_weight        = 1
-slang_weight        = 1
-effect_weight       = 1
-semeval2015_weight  = 1
-nrc_weight          = 1
-gi_weight           = 1
-s140_weight         = 1
-mpqa_weight         = 1
 
 neutral_values = []
 
@@ -474,3 +464,17 @@ limit_dictionary_weight = 3
 #massive_functions_max = 1
 
 #neutral_range_constraint = False
+
+#liu_weight       	 = 1
+#sentiwordnet_weight = 1
+#affin_weight        = 1
+#vader_weight        = 1
+#slang_weight        = 1
+#effect_weight       = 1
+#semeval2015_weight  = 1
+#nrc_weight          = 1
+#gi_weight           = 1
+#s140_weight         = 1
+#mpqa_weight         = 1
+
+#train_using_folds_gp_ensemble = False # This needs to be False for while
