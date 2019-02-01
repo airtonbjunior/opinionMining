@@ -689,9 +689,6 @@ if __name__ == "__main__":
 	loadDictionaries()
 	loadTrainMessages()
 
-	print(str(negateWords('this is not no nahf asibnasi asdfiouasfd does not asidubfa ufina')))
-	input('...')
-
 	with open(var.TRAIN_RESULTS, 'a') as f:
 		f.write("[PARAMS]: " + parameters + "\n" + "[DICTIONARIES]: " + str(var.DIC_LOADED['total']) + "\n\n")
 	
