@@ -25,7 +25,7 @@ def saveBestFitness(file_path, individual, fitnessReturn, generation_count, is_p
 		with open(file_path, 'w') as f:
 			f.write(str(individual))
 			f.write("\n\n# Generation -> " + str(generation_count))
-			f.write("\n# Neutral Range -> [" + str(var.neutral_inferior_range) + ", " + str(var.neutral_superior_range) + "]")
+			f.write("\n# Neutral Range -> [" + str(var.NEUTRAL['range']['inferior']) + ", " + str(var.NEUTRAL['range']['superior']) + "]")
 		var.HISTORY['fitness']['best'].append(var.BEST['fitness'])
 	var.BEST['fitness'] = fitnessReturn
 	var.fitness_positive, var.fitness_negative, var.fitness_neutral = is_positive, is_negative, is_neutral
@@ -198,7 +198,7 @@ def resetVariables():
 	var.BEST['recall']     = {'positive': 0, 'negative': 0, 'neutral': 0, 'avg': 0, 'avg_function': ""}
 	var.BEST['f1']         = {'positive': 0, 'negative': 0, 'neutral': 0, 'avg': 0, 'avg_function': "", 'avg_pn': 0}
 	var.HISTORY['fitness'] = {'all': [], 'per_generation': [], 'best': []} 
-	var.MODEL['others'] = []
+	var.MODEL['others']    = []
 
 
 def saveModel(file_path):
