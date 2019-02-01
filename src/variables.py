@@ -127,11 +127,11 @@ MAX_UNCHANGED_CICLES      = 9999999999
 """
 	CONSTRAINTS
 """
-CONSTRAINT = {'root': {}, 'massive': {}, 'neutral_range': {'active': False}}
+CONSTRAINT = {'root': {}, 'massive': {}, 'neutral_range': {'active': False}, 'active': True}
 CONSTRAINT['root']    = {'active': True,  'function': 'polSumAVGWeights', 'decrease_rate': 0.2}
 CONSTRAINT['massive'] = {'active': True,  'function': 'polSumAVGWeights', 'decrease_rate': 0.2, 'max': 1}
 
-generations_unchanged_reached_msg = False
+GEN_UNCHANGED_REACH_MSG = False
 
 """
 	RESULT FILES PATHS
@@ -156,10 +156,6 @@ MODEL    = {'bests': [], 'others': []}
 MAX = {'train':{}, 'test': {}}
 MAX['train'] = {'positive': 1500, 'negative': 1500, 'neutral': 1500, 'all': 30}
 MAX['test']  = {'positive': 5000, 'negative': 5000, 'neutral': 5000, 'all': 0}
-
-
-#MAX_ANALYSIS_TWEETS  = 5500
-#MAX_ANALYSIS_TWEETS_TEST = 10000
 
 neutral_inferior_range = 0
 neutral_superior_range = 0
