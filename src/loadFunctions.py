@@ -55,7 +55,6 @@ def loadMessages(module, file_path):
 		Args:
 			module    (str): train or test
 			file_path (str): path of the file
-			limit     (int): limit of messages loaded
 	"""
 	start = time.time()
 	print("\n[loading " + module + " messages]")
@@ -66,9 +65,9 @@ def loadMessages(module, file_path):
 	with open(file_path, "r") as f:
 		for line in f:
 			if (variables.MAX[module]['all'] == 0) or (len(msgs_all) < variables.MAX[module]['all']):
-				msgs['message']   = line.split('\t')[0].strip()
-				msgs['label']     = line.split('\t')[1].strip()
-				msgs['num_label'] = convertLabelToNum(line.split('\t')[1].strip())
+				msgs['message']       = line.split('\t')[0].strip()
+				msgs['label']         = line.split('\t')[1].strip()
+				msgs['num_label']     = convertLabelToNum(line.split('\t')[1].strip())
 
 				if msgs['label'] == 'positive':
 					if variables.POSITIVE_MESSAGES >= variables.MAX[module]['positive']:
@@ -94,8 +93,6 @@ def loadMessages(module, file_path):
 
 def loadTrainMessages():
 	""" Load the train messages
-	
-		Limit is the max messages to load
 
 	"""
 	variables.MESSAGES['train'] = loadMessages("train", variables.DATASET_PATH['train'])
