@@ -11,7 +11,7 @@ classifier.py
 
 Genetic Programming lib: DEAP
 References: https://github.com/DEAP/deap/blob/08986fc3848144903048c722564b7b1d92db33a1/examples/gp/symbreg.py
-			 https://github.com/DEAP/deap/blob/08986fc3848144903048c722564b7b1d92db33a1/examples/gp/spambase.py
+			https://github.com/DEAP/deap/blob/08986fc3848144903048c722564b7b1d92db33a1/examples/gp/spambase.py
 
 """
 from deap import algorithms
@@ -26,6 +26,7 @@ import operator
 import random
 import sys
 import variables as var
+import numpy as np
 from gpFunctions import *
 from loadFunctions import *
 from sendMail import *
@@ -106,7 +107,7 @@ def evalMessages(individual):
 	global best_of_generation
 	new_generation = False
 
-	var.neutral_inferior_range, var.neutral_superior_range = 0, 0
+	var.NEUTRAL['range']['inferior'], var.NEUTRAL['range']['superior'] = 0, 0
 
 	# Check max unchanged generations
 	if var.GENERATIONS_UNCHANGED >= var.MAX_UNCHANGED_GENERATIONS:
@@ -143,7 +144,8 @@ def evalMessages(individual):
 	# Transform the tree expression in a callable function
 	func = toolbox.compile(expr=individual)
 
-	MESSAGES_TO_EVALUATE = var.MESSAGES['train']
+	#MESSAGES_TO_EVALUATE = var.MESSAGES['train']
+	MESSAGES_TO_EVALUATE = np.array(var.MESSAGES['train'])
 
 	# Main loop - iterate through the messages
 	for index, item in enumerate(MESSAGES_TO_EVALUATE):
@@ -191,36 +193,36 @@ def evalMessages(individual):
 			func_value = float(func(MESSAGES_TO_EVALUATE[index]['message'])) # run the model (individual)
 
 			if MESSAGES_TO_EVALUATE[index]['num_label'] > 0:
-				if  func_value > var.neutral_superior_range:
+				if  func_value > var.NEUTRAL['range']['superior']:
 					correct_evaluations += 1 
 					is_positive   += 1
 					conf_matrix['true_positive'] += 1
 				else:
-					if func_value >= var.neutral_inferior_range and func_value <= var.neutral_superior_range:
+					if func_value >= var.NEUTRAL['range']['inferior'] and func_value <= var.NEUTRAL['range']['superior']:
 						conf_matrix['false_neutral'] += 1
-					elif func_value < var.neutral_inferior_range:
+					elif func_value < var.NEUTRAL['range']['inferior']:
 						conf_matrix['false_negative'] += 1
 
 			elif MESSAGES_TO_EVALUATE[index]['num_label'] < 0:
-				if func_value < var.neutral_inferior_range:
+				if func_value < var.NEUTRAL['range']['inferior']:
 					correct_evaluations += 1 
 					is_negative   += 1
 					conf_matrix['true_negative'] += 1
 				else:
-					if func_value >= var.neutral_inferior_range and func_value <= var.neutral_superior_range:
+					if func_value >= var.NEUTRAL['range']['inferior'] and func_value <= var.NEUTRAL['range']['superior']:
 						conf_matrix['false_neutral'] += 1
-					elif func_value > var.neutral_superior_range:
+					elif func_value > var.NEUTRAL['range']['superior']:
 						conf_matrix['false_positive'] += 1
 
 			elif MESSAGES_TO_EVALUATE[index]['num_label'] == 0:
-				if func_value >= var.neutral_inferior_range and func_value <= var.neutral_superior_range:
+				if func_value >= var.NEUTRAL['range']['inferior'] and func_value <= var.NEUTRAL['range']['superior']:
 					correct_evaluations += 1 
 					is_neutral   += 1
 					conf_matrix['true_neutral'] += 1
 				else:
-					if func_value < var.neutral_inferior_range:
+					if func_value < var.NEUTRAL['range']['inferior']:
 						conf_matrix['false_negative'] += 1
-					elif func_value > var.neutral_superior_range:
+					elif func_value > var.NEUTRAL['range']['superior']:
 						conf_matrix['false_positive'] += 1
 
 		except Exception as e: 
@@ -431,35 +433,35 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
 				
 				if float(TWEETS_SCORE_TO_EVALUATE[index]) > 0:
 					is_positive   += 1
-					if  func_value > var.neutral_superior_range:
+					if  func_value > var.NEUTRAL['range']['superior']:
 						correct_evaluations += 1 
 						conf_matrix['true_positive'] += 1
 					else:
-						if func_value >= var.neutral_inferior_range and func_value <= var.neutral_superior_range:
+						if func_value >= var.NEUTRAL['range']['inferior'] and func_value <= var.NEUTRAL['range']['superior']:
 							conf_matrix['false_neutral'] += 1
-						elif func_value < var.neutral_inferior_range:
+						elif func_value < var.NEUTRAL['range']['inferior']:
 							conf_matrix['false_negative'] += 1
 
 				elif float(TWEETS_SCORE_TO_EVALUATE[index]) < 0:
 					is_negative   += 1
-					if func_value < var.neutral_inferior_range:
+					if func_value < var.NEUTRAL['range']['inferior']:
 						correct_evaluations += 1 
 						conf_matrix['true_negative'] += 1
 					else:
-						if func_value >= var.neutral_inferior_range and func_value <= var.neutral_superior_range:
+						if func_value >= var.NEUTRAL['range']['inferior'] and func_value <= var.NEUTRAL['range']['superior']:
 							conf_matrix['false_neutral'] += 1
-						elif func_value > var.neutral_superior_range:
+						elif func_value > var.NEUTRAL['range']['superior']:
 							conf_matrix['false_positive'] += 1
 
 				elif float(TWEETS_SCORE_TO_EVALUATE[index]) == 0:
 					is_neutral   += 1
-					if func_value >= var.neutral_inferior_range and func_value <= var.neutral_superior_range:
+					if func_value >= var.NEUTRAL['range']['inferior'] and func_value <= var.NEUTRAL['range']['superior']:
 						correct_evaluations += 1 
 						conf_matrix['true_neutral'] += 1
 					else:
-						if func_value < var.neutral_inferior_range:
+						if func_value < var.NEUTRAL['range']['inferior']:
 							conf_matrix['false_negative'] += 1
-						elif func_value > var.neutral_superior_range:
+						elif func_value > var.NEUTRAL['range']['superior']:
 							conf_matrix['false_positive'] += 1
 
 			except Exception as e: 
@@ -586,7 +588,7 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
 			with open(var.BEST_INDIVIDUAL, 'w') as f:
 				f.write(str(individual))
 				f.write("\n\n# Generation -> " + str(generation_count))
-				f.write("\n# Neutral Range -> [" + str(var.neutral_inferior_range) + ", " + str(var.neutral_superior_range) + "]")
+				f.write("\n# Neutral Range -> [" + str(var.NEUTRAL['range']['inferior']) + ", " + str(var.NEUTRAL['range']['superior']) + "]")
 			var.HISTORY['fitness']['best'].append(var.BEST['fitness'])
 		var.BEST['fitness'] = fitnessReturn
 		#var.best_fitness_history_dict[generation_count] = fitnessReturn
@@ -637,7 +639,7 @@ def evalSymbRegTweetsFromSemeval_folds(individual):
 	return fitnessReturn,
 
 
-if var.train_using_folds:
+if var.USE_TRAIN_FOLDS:
 	toolbox.register("evaluate", evalSymbRegTweetsFromSemeval_folds)
 else:
 	toolbox.register("evaluate", evalMessages)
@@ -683,9 +685,12 @@ def main():
 if __name__ == "__main__":
 	print("[opinionMining v" + var.SYSTEM_VERSION + "][starting classifier module]")
 	parameters = str(var.CROSSOVER) + " crossover, " + str(var.MUTATION) + " mutation, " + str(var.POPULATION) + " population, " + str(var.GENERATIONS) + " generation"
-	
+
 	loadDictionaries()
 	loadTrainMessages()
+
+	print(str(negateWords('this is not no nahf asibnasi asdfiouasfd does not asidubfa ufina')))
+	input('...')
 
 	with open(var.TRAIN_RESULTS, 'a') as f:
 		f.write("[PARAMS]: " + parameters + "\n" + "[DICTIONARIES]: " + str(var.DIC_LOADED['total']) + "\n\n")
