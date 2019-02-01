@@ -21,6 +21,11 @@ def send_mail(ith, total, pop, gen, parameters):
 	mail_content += "\n\nTotal tweets: " + str(variables.POSITIVE_MESSAGES + variables.NEGATIVE_MESSAGES + variables.NEUTRAL_MESSAGES) + " [" + str(variables.POSITIVE_MESSAGES) + " positives, " + str(variables.NEGATIVE_MESSAGES) + " negatives and " + str(variables.NEUTRAL_MESSAGES) + " neutrals]\n"
 	mail_content += "Fitness (F1 pos and neg): " + str(variables.BEST['fitness']) + " [" + str(variables.fitness_positive + variables.fitness_negative + variables.fitness_neutral) + " correct evaluations] ["+ str(variables.fitness_positive) + " positives, " + str(variables.fitness_negative) + " negatives and " + str(variables.fitness_neutral) + " neutrals]\n"
 	mail_content += "\nFitness evolution: " + str(variables.HISTORY['fitness']['best']) + "\n"
-
-	yag = yagmail.SMTP(FROM, 'sclassifier123')
-	yag.send(TO, SUBJECT, mail_content)
+	
+	try:
+		yag = yagmail.SMTP(FROM, 'sclassifier123')
+		yag.send(TO, SUBJECT, mail_content)
+	
+	except Exception as e:
+		print("[Warning][Email] The email can't be send!")
+		print(e)		
